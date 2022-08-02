@@ -74,7 +74,7 @@ HRESULT CShader::Initialize(void * pArg)
 	return S_OK;
 }
 
-HRESULT CShader::Set_RawValue(const char * pConstantName, void * pData, _uint iDataSize)
+HRESULT CShader::Set_RawValue(const char * pConstantName, const void * pData, _uint iDataSize)
 {
 	if (nullptr == m_pEffect)
 		return E_FAIL;

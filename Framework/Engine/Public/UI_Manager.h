@@ -13,31 +13,29 @@ class CUI_Manager final : public CBase
 private:
 	CUI_Manager();
 	virtual ~CUI_Manager() = default;
-
-public:
-
+	
 public:
 	HRESULT Reserve_Container(_uint iNumLevels);
 
 public:
-
-
+	/* 원형객체르ㅏㅣㄹ 복사하여 사본객체를 추가한다. */
+	HRESULT Add_UI(_uint iLevelIndex, const _tchar* pUITag, class CUI* pUI, void* pArg = nullptr);
 
 	void Tick(_float fTimeDelta);
 	void LateTick(_float fTimeDelta);
 
 public:
+	void DisableUIs(_uint iLevelIndex);
 	void Clear(_uint iLevelIndex);
 
 private:
-	map<const _tchar*, class CUI*>			m_UIs;
-	typedef map<const _tchar*, class CUI*>	UIS;
+	map<const _tchar*, class CUI*>*				m_pUIs = nullptr;
+	typedef map<const _tchar*, class CUI*>		UIS;
 
 	_uint					m_iNumLevels = 0;
-
 private:
-	class CUI* Find_UI(const _tchar* pUITag);
-	
+	class CGameObject* Find_UI(_uint iLevelIndex, const _tchar* UITag);
+
 public:
 	virtual void Free() override;
 };

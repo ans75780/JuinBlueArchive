@@ -34,7 +34,12 @@
     <ClInclude Include="..\public\BackGround.h">
       <Filter>02.GameObject\BackGround</Filter>
     </ClInclude>
-    <ClInclude Include="TransformUtil.h" />
+    <ClInclude Include="..\Public\Terrain.h">
+      <Filter>02.GameObject\Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Camera_Free.h">
+      <Filter>02.GameObject\Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -61,8 +66,12 @@
     <ClCompile Include="..\private\BackGround.cpp">
       <Filter>02.GameObject\BackGround</Filter>
     </ClCompile>
-    <ClCompile Include="TransformUtil.cpp" />
-    <ClCompile Include="..\Public\UI_Base.cpp" />
+    <ClCompile Include="..\Private\Terrain.cpp">
+      <Filter>02.GameObject\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera_Free.cpp">
+      <Filter>02.GameObject\Camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -106,17 +115,11 @@
     <Filter Include="03.ShaderFiles">
       <UniqueIdentifier>{d3a98933-0c07-4640-bc38-9a0b4f9abd9e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="97.Utils">
-      <UniqueIdentifier>{370a875d-f3cf-4ceb-b7f2-da29a3432de8}</UniqueIdentifier>
+    <Filter Include="02.GameObject\Terrain">
+      <UniqueIdentifier>{da236dcb-b5e6-4bb7-a979-485518c32bc1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObject\UI">
-      <UniqueIdentifier>{2db02c43-ecd1-4cc9-8b4d-2cc59ec10d1f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObject\UI\Base">
-      <UniqueIdentifier>{57e0f895-cad5-4388-92b0-9094d4df774c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObject\UI\UI_Layer">
-      <UniqueIdentifier>{28d7a079-4260-48ca-8b39-ccb7ae33aebe}</UniqueIdentifier>
+    <Filter Include="02.GameObject\Camera">
+      <UniqueIdentifier>{bc09692a-cf30-483f-b2c5-106cf1ce0bbe}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -131,6 +134,9 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxTex.hlsl">
+      <Filter>03.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl">
       <Filter>03.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

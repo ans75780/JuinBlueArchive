@@ -6,6 +6,7 @@
 #include "Object_Manager.h"
 #include "Component_Manager.h"
 #include "Timer_Manager.h"
+#include "PipeLine.h"
 
 
 /* 1. 게임내에 필요한 객체(매니져등)들을 모아서 보관한다. */
@@ -55,8 +56,12 @@ public: /* For.Timer_Manager */
 	HRESULT Add_Timer(const _tchar* pTimerTag);
 	_float Compute_Timer(const _tchar* pTimerTag);
 
-public: /* For.Picking */
-	_bool Picking(class CVIBuffer* pVIBuffer, class CTransform* pTransform, _float3* pOut);
+public:
+	void Set_Transform(CPipeLine::TRANSFORMSTATE eState, _fmatrix TransformState);
+	_matrix Get_Transform(CPipeLine::TRANSFORMSTATE eState);
+	const _float4x4* Get_Transform_float4x4(CPipeLine::TRANSFORMSTATE eState);
+	const _float4x4* Get_Transform_TP(CPipeLine::TRANSFORMSTATE eState);
+
 
 
 private:
@@ -66,6 +71,7 @@ private:
 	CObject_Manager*				m_pObject_Manager = nullptr;
 	CComponent_Manager*				m_pComponent_Manager = nullptr;
 	CTimer_Manager*					m_pTimer_Manager = nullptr;
+	CPipeLine*						m_pPipeLine = nullptr;
 
 
 public:

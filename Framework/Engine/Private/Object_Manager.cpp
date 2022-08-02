@@ -1,6 +1,7 @@
 #include "..\Public\Object_Manager.h"
 #include "Layer.h"
 #include "GameObject.h"
+#include "..\Public\UI_Manager.h"
 
 IMPLEMENT_SINGLETON(CObject_Manager)
 
@@ -64,6 +65,8 @@ HRESULT CObject_Manager::Add_GameObject(_uint iLevelIndex, const _tchar * pLayer
 
 	return S_OK;
 }
+
+
 
 void CObject_Manager::Tick(_float fTimeDelta)
 {
