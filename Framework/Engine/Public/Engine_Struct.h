@@ -5,6 +5,7 @@ namespace Engine
 	enum MOUSEBUTTON { MBS_LBUTTON, MBS_RBUTTON, MBS_WHEEL, MBS_X, MBS_END };
 	enum MOUSEMOVE { MMS_X, MMS_Y, MMS_WHEEL, MMS_END };
 
+	enum  UI_TYPE { CANVAS_POST, CANVAS_END };
 	typedef struct tagLightDesc
 	{
 		enum TYPE {TYPE_DIRECTIONAL, TYPE_POINT, TYPE_END};

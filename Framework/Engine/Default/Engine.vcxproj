@@ -189,6 +189,7 @@
     <ClInclude Include="..\Public\Timer_Manager.h" />
     <ClInclude Include="..\public\Transform.h" />
     <ClInclude Include="..\Public\UI.h" />
+    <ClInclude Include="..\Public\UI_Canvas.h" />
     <ClInclude Include="..\Public\UI_Manager.h" />
     <ClInclude Include="..\public\VIBuffer.h" />
     <ClInclude Include="..\public\VIBuffer_Rect.h" />
@@ -217,6 +218,7 @@
     <ClCompile Include="..\Private\Timer_Manager.cpp" />
     <ClCompile Include="..\private\Transform.cpp" />
     <ClCompile Include="..\Private\UI.cpp" />
+    <ClCompile Include="..\Private\UI_Canvas.cpp" />
     <ClCompile Include="..\Private\UI_Manager.cpp" />
     <ClCompile Include="..\private\VIBuffer.cpp" />
     <ClCompile Include="..\private\VIBuffer_Rect.cpp" />

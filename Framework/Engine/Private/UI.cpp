@@ -4,7 +4,7 @@
 #include "Texture.h"
 
 CUI::CUI(ID3D11Device * pDevice, ID3D11DeviceContext * pDeviceContext)
-	:CGameObject(pDevice, pDeviceContext)
+	:CGameObject(pDevice, pDeviceContext), 
 {
 	
 
