@@ -2,13 +2,13 @@
 #include "GameInstance.h"
 #include "UI.h"
 
+
+
 CUI_Canvas::CUI_Canvas(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: m_pDevice(pDevice), m_pContext(pContext)
 {
-}
-
-CUI_Canvas::~CUI_Canvas()
-{
+	Safe_AddRef(m_pContext);
+	Safe_AddRef(m_pDevice);
 }
 
 CUI_Canvas * CUI_Canvas::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
@@ -24,44 +24,76 @@ CUI_Canvas * CUI_Canvas::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pC
 	return pInstance;
 }
 
+void CUI_Canvas::Free()
+{
+	for (auto vecUI : m_vecUI)
+	{
+		for (auto UI : vecUI)
+		{
+			Safe_Release(UI);
+		}
+		vecUI.clear();
+	}
+	Safe_Release(m_pContext);
+	Safe_Release(m_pDevice);
+}
+
 void CUI_Canvas::Add_UI(CUI * pUI)
 {
-	m_vecUI.push_back(pUI);
+	UI_TYPE	 eUIType = pUI->Get_UIType();
+	m_vecUI[eUIType].push_back(pUI);
 }
 
 HRESULT CUI_Canvas::Initialize()
 {
-	m_vecUI.reserve(20);
+	m_bOnDialog = false;
+
 
 	return S_OK;
 }
 
 void CUI_Canvas::Tick(_float fTimeDelta)
 {
-	for (auto UI : m_vecUI)
+	for (auto vecUI : m_vecUI)
 	{
-		if (!UI->Get_Enable())
-			continue;
-		UI->Tick(fTimeDelta);
+		for (auto UI : vecUI)
+		{
+			if (!UI->Get_Enable())
+				continue;
+			UI->Tick(fTimeDelta);
+		}
 	}
 }
 
 void CUI_Canvas::LateTick(_float fTimeDelta)
 {
-	for (auto UI : m_vecUI)
+	for (auto vecUI : m_vecUI)
 	{
-		if (!UI->Get_Enable())
-			continue;
-		UI->LateTick(fTimeDelta);
+		for (auto UI : vecUI)
+		{
+			if (!UI->Get_Enable())
+				continue;
+			UI->LateTick(fTimeDelta);
+		}
 	}
 }
 
 HRESULT CUI_Canvas::Render()
 {
-	for (auto UI : m_vecUI)
+	for (_uint i = 0; i <= UI_TYPE::UI_END;i++)
 	{
-		if (!UI->Get_Enable())
-			continue;
-		UI->Render();
+		VECTOR_UI vecUI = m_vecUI[i];
+		for (auto UI : vecUI)
+		{
+			if (!UI->Get_Enable())
+				continue;
+			UI->Render();
+		}
 	}
+	return S_OK;
+}
+
+void CUI_Canvas::Check_UI(CUI * pUI)
+{
+
 }

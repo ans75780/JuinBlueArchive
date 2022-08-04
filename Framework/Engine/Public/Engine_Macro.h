@@ -33,10 +33,13 @@
 
 #define MSG_BOX(MESSAGE) MessageBox(0, TEXT(MESSAGE), TEXT("System Error"), MB_OK)
 
+//KEY : 누른 키 , State : 누른 키의 상태
+#define KEY(key, state) CGameInstance::Get_Instance()->Get_KeyState(KEY::key) == KEY_STATE::state
+#define MOUSEPOS CGameInstance::Get_Instance()->Get_MousePos();
+
 
 #define BEGIN(NAMESPACE) namespace NAMESPACE { 
 #define END }
-
 
 #define NO_COPY(ClassName)								\
 ClassName(const ClassName&) = delete;					\

@@ -21,13 +21,17 @@ public:
 public:
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* pArg);
-	
+	virtual void	Tick(_float fTimeDelta);
+	virtual void	LateTick(_float fTimeDelta);
+
+
 	virtual HRESULT Render(); 
 
 	//Enable,DIsable
 public:
 	_bool	Get_Enable() { return m_bEnable; }
 	void	Set_Enable(_bool _bEnable) { m_bEnable = _bEnable; }
+
 
 protected:
 	ID3D11Device*				m_pDevice = nullptr;
@@ -36,7 +40,7 @@ protected:
 	class CTransform*			m_pTransformCom = nullptr;
 
 	_float						m_fCamDistance = 0.f;
-	_bool			m_bEnable = true;
+	_bool						m_bEnable = true;
 
 
 

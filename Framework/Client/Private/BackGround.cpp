@@ -1,22 +1,12 @@
 #include "stdafx.h"
 #include "..\Public\BackGround.h"
-
 #include "GameInstance.h"
 
 CBackGround::CBackGround(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
-	: CGameObject(pDevice, pContext)
+	: CUI(pDevice, pContext)
 {
 }
 
-CBackGround::CBackGround(const CBackGround & rhs)
-	: CGameObject(rhs)
-{
-}
-
-HRESULT CBackGround::Initialize_Prototype()
-{
-	return S_OK;
-}
 
 HRESULT CBackGround::Initialize(void * pArg)
 {
@@ -35,9 +25,7 @@ HRESULT CBackGround::Initialize(void * pArg)
 	m_fX = g_iWinCX >> 1;
 	m_fY = g_iWinCY >> 1;
 
-	// XMMatrixPerspectiveFovLH()
-	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH(g_iWinCX, g_iWinCY, 0.f, 1.f)));
-
+	
 	return S_OK;
 }
 
@@ -81,13 +69,6 @@ HRESULT CBackGround::SetUp_Components()
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxTex"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
 		return E_FAIL;
 
-	/* For.Com_Renderer */
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
-		return E_FAIL;
-
-	/* For.Com_Texture */
-	if (FAILED(__super::Add_Component(LEVEL_LOGO, TEXT("Prototype_Component_Texture_Default"), TEXT("Com_Texture "), (CComponent**)&m_pTextureCom)))
-		return E_FAIL;
 
 	/* For.Com_VIBuffer */
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"), TEXT("Com_VIBuffer"), (CComponent**)&m_pVIBufferCom)))

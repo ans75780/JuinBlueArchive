@@ -1,44 +1,39 @@
 #include "..\Public\UI_Manager.h"
 #include "GameInstance.h"
 #include "UI.h"
+#include "UI_Canvas.h"
+
+IMPLEMENT_SINGLETON(CUI_Manager);
 
 CUI_Manager::CUI_Manager()
 {
 }
 
 
-CUI_Manager::~CUI_Manager()
+HRESULT CUI_Manager::Setup_Manager(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, const GRAPHICDESC & GraphicDesc, _uint iNumLevels)
 {
-
-}
-
-HRESULT CUI_Manager::Reserve_Container(_uint iNumLevels)
-{
-	if (nullptr != m_pUIs)
-		return E_FAIL;
-
 	m_iNumLevels = iNumLevels;
 
-	m_pUIs = new UIS[iNumLevels];
+	m_vecCanvas.reserve(iNumLevels);
+
+	XMStoreFloat4x4(&CUI::g_UIMatProj, XMMatrixTranspose(XMMatrixOrthographicLH(GraphicDesc.iWinCX, GraphicDesc.iWinCX, 0.f, 1.f)));
+
+	//Reserved_Container에서 레벨 개수만큼 할당한 공간 개수 만큼 캔버스 생성
+	for (_uint i = 0; i < m_vecCanvas.capacity(); i++)
+	{
+		CUI_Canvas* pCanvas = CUI_Canvas::Create(pDevice, pContext);
+		m_vecCanvas.push_back(pCanvas);
+	}
+	return S_OK;
+
 
 	return S_OK;
 }
 
-HRESULT CUI_Manager::Add_UI(_uint iLevelIndex, const _tchar * pUITag, CUI * pUI, void * pArg)
+
+HRESULT CUI_Manager::Add_UI(_uint iLevelIndex, CUI * pUI,void * pArg)
 {
-	UIS	Layer = m_pUIs[iLevelIndex];
-
-
-	auto	iter = find_if(Layer.begin(), Layer.end(), CTag_Finder(pUITag));
-
-
-	if (iter != Layer.end())
-	{
-		MSG_BOX("같은 이름의 UI오브젝트가 이미 존재합니다 : Add_UI");
-		return E_FAIL;
-	}
-	Layer.emplace(pUITag, pUI);
-
+	m_vecCanvas[iLevelIndex]->Add_UI(pUI);
 	return S_OK;
 }
 
@@ -48,14 +43,7 @@ void CUI_Manager::Tick(_float fTimeDelta)
 
 	_uint	iLevel = instance->Get_CurrentLevel();
 
-
-	for (auto elem : m_pUIs[iLevel])
-	{
-		if (!elem.second->Get_Enable())
-			continue;
-		elem.second->Tick(fTimeDelta);
-	}
-
+	m_vecCanvas[iLevel]->Tick(fTimeDelta);
 
 	RELEASE_INSTANCE(CGameInstance);
 }
@@ -68,39 +56,24 @@ void CUI_Manager::LateTick(_float fTimeDelta)
 	_uint	iLevel = instance->Get_CurrentLevel();
 
 
-	for (auto elem : m_pUIs[iLevel])
-	{
-		if (!elem.second->Get_Enable())
-			continue;
-		elem.second->LateTick(fTimeDelta);
-	}
+	m_vecCanvas[iLevel]->LateTick(fTimeDelta);
 
 
 	RELEASE_INSTANCE(CGameInstance);
 }
 
-void CUI_Manager::DisableUIs(_uint iLevelIndex)
+void CUI_Manager::DisableCanvas(_uint iLevelIndex)
 {
-	for (auto elem : m_pUIs[iLevelIndex])
-	{
-		elem.second->Set_Enable(false);
-	}
-}
-
-void CUI_Manager::Clear(_uint iLevelIndex)
-{
-
-}
-
-
-CGameObject * CUI_Manager::Find_UI(_uint iLevelIndex, const _tchar * pPrototypeTag)
-{
-	return nullptr;
+	
 }
 
 
 void CUI_Manager::Free()
 {
-
+	for (auto pCanvas : m_vecCanvas)
+	{
+		Safe_Release(pCanvas);
+	}
+	m_vecCanvas.clear();
 }
 

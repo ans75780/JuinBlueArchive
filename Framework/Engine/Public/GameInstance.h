@@ -6,6 +6,8 @@
 #include "Object_Manager.h"
 #include "Component_Manager.h"
 #include "Timer_Manager.h"
+#include "Key_Manager.h"
+#include "UI_Manager.h"
 #include "PipeLine.h"
 
 
@@ -58,6 +60,10 @@ public: /* For.Timer_Manager */
 	HRESULT Add_Timer(const _tchar* pTimerTag);
 	_float Compute_Timer(const _tchar* pTimerTag);
 
+
+public : /*For. Key_Manager*/
+	KEY_STATE	Get_KeyState(KEY eKey);
+	const POINT&	Get_MousePos();
 public:
 	void Set_Transform(CPipeLine::TRANSFORMSTATE eState, _fmatrix TransformState);
 	_matrix Get_Transform(CPipeLine::TRANSFORMSTATE eState);
@@ -72,9 +78,10 @@ private:
 	CLevel_Manager*					m_pLevel_Manager = nullptr;
 	CObject_Manager*				m_pObject_Manager = nullptr;
 	CComponent_Manager*				m_pComponent_Manager = nullptr;
+	CKey_Manager*					m_pKey_Manager = nullptr;
+	CUI_Manager*					m_pUI_Manager = nullptr;
 	CTimer_Manager*					m_pTimer_Manager = nullptr;
 	CPipeLine*						m_pPipeLine = nullptr;
-
 
 public:
 	static void Release_Engine();
