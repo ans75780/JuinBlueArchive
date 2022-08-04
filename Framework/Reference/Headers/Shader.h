@@ -9,11 +9,11 @@ class ENGINE_DLL CShader final : public CComponent
 public:
 	typedef struct tagPasses
 	{
-		ID3DX11EffectPass*			pPass = nullptr;		
+		ID3DX11EffectPass*			pPass = nullptr;
 		ID3D11InputLayout*			pInputLayout = nullptr;
 	}PASSDESC;
 
-	
+
 
 private:
 	CShader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

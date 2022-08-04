@@ -1,7 +1,13 @@
 #include "stdafx.h"
 #include "..\Public\Loader.h"
 #include "GameInstance.h"
+
+#pragma region GAMEOBJECT_TEST
 #include "BackGround.h"
+#include "TestObject_Test.h"
+#pragma endregion
+
+
 //#include "Camera_Free.h"
 //#include "Monster.h"
 //#include "Terrain.h"
@@ -81,16 +87,23 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 #pragma endregion
 
+#pragma region STATIC_TEXTURE
 
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중이비낟. "));
+
 	/* For.Prototype_Component_Texture_Default */
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_Default"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Default%d.jpg"), 2))))
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Default"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/Default%d.jpg"), 2))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Texture_AppIcon_Front */
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_AppIcon_Shiroko"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/AppIcon_Shiroko%d.png"), 1))))
+		return E_FAIL;
+
+#pragma endregion
+
 	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중이비낟. "));
-
-
 
 	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));	
 
@@ -134,6 +147,11 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	//if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Effect"),
 	//	CEffect::Create(m_pGraphic_Device))))
 	//	return E_FAIL;
+
+	/* For.Prototype_GameObject_TestObject 테스트테스트입니다   */
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_TestObject"),
+		CTestObject_Test::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 
 #pragma endregion

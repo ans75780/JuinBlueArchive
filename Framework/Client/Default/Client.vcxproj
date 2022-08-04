@@ -167,11 +167,21 @@
   <ItemGroup>
     <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
+    <ClInclude Include="..\Public\imconfig.h" />
+    <ClInclude Include="..\Public\imgui.h" />
+    <ClInclude Include="..\Public\ImguiMgr.h" />
+    <ClInclude Include="..\Public\imgui_impl_dx11.h" />
+    <ClInclude Include="..\Public\imgui_impl_win32.h" />
+    <ClInclude Include="..\Public\imgui_internal.h" />
+    <ClInclude Include="..\Public\imstb_rectpack.h" />
+    <ClInclude Include="..\Public\imstb_textedit.h" />
+    <ClInclude Include="..\Public\imstb_truetype.h" />
     <ClInclude Include="..\Public\Level_GamePlay.h" />
     <ClInclude Include="..\Public\Level_Loading.h" />
     <ClInclude Include="..\Public\Level_Logo.h" />
     <ClInclude Include="..\Public\Loader.h" />
     <ClInclude Include="..\Public\MainApp.h" />
+    <ClInclude Include="..\Public\TestObject_Test.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -180,12 +190,20 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\BackGround.cpp" />
+    <ClCompile Include="..\Private\imgui.cpp" />
+    <ClCompile Include="..\Private\ImguiMgr.cpp" />
+    <ClCompile Include="..\Private\imgui_demo.cpp" />
+    <ClCompile Include="..\Private\imgui_draw.cpp" />
+    <ClCompile Include="..\Private\imgui_impl_dx11.cpp" />
+    <ClCompile Include="..\Private\imgui_impl_win32.cpp" />
+    <ClCompile Include="..\Private\imgui_tables.cpp" />
+    <ClCompile Include="..\Private\imgui_widgets.cpp" />
     <ClCompile Include="..\Private\Level_GamePlay.cpp" />
     <ClCompile Include="..\Private\Level_Loading.cpp" />
     <ClCompile Include="..\Private\Level_Logo.cpp" />
     <ClCompile Include="..\Private\Loader.cpp" />
     <ClCompile Include="..\Private\MainApp.cpp" />
-    <ClCompile Include="..\Public\UI_Base.cpp" />
+    <ClCompile Include="..\Private\TestObject_Test.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -203,7 +221,7 @@
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxTex.hlsl" />
+    <FxCompile Include="..\..\ShaderFiles\Shader_VtxTex.hlsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

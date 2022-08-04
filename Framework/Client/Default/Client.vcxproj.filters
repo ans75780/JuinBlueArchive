@@ -35,6 +35,36 @@
       <Filter>02.GameObject\BackGround</Filter>
     </ClInclude>
     <ClInclude Include="TransformUtil.h" />
+    <ClInclude Include="..\Public\imgui_impl_dx11.h">
+      <Filter>96.Imgui\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imgui_impl_win32.h">
+      <Filter>96.Imgui\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imgui_internal.h">
+      <Filter>96.Imgui\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imstb_rectpack.h">
+      <Filter>96.Imgui\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imstb_textedit.h">
+      <Filter>96.Imgui\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imstb_truetype.h">
+      <Filter>96.Imgui\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imconfig.h">
+      <Filter>96.Imgui\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imgui.h">
+      <Filter>96.Imgui\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImguiMgr.h">
+      <Filter>96.Imgui\ImguiMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\TestObject_Test.h">
+      <Filter>02.GameObject\TestObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -62,7 +92,33 @@
       <Filter>02.GameObject\BackGround</Filter>
     </ClCompile>
     <ClCompile Include="TransformUtil.cpp" />
-    <ClCompile Include="..\Public\UI_Base.cpp" />
+    <ClCompile Include="..\Private\imgui.cpp">
+      <Filter>96.Imgui\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\imgui_demo.cpp">
+      <Filter>96.Imgui\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\imgui_draw.cpp">
+      <Filter>96.Imgui\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\imgui_impl_dx11.cpp">
+      <Filter>96.Imgui\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\imgui_impl_win32.cpp">
+      <Filter>96.Imgui\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\imgui_tables.cpp">
+      <Filter>96.Imgui\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImguiMgr.cpp">
+      <Filter>96.Imgui\ImguiMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\imgui_widgets.cpp">
+      <Filter>96.Imgui\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\TestObject_Test.cpp">
+      <Filter>02.GameObject\TestObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -118,6 +174,18 @@
     <Filter Include="02.GameObject\UI\UI_Layer">
       <UniqueIdentifier>{28d7a079-4260-48ca-8b39-ccb7ae33aebe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="96.Imgui">
+      <UniqueIdentifier>{fe57be3b-e3ed-4d21-a476-8a7c10f52e70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96.Imgui\Imgui">
+      <UniqueIdentifier>{0334be76-ee99-4c67-bba2-c5cd15a08873}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96.Imgui\ImguiMgr">
+      <UniqueIdentifier>{4f667c70-39ac-465b-972c-383f789b3b76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\TestObject">
+      <UniqueIdentifier>{1c1350ca-0e2e-48f1-bf52-2c9abd2d3196}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -130,7 +198,7 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxTex.hlsl">
+    <FxCompile Include="..\..\ShaderFiles\Shader_VtxTex.hlsl">
       <Filter>03.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

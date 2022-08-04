@@ -83,7 +83,7 @@
       <Filter>01.Utility\02.GameObject\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\UI_Manager.h">
-      <Filter>01.Utility\02.GameObject\UI\Manager</Filter>
+      <Filter>01.Utility\02.GameObject\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -150,11 +150,11 @@
     <ClCompile Include="..\private\Transform.cpp">
       <Filter>01.Utility\03.Component\02.Transform</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\UIBase.cpp">
+    <ClCompile Include="..\Private\UI_Manager.cpp">
       <Filter>01.Utility\02.GameObject\UI</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\UI_Manager.cpp">
-      <Filter>01.Utility\02.GameObject\UI\Manager</Filter>
+    <ClCompile Include="..\Private\UIBase.cpp">
+      <Filter>01.Utility\02.GameObject\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
