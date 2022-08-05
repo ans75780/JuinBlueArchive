@@ -47,6 +47,11 @@ void CMainApp::Tick(float fTimeDelta)
 		return;
 
 	m_pGameInstance->Tick_Engine(fTimeDelta);
+
+#if _DEBUG
+	CImguiMgr::Get_Instance()->Tick(fTimeDelta);
+#endif	//IMGUI 추가
+
 }
 
 HRESULT CMainApp::Render()
@@ -55,17 +60,17 @@ HRESULT CMainApp::Render()
 		nullptr == m_pRenderer)
 		return E_FAIL;
 
-	//m_pGameInstance->Clear_BackBuffer_View(_float4(0.f, 0.f, 1.f, 1.f));
+	m_pGameInstance->Clear_BackBuffer_View(m_pGameInstance->Get_BackBufferColor());
 
 	m_pGameInstance->Clear_DepthStencil_View();
 	
 	m_pRenderer->Draw_RenderGroup();
 
-	m_pGameInstance->Render_Engine();
-
 #if _DEBUG
 	CImguiMgr::Get_Instance()->Render();
 #endif	//IMGUI 추가
+
+	m_pGameInstance->Render_Engine();
 
 	m_pGameInstance->Present();
 

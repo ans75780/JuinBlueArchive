@@ -12,6 +12,7 @@ private:
 
 public:
 	class CComponent* Get_Component(const _tchar* pComponentTag, _uint iIndex);
+	list<class CGameObject*> Get_GameObjects(void) { return m_GameObjects; }
 
 
 public:

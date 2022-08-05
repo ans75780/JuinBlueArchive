@@ -30,8 +30,7 @@ private:
 	HRESULT Open_Level(LEVEL eLevelID);
 	HRESULT Ready_Prototype_Component();
 
-public:
-	
+
 
 public:
 	static CMainApp* Create();

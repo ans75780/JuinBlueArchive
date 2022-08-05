@@ -40,11 +40,16 @@ public: /* For.Input_Device */
 
 public: /* For.Level_Manager */
 	HRESULT Open_Level(_uint iLevelID, class CLevel* pLevel);
+	_uint				Get_CurrentLevelID(void);
+
 
 public: /* For.Object_Manager */
 	HRESULT Add_Prototype(const _tchar* pPrototypeTag, class CGameObject* pPrototype);
 	HRESULT Add_GameObject(_uint iLevelIndex, const _tchar* pLayerTag, const _tchar* pPrototypeTag, void* pArg = nullptr);
 	class CComponent* Get_Component(_uint iLevelIndex, const _tchar* pLayerTag, const _tchar* pComponentTag, _uint iIndex = 0);
+	list<class CGameObject*> Get_GameObjects(_uint iLevelIndex, const _tchar * pLayerTag);
+
+
 
 public: /* For.Component_Mananger */
 	HRESULT Add_Prototype(_uint iLevelIndex, const _tchar* pPrototypeTag, class CComponent* pPrototype);
@@ -67,6 +72,12 @@ private:
 	CComponent_Manager*				m_pComponent_Manager = nullptr;
 	CTimer_Manager*					m_pTimer_Manager = nullptr;
 
+public:
+	inline	_float4	Get_BackBufferColor() { return m_BackBuffer_Color; }
+	inline	void	Set_BackBufferColor(_float4 _color) { m_BackBuffer_Color = _color; }
+
+private:
+	_float4 m_BackBuffer_Color = { 0.f, 0.f, 1.f, 1.f};
 
 public:
 	static void Release_Engine();

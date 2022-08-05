@@ -15,10 +15,14 @@ public:
 	CLevel_Manager();
 	virtual ~CLevel_Manager() = default;
 
+
 public:
-	HRESULT Open_Level(_uint iLevelID, class CLevel* pLevel);
 	void Tick(_float fTimeDelta);
 	HRESULT Render();
+
+public:
+	HRESULT Open_Level(_uint iLevelID, class CLevel* pLevel);
+	_uint Get_CurrentLevelID(void) { return m_iCurrentLevelID; }
 
 private:
 	class CLevel*			m_pCurrentLevel = nullptr;
