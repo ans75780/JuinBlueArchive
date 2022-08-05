@@ -35,7 +35,7 @@
 
 //KEY : 누른 키 , State : 누른 키의 상태
 #define KEY(key, state) CGameInstance::Get_Instance()->Get_KeyState(KEY::key) == KEY_STATE::state
-#define MOUSEPOS CGameInstance::Get_Instance()->Get_MousePos();
+#define GETMOUSEPOS CGameInstance::Get_Instance()->Get_MousePos();
 
 
 #define BEGIN(NAMESPACE) namespace NAMESPACE { 

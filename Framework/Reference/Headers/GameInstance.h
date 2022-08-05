@@ -64,6 +64,10 @@ public: /* For.Timer_Manager */
 public : /*For. Key_Manager*/
 	KEY_STATE	Get_KeyState(KEY eKey);
 	const POINT&	Get_MousePos();
+
+public: /*For. UI_Maanger*/
+	HRESULT Add_UI(_uint iLevelIndex, class CUI* pUI, void* pArg = nullptr);
+
 public:
 	void Set_Transform(CPipeLine::TRANSFORMSTATE eState, _fmatrix TransformState);
 	_matrix Get_Transform(CPipeLine::TRANSFORMSTATE eState);

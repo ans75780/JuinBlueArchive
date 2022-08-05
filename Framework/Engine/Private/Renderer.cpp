@@ -46,7 +46,7 @@ HRESULT CRenderer::Draw_RenderGroup()
 		{
 			if (nullptr != pGameObject)
 				pGameObject->Render();
-
+			
 			Safe_Release(pGameObject);
 		}
 		m_RenderObjects[i].clear();

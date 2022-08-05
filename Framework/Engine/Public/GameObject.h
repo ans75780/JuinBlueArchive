@@ -57,7 +57,7 @@ private:
 	class CComponent* Find_Components(const _tchar* pComponentTag);
 
 public:
-	virtual CGameObject* Clone(void* pArg) = 0;
+	virtual CGameObject* Clone(void* pArg) { return nullptr; };
 	virtual void Free() override;
 };
 

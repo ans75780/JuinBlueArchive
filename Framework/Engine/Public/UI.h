@@ -6,7 +6,7 @@
 BEGIN(Engine)
 class ENGINE_DLL CUI abstract : public CGameObject
 {
-private:
+protected:
 	CUI(ID3D11Device*	pDevice, ID3D11DeviceContext *pDeviceCotext);
 	virtual ~CUI() = default;
 
@@ -57,6 +57,7 @@ protected:
 	_float3			m_fPos;
 	_float3			m_fSize;
 	CUI*			m_pParent = nullptr;
+	UI_TYPE	m_eUIType = UI_END;
 private:
 	/*
 		캔버스 레벨이란?
@@ -73,9 +74,14 @@ private:
 		UI의 터치를 우선적으로 받을 수 있도록 되어있다.
 	
 	*/
-	UI_TYPE	m_eUIType = UI_END;
 	_bool	m_bMouseOver;
 	_bool	m_bMouseClicked;
+
+//UI는 클론을 사용하지 않음
+private:
+	virtual CGameObject* Clone(void* pArg) { return nullptr; }
+
 };
+
 
 END

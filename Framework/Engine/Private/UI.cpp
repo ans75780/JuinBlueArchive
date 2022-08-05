@@ -68,7 +68,7 @@ HRESULT CUI::LoadUIImage(const _tchar * TextureTag, _uint iLevel)
 {
 
 	CGameInstance* instance = GET_INSTANCE(CGameInstance);
-	if (FAILED(__super::Add_Component(iLevel, TEXT("TextureTag"), TEXT("Com_Texture"), (CComponent**)&m_pTextureCom)))
+	if (FAILED(__super::Add_Component(iLevel, TextureTag, TEXT("Com_Texture"), (CComponent**)&m_pTextureCom)))
 		return E_FAIL;
 
 	RELEASE_INSTANCE(CGameInstance);

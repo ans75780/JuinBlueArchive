@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "..\Public\BackGround.h"
 #include "GameInstance.h"
+#include "UI.h"
 
 CBackGround::CBackGround(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CUI(pDevice, pContext)
@@ -11,8 +12,8 @@ CBackGround::CBackGround(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 HRESULT CBackGround::Initialize(void * pArg)
 {
 	CTransform::TRANSFORMDESC		TransformDesc;
-	TransformDesc.fSpeedPerSec = 5.f;
-	TransformDesc.fRotationPerSec = XMConvertToRadians(90.0f);
+	TransformDesc.fSpeedPerSec = 0.f;
+	TransformDesc.fRotationPerSec = XMConvertToRadians(0.0f);
 
 	if (FAILED(__super::Initialize(&TransformDesc)))
 		return E_FAIL;
@@ -25,7 +26,8 @@ HRESULT CBackGround::Initialize(void * pArg)
 	m_fX = g_iWinCX >> 1;
 	m_fY = g_iWinCY >> 1;
 
-	
+	m_eUIType = UI_BACKGROUND;
+
 	return S_OK;
 }
 
@@ -43,7 +45,7 @@ void CBackGround::Tick(_float fTimeDelta)
 
 void CBackGround::LateTick(_float fTimeDelta)
 {
-	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_PRIORITY, this);
+	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_PRIORITY, (CGameObject*)this);
 }
 
 HRESULT CBackGround::Render()
@@ -74,6 +76,8 @@ HRESULT CBackGround::SetUp_Components()
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"), TEXT("Com_VIBuffer"), (CComponent**)&m_pVIBufferCom)))
 		return E_FAIL;
 
+	LoadUIImage(L"UI_Default");
+
 	return S_OK;
 }
 
@@ -88,12 +92,11 @@ HRESULT CBackGround::SetUp_ShaderResource()
 		return E_FAIL;
 	if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", &XMMatrixIdentity(), sizeof(_float4x4))))
 		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
+	if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", &CUI::g_UIMatProj, sizeof(_float4x4))))
 		return E_FAIL;
 
 	if (FAILED(m_pTextureCom->Set_ShaderResourceView(m_pShaderCom, "g_DiffuseTexture", 0)))
 		return E_FAIL;
-
 
 	return S_OK;
 }
@@ -102,7 +105,7 @@ CBackGround * CBackGround::Create(ID3D11Device * pDevice, ID3D11DeviceContext * 
 {
 	CBackGround*		pInstance = new CBackGround(pDevice, pContext);
 
-	if (FAILED(pInstance->Initialize_Prototype()))
+	if (FAILED(pInstance->Initialize(nullptr)))
 	{
 		MSG_BOX("Failed to Created : CBackGround");		
 		Safe_Release(pInstance);
@@ -111,27 +114,10 @@ CBackGround * CBackGround::Create(ID3D11Device * pDevice, ID3D11DeviceContext * 
 	return pInstance; 
 }
 
-CGameObject * CBackGround::Clone(void * pArg)
-{
-	CBackGround*		pInstance = new CBackGround(*this);
-
-	if (FAILED(pInstance->Initialize(pArg)))
-	{
-		MSG_BOX("Failed to Cloned : CBackGround");
-		Safe_Release(pInstance);
-	}
-
-	return pInstance;
-}
-
 void CBackGround::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pShaderCom);
-	Safe_Release(m_pRendererCom);
 	Safe_Release(m_pVIBufferCom);
-
-
 }

@@ -80,6 +80,7 @@ void CUI_Canvas::LateTick(_float fTimeDelta)
 
 HRESULT CUI_Canvas::Render()
 {
+	/*
 	for (_uint i = 0; i <= UI_TYPE::UI_END;i++)
 	{
 		VECTOR_UI vecUI = m_vecUI[i];
@@ -90,10 +91,11 @@ HRESULT CUI_Canvas::Render()
 			UI->Render();
 		}
 	}
+	*/
 	return S_OK;
 }
 
 void CUI_Canvas::Check_UI(CUI * pUI)
 {
-
+	
 }

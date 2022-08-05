@@ -81,7 +81,7 @@ HRESULT CGameInstance::Tick_Engine(_float fTimeDelta)
 	m_pPipeLine->Tick();
 
 	m_pObject_Manager->LateTick(fTimeDelta);
-
+	m_pUI_Manager->LateTick(fTimeDelta);
 	return S_OK;
 }
 
@@ -244,6 +244,17 @@ KEY_STATE CGameInstance::Get_KeyState(KEY eKey)
 const POINT & CGameInstance::Get_MousePos()
 {
 	return m_pKey_Manager->Get_MousePos();
+}
+
+HRESULT CGameInstance::Add_UI(_uint iLevelIndex, CUI * pUI, void * pArg)
+{
+	if (nullptr == m_pUI_Manager)
+		return E_FAIL;
+
+	m_pUI_Manager->Add_UI(iLevelIndex, pUI, pArg);
+
+
+	return S_OK;
 }
 
 void CGameInstance::Set_Transform(CPipeLine::TRANSFORMSTATE eState, _fmatrix TransformState)

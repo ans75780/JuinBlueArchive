@@ -68,13 +68,16 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
 
 	/* For.Prototype_GameObject_BackGround */
+	if (FAILED(pGameInstance->Add_UI(LEVEL_LOGO,CBackGround::Create(m_pDevice, m_pContext))))
+	{
+		return E_FAIL;
+	}
+	/*
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BackGround"),
 		CBackGround::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-
-
-	
+		*/
 
 #pragma endregion
 
@@ -97,6 +100,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 	return S_OK;
 }
+
 
 HRESULT CLoader::Loading_ForGamePlayLevel()
 {
