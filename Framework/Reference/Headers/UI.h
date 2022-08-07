@@ -6,6 +6,7 @@
 BEGIN(Engine)
 class ENGINE_DLL CUI abstract : public CGameObject
 {
+	friend	class CUI_Canvas;
 protected:
 	CUI(ID3D11Device*	pDevice, ID3D11DeviceContext *pDeviceCotext);
 	virtual ~CUI() = default;
@@ -14,7 +15,7 @@ public:
 	static _float4x4		g_UIMatProj;
 
 public:
-	virtual HRESULT Initialize(void *arg);
+	virtual HRESULT Initialize(void *arg = nullptr);
 	virtual void Tick(_float fTimeDelta);
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
@@ -29,36 +30,38 @@ public:
 
 public:
 	UI_TYPE			Get_UIType() { return m_eUIType; }
-
+	void			Set_UIType(UI_TYPE _eType) { m_eUIType = _eType; }
 public:
 	const _tchar*	Get_UIName() { return m_pUIName; }
-
+	
 public:
 	virtual HRESULT	LoadUIImage(const _tchar* TextureTag, _uint iLevel = 0);
 
-public:
-	virtual void	OnMouseOver(void* pArg);
-	virtual void	OnMouseOut(void* pArg);
 
 public:
-	virtual void	OnLButtonDown(void* pArg);
-	virtual void	OnLButtonUp(void* pArg);
-	virtual void	OnLButtonClicked(void* pArg);
+	virtual void	OnLButtonDown();
+	virtual void	OnLButtonUp();
+	virtual void	OnLButtonClicked();
 
+
+protected:
+	virtual HRESULT	SetUp_ShaderResource();
 protected:
 	virtual void	OnEvent(_uint iEventNum);
 
 protected:
-	CTexture*		m_pTextureCom = nullptr;
-	CRenderer*		m_pRendererCom = nullptr;
-	
+	CTexture*				m_pTextureCom = nullptr;
+	CRenderer*				m_pRendererCom = nullptr;
+	CShader*				m_pShaderCom = nullptr;
+	CVIBuffer_Rect*			m_pVIBufferCom = nullptr;
+
 protected:
 	_tchar			m_pUIName[MAX_PATH] = L"";
 	_float3			m_fPos;
 	_float3			m_fSize;
 	CUI*			m_pParent = nullptr;
-	UI_TYPE	m_eUIType = UI_END;
-private:
+
+protected:
 	/*
 		캔버스 레벨이란?
 		예를 들어서 옵션 키 등을 눌러서 팝업 창이 떴다고 치자.
@@ -72,12 +75,15 @@ private:
 
 		그걸 사전에 방지하기 위해, 그려지는 캔버스의 우선 순위를 둬서 최대한 앞에서 Enable되어있는
 		UI의 터치를 우선적으로 받을 수 있도록 되어있다.
-	
 	*/
+	UI_TYPE	m_eUIType = UI_END;
 	_bool	m_bMouseOver;
 	_bool	m_bMouseClicked;
+//UI는 클론을 사용하지 않지만, CGameOjbect를 상속받기에 외부에서 못쓰도록 막아놓았음. 쓰지 말도록.
 
-//UI는 클론을 사용하지 않음
+//LateTick이 끝나고 자동으로 매트릭스 계산 UI는 사실상 트랜스폼을 건드리지 않아도 됨
+private:
+	void	Compute_Transform();
 private:
 	virtual CGameObject* Clone(void* pArg) { return nullptr; }
 

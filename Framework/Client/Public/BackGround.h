@@ -25,13 +25,10 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
-private:
-	CShader*				m_pShaderCom = nullptr;
-	CVIBuffer_Rect*			m_pVIBufferCom = nullptr;
-
-private:
-	_float			m_fX, m_fY, m_fSizeX, m_fSizeY;
-	_float4x4		m_ProjMatrix;
+public:
+	virtual void	OnLButtonDown();
+	virtual void	OnLButtonUp();
+	virtual void	OnLButtonClicked();
 
 private:
 	HRESULT SetUp_Components();

@@ -34,8 +34,17 @@
 #define MSG_BOX(MESSAGE) MessageBox(0, TEXT(MESSAGE), TEXT("System Error"), MB_OK)
 
 //KEY : 누른 키 , State : 누른 키의 상태
+#ifdef ENGINE_EXPORTS
+#define KEY(key, state) CKey_Manager::Get_Instance()->Get_KeyState(KEY::key) == KEY_STATE::state
+#else
 #define KEY(key, state) CGameInstance::Get_Instance()->Get_KeyState(KEY::key) == KEY_STATE::state
+#endif
+
+#ifdef ENGINE_EXPORTS
+#define GETMOUSEPOS CKey_Manager::Get_Instance()->Get_MousePos();
+#else
 #define GETMOUSEPOS CGameInstance::Get_Instance()->Get_MousePos();
+#endif
 
 
 #define BEGIN(NAMESPACE) namespace NAMESPACE { 

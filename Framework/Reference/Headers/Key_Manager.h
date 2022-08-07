@@ -38,16 +38,16 @@ enum class KEY_STATE {
 
 class CKey_Manager final : public CBase
 {
-	DECLARE_SINGLETON(CKey_Manager);
+	DECLARE_SINGLETON(CKey_Manager)
 private:
 	CKey_Manager();
-	~CKey_Manager() = default;
+	virtual ~CKey_Manager() = default;
 
 public:
 	KEY_STATE				Get_KeyState(KEY _key);
 
 public:
-	HRESULT		Initialize(HWND hWnd);
+	HRESULT		Initialize(const GRAPHICDESC& desc);
 	void		Tick();
 	const POINT&	Get_MousePos() { return m_PtMouse; }
 private:
@@ -59,6 +59,7 @@ private:
 	HWND				m_hWnd = 0;
 	vector<tKeyInfo>	m_vecKey;
 	POINT				m_PtMouse;
+	POINT				m_PtMouseOffset;
 };
 
 END

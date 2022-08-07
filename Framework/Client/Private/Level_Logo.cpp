@@ -4,7 +4,6 @@
 #include "LEvel_Loading.h"
 
 
-
 CLevel_Logo::CLevel_Logo(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -60,6 +59,7 @@ HRESULT CLevel_Logo::Ready_Layer_BackGround(const _tchar * pLayerTag)
 	/* For.BackGround */
 	//if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOGO, pLayerTag, TEXT("Prototype_GameObject_BackGround"))))
 	//	return E_FAIL;
+
 
 	Safe_Release(pGameInstance);
 

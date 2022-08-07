@@ -40,6 +40,9 @@
     <ClInclude Include="..\Public\Camera_Free.h">
       <Filter>02.GameObject\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Transform_Utils.h">
+      <Filter>97.Utils\Transform</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -71,6 +74,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Camera_Free.cpp">
       <Filter>02.GameObject\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Transform_Utils.cpp">
+      <Filter>97.Utils\Transform</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -120,6 +126,12 @@
     </Filter>
     <Filter Include="02.GameObject\Camera">
       <UniqueIdentifier>{bc09692a-cf30-483f-b2c5-106cf1ce0bbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.Utils">
+      <UniqueIdentifier>{9c4f0ab4-08f5-4de5-b7ff-d774b3e0b628}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.Utils\Transform">
+      <UniqueIdentifier>{e5b731a0-0915-4e43-bd4b-26c6abb5df06}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

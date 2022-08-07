@@ -1,8 +1,8 @@
 #include "..\Public\UI_Canvas.h"
 #include "GameInstance.h"
 #include "UI.h"
-
-
+#include "Key_Manager.h"
+#include "Engine_Macro.h"
 
 CUI_Canvas::CUI_Canvas(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: m_pDevice(pDevice), m_pContext(pContext)
@@ -61,12 +61,14 @@ void CUI_Canvas::Tick(_float fTimeDelta)
 			if (!UI->Get_Enable())
 				continue;
 			UI->Tick(fTimeDelta);
+			Check_UI(UI);
 		}
 	}
 }
 
 void CUI_Canvas::LateTick(_float fTimeDelta)
 {
+	m_bEventCurFrame = false;
 	for (auto vecUI : m_vecUI)
 	{
 		for (auto UI : vecUI)
@@ -74,28 +76,44 @@ void CUI_Canvas::LateTick(_float fTimeDelta)
 			if (!UI->Get_Enable())
 				continue;
 			UI->LateTick(fTimeDelta);
+			if (m_bEventCurFrame == false)
+				UI->Compute_Transform();
 		}
 	}
 }
 
 HRESULT CUI_Canvas::Render()
 {
-	/*
-	for (_uint i = 0; i <= UI_TYPE::UI_END;i++)
-	{
-		VECTOR_UI vecUI = m_vecUI[i];
-		for (auto UI : vecUI)
-		{
-			if (!UI->Get_Enable())
-				continue;
-			UI->Render();
-		}
-	}
-	*/
+	
 	return S_OK;
 }
 
 void CUI_Canvas::Check_UI(CUI * pUI)
 {
-	
+	POINT pt = GETMOUSEPOS;
+	RECT rect;
+	rect.bottom = (LONG)(pUI->Get_Pos().y + (pUI->Get_Size().y  * 0.5f));
+	rect.left= (LONG)(pUI->Get_Pos().x - (pUI->Get_Size().x  * 0.5f));
+	rect.right = (LONG)(pUI->Get_Pos().x + (pUI->Get_Size().x  * 0.5f));
+	rect.top = (LONG)(pUI->Get_Pos().y - (pUI->Get_Size().y  * 0.5f));
+
+	if (KEY(LBUTTON, TAP))
+	{
+		if (PtInRect(&rect, pt))
+		{
+			pUI->m_bMouseClicked = true;
+			pUI->OnLButtonDown();
+			m_bEventCurFrame = true;
+		}
+	}
+	else if (KEY(LBUTTON, AWAY))
+	{
+		m_bEventCurFrame = true;
+		pUI->m_bMouseClicked = false;
+		pUI->OnLButtonUp();
+		if (PtInRect(&rect, pt))
+		{
+			pUI->OnLButtonClicked();
+		}
+	}
 }

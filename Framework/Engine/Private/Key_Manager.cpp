@@ -1,5 +1,7 @@
 #include "..\Public\Key_Manager.h"
 #include "GameInstance.h"
+
+
 IMPLEMENT_SINGLETON(CKey_Manager);
 
 _uint g_Arr[(_uint)KEY::LAST] = {
@@ -36,13 +38,16 @@ KEY_STATE CKey_Manager::Get_KeyState(KEY _key)
 	return m_vecKey[(int)_key].eState;
 }
 
-HRESULT CKey_Manager::Initialize(HWND hWnd)
-{
-	m_hWnd = hWnd;
-	m_vecKey.reserve((_uint)KEY::LAST);
 
+HRESULT CKey_Manager::Initialize(const GRAPHICDESC & desc)
+{
+	m_hWnd = desc.hWnd;
+	m_vecKey.reserve((_uint)KEY::LAST);
 	for (_uint i = 0; i < (_uint)KEY::LAST; ++i)
 		m_vecKey.push_back(tKeyInfo{ KEY_STATE::NONE, false });
+
+	m_PtMouseOffset.x = (LONG)((_float)desc.iWinCX * 0.5f);
+	m_PtMouseOffset.y = (LONG)((_float)desc.iWinCY * 0.5f);
 
 	return S_OK;
 }
@@ -51,6 +56,8 @@ void CKey_Manager::Tick()
 {
 	GetCursorPos(&m_PtMouse);
 	ScreenToClient(m_hWnd, &m_PtMouse);
+	m_PtMouse.x -= m_PtMouseOffset.x;
+	m_PtMouse.y -= m_PtMouseOffset.y;
 
 	if (m_hWnd == GetFocus())
 	{

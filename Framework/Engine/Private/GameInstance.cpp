@@ -49,7 +49,7 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, cons
 		return E_FAIL;
 
 	/* 키매니저 예약. */
-	if (FAILED(m_pKey_Manager->Initialize(GraphicDesc.hWnd)))
+	if (FAILED(m_pKey_Manager->Initialize(GraphicDesc)))
 		return E_FAIL;
 
 	if (FAILED(m_pUI_Manager->Setup_Manager(*ppDeviceOut, *ppDeviceContextOut, GraphicDesc, iNumLevels)))
