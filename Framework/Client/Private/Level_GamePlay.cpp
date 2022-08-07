@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "..\Public\Level_GamePlay.h"
 #include "GameInstance.h"
+#include "GameObject.h"
 
 
 
@@ -85,9 +86,28 @@ HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const _tchar * pLayerTag)
 	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
 	Safe_AddRef(pGameInstance);
 
-	/* For.Terrain */
-	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Prototype_GameObject_TestObject"))))
+	CGameObject::OBJ_DESC tempDesc;
+
+	lstrcpy(tempDesc.sz_Name, TEXT("nomuhyun"));
+	tempDesc.fPos = { 10.f, 10.f, 10.f, 0.f };
+
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Prototype_GameObject_TestObject"),(void*)&tempDesc)))
 		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Prototype_GameObject_TestObject"), (void*)&tempDesc)))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Prototype_GameObject_TestObject"), (void*)&tempDesc)))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Prototype_GameObject_TestObject"), (void*)&tempDesc)))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Prototype_GameObject_TestObject"), (void*)&tempDesc)))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Prototype_GameObject_TestObject"), (void*)&tempDesc)))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Prototype_GameObject_TestObject"), (void*)&tempDesc)))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Prototype_GameObject_TestObject"), (void*)&tempDesc)))
+		return E_FAIL;
+
 
 	Safe_Release(pGameInstance);
 

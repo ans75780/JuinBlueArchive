@@ -27,6 +27,8 @@ private:
 	void	HelloJusin_Tap_Main(void);
 	void	HelloJusin_Tap_Tool(void);
 
+
+
 private:
 	CGameInstance*         m_pGameInstance = nullptr;
 	ID3D11Device*         m_pDevice = nullptr;

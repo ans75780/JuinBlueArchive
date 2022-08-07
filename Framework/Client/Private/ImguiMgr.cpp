@@ -4,6 +4,7 @@
 #include "imgui_impl_dx11.h"
 #include "imgui_impl_win32.h"
 #include "GameInstance.h"
+#include "GameObject.h"
 #include "MainApp.h"
 
 IMPLEMENT_SINGLETON(CImguiMgr)
@@ -42,14 +43,41 @@ HRESULT CImguiMgr::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pConte
 	return S_OK;
 }
 
+//wchar_t 에서 char 로의 형변환 함수
+char* ConvertWCtoC(const wchar_t* str)
+{
+	//반환할 char* 변수 선언
+	char* pStr;
+	//입력받은 wchar_t 변수의 길이를 구함
+	int strSize = WideCharToMultiByte(CP_ACP, 0, str, -1, NULL, 0, NULL, NULL);
+	//char* 메모리 할당
+	pStr = new char[strSize];
+	//형 변환
+	WideCharToMultiByte(CP_ACP, 0, str, -1, pStr, strSize, 0, 0);
+	return pStr;
+}
+
+//char 에서 wchar_t 로의 형변환 함수
+wchar_t* ConvertCtoWC(const char* str)
+{
+	//wchar_t형 변수 선언
+	wchar_t* pStr;
+	//멀티 바이트 크기 계산 길이 반환
+	int strSize = MultiByteToWideChar(CP_ACP, 0, str, -1, NULL, NULL);
+	//wchar_t 메모리 할당
+	pStr = new WCHAR[strSize];
+	//형 변환
+	MultiByteToWideChar(CP_ACP, 0, str, (int)strlen(str) + 1, pStr, strSize);
+	return pStr;
+}
+
+
 void CImguiMgr::Tick(float fTimeDelta)
 {
 	if (m_pGameInstance->Get_DIKeyState(DIK_F1))
 		show_mainBar = true;
 	if (m_pGameInstance->Get_DIKeyState(DIK_F2))
 		show_mainBar = false;
-
-	
 }
 
 HRESULT CImguiMgr::Render(void)
@@ -139,7 +167,7 @@ void CImguiMgr::HelloJusin_View(void)
 
 		if (ImGui::BeginTabItem("Main"))
 		{
-			HelloJusin_Tap_Main();
+			HelloJusin_Tap_Main();					//HelloJusin_Tap_Main
 
 			ImGui::EndTabItem();
 		}
@@ -155,7 +183,7 @@ void CImguiMgr::HelloJusin_View(void)
 	ImGui::End();
 }
 
-void CImguiMgr::HelloJusin_Tap_Main(void)
+void CImguiMgr::HelloJusin_Tap_Main(void)			//HelloJusin_Tap_Main
 {
 	static float f = 0.0f;
 	static int counter = 0;
@@ -180,15 +208,36 @@ void CImguiMgr::HelloJusin_Tap_Tool(void)
 {
 	if (ImGui::CollapsingHeader("Current_GameObject"))
 	{
+		list<CGameObject*> pGameObject_List = m_pGameInstance->Get_GameObjects(m_pGameInstance->Get_CurrentLevelID(), TEXT("Layer_BackGround"));
 
+		if (pGameObject_List.empty())
+			return;
 
+		int count = 1;
 
-		if (ImGui::TreeNode("ObjectName"))
+		char tempName[MAX_PATH] = {};
+		char tempNum[32] = {};
+
+		for (auto iter : pGameObject_List)
 		{
+			strcpy_s(tempName, MAX_PATH, ConvertWCtoC(iter->Get_OBJ_DESC().sz_Name));
+			_itoa_s(count, tempNum, 32, 10);
+			strcat_s(tempName, MAX_PATH, "##");
+			strcat_s(tempName, MAX_PATH, tempNum);
 
+			if (ImGui::TreeNode(tempName))
+			{
+				ImGui::Text("number : %d", count);
 
-			ImGui::TreePop();
+				ImGui::TreePop();
+			}
+			count++;
+
 		}
+
+
+
+
 	}
 
 

@@ -6,6 +6,14 @@ BEGIN(Engine)
 
 class ENGINE_DLL CGameObject abstract : public CBase
 {
+public:
+	typedef struct GameObjcetDesc		
+	{
+		_tchar		sz_Name[MAX_PATH];
+		_float4		fPos;
+	
+	}OBJ_DESC;
+
 protected:
 	CGameObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);	
 	CGameObject(const CGameObject& Prototype);
@@ -17,6 +25,7 @@ public:
 	_float Get_CamDistance() {
 		return m_fCamDistance;
 	}
+	OBJ_DESC Get_OBJ_DESC() { return m_desc; }
 
 public:
 	virtual HRESULT Initialize_Prototype();
@@ -40,6 +49,10 @@ protected:
 	typedef map<const _tchar*, class CComponent*>	COMPONENTS;
 
 	static const _tchar*		m_pTransformTag;
+
+protected:
+	OBJ_DESC	m_desc;
+
 
 protected:
 	HRESULT Add_Component(_uint iLevelIndex, const _tchar* pPrototypeTag, const _tchar* pComponentTag, class CComponent** ppOut, void* pArg = nullptr);

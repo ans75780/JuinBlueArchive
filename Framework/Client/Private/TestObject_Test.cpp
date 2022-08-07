@@ -27,6 +27,16 @@ HRESULT CTestObject_Test::Initialize(void * pArg)
 	if (FAILED(__super::Initialize(&TransformDesc)))
 		return E_FAIL;
 
+	if (pArg)
+	{
+		CGameObject::OBJ_DESC* tempDesc = (CGameObject::OBJ_DESC*)pArg;
+
+		lstrcpy(m_desc.sz_Name,tempDesc->sz_Name);
+		
+		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, 
+			XMVectorSet(tempDesc->fPos.x, tempDesc->fPos.y, tempDesc->fPos.z, tempDesc->fPos.w));
+	}
+
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
