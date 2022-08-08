@@ -16,6 +16,8 @@
 #include <assimp/scene.h>
 #include <assimp/Importer.hpp>
 
+#include <DirectXCollision.h>
+
 #include <d3dcompiler.h>
 
 #include <typeinfo.h>
@@ -55,7 +57,7 @@ using namespace DirectX;
 //#endif
 //
 //#endif	//_DEBUG
-#include <tchar.h>
+//#include <tchar.h>
 //imgui
 
 using namespace Engine;

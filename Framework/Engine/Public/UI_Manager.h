@@ -15,7 +15,7 @@ private:
 	virtual ~CUI_Manager() = default;
 	
 public:
-	HRESULT	Setup_Manager(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const GRAPHICDESC& GraphicDesc, _uint iNumLevels);
+	HRESULT	Setup_Manager(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, const GRAPHICDESC & GraphicDesc, _uint iNumLevels);
 	virtual void Free() override;
 
 public:

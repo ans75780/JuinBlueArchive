@@ -120,12 +120,12 @@ HRESULT CMainApp::Ready_Prototype_Component()
 
 	/* For.Prototype_Component_Texture_Default */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("UI_Default"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Default%d.jpg"), 2))))
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/Default%d.jpg"), 2))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_Default */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("UI_Background"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/BlueArchive_Background.png"), 1))))
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/AppIcon_Shiroko%d.png"), 1))))
 		return E_FAIL;
 	//Safe_AddRef(m_pRenderer);
 

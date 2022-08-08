@@ -9,9 +9,14 @@
 #include <Effects11/d3dx11effect.h>
 #include <DirectXTK/DDSTextureLoader.h>
 #include <DirectXTK/WICTextureLoader.h>
-#include <DirectXTK/SpriteBatch.h>//밑의 이미지를 출력시켜주기 위한 사각 버퍼
-#include <DirectXTK/SpriteFont.h>//폰트를 이미지로 만들어주는 녀석
+#include <DirectXTK/SpriteBatch.h>
+#include <DirectXTK/SpriteFont.h>
+#include <DirectXTK/ScreenGrab.h>
 
+//#include <assimp/scene.h>
+//#include <assimp/Importer.hpp>
+
+#include <DirectXCollision.h>
 
 #include <d3dcompiler.h>
 
@@ -52,7 +57,7 @@ using namespace DirectX;
 //#endif
 //
 //#endif	//_DEBUG
-#include <tchar.h>
+//#include <tchar.h>
 //imgui
 
 using namespace Engine;

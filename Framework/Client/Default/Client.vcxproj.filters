@@ -34,7 +34,6 @@
     <ClInclude Include="..\public\BackGround.h">
       <Filter>02.GameObject\BackGround</Filter>
     </ClInclude>
-    <ClInclude Include="TransformUtil.h" />
     <ClInclude Include="..\Public\imgui_impl_dx11.h">
       <Filter>96.Imgui\Imgui</Filter>
     </ClInclude>
@@ -65,6 +64,9 @@
     <ClInclude Include="..\Public\TestObject_Test.h">
       <Filter>02.GameObject\TestObject</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Camera_Free.h" />
+    <ClInclude Include="..\Public\Terrain.h" />
+    <ClInclude Include="..\Public\Transform_Utils.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -91,7 +93,6 @@
     <ClCompile Include="..\private\BackGround.cpp">
       <Filter>02.GameObject\BackGround</Filter>
     </ClCompile>
-    <ClCompile Include="TransformUtil.cpp" />
     <ClCompile Include="..\Private\imgui.cpp">
       <Filter>96.Imgui\Imgui</Filter>
     </ClCompile>
@@ -119,6 +120,9 @@
     <ClCompile Include="..\Private\TestObject_Test.cpp">
       <Filter>02.GameObject\TestObject</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Terrain.cpp" />
+    <ClCompile Include="..\Private\Transform_Utils.cpp" />
+    <ClCompile Include="..\Private\Camera_Free.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -198,10 +202,10 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="..\..\ShaderFiles\Shader_VtxTex.hlsl">
+    <FxCompile Include="..\..\ShaderFiles\Shader_VtxNorTex.hlsl">
       <Filter>03.ShaderFiles</Filter>
     </FxCompile>
-    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl">
+    <FxCompile Include="..\..\ShaderFiles\Shader_VtxTex.hlsl">
       <Filter>03.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>
