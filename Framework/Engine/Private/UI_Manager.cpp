@@ -66,7 +66,7 @@ void CUI_Manager::DisableCanvas(_uint iLevelIndex)
 
 void CUI_Manager::Free()
 {
-	for (auto pCanvas : m_vecCanvas)
+	for (auto& pCanvas : m_vecCanvas)
 	{
 		Safe_Release(pCanvas);
 	}

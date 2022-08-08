@@ -94,11 +94,11 @@
     <ClInclude Include="..\Public\UI_Canvas.h">
       <Filter>01.Utility\02.GameObject\UI\Canvas</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\UI_Manager.h">
-      <Filter>01.Utility\02.GameObject\UI</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CustomFont.h">
       <Filter>01.Utility\Font</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_Manager.h">
+      <Filter>01.Utility\02.GameObject\UI\Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

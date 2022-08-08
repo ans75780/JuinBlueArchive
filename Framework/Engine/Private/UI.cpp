@@ -28,10 +28,7 @@ HRESULT CUI::Initialize(void * arg)
 		if (FAILED(__super::Initialize((&TransformDesc))))
 			return E_FAIL;
 	}
-	//UI들은 기본적으로 렌더러를 달고 생성된다.
-	m_Components.emplace(L"Com_Renderer", m_pRendererCom);
-	Safe_AddRef(m_pRendererCom);
-	
+	//UI들은 기본적으로 렌더러를 달고 생성된다.	
 	/* For.Com_Renderer */
 	if (FAILED(__super::Add_Component(0, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
 		return E_FAIL;
@@ -66,8 +63,9 @@ HRESULT CUI::Render()
 void CUI::Free()
 {
 	__super::Free();
-	Safe_Release(m_pRendererCom);
+	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pShaderCom);
+	Safe_Release(m_pRendererCom);
 	Safe_Release(m_pVIBufferCom);
 }
 

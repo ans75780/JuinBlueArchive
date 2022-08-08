@@ -26,9 +26,10 @@ CUI_Canvas * CUI_Canvas::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pC
 
 void CUI_Canvas::Free()
 {
-	for (auto vecUI : m_vecUI)
+	
+	for (auto& vecUI : m_vecUI)
 	{
-		for (auto UI : vecUI)
+		for (auto& UI : vecUI)
 		{
 			Safe_Release(UI);
 		}
@@ -55,9 +56,9 @@ HRESULT CUI_Canvas::Initialize()
 void CUI_Canvas::Tick(_float fTimeDelta)
 {
 	m_bEventCurFrame = false;
-	for (auto vecUI : m_vecUI)
+	for (auto& vecUI : m_vecUI)
 	{
-		for (auto UI : vecUI)
+		for (auto& UI : vecUI)
 		{
 			if (!UI->Get_Enable())
 				continue;
@@ -72,9 +73,9 @@ void CUI_Canvas::Tick(_float fTimeDelta)
 
 void CUI_Canvas::LateTick(_float fTimeDelta)
 {
-	for (auto vecUI : m_vecUI)
+	for (auto& vecUI : m_vecUI)
 	{
-		for (auto UI : vecUI)
+		for (auto& UI : vecUI)
 		{
 			if (!UI->Get_Enable())
 				continue;

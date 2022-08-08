@@ -10,9 +10,10 @@ CBackGround::CBackGround(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 
 HRESULT CBackGround::Initialize(void * pArg)
 {
+	
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
-
+		
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
@@ -30,7 +31,6 @@ HRESULT CBackGround::Initialize(void * pArg)
 void CBackGround::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-
 }
 
 void CBackGround::LateTick(_float fTimeDelta)
@@ -42,6 +42,7 @@ void CBackGround::LateTick(_float fTimeDelta)
 
 HRESULT CBackGround::Render()
 {
+	
 	if (nullptr == m_pShaderCom ||
 		nullptr == m_pVIBufferCom)
 		return E_FAIL;
@@ -101,5 +102,4 @@ CBackGround * CBackGround::Create(ID3D11Device * pDevice, ID3D11DeviceContext * 
 void CBackGround::Free()
 {
 	__super::Free();
-
 }

@@ -75,6 +75,8 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
 	
 	/* For.Prototype_GameObject_BackGround */
+	
+	
 	CUI* pUI = CBackGround::Create(m_pDevice, m_pContext);
 	pUI->LoadUIImage(L"UI_Background");
 	pUI->Set_UIType(UI_TYPE::UI_BACKGROUND);
@@ -83,20 +85,19 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	{
 		return E_FAIL;
 	}
-	pUI = CBackGround::Create(m_pDevice, m_pContext);
-	pUI->LoadUIImage(L"UI_Default");
-	pUI->Set_UIType(UI_TYPE::UI_BUTTTON);
-	if (FAILED(pGameInstance->Add_UI(LEVEL_LOGO, pUI)))
+	
+	CUI* pButton = CBackGround::Create(m_pDevice, m_pContext);
+	pButton->LoadUIImage(L"UI_Default");
+	pButton->Set_UIType(UI_TYPE::UI_BUTTTON);
+	if (FAILED(pGameInstance->Add_UI(LEVEL_LOGO, pButton)))
 	{
 		return E_FAIL;
 	}
-
 	/*
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BackGround"),
 		CBackGround::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
-
-		*/
+	*/
 
 #pragma endregion
 
