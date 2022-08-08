@@ -6,6 +6,9 @@
 #include "Object_Manager.h"
 #include "Component_Manager.h"
 #include "Timer_Manager.h"
+#include "Key_Manager.h"
+#include "UI_Manager.h"
+#include "PipeLine.h"
 
 
 /* 1. 게임내에 필요한 객체(매니져등)들을 모아서 보관한다. */
@@ -43,6 +46,7 @@ public: /* For.Level_Manager */
 	_uint				Get_CurrentLevelID(void);
 
 
+
 public: /* For.Object_Manager */
 	HRESULT Add_Prototype(const _tchar* pPrototypeTag, class CGameObject* pPrototype);
 	HRESULT Add_GameObject(_uint iLevelIndex, const _tchar* pLayerTag, const _tchar* pPrototypeTag, void* pArg = nullptr);
@@ -60,8 +64,20 @@ public: /* For.Timer_Manager */
 	HRESULT Add_Timer(const _tchar* pTimerTag);
 	_float Compute_Timer(const _tchar* pTimerTag);
 
-public: /* For.Picking */
-	_bool Picking(class CVIBuffer* pVIBuffer, class CTransform* pTransform, _float3* pOut);
+
+public : /*For. Key_Manager*/
+	KEY_STATE	Get_KeyState(KEY eKey);
+	const POINT&	Get_MousePos();
+
+public: /*For. UI_Maanger*/
+	HRESULT Add_UI(_uint iLevelIndex, class CUI* pUI, void* pArg = nullptr);
+
+public:
+	void Set_Transform(CPipeLine::TRANSFORMSTATE eState, _fmatrix TransformState);
+	_matrix Get_Transform(CPipeLine::TRANSFORMSTATE eState);
+	const _float4x4* Get_Transform_float4x4(CPipeLine::TRANSFORMSTATE eState);
+	const _float4x4* Get_Transform_TP(CPipeLine::TRANSFORMSTATE eState);
+
 
 
 private:
@@ -70,6 +86,8 @@ private:
 	CLevel_Manager*					m_pLevel_Manager = nullptr;
 	CObject_Manager*				m_pObject_Manager = nullptr;
 	CComponent_Manager*				m_pComponent_Manager = nullptr;
+	CKey_Manager*					m_pKey_Manager = nullptr;
+	CUI_Manager*					m_pUI_Manager = nullptr;
 	CTimer_Manager*					m_pTimer_Manager = nullptr;
 
 public:
@@ -78,6 +96,7 @@ public:
 
 private:
 	_float4 m_BackBuffer_Color = { 0.f, 0.f, 1.f, 1.f};
+	CPipeLine*						m_pPipeLine = nullptr;
 
 public:
 	static void Release_Engine();

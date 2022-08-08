@@ -10,15 +10,20 @@ CGameInstance::CGameInstance()
 	, m_pObject_Manager(CObject_Manager::Get_Instance())
 	, m_pComponent_Manager(CComponent_Manager::Get_Instance())
 	, m_pTimer_Manager(CTimer_Manager::Get_Instance())
+	, m_pPipeLine(CPipeLine::Get_Instance())
+	, m_pKey_Manager(CKey_Manager::Get_Instance())
+	, m_pUI_Manager(CUI_Manager::Get_Instance())
 	
 {	
-
+	Safe_AddRef(m_pPipeLine);
 	Safe_AddRef(m_pTimer_Manager);
 	Safe_AddRef(m_pComponent_Manager);
 	Safe_AddRef(m_pObject_Manager);
 	Safe_AddRef(m_pLevel_Manager);
 	Safe_AddRef(m_pInput_Device);
 	Safe_AddRef(m_pGraphic_Device);
+	Safe_AddRef(m_pKey_Manager);
+	Safe_AddRef(m_pUI_Manager);
 }
 
 HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, const GRAPHICDESC& GraphicDesc, ID3D11Device** ppDeviceOut, ID3D11DeviceContext** ppDeviceContextOut)
@@ -43,25 +48,40 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, cons
 	if (FAILED(m_pComponent_Manager->Reserve_Container(iNumLevels)))
 		return E_FAIL;
 
+	/* 키매니저 예약. */
+	if (FAILED(m_pKey_Manager->Initialize(GraphicDesc)))
+		return E_FAIL;
+
+	if (FAILED(m_pUI_Manager->Setup_Manager(*ppDeviceOut, *ppDeviceContextOut, GraphicDesc, iNumLevels)))
+		return E_FAIL;
+
 	return S_OK;	
 }
 
 HRESULT CGameInstance::Tick_Engine(_float fTimeDelta)
 {
-	if (nullptr == m_pLevel_Manager || 
-		nullptr == m_pInput_Device)	
+	if (nullptr == m_pLevel_Manager ||
+		nullptr == m_pInput_Device ||
+		nullptr == m_pPipeLine || 
+		nullptr == m_pObject_Manager ||
+		nullptr == m_pKey_Manager ||
+		nullptr == m_pUI_Manager)
 		return E_FAIL;
 
 	m_pInput_Device->SetUp_DeviceState();
 
 	m_pLevel_Manager->Tick(fTimeDelta);	
 
+	m_pKey_Manager->Tick();//UI보다 먼저돌아야함.
+
 	m_pObject_Manager->Tick(fTimeDelta);
 
+	m_pUI_Manager->Tick(fTimeDelta);
 
+	m_pPipeLine->Tick();
 
 	m_pObject_Manager->LateTick(fTimeDelta);
-
+	m_pUI_Manager->LateTick(fTimeDelta);
 	return S_OK;
 }
 
@@ -73,18 +93,19 @@ HRESULT CGameInstance::Render_Engine()
 
 	m_pLevel_Manager->Render();
 
-
 	return S_OK;
 }
 
 HRESULT CGameInstance::Clear(_uint iLevelID)
 {
 	if (nullptr == m_pObject_Manager || 
-		nullptr == m_pComponent_Manager)
+		nullptr == m_pComponent_Manager || 
+		nullptr == m_pUI_Manager)
 		return E_FAIL;
 
 	m_pObject_Manager->Clear(iLevelID);
 	m_pComponent_Manager->Clear(iLevelID);
+	m_pUI_Manager->DisableCanvas(iLevelID);
 
 	return S_OK;
 }
@@ -223,6 +244,59 @@ _float CGameInstance::Compute_Timer(const _tchar * pTimerTag)
 	return m_pTimer_Manager->Compute_Timer(pTimerTag);
 }
 
+KEY_STATE CGameInstance::Get_KeyState(KEY eKey)
+{
+	return m_pKey_Manager->Get_KeyState(eKey);
+}
+
+const POINT & CGameInstance::Get_MousePos()
+{
+	return m_pKey_Manager->Get_MousePos();
+}
+
+HRESULT CGameInstance::Add_UI(_uint iLevelIndex, CUI * pUI, void * pArg)
+{
+	if (nullptr == m_pUI_Manager)
+		return E_FAIL;
+
+	m_pUI_Manager->Add_UI(iLevelIndex, pUI, pArg);
+
+
+	return S_OK;
+}
+
+void CGameInstance::Set_Transform(CPipeLine::TRANSFORMSTATE eState, _fmatrix TransformState)
+{
+	if (nullptr == m_pPipeLine)
+		return;
+
+	m_pPipeLine->Set_Transform(eState, TransformState);
+}
+
+_matrix CGameInstance::Get_Transform(CPipeLine::TRANSFORMSTATE eState)
+{
+	if (nullptr == m_pPipeLine)
+		return XMMatrixIdentity();
+
+	return m_pPipeLine->Get_Transform(eState);
+}
+
+const _float4x4 * CGameInstance::Get_Transform_float4x4(CPipeLine::TRANSFORMSTATE eState)
+{
+	if (nullptr == m_pPipeLine)
+		return nullptr;
+
+	return m_pPipeLine->Get_Transform_float4x4(eState);
+}
+
+const _float4x4 * CGameInstance::Get_Transform_TP(CPipeLine::TRANSFORMSTATE eState)
+{
+	if (nullptr == m_pPipeLine)
+		return nullptr;
+
+	return m_pPipeLine->Get_Transform_TP(eState);
+}
+
 
 
 void CGameInstance::Release_Engine()
@@ -237,21 +311,26 @@ void CGameInstance::Release_Engine()
 
 	CTimer_Manager::Get_Instance()->Destroy_Instance();
 
-	CInput_Device::Get_Instance()->Destroy_Instance();
+	CPipeLine::Get_Instance()->Destroy_Instance();
 
-	
+	CInput_Device::Get_Instance()->Destroy_Instance();	
 
 	CGraphic_Device::Get_Instance()->Destroy_Instance();
 
+	CKey_Manager::Get_Instance()->Destroy_Instance();
+
+	CUI_Manager::Get_Instance()->Destroy_Instance();
 }
 
 void CGameInstance::Free()
 {
-
+	Safe_Release(m_pPipeLine);
 	Safe_Release(m_pTimer_Manager);
 	Safe_Release(m_pComponent_Manager);
 	Safe_Release(m_pObject_Manager);
 	Safe_Release(m_pLevel_Manager);
 	Safe_Release(m_pInput_Device);
 	Safe_Release(m_pGraphic_Device);
+	Safe_Release(m_pKey_Manager);
+	Safe_Release(m_pUI_Manager);
 }

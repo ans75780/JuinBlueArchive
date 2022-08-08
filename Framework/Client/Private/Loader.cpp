@@ -9,8 +9,9 @@
 
 
 //#include "Camera_Free.h"
+#include "Camera_Free.h"
 //#include "Monster.h"
-//#include "Terrain.h"
+#include "Terrain.h"
 //#include "Player.h"
 //#include "Effect.h"
 //#include "Sky.h"
@@ -72,18 +73,30 @@ HRESULT CLoader::Loading_ForLogoLevel()
 #pragma region PROTOTYPE_GAMEOBJECT
 
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
-
+	
 	/* For.Prototype_GameObject_BackGround */
+	CUI* pUI = CBackGround::Create(m_pDevice, m_pContext);
+	pUI->LoadUIImage(L"UI_Background");
+	pUI->Set_UIType(UI_TYPE::UI_BACKGROUND);
+	pUI->Set_Size(_float3(1280.f, 720.f, 1.f));
+	if (FAILED(pGameInstance->Add_UI(LEVEL_LOGO, pUI)))
+	{
+		return E_FAIL;
+	}
+	pUI = CBackGround::Create(m_pDevice, m_pContext);
+	pUI->LoadUIImage(L"UI_Default");
+	pUI->Set_UIType(UI_TYPE::UI_BUTTTON);
+	if (FAILED(pGameInstance->Add_UI(LEVEL_LOGO, pUI)))
+	{
+		return E_FAIL;
+	}
+
+	/*
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BackGround"),
 		CBackGround::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-
-
-	///* For.Prototype_GameObject_Camera_Free*/
-	//if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Camera_Free"),
-	//	CCamera_Free::Create(m_pGraphic_Device))))
-	//	return E_FAIL;
+		*/
 
 #pragma endregion
 
@@ -114,6 +127,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	return S_OK;
 }
 
+
 HRESULT CLoader::Loading_ForGamePlayLevel()
 {
 	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
@@ -123,10 +137,15 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
 
-	///* For.Prototype_GameObject_Terrain*/
-	//if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Terrain"),
-	//	CTerrain::Create(m_pGraphic_Device))))
-	//	return E_FAIL;
+	/* For.Prototype_GameObject_Terrain*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Terrain"),
+		CTerrain::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Camera_Free*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Camera_Free"),
+		CCamera_Free::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	///* For.Prototype_GameObject_Player */
 	//if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Player"),
@@ -157,10 +176,10 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 #pragma endregion
 
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중이비낟. "));
-	///* For.Prototype_Component_Texture_Terrain */
-	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Terrain"),
-	//	CTexture::Create(m_pGraphic_Device, CTexture::TYPE_DEFAULT, TEXT("../Bin/Resources/Textures/Terrain/Grass_%d.tga"), 2))))
-	//	return E_FAIL;
+	/* For.Prototype_Component_Texture_Terrain */
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Terrain"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Grass_%d.dds"), 2))))
+		return E_FAIL;
 
 	///* For.Prototype_Component_Texture_Player */
 	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Player"),
@@ -186,15 +205,21 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 
 	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중이비낟. "));
 
-	///* For.Prototype_Component_VIBuffer_Terrain */
-	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Terrain"),
-	//	CVIBuffer_Terrain::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Terrain/Height.bmp")))))
-	//	return E_FAIL;
+	/* For.Prototype_Component_VIBuffer_Terrain */
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Terrain"),
+		CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Height.bmp")))))
+		return E_FAIL;
 
 	///* For.Prototype_Component_VIBuffer_Cube*/
 	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Cube"),
 	//	CVIBuffer_Cube::Create(m_pGraphic_Device))))
 	//	return E_FAIL;
+
+	lstrcpy(m_szLoadingText, TEXT("셰이더를 로딩중이빈다. "));
+	/* For.Prototype_Component_Shader_VtxTex */
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxNorTex"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxNorTex.hlsl"), VTXNORTEX_DECLARATION::Element, VTXNORTEX_DECLARATION::iNumElements))))
+		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));
 

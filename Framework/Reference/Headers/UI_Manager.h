@@ -13,33 +13,25 @@ class CUI_Manager final : public CBase
 private:
 	CUI_Manager();
 	virtual ~CUI_Manager() = default;
+	
+public:
+	HRESULT	Setup_Manager(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const GRAPHICDESC& GraphicDesc, _uint iNumLevels);
+	virtual void Free() override;
 
 public:
-
-public:
-	HRESULT Reserve_Container(_uint iNumLevels);
-
-public:
-
-
+	HRESULT Add_UI(_uint iLevelIndex,class CUI* pUI, void* pArg = nullptr);
 
 	void Tick(_float fTimeDelta);
 	void LateTick(_float fTimeDelta);
 
 public:
-	void Clear(_uint iLevelIndex);
-
+	void DisableCanvas(_uint iLevelIndex);
 private:
-	map<const _tchar*, class CUI*>			m_UIs;
-	typedef map<const _tchar*, class CUI*>	UIS;
-
+	vector<class CUI_Canvas*>			m_vecCanvas;
+	typedef vector<class CUI_Canvas*>	CANVASES;
 	_uint					m_iNumLevels = 0;
 
-private:
-	class CUI* Find_UI(const _tchar* pUITag);
-	
 public:
-	virtual void Free() override;
 };
 
 END
