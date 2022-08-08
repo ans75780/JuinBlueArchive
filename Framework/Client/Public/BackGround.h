@@ -19,6 +19,7 @@ public:
 	CBackGround(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual ~CBackGround() = default;
 
+
 public:
 	virtual HRESULT Initialize(void* pArg);
 	virtual void Tick(_float fTimeDelta);

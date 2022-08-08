@@ -54,20 +54,6 @@ HRESULT CUI_Canvas::Initialize()
 
 void CUI_Canvas::Tick(_float fTimeDelta)
 {
-	for (auto vecUI : m_vecUI)
-	{
-		for (auto UI : vecUI)
-		{
-			if (!UI->Get_Enable())
-				continue;
-			UI->Tick(fTimeDelta);
-			Check_UI(UI);
-		}
-	}
-}
-
-void CUI_Canvas::LateTick(_float fTimeDelta)
-{
 	m_bEventCurFrame = false;
 	for (auto vecUI : m_vecUI)
 	{
@@ -75,9 +61,25 @@ void CUI_Canvas::LateTick(_float fTimeDelta)
 		{
 			if (!UI->Get_Enable())
 				continue;
-			UI->LateTick(fTimeDelta);
+			UI->Tick(fTimeDelta);
 			if (m_bEventCurFrame == false)
-				UI->Compute_Transform();
+			{
+				Check_UI(UI);
+			}
+		}
+	}
+}
+
+void CUI_Canvas::LateTick(_float fTimeDelta)
+{
+	for (auto vecUI : m_vecUI)
+	{
+		for (auto UI : vecUI)
+		{
+			if (!UI->Get_Enable())
+				continue;
+			UI->LateTick(fTimeDelta);
+			UI->Compute_Transform();
 		}
 	}
 }

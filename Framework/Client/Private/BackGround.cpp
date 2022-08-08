@@ -29,6 +29,7 @@ HRESULT CBackGround::Initialize(void * pArg)
 
 void CBackGround::Tick(_float fTimeDelta)
 {
+	__super::Tick(fTimeDelta);
 
 }
 
@@ -74,9 +75,6 @@ void CBackGround::OnLButtonClicked()
 
 HRESULT CBackGround::SetUp_Components()
 {
-
-	//LoadUIImage(L"UI_Default");//텍스쳐 생성
-
 	return S_OK;
 }
 

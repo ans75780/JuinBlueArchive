@@ -37,6 +37,8 @@ public:
 public:
 	virtual HRESULT	LoadUIImage(const _tchar* TextureTag, _uint iLevel = 0);
 
+public:
+	virtual void	OnEvent(_uint iEventNum);
 
 public:
 	virtual void	OnLButtonDown();
@@ -46,8 +48,6 @@ public:
 
 protected:
 	virtual HRESULT	SetUp_ShaderResource();
-protected:
-	virtual void	OnEvent(_uint iEventNum);
 
 protected:
 	CTexture*				m_pTextureCom = nullptr;
@@ -60,6 +60,7 @@ protected:
 	_float3			m_fPos;
 	_float3			m_fSize;
 	CUI*			m_pParent = nullptr;
+	vector<CUI*>	m_vecChild;
 
 protected:
 	/*
