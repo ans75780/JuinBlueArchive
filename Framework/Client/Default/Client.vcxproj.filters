@@ -64,9 +64,15 @@
     <ClInclude Include="..\Public\TestObject_Test.h">
       <Filter>02.GameObject\TestObject</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Camera_Free.h" />
-    <ClInclude Include="..\Public\Terrain.h" />
-    <ClInclude Include="..\Public\Transform_Utils.h" />
+    <ClInclude Include="..\Public\Transform_Utils.h">
+      <Filter>97.Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Terrain.h">
+      <Filter>02.GameObject\Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Camera_Free.h">
+      <Filter>02.GameObject\Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -120,9 +126,15 @@
     <ClCompile Include="..\Private\TestObject_Test.cpp">
       <Filter>02.GameObject\TestObject</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Terrain.cpp" />
-    <ClCompile Include="..\Private\Transform_Utils.cpp" />
-    <ClCompile Include="..\Private\Camera_Free.cpp" />
+    <ClCompile Include="..\Private\Transform_Utils.cpp">
+      <Filter>97.Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Terrain.cpp">
+      <Filter>02.GameObject\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera_Free.cpp">
+      <Filter>02.GameObject\Camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
