@@ -73,6 +73,9 @@
     <ClInclude Include="..\Public\Camera_Free.h">
       <Filter>02.GameObject\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\TestObject_Model_Haruka.h">
+      <Filter>02.GameObject\TestObject\Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -134,6 +137,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Camera_Free.cpp">
       <Filter>02.GameObject\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\TestObject_Model_Haruka.cpp">
+      <Filter>02.GameObject\TestObject\Model</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -201,6 +207,9 @@
     </Filter>
     <Filter Include="02.GameObject\TestObject">
       <UniqueIdentifier>{1c1350ca-0e2e-48f1-bf52-2c9abd2d3196}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\TestObject\Model">
+      <UniqueIdentifier>{25106941-afe2-47bd-a100-d385482503e1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

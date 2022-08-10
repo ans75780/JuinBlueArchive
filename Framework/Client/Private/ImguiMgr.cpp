@@ -3,9 +3,12 @@
 #include "imgui.h"
 #include "imgui_impl_dx11.h"
 #include "imgui_impl_win32.h"
+
 #include "GameInstance.h"
 #include "GameObject.h"
 #include "MainApp.h"
+
+#include "Level_Loading.h"
 
 IMPLEMENT_SINGLETON(CImguiMgr)
 
@@ -177,6 +180,13 @@ void CImguiMgr::HelloJusin_View(void)
 
 			ImGui::EndTabItem();
 		}
+		if (ImGui::BeginTabItem("Level"))
+		{
+			HelloJusin_Tap_Level();
+
+			ImGui::EndTabItem();
+		}
+
 		ImGui::EndTabBar();
 	}
 
@@ -208,7 +218,7 @@ void CImguiMgr::HelloJusin_Tap_Tool(void)
 {
 	if (ImGui::CollapsingHeader("Current_GameObject"))
 	{
-		list<CGameObject*> pGameObject_List = m_pGameInstance->Get_GameObjects(m_pGameInstance->Get_CurrentLevelID(), TEXT("Layer_BackGround"));
+		list<CGameObject*> pGameObject_List = m_pGameInstance->Get_GameObjects(m_pGameInstance->Get_CurrentLevelID(), TEXT("Layer_Test"));
 
 		if (pGameObject_List.empty())
 			return;
@@ -241,6 +251,42 @@ void CImguiMgr::HelloJusin_Tap_Tool(void)
 	}
 
 
+
+}
+
+void CImguiMgr::HelloJusin_Tap_Level(void)
+{
+	if (ImGui::BeginTable("split", 2, ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings))
+	{
+		for (int i = 0; i < LEVEL_END; i++)
+		{
+			char buf[32];
+
+			switch (i)
+			{
+			case LEVEL_LOGO:
+				strcpy_s(buf, "LEVEL_LOGO");
+				break;
+			case LEVEL_GAMEPLAY:
+				strcpy_s(buf, "LEVEL_GAMEPLAY");
+				break;
+			default:
+				continue;
+				break;
+			}
+			ImGui::TableNextColumn();
+			if(ImGui::Button(buf, ImVec2(-FLT_MIN, 0.0f)))
+			{
+				if (LEVEL_LOADING == m_pGameInstance->Get_CurrentLevelID() || i == m_pGameInstance->Get_CurrentLevelID())
+					continue;
+
+				if (m_pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, (LEVEL)i)))
+					return;
+			}
+			
+		}
+		ImGui::EndTable();
+	}
 
 }
 

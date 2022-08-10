@@ -26,6 +26,7 @@ private:
 	void	HelloJusin_View(void);
 	void	HelloJusin_Tap_Main(void);
 	void	HelloJusin_Tap_Tool(void);
+	void	HelloJusin_Tap_Level(void);
 
 
 

@@ -62,7 +62,45 @@ namespace Engine
 		static const unsigned int		iNumElements = 2;
 		static const D3D11_INPUT_ELEMENT_DESC	Element[iNumElements];
 	} VTXTEX_DECLARATION;
+
+	typedef struct ENGINE_DLL tagVertex_Normal_Texture_Declaration
+	{
+		static const unsigned int		iNumElements = 3;
+		static const D3D11_INPUT_ELEMENT_DESC	Element[iNumElements];
+	} VTXNORTEX_DECLARATION;
+
+
 	
+	typedef struct tagVertex_AnimModel	//8.10 추가
+	{
+		XMFLOAT3		vPosition;
+		XMFLOAT3		vNormal;
+		XMFLOAT2		vTexUV;
+		XMFLOAT3		vTangent;
+		XMUINT4			vBlendIndex;
+		XMFLOAT4		vBlendWeight;
+	}VTXANIM;
+
+	typedef struct ENGINE_DLL tagVertex_AnimModel_Declaration  //8.10 추가
+	{
+		static const unsigned int		iNumElements = 6;
+		static const D3D11_INPUT_ELEMENT_DESC	Element[iNumElements];
+	} VTXANIM_DECLARATION;
+
+	typedef struct tagVertex_Model	//8.10 추가
+	{
+		XMFLOAT3		vPosition;
+		XMFLOAT3		vNormal;
+		XMFLOAT2		vTexUV;
+		XMFLOAT3		vTangent;
+	}VTXMODEL;
+
+	typedef struct ENGINE_DLL tagtagVertex_Model_Declaration	//8.10 추가
+	{
+		static const unsigned int		iNumElements = 4;
+		static const D3D11_INPUT_ELEMENT_DESC	Element[iNumElements];
+	} VTXMODEL_DECLARATION;
+
 	typedef struct tagVertex_Normal_Texture
 	{
 		XMFLOAT3		vPosition;
@@ -70,11 +108,7 @@ namespace Engine
 		XMFLOAT2		vTexUV;
 	}VTXNORTEX;
 
-	typedef struct ENGINE_DLL tagVertex_Normal_Texture_Declaration
-	{
-		static const unsigned int		iNumElements = 3;
-		static const D3D11_INPUT_ELEMENT_DESC	Element[iNumElements];
-	} VTXNORTEX_DECLARATION;
+
 
 	typedef struct tagVertex_Cube_Texture
 	{

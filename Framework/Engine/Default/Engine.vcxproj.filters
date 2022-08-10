@@ -2,22 +2,22 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
-      <Filter>01.Utility\99.Defines</Filter>
+      <Filter>99.Defines</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Engine_Function.h">
-      <Filter>01.Utility\99.Defines</Filter>
+      <Filter>99.Defines</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Engine_Functor.h">
-      <Filter>01.Utility\99.Defines</Filter>
+      <Filter>99.Defines</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Engine_Macro.h">
-      <Filter>01.Utility\99.Defines</Filter>
+      <Filter>99.Defines</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Engine_Struct.h">
-      <Filter>01.Utility\99.Defines</Filter>
+      <Filter>99.Defines</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Engine_Typedef.h">
-      <Filter>01.Utility\99.Defines</Filter>
+      <Filter>99.Defines</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Base.h">
       <Filter>01.Utility\99.SuperClass</Filter>
@@ -100,6 +100,12 @@
     <ClInclude Include="..\Public\CustomFont.h">
       <Filter>01.Utility\Font</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Model.h">
+      <Filter>01.Utility\06.Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MeshContainer.h">
+      <Filter>01.Utility\06.Model\00.MeshContainer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -157,7 +163,7 @@
       <Filter>01.Utility\03.Component\01.Shader</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Engine_Struct.cpp">
-      <Filter>01.Utility\99.Defines</Filter>
+      <Filter>99.Defines</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Texture.cpp">
       <Filter>01.Utility\03.Component\02.Textures</Filter>
@@ -185,6 +191,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\CustomFont.cpp">
       <Filter>01.Utility\Font</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Model.cpp">
+      <Filter>01.Utility\06.Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MeshContainer.cpp">
+      <Filter>01.Utility\06.Model\00.MeshContainer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -278,8 +290,14 @@
     <Filter Include="01.Utility\Font\Manager">
       <UniqueIdentifier>{5e34d86e-44a4-42ed-9a42-c71935f7aee8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utility\99.Defines">
+    <Filter Include="01.Utility\06.Model">
+      <UniqueIdentifier>{7ecb51c8-9d93-4ba6-a46e-243ca4718b40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99.Defines">
       <UniqueIdentifier>{dc338029-74a6-4e54-9ca2-6061285015ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\06.Model\00.MeshContainer">
+      <UniqueIdentifier>{69ada1fb-6d0c-4f06-8237-d26fd981f22d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

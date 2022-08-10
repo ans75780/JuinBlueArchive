@@ -5,6 +5,7 @@
 #pragma region GAMEOBJECT_TEST
 #include "BackGround.h"
 #include "TestObject_Test.h"
+#include "TestObject_Model_Haruka.h"
 #pragma endregion
 
 
@@ -92,30 +93,17 @@ HRESULT CLoader::Loading_ForLogoLevel()
 		return E_FAIL;
 	}
 
-	/*
-	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BackGround"),
-		CBackGround::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
+	
+	//if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BackGround"),
+	//	CBackGround::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
 
-		*/
+		
 
 #pragma endregion
 
-#pragma region STATIC_TEXTURE
 
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중이비낟. "));
-
-	/* For.Prototype_Component_Texture_Default */
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Default"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/Default%d.jpg"), 2))))
-		return E_FAIL;
-
-	/* For.Prototype_Component_Texture_AppIcon_Front */
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_AppIcon_Shiroko"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/AppIcon_Shiroko%d.png"), 1))))
-		return E_FAIL;
-
-#pragma endregion
 
 	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중이비낟. "));
 
@@ -168,13 +156,22 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	//	CEffect::Create(m_pGraphic_Device))))
 	//	return E_FAIL;
 
-	/* For.Prototype_GameObject_TestObject 테스트테스트입니다   */
-	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_TestObject"),
+#pragma region 테스트 오브젝트입니다
+	/* For.Prototype_GameObject_TestObject 테스트 시로코 앱아이콘 입니다.   */
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Test_Prototype_GameObject_Siroko"),
 		CTestObject_Test::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_TestObject 테스트 하루카 모델 입니다.   */
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Test_Prototype_GameObject_Model_Haruka"),
+		CTestObject_Model_Haruka::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 #pragma endregion
+
+#pragma endregion
+
+#pragma region LOAD_TEXTURE
 
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중이비낟. "));
 	/* For.Prototype_Component_Texture_Terrain */
@@ -201,8 +198,9 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Explosion"),
 	//	CTexture::Create(m_pGraphic_Device, CTexture::TYPE_DEFAULT, TEXT("../Bin/Resources/Textures/Explosion/Explosion%d.png"), 90))))
 	//	return E_FAIL;
+#pragma endregion
 
-
+#pragma region LOAD_MODEL
 
 	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중이비낟. "));
 
@@ -211,16 +209,34 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 		CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/Height.bmp")))))
 		return E_FAIL;
 
+#pragma region 테스트 모델입니다
+
+	/* For.Prototype_Component_Model_*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Test_Prototype_Component_Model_Haruka"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Models/PlayerChara/Haruka_Original/", "Haruka_Original.fbx"))))
+		return E_FAIL;
+
+#pragma endregion
+
 	///* For.Prototype_Component_VIBuffer_Cube*/
 	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Cube"),
 	//	CVIBuffer_Cube::Create(m_pGraphic_Device))))
 	//	return E_FAIL;
+#pragma endregion
+
+#pragma region LOAD_SHADER
 
 	lstrcpy(m_szLoadingText, TEXT("셰이더를 로딩중이빈다. "));
 	/* For.Prototype_Component_Shader_VtxTex */
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxNorTex"),
 		CShader::Create(m_pDevice, m_pContext, TEXT("../../ShaderFiles/Shader_VtxNorTex.hlsl"), VTXNORTEX_DECLARATION::Element, VTXNORTEX_DECLARATION::iNumElements))))
 		return E_FAIL;
+
+	/* For.Prototype_Component_Shader_VtxModel */
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxModel"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../../ShaderFiles/Shader_VtxModel.hlsl"), VTXMODEL_DECLARATION::Element, VTXMODEL_DECLARATION::iNumElements))))
+		return E_FAIL;
+#pragma endregion
 
 	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));
 
