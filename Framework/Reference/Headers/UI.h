@@ -39,6 +39,8 @@ public:
 	void			Add_Child(CUI*	_pParent);
 
 public:
+	virtual CUI*	Get_MouseOveredUI(const POINT& pt);
+public:
 	virtual HRESULT	LoadUIImage(const _tchar* TextureTag, _uint iLevel = 0);
 
 public:
@@ -86,11 +88,11 @@ protected:
 	_bool	m_bMouseClicked;
 //UI는 클론을 사용하지 않지만, CGameOjbect를 상속받기에 외부에서 못쓰도록 막아놓았음. 쓰지 말도록.
 
+protected:
+	void	Compute_Transform();
 //LateTick이 끝나고 자동으로 매트릭스 계산 UI는 사실상 트랜스폼을 건드리지 않아도 됨
 private:
 	_float	m_fOffsetZ;
-	void	Compute_Transform();
-
 private:
 	virtual CGameObject* Clone(void* pArg) { return nullptr; }
 

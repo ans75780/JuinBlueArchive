@@ -123,8 +123,21 @@ void CUI::Compute_Transform()
 void CUI::Add_Child(CUI * _pParent)
 {
 	_pParent->m_pParent = this;
-	_pParent->m_fOffsetZ = this->m_fOffsetZ + 0.05f;
+	_pParent->m_fOffsetZ = this->m_fOffsetZ -= 0.02f;
 	m_vecChild.push_back(_pParent);
+}
+
+CUI * CUI::Get_MouseOveredUI(const POINT & pt)
+{
+	RECT rect;
+	rect.bottom = (LONG)(m_fPos.y + (m_fSize.y  * 0.5f));
+	rect.left = (LONG)(m_fPos.x - (m_fSize.x  * 0.5f));
+	rect.right = (LONG)(m_fPos.x + (m_fSize.x  * 0.5f));
+	rect.top = (LONG)(m_fPos.y - (m_fSize.y  * 0.5f));
+	if (PtInRect(&rect, pt))
+		return this;
+	else
+		return nullptr;
 }
 
 HRESULT CUI::LoadUIImage(const _tchar * TextureTag, _uint iLevel)

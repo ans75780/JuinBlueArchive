@@ -17,7 +17,7 @@ HRESULT CUI_TestDialogButton ::Initialize(void * pArg)
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
-	m_eUIType = UI_BACKGROUND;
+	m_eUIType = UI_DIALOG;
 
 	m_fPos = _float3(0.f, -150.f, 0.f);
 	m_fSize = _float3(200, 100, 1.f);
@@ -38,6 +38,7 @@ void CUI_TestDialogButton ::LateTick(_float fTimeDelta)
 	__super::LateTick(fTimeDelta);
 
 	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UI, (CGameObject*)this);
+	Compute_Transform();
 }
 
 HRESULT CUI_TestDialogButton ::Render()

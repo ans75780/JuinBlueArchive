@@ -94,29 +94,28 @@ HRESULT CUI_Canvas::Render()
 void CUI_Canvas::Check_UI(CUI * pUI)
 {
 	POINT pt = GETMOUSEPOS;
-	RECT rect;
-	rect.bottom = (LONG)(pUI->Get_Pos().y + (pUI->Get_Size().y  * 0.5f));
-	rect.left= (LONG)(pUI->Get_Pos().x - (pUI->Get_Size().x  * 0.5f));
-	rect.right = (LONG)(pUI->Get_Pos().x + (pUI->Get_Size().x  * 0.5f));
-	rect.top = (LONG)(pUI->Get_Pos().y - (pUI->Get_Size().y  * 0.5f));
 
+	CUI*	pMouseOveredUI = nullptr;
+	if (pMouseOveredUI == nullptr)
+		return;
+	pMouseOveredUI = pUI->Get_MouseOveredUI(pt);
 	if (KEY(LBUTTON, TAP))
 	{
-		if (PtInRect(&rect, pt))
+		if (nullptr != pMouseOveredUI)
 		{
-			pUI->m_bMouseClicked = true;
-			pUI->OnLButtonDown();
+			pMouseOveredUI->m_bMouseClicked = true;
+			pMouseOveredUI->OnLButtonDown();
 			m_bEventCurFrame = true;
 		}
 	}
 	else if (KEY(LBUTTON, AWAY))
 	{
 		m_bEventCurFrame = true;
-		pUI->m_bMouseClicked = false;
-		pUI->OnLButtonUp();
-		if (PtInRect(&rect, pt))
+		pMouseOveredUI->m_bMouseClicked = false;
+		pMouseOveredUI->OnLButtonUp();
+		if (nullptr != pMouseOveredUI)
 		{
-			pUI->OnLButtonClicked();
+			pMouseOveredUI->OnLButtonClicked();
 		}
 	}
 }

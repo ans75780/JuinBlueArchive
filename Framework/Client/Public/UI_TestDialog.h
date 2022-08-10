@@ -25,6 +25,9 @@ public:
 	virtual HRESULT Render();
 
 public:
+	virtual CUI*	Get_MouseOveredUI(const POINT&	_pt);
+
+public:
 	virtual void	OnLButtonDown();
 	virtual void	OnLButtonUp();
 	virtual void	OnLButtonClicked();

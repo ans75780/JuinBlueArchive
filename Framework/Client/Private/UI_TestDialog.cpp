@@ -38,7 +38,9 @@ void CUI_TestDialog::LateTick(_float fTimeDelta)
 	
 	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UI, this);
 	for (auto& child : m_vecChild)
+	{
 		child->LateTick(fTimeDelta);
+	}
 }
 
 HRESULT CUI_TestDialog::Render()
@@ -62,6 +64,20 @@ HRESULT CUI_TestDialog::Render()
 	return S_OK;
 }
 
+CUI * CUI_TestDialog::Get_MouseOveredUI(const POINT&	_pt)
+{
+	CUI*	pMouseOveredUI = nullptr;
+	for (auto& child : m_vecChild)
+	{
+		pMouseOveredUI = child->Get_MouseOveredUI(_pt);
+		if (pMouseOveredUI)
+			return pMouseOveredUI;
+	}
+	pMouseOveredUI = CUI::Get_MouseOveredUI(_pt);
+
+	return pMouseOveredUI;
+}
+
 void CUI_TestDialog::OnLButtonDown()
 {
 }
@@ -72,6 +88,7 @@ void CUI_TestDialog::OnLButtonUp()
 
 void CUI_TestDialog::OnLButtonClicked()
 {
+	int a = 10;
 }
 
 void CUI_TestDialog::OnEvent(_uint iEventNum)
