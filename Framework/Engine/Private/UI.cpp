@@ -15,6 +15,7 @@ CUI::CUI(ID3D11Device * pDevice, ID3D11DeviceContext * pDeviceContext)
 
 HRESULT CUI::Initialize(void * arg)
 {
+	m_fOffsetZ = 0.f;
 	CTransform::TRANSFORMDESC		TransformDesc;
 	if (arg == nullptr)
 	{
@@ -63,6 +64,12 @@ HRESULT CUI::Render()
 void CUI::Free()
 {
 	__super::Free();
+
+	for (auto& child : m_vecChild)
+	{
+		Safe_Release(child);
+	}
+	m_vecChild.clear();
 	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pRendererCom);
@@ -106,13 +113,19 @@ void CUI::Compute_Transform()
 {
 	if (nullptr == m_pTransformCom)
 		return;
-	
+
 	m_pTransformCom->Set_Scaled(m_fSize);
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, 
-	XMVectorSet(m_fPos.x, m_fPos.y, ((_float)m_eUIType) / (_float)(UI_TYPE::UI_END), 1.f)
+	XMVectorSet(m_fPos.x, m_fPos.y, m_fOffsetZ + ((_float)m_eUIType) / (_float)(UI_TYPE::UI_END), 1.f)
 		);
 }
 
+void CUI::Add_Child(CUI * _pParent)
+{
+	_pParent->m_pParent = this;
+	_pParent->m_fOffsetZ = this->m_fOffsetZ + 0.05f;
+	m_vecChild.push_back(_pParent);
+}
 
 HRESULT CUI::LoadUIImage(const _tchar * TextureTag, _uint iLevel)
 {

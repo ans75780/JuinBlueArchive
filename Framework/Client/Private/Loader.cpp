@@ -5,6 +5,8 @@
 #pragma region GAMEOBJECT_TEST
 #include "BackGround.h"
 #include "TestObject_Test.h"
+#include "UI_TestDialog.h"
+#include "UI_TestDialogButton.h"
 #pragma endregion
 
 
@@ -76,7 +78,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	
 	/* For.Prototype_GameObject_BackGround */
 	
-	
+	/*
 	CUI* pUI = CBackGround::Create(m_pDevice, m_pContext);
 	pUI->LoadUIImage(L"UI_Background");
 	pUI->Set_UIType(UI_TYPE::UI_BACKGROUND);
@@ -93,6 +95,17 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	{
 		return E_FAIL;
 	}
+	*/
+
+
+	CUI_TestDialog* pDialog = CUI_TestDialog::Create(m_pDevice, m_pContext);
+	pDialog->LoadUIImage(L"UI_Background");
+	//pDialog->Set_UIType(UI_TYPE::UI_BUTTTON);
+	if (FAILED(pGameInstance->Add_UI(LEVEL_LOGO, pDialog)))
+	{
+		return E_FAIL;
+	}
+
 	/*
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BackGround"),
 		CBackGround::Create(m_pDevice, m_pContext))))

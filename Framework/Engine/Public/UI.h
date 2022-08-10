@@ -33,7 +33,11 @@ public:
 	void			Set_UIType(UI_TYPE _eType) { m_eUIType = _eType; }
 public:
 	const _tchar*	Get_UIName() { return m_pUIName; }
-	
+
+public:
+	CUI*			Get_Parent() { return m_pParent; }
+	void			Add_Child(CUI*	_pParent);
+
 public:
 	virtual HRESULT	LoadUIImage(const _tchar* TextureTag, _uint iLevel = 0);
 
@@ -84,7 +88,9 @@ protected:
 
 //LateTick이 끝나고 자동으로 매트릭스 계산 UI는 사실상 트랜스폼을 건드리지 않아도 됨
 private:
+	_float	m_fOffsetZ;
 	void	Compute_Transform();
+
 private:
 	virtual CGameObject* Clone(void* pArg) { return nullptr; }
 

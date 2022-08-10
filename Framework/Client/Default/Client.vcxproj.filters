@@ -73,6 +73,10 @@
     <ClInclude Include="..\Public\Camera_Free.h">
       <Filter>02.GameObject\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\UI_TestDialog.h">
+      <Filter>02.GameObject\UI\Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_TestDialogButton.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -135,6 +139,10 @@
     <ClCompile Include="..\Private\Camera_Free.cpp">
       <Filter>02.GameObject\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\UI_TestDialog.cpp">
+      <Filter>02.GameObject\UI\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_TestDialogButton.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -201,6 +209,15 @@
     </Filter>
     <Filter Include="02.GameObject\TestObject">
       <UniqueIdentifier>{1c1350ca-0e2e-48f1-bf52-2c9abd2d3196}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\UI">
+      <UniqueIdentifier>{5bcd9f84-c21f-4124-8287-b64fef09c7d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\UI\Dialog">
+      <UniqueIdentifier>{709ff15d-adc9-42a0-8e7b-b8af11ca850f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\UI\Dialog\DialogButton">
+      <UniqueIdentifier>{c10e9d8b-a1b7-4e0d-8c83-e35e276fdf7f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

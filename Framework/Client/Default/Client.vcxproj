@@ -185,6 +185,8 @@
     <ClInclude Include="..\Public\TestObject_Test.h" />
     <ClInclude Include="..\Public\Terrain.h" />
     <ClInclude Include="..\Public\Transform_Utils.h" />
+    <ClInclude Include="..\Public\UI_TestDialog.h" />
+    <ClInclude Include="..\Public\UI_TestDialogButton.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -209,6 +211,8 @@
     <ClCompile Include="..\Private\Terrain.cpp" />
     <ClCompile Include="..\Private\Transform_Utils.cpp" />
     <ClCompile Include="..\Private\TestObject_Test.cpp" />
+    <ClCompile Include="..\Private\UI_TestDialog.cpp" />
+    <ClCompile Include="..\Private\UI_TestDialogButton.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
