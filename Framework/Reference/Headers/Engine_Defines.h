@@ -13,8 +13,8 @@
 #include <DirectXTK/SpriteFont.h>
 #include <DirectXTK/ScreenGrab.h>
 
-//#include <assimp/scene.h>
-//#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/Importer.hpp>
 
 #include <DirectXCollision.h>
 

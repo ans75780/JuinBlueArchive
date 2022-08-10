@@ -127,6 +127,7 @@ HRESULT CMainApp::Ready_Prototype_Component()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("UI_Background"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/AppIcon_Shiroko%d.png"), 1))))
 		return E_FAIL;
+
 	//Safe_AddRef(m_pRenderer);
 
 	return S_OK;
@@ -152,7 +153,7 @@ void CMainApp::Free()
 	CImguiMgr::Get_Instance()->Destroy_Instance();
 #endif
 
-	Safe_Release(m_pRenderer);
+	//Safe_Release(m_pRenderer);
 	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);
 	Safe_Release(m_pGameInstance);		

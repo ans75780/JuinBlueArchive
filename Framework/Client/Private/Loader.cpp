@@ -75,6 +75,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
 	
 	/* For.Prototype_GameObject_BackGround */
+
 	CUI* pUI = CBackGround::Create(m_pDevice, m_pContext);
 	pUI->LoadUIImage(L"UI_Background");
 	pUI->Set_UIType(UI_TYPE::UI_BACKGROUND);
