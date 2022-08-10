@@ -36,7 +36,7 @@ public:
 
 public:
 	CUI*			Get_Parent() { return m_pParent; }
-	void			Add_Child(CUI*	_pParent);
+	void			Add_Child(CUI*	_pChild);
 
 public:
 	virtual CUI*	Get_MouseOveredUI(const POINT& pt);
@@ -91,8 +91,6 @@ protected:
 protected:
 	void	Compute_Transform();
 //LateTick이 끝나고 자동으로 매트릭스 계산 UI는 사실상 트랜스폼을 건드리지 않아도 됨
-private:
-	_float	m_fOffsetZ;
 private:
 	virtual CGameObject* Clone(void* pArg) { return nullptr; }
 

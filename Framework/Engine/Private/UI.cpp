@@ -4,6 +4,7 @@
 #include "Texture.h"
 #include "Renderer.h"
 #include "Transform.h"
+#include <math.h>
 _float4x4	CUI::g_UIMatProj;
 
 
@@ -15,7 +16,6 @@ CUI::CUI(ID3D11Device * pDevice, ID3D11DeviceContext * pDeviceContext)
 
 HRESULT CUI::Initialize(void * arg)
 {
-	m_fOffsetZ = 0.f;
 	CTransform::TRANSFORMDESC		TransformDesc;
 	if (arg == nullptr)
 	{
@@ -116,24 +116,24 @@ void CUI::Compute_Transform()
 
 	m_pTransformCom->Set_Scaled(m_fSize);
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, 
-	XMVectorSet(m_fPos.x, m_fPos.y, m_fOffsetZ + ((_float)m_eUIType) / (_float)(UI_TYPE::UI_END), 1.f)
+	XMVectorSet(m_fPos.x, m_fPos.y, ((_float)m_eUIType) / (_float)(UI_TYPE::UI_END), 1.f)
 		);
 }
 
-void CUI::Add_Child(CUI * _pParent)
+void CUI::Add_Child(CUI * _pChild)
 {
-	_pParent->m_pParent = this;
-	_pParent->m_fOffsetZ = this->m_fOffsetZ -= 0.02f;
-	m_vecChild.push_back(_pParent);
+	_pChild->m_pParent = this;
+	m_vecChild.push_back(_pChild);
 }
 
 CUI * CUI::Get_MouseOveredUI(const POINT & pt)
 {
 	RECT rect;
-	rect.bottom = (LONG)(m_fPos.y + (m_fSize.y  * 0.5f));
-	rect.left = (LONG)(m_fPos.x - (m_fSize.x  * 0.5f));
-	rect.right = (LONG)(m_fPos.x + (m_fSize.x  * 0.5f));
-	rect.top = (LONG)(m_fPos.y - (m_fSize.y  * 0.5f));
+	POINT Offset = CKey_Manager::Get_Instance()->Get_MouseOffset();
+	rect.bottom = (LONG)(fabsf(m_fPos.y) + (m_fSize.y  * 0.5f)) + Offset.y;
+	rect.left = (LONG)(fabsf(m_fPos.x) - (m_fSize.x  * 0.5f)) + Offset.x;
+	rect.right = (LONG)(fabsf(m_fPos.x) + (m_fSize.x  * 0.5f)) + Offset.x;;
+	rect.top = (LONG)(fabsf(m_fPos.y) - (m_fSize.y  * 0.5f)) + Offset.y;;
 	if (PtInRect(&rect, pt))
 		return this;
 	else

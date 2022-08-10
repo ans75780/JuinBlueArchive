@@ -6,7 +6,7 @@ namespace Engine
 	enum MOUSEMOVE { MMS_X, MMS_Y, MMS_WHEEL, MMS_END };
 
 	//UI타입에 따라 업데이트 순서가 결정됨
-	enum  UI_TYPE { UI_POST, UI_DIALOG, UI_BUTTTON, UI_BACKGROUND, UI_END};
+	enum  UI_TYPE { UI_POST, UI_DIALOG_BUTTON, UI_DIALOG, UI_BUTTTON, UI_BACKGROUND, UI_END};
 	typedef struct tagLightDesc
 	{
 		enum TYPE {TYPE_DIRECTIONAL, TYPE_POINT, TYPE_END};

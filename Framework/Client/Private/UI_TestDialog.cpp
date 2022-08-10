@@ -2,6 +2,8 @@
 #include "UI_TestDialog.h"
 #include "Transform.h"
 #include "UI_TestDialogButton.h"
+#include "GameInstance.h"
+#include "Level_Loading.h"
 CUI_TestDialog::CUI_TestDialog(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	:CUI(pDevice, pContext)
 {
@@ -93,8 +95,16 @@ void CUI_TestDialog::OnLButtonClicked()
 
 void CUI_TestDialog::OnEvent(_uint iEventNum)
 {
-	if (iEventNum == 3)
-		int i = 10;
+	if (iEventNum == 7)
+	{
+		CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
+		Safe_AddRef(pGameInstance);
+
+		if (FAILED(pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_GAMEPLAY))))
+			return;
+
+		Safe_Release(pGameInstance);
+	}
 }
 
 HRESULT CUI_TestDialog::SetUp_ShaderResource()

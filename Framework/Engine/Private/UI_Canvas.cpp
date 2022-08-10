@@ -96,11 +96,12 @@ void CUI_Canvas::Check_UI(CUI * pUI)
 	POINT pt = GETMOUSEPOS;
 
 	CUI*	pMouseOveredUI = nullptr;
-	if (pMouseOveredUI == nullptr)
-		return;
-	pMouseOveredUI = pUI->Get_MouseOveredUI(pt);
+	
 	if (KEY(LBUTTON, TAP))
 	{
+		pMouseOveredUI = pUI->Get_MouseOveredUI(pt);
+		if (pMouseOveredUI == nullptr)
+			return;
 		if (nullptr != pMouseOveredUI)
 		{
 			pMouseOveredUI->m_bMouseClicked = true;
@@ -110,6 +111,9 @@ void CUI_Canvas::Check_UI(CUI * pUI)
 	}
 	else if (KEY(LBUTTON, AWAY))
 	{
+		pMouseOveredUI = pUI->Get_MouseOveredUI(pt);
+		if (pMouseOveredUI == nullptr)
+			return;
 		m_bEventCurFrame = true;
 		pMouseOveredUI->m_bMouseClicked = false;
 		pMouseOveredUI->OnLButtonUp();

@@ -50,6 +50,7 @@ public:
 	HRESULT		Initialize(const GRAPHICDESC& desc);
 	void		Tick();
 	const POINT&	Get_MousePos() { return m_PtMouse; }
+	const POINT&	Get_MouseOffset() { return m_PtMouseOffset; }
 private:
 	struct tKeyInfo
 	{

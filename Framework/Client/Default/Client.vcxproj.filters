@@ -76,7 +76,9 @@
     <ClInclude Include="..\Public\UI_TestDialog.h">
       <Filter>02.GameObject\UI\Dialog</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\UI_TestDialogButton.h" />
+    <ClInclude Include="..\Public\UI_TestDialogButton.h">
+      <Filter>02.GameObject\UI\Dialog\DialogButton</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -142,7 +144,9 @@
     <ClCompile Include="..\Private\UI_TestDialog.cpp">
       <Filter>02.GameObject\UI\Dialog</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\UI_TestDialogButton.cpp" />
+    <ClCompile Include="..\Private\UI_TestDialogButton.cpp">
+      <Filter>02.GameObject\UI\Dialog\DialogButton</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
