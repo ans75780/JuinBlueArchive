@@ -27,6 +27,8 @@ HRESULT CCamera_Free::Initialize(void * pArg)
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
+	lstrcpy(m_desc.sz_Name, TEXT("Camera_Free"));
+
 	return S_OK;
 }
 

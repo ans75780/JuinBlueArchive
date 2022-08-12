@@ -78,6 +78,9 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _tchar * pLayerTag)
 	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Prototype_GameObject_Camera_Free"), &CameraDesc)))
 		return E_FAIL;
 
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Prototype_GameObject_Camera_Free"), &CameraDesc)))
+		return E_FAIL;
+
 	Safe_Release(pGameInstance);
 
 	return S_OK;
@@ -153,27 +156,14 @@ HRESULT CLevel_GamePlay::Ready_Layer_Test(const _tchar * pLayerTag)
 
 	CGameObject::OBJ_DESC tempDesc;
 
-	lstrcpy(tempDesc.sz_Name, TEXT("Siroko"));
-	tempDesc.fPos = { 0.f, 0.f, 0.f, 0.f };
+	lstrcpy(tempDesc.sz_Name, TEXT("Model_Haruka"));
 
-	//if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Test_Prototype_GameObject_Siroko"), (void*)&tempDesc)))
-	//	return E_FAIL;
-	//if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Test_Prototype_GameObject_Siroko"), (void*)&tempDesc)))
-	//	return E_FAIL;
-	//if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Test_Prototype_GameObject_Siroko"), (void*)&tempDesc)))
-	//	return E_FAIL;
-	//if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Test_Prototype_GameObject_Siroko"), (void*)&tempDesc)))
-	//	return E_FAIL;
 	//if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Test_Prototype_GameObject_Siroko"), (void*)&tempDesc)))
 	//	return E_FAIL;
 
 	/* For.Model.Haruka */
-	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Test_Prototype_GameObject_Model_Haruka"))))
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Test_Prototype_GameObject_Model_Haruka"),(void*)&tempDesc)))
 		return E_FAIL;
-
-	/* For.Sky */
-	/*if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Prototype_GameObject_Sky"))))
-	return E_FAIL;*/
 
 	Safe_Release(pGameInstance);
 

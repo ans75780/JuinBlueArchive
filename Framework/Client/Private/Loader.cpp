@@ -3,11 +3,13 @@
 #include "GameInstance.h"
 
 #pragma region GAMEOBJECT_TEST
+
 #include "BackGround.h"
 #include "TestObject_Test.h"
 #include "UI_TestDialog.h"
 #include "UI_TestDialogButton.h"
 #include "TestObject_Model_Haruka.h"
+
 #pragma endregion
 
 
