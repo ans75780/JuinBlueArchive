@@ -15,7 +15,7 @@ HRESULT CUI_Manager::Setup_Manager(ID3D11Device * pDevice, ID3D11DeviceContext *
 
 	m_vecCanvas.reserve(iNumLevels);
 
-	XMStoreFloat4x4(&CUI::g_UIMatProj, XMMatrixTranspose(XMMatrixOrthographicLH((_float)GraphicDesc.iWinCX, (_float)GraphicDesc.iWinCY, 0.f, 1.f)));
+	XMStoreFloat4x4(&CUI::g_UIMatProj, XMMatrixTranspose(XMMatrixOrthographicLH((_float)GraphicDesc.iWinCX, (_float)GraphicDesc.iWinCY, 0.f, 3.f)));
 
 	//Reserved_Container에서 레벨 개수만큼 할당한 공간 개수 만큼 캔버스 생성
 	for (_uint i = 0; i < m_vecCanvas.capacity(); i++)
@@ -66,7 +66,7 @@ void CUI_Manager::DisableCanvas(_uint iLevelIndex)
 
 void CUI_Manager::Free()
 {
-	for (auto pCanvas : m_vecCanvas)
+	for (auto& pCanvas : m_vecCanvas)
 	{
 		Safe_Release(pCanvas);
 	}

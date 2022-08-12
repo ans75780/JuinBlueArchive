@@ -33,7 +33,13 @@ public:
 	void			Set_UIType(UI_TYPE _eType) { m_eUIType = _eType; }
 public:
 	const _tchar*	Get_UIName() { return m_pUIName; }
-	
+
+public:
+	CUI*			Get_Parent() { return m_pParent; }
+	void			Add_Child(CUI*	_pChild);
+
+public:
+	virtual CUI*	Get_MouseOveredUI(const POINT& pt);
 public:
 	virtual HRESULT	LoadUIImage(const _tchar* TextureTag, _uint iLevel = 0);
 
@@ -82,9 +88,9 @@ protected:
 	_bool	m_bMouseClicked;
 //UI는 클론을 사용하지 않지만, CGameOjbect를 상속받기에 외부에서 못쓰도록 막아놓았음. 쓰지 말도록.
 
-//LateTick이 끝나고 자동으로 매트릭스 계산 UI는 사실상 트랜스폼을 건드리지 않아도 됨
-private:
+protected:
 	void	Compute_Transform();
+//LateTick이 끝나고 자동으로 매트릭스 계산 UI는 사실상 트랜스폼을 건드리지 않아도 됨
 private:
 	virtual CGameObject* Clone(void* pArg) { return nullptr; }
 

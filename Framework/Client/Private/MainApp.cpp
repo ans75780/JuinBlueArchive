@@ -133,6 +133,12 @@ HRESULT CMainApp::Ready_Prototype_Component()
 
 	//Safe_AddRef(m_pRenderer);
 
+	/* For.Prototype_Component_Texture_Default */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("UI_TestDialogButton"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/DefaultButton.png"), 1))))
+		return E_FAIL;
+	//Safe_AddRef(m_pRenderer);
+
 	return S_OK;
 }
 

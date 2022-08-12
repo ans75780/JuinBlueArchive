@@ -10,13 +10,14 @@ CBackGround::CBackGround(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 
 HRESULT CBackGround::Initialize(void * pArg)
 {
+	
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
-
+		
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
-	m_eUIType = UI_BACKGROUND;
+	m_eUIType = UI_DIALOG;
 
 	m_fPos = _float3(0.f, 0.f, 0.f);
 	m_fSize = _float3(200, 200, 1.f);
@@ -30,7 +31,6 @@ HRESULT CBackGround::Initialize(void * pArg)
 void CBackGround::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-
 }
 
 void CBackGround::LateTick(_float fTimeDelta)
@@ -42,6 +42,7 @@ void CBackGround::LateTick(_float fTimeDelta)
 
 HRESULT CBackGround::Render()
 {
+	
 	if (nullptr == m_pShaderCom ||
 		nullptr == m_pVIBufferCom)
 		return E_FAIL;
@@ -64,13 +65,13 @@ void CBackGround::OnLButtonDown()
 
 void CBackGround::OnLButtonUp()
 {
-	m_fSize = { 300.f, 300.f, 1.f };
+	m_fSize = { 100.f, 300.f, 1.f };
 
 }
 
 void CBackGround::OnLButtonClicked()
 {
-	int a = 10;
+	
 }
 
 HRESULT CBackGround::SetUp_Components()
@@ -95,11 +96,9 @@ CBackGround * CBackGround::Create(ID3D11Device * pDevice, ID3D11DeviceContext * 
 		MSG_BOX("Failed to Created : CBackGround");		
 		Safe_Release(pInstance);
 	}
-
 	return pInstance; 
 }
 void CBackGround::Free()
 {
 	__super::Free();
-
 }

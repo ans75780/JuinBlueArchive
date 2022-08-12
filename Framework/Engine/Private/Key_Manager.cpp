@@ -56,8 +56,8 @@ void CKey_Manager::Tick()
 {
 	GetCursorPos(&m_PtMouse);
 	ScreenToClient(m_hWnd, &m_PtMouse);
-	m_PtMouse.x -= m_PtMouseOffset.x;
-	m_PtMouse.y -= m_PtMouseOffset.y;
+	//m_PtMouse.x -= m_PtMouseOffset.x;
+	//m_PtMouse.y -= m_PtMouseOffset.y;
 
 	if (m_hWnd == GetFocus())
 	{

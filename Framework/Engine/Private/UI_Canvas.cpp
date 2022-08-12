@@ -26,9 +26,10 @@ CUI_Canvas * CUI_Canvas::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pC
 
 void CUI_Canvas::Free()
 {
-	for (auto vecUI : m_vecUI)
+	
+	for (auto& vecUI : m_vecUI)
 	{
-		for (auto UI : vecUI)
+		for (auto& UI : vecUI)
 		{
 			Safe_Release(UI);
 		}
@@ -55,9 +56,9 @@ HRESULT CUI_Canvas::Initialize()
 void CUI_Canvas::Tick(_float fTimeDelta)
 {
 	m_bEventCurFrame = false;
-	for (auto vecUI : m_vecUI)
+	for (auto& vecUI : m_vecUI)
 	{
-		for (auto UI : vecUI)
+		for (auto& UI : vecUI)
 		{
 			if (!UI->Get_Enable())
 				continue;
@@ -72,9 +73,9 @@ void CUI_Canvas::Tick(_float fTimeDelta)
 
 void CUI_Canvas::LateTick(_float fTimeDelta)
 {
-	for (auto vecUI : m_vecUI)
+	for (auto& vecUI : m_vecUI)
 	{
-		for (auto UI : vecUI)
+		for (auto& UI : vecUI)
 		{
 			if (!UI->Get_Enable())
 				continue;
@@ -93,29 +94,32 @@ HRESULT CUI_Canvas::Render()
 void CUI_Canvas::Check_UI(CUI * pUI)
 {
 	POINT pt = GETMOUSEPOS;
-	RECT rect;
-	rect.bottom = (LONG)(pUI->Get_Pos().y + (pUI->Get_Size().y  * 0.5f));
-	rect.left= (LONG)(pUI->Get_Pos().x - (pUI->Get_Size().x  * 0.5f));
-	rect.right = (LONG)(pUI->Get_Pos().x + (pUI->Get_Size().x  * 0.5f));
-	rect.top = (LONG)(pUI->Get_Pos().y - (pUI->Get_Size().y  * 0.5f));
 
+	CUI*	pMouseOveredUI = nullptr;
+	
 	if (KEY(LBUTTON, TAP))
 	{
-		if (PtInRect(&rect, pt))
+		pMouseOveredUI = pUI->Get_MouseOveredUI(pt);
+		if (pMouseOveredUI == nullptr)
+			return;
+		if (nullptr != pMouseOveredUI)
 		{
-			pUI->m_bMouseClicked = true;
-			pUI->OnLButtonDown();
+			pMouseOveredUI->m_bMouseClicked = true;
+			pMouseOveredUI->OnLButtonDown();
 			m_bEventCurFrame = true;
 		}
 	}
 	else if (KEY(LBUTTON, AWAY))
 	{
+		pMouseOveredUI = pUI->Get_MouseOveredUI(pt);
+		if (pMouseOveredUI == nullptr)
+			return;
 		m_bEventCurFrame = true;
-		pUI->m_bMouseClicked = false;
-		pUI->OnLButtonUp();
-		if (PtInRect(&rect, pt))
+		pMouseOveredUI->m_bMouseClicked = false;
+		pMouseOveredUI->OnLButtonUp();
+		if (nullptr != pMouseOveredUI)
 		{
-			pUI->OnLButtonClicked();
+			pMouseOveredUI->OnLButtonClicked();
 		}
 	}
 }

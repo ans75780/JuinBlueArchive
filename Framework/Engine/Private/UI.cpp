@@ -4,6 +4,7 @@
 #include "Texture.h"
 #include "Renderer.h"
 #include "Transform.h"
+#include <math.h>
 _float4x4	CUI::g_UIMatProj;
 
 
@@ -28,10 +29,7 @@ HRESULT CUI::Initialize(void * arg)
 		if (FAILED(__super::Initialize((&TransformDesc))))
 			return E_FAIL;
 	}
-	//UI들은 기본적으로 렌더러를 달고 생성된다.
-	m_Components.emplace(L"Com_Renderer", m_pRendererCom);
-	Safe_AddRef(m_pRendererCom);
-	
+	//UI들은 기본적으로 렌더러를 달고 생성된다.	
 	/* For.Com_Renderer */
 	if (FAILED(__super::Add_Component(0, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
 		return E_FAIL;
@@ -66,8 +64,15 @@ HRESULT CUI::Render()
 void CUI::Free()
 {
 	__super::Free();
-	Safe_Release(m_pRendererCom);
+
+	for (auto& child : m_vecChild)
+	{
+		Safe_Release(child);
+	}
+	m_vecChild.clear();
+	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pShaderCom);
+	Safe_Release(m_pRendererCom);
 	Safe_Release(m_pVIBufferCom);
 }
 
@@ -108,13 +113,32 @@ void CUI::Compute_Transform()
 {
 	if (nullptr == m_pTransformCom)
 		return;
-	
+
 	m_pTransformCom->Set_Scaled(m_fSize);
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, 
 	XMVectorSet(m_fPos.x, m_fPos.y, ((_float)m_eUIType) / (_float)(UI_TYPE::UI_END), 1.f)
 		);
 }
 
+void CUI::Add_Child(CUI * _pChild)
+{
+	_pChild->m_pParent = this;
+	m_vecChild.push_back(_pChild);
+}
+
+CUI * CUI::Get_MouseOveredUI(const POINT & pt)
+{
+	RECT rect;
+	POINT Offset = CKey_Manager::Get_Instance()->Get_MouseOffset();
+	rect.bottom = (LONG)(fabsf(m_fPos.y) + (m_fSize.y  * 0.5f)) + Offset.y;
+	rect.left = (LONG)(fabsf(m_fPos.x) - (m_fSize.x  * 0.5f)) + Offset.x;
+	rect.right = (LONG)(fabsf(m_fPos.x) + (m_fSize.x  * 0.5f)) + Offset.x;;
+	rect.top = (LONG)(fabsf(m_fPos.y) - (m_fSize.y  * 0.5f)) + Offset.y;;
+	if (PtInRect(&rect, pt))
+		return this;
+	else
+		return nullptr;
+}
 
 HRESULT CUI::LoadUIImage(const _tchar * TextureTag, _uint iLevel)
 {

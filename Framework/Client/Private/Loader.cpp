@@ -5,6 +5,8 @@
 #pragma region GAMEOBJECT_TEST
 #include "BackGround.h"
 #include "TestObject_Test.h"
+#include "UI_TestDialog.h"
+#include "UI_TestDialogButton.h"
 #include "TestObject_Model_Haruka.h"
 #pragma endregion
 
@@ -85,10 +87,21 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	{
 		return E_FAIL;
 	}
-	pUI = CBackGround::Create(m_pDevice, m_pContext);
-	pUI->LoadUIImage(L"UI_Default");
-	pUI->Set_UIType(UI_TYPE::UI_BUTTTON);
-	if (FAILED(pGameInstance->Add_UI(LEVEL_LOGO, pUI)))
+	
+	CUI* pButton = CBackGround::Create(m_pDevice, m_pContext);
+	pButton->LoadUIImage(L"UI_Default");
+	pButton->Set_UIType(UI_TYPE::UI_BUTTTON);
+	if (FAILED(pGameInstance->Add_UI(LEVEL_LOGO, pButton)))
+	{
+		return E_FAIL;
+	}
+	*/
+
+
+	CUI_TestDialog* pDialog = CUI_TestDialog::Create(m_pDevice, m_pContext);
+	pDialog->LoadUIImage(L"UI_Background");
+	//pDialog->Set_UIType(UI_TYPE::UI_BUTTTON);
+	if (FAILED(pGameInstance->Add_UI(LEVEL_LOGO, pDialog)))
 	{
 		return E_FAIL;
 	}
