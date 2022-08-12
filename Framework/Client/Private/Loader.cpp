@@ -95,7 +95,6 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	{
 		return E_FAIL;
 	}
-	*/
 
 
 	CUI_TestDialog* pDialog = CUI_TestDialog::Create(m_pDevice, m_pContext);
