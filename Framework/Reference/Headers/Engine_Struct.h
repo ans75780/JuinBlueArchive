@@ -7,19 +7,22 @@ namespace Engine
 
 	//UI타입에 따라 업데이트 순서가 결정됨
 	enum  UI_TYPE { UI_POST, UI_DIALOG_BUTTON, UI_DIALOG, UI_BUTTTON, UI_BACKGROUND, UI_END};
+
+
 	typedef struct tagLightDesc
 	{
-		enum TYPE {TYPE_DIRECTIONAL, TYPE_POINT, TYPE_END};
+		enum TYPE { TYPE_DIRECTIONAL, TYPE_POINT, TYPE_END };
 
-		TYPE		eType = TYPE_END;
+		TYPE			eType = TYPE_END;
 
-		XMFLOAT3	vDirection;//디렉셔널 라이팅에만 필요함.
+		XMFLOAT4		vDirection;
 
-		XMFLOAT3	vPoint;//포인트 라이팅에 필요함.
-		float		fRange;
+		XMFLOAT4		vPosition;
+		float			fRange;
 
-		XMFLOAT4	vDiffuse;//빛 자체의 색상을 의미함.(흰색 광원이 들어갔다면 1,1,1,1)
-		XMFLOAT4	vAmbient;
+		XMFLOAT4		vDiffuse;
+		XMFLOAT4		vAmbient;
+		XMFLOAT4		vSpecular;
 
 	}LIGHTDESC;
 	

@@ -13,8 +13,11 @@ CGameInstance::CGameInstance()
 	, m_pPipeLine(CPipeLine::Get_Instance())
 	, m_pKey_Manager(CKey_Manager::Get_Instance())
 	, m_pUI_Manager(CUI_Manager::Get_Instance())
+	, m_pLight_Manager(CLight_Manager::Get_Instance())
+
 	
 {	
+	Safe_AddRef(m_pLight_Manager);
 	Safe_AddRef(m_pPipeLine);
 	Safe_AddRef(m_pTimer_Manager);
 	Safe_AddRef(m_pComponent_Manager);
@@ -265,6 +268,22 @@ HRESULT CGameInstance::Add_UI(_uint iLevelIndex, CUI * pUI, void * pArg)
 	return S_OK;
 }
 
+HRESULT CGameInstance::Add_Light(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, const LIGHTDESC & LightDesc)
+{
+	if (nullptr == m_pLight_Manager)
+		return E_FAIL;
+
+	return m_pLight_Manager->Add_Light(pDevice, pContext, LightDesc);
+}
+
+const LIGHTDESC * CGameInstance::Get_LightDesc(_uint iIndex)
+{
+	if (nullptr == m_pLight_Manager)
+		return nullptr;
+
+	return m_pLight_Manager->Get_LightDesc(iIndex);
+}
+
 void CGameInstance::Set_Transform(CPipeLine::TRANSFORMSTATE eState, _fmatrix TransformState)
 {
 	if (nullptr == m_pPipeLine)
@@ -297,6 +316,14 @@ const _float4x4 * CGameInstance::Get_Transform_TP(CPipeLine::TRANSFORMSTATE eSta
 	return m_pPipeLine->Get_Transform_TP(eState);
 }
 
+_float4 CGameInstance::Get_CamPosition()
+{
+	if (nullptr == m_pPipeLine)
+		return _float4(0.f, 0.f, 0.f, 1.f);
+
+	return m_pPipeLine->Get_CamPosition();
+}
+
 
 
 void CGameInstance::Release_Engine()
@@ -312,6 +339,8 @@ void CGameInstance::Release_Engine()
 	CTimer_Manager::Get_Instance()->Destroy_Instance();
 
 	CPipeLine::Get_Instance()->Destroy_Instance();
+	
+	CLight_Manager::Get_Instance()->Destroy_Instance();
 
 	CInput_Device::Get_Instance()->Destroy_Instance();	
 
@@ -324,6 +353,7 @@ void CGameInstance::Release_Engine()
 
 void CGameInstance::Free()
 {
+	Safe_Release(m_pLight_Manager);
 	Safe_Release(m_pPipeLine);
 	Safe_Release(m_pTimer_Manager);
 	Safe_Release(m_pComponent_Manager);

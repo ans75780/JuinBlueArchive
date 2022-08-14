@@ -107,8 +107,7 @@ HRESULT CModel::Create_Materials(const char * pModelFilePath)
 			aiString	strPath;
 		
 			//필요한 텍스쳐의 경로를 반환
-			if (FAILED(m_pAIScene->mMaterials[i]->GetTexture
-				(aiTextureType(j), 0, &strPath)))
+			if (FAILED(m_pAIScene->mMaterials[i]->GetTexture(aiTextureType(j), 0, &strPath)))
 				continue;
 			/*
 				이 작업을 해주는 이유.
@@ -171,6 +170,14 @@ CComponent * CModel::Clone(void * pArg)
 void CModel::Free()
 {
 	__super::Free();
+
+	for (auto& Material : m_Materials)
+	{
+		for (auto& pTexture : Material.pTextures)
+			Safe_Release(pTexture);
+	}
+	m_Materials.clear();
+
 
 	for (auto& pMeshContainer : m_MeshContainers)
 		Safe_Release(pMeshContainer);

@@ -62,6 +62,7 @@ protected:
 	CVIBuffer_Rect*			m_pVIBufferCom = nullptr;
 
 protected:
+	
 	_tchar			m_pUIName[MAX_PATH] = L"";
 	_float3			m_fPos;
 	_float3			m_fSize;

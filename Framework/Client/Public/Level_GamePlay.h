@@ -23,6 +23,8 @@ public:
 	HRESULT Ready_Layer_Monster(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_Effect(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_Test(const _tchar* pLayerTag);
+	HRESULT Ready_Light();
+
 	
 
 public:

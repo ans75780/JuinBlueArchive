@@ -4,7 +4,7 @@
 #include "GameObject.h"
 
 #include "Camera_Free.h"
-
+#include "Light.h"
 
 
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -35,6 +35,11 @@ HRESULT CLevel_GamePlay::Initialize()
 
 	if (FAILED(Ready_Layer_Test(TEXT("Layer_Test"))))
 		return E_FAIL;
+
+	if (FAILED(Ready_Light()))
+		return E_FAIL;
+
+
 
 	return S_OK;
 }
@@ -176,6 +181,39 @@ HRESULT CLevel_GamePlay::Ready_Layer_Test(const _tchar * pLayerTag)
 	return E_FAIL;*/
 
 	Safe_Release(pGameInstance);
+
+	return S_OK;
+}
+
+HRESULT CLevel_GamePlay::Ready_Light()
+{
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+	LIGHTDESC			LightDesc;
+	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
+
+	LightDesc.eType = tagLightDesc::TYPE_DIRECTIONAL;
+	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
+	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vAmbient = _float4(0.4f, 0.4f, 0.4f, 1.f);
+	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
+
+	if (FAILED(pGameInstance->Add_Light(m_pDevice, m_pContext, LightDesc)))
+		return E_FAIL;
+
+	/*ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
+
+	LightDesc.eType = tagLightDesc::TYPE_POINT;
+	LightDesc.vPosition = _float4(10.f, 5.f, 10.f, 0.f);
+	LightDesc.fRange = 10.f;
+	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vAmbient = _float4(0.4f, 0.4f, 0.4f, 1.f);
+	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
+
+	if (FAILED(pGameInstance->Add_Light(m_pDevice, m_pContext, LightDesc)))
+	return E_FAIL;*/
+
+	RELEASE_INSTANCE(CGameInstance);
 
 	return S_OK;
 }

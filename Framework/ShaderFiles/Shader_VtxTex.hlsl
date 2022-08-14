@@ -1,10 +1,12 @@
 
+#include "Client_Shader_Defines.hpp"
+
 matrix	g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 
 texture2D	g_DiffuseTexture;
 
-sampler DefaultSampler = sampler_state 
-{		
+sampler DefaultSampler = sampler_state
+{
 	filter = min_mag_mip_linear;
 	AddressU = wrap;
 	AddressV = wrap;
@@ -36,7 +38,7 @@ VS_OUT VS_MAIN(VS_IN In)
 	Out.vPosition = mul(vector(In.vPosition, 1.f), matWVP);
 	Out.vTexUV = In.vTexUV;
 
-	return Out;	
+	return Out;
 }
 
 // w나누기연산을 수행하낟. (In 투영스페이스)
@@ -51,8 +53,8 @@ struct PS_IN
 };
 
 struct PS_OUT
-{	
-	vector		vColor : SV_TARGET0;	
+{
+	vector		vColor : SV_TARGET0;
 };
 
 PS_OUT PS_MAIN(PS_IN In)
@@ -61,30 +63,34 @@ PS_OUT PS_MAIN(PS_IN In)
 
 	Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
-	if (Out.vColor.a < 0.1f)
-		discard;
+	/*if (Out.vColor.a < 0.1f)
+	discard;*/
 
-	return Out;	
+	return Out;
 }
 
 technique11 DefaultTechnique
 {
 	pass Default
 	{
+		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+		SetRasterizerState(RS_Default);
+
 		VertexShader = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN();
 	}
 	/*pass Default
 	{
-		VertexShader = compile vs_5_0 VS_MAIN();
-		GeometryShader = NULL;
-		PixelShader = compile ps_5_0 PS_MAIN();
+	VertexShader = compile vs_5_0 VS_MAIN();
+	GeometryShader = NULL;
+	PixelShader = compile ps_5_0 PS_MAIN();
 	}
 	pass Default
 	{
-		VertexShader = compile vs_5_0 VS_MAIN();
-		GeometryShader = NULL;
-		PixelShader = compile ps_5_0 PS_MAIN();
+	VertexShader = compile vs_5_0 VS_MAIN();
+	GeometryShader = NULL;
+	PixelShader = compile ps_5_0 PS_MAIN();
 	}*/
 }
