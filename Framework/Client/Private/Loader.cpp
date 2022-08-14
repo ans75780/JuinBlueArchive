@@ -225,7 +225,7 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 
 	/* For.Prototype_Component_Model_*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Test_Prototype_Component_Model_Haruka"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Models/PlayerChara/Haruka_Original/", "Haruka_Original.fbx"))))
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Models/NonAnimModels/Haruka_Original/", "Haruka_Original.fbx"))))
 		return E_FAIL;
 
 #pragma endregion

@@ -13,12 +13,15 @@ CMeshContainer::CMeshContainer(const CMeshContainer & rhs)
 
 HRESULT CMeshContainer::Initialize_Prototype(CModel::MODELTYPE eType, const aiMesh * pAIMesh)
 {
+	m_iMaterialIndex = pAIMesh->mMaterialIndex;
+
 #pragma region VERTEXBUFFER
 
 	HRESULT		hr = 0;
 
 	if (CModel::TYPE_NONANIM == eType)
 		hr = Ready_VertexBuffer_NonAnim(pAIMesh);
+
 
 	if (FAILED(hr))
 		return E_FAIL;

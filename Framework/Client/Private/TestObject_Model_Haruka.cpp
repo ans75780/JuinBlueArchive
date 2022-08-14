@@ -55,9 +55,18 @@ HRESULT CTestObject_Model_Haruka::Render()
 	if (FAILED(SetUp_ShaderResource()))
 		return E_FAIL;
 
-	m_pShaderCom->Begin(0);
+	_uint iNumMeshContainers = m_pModelCom->Get_NumMeshContainers();
+	for (_uint i = 0; i < iNumMeshContainers; ++i)
+	{
+		if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
+			return E_FAIL;
+		/*if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+		return E_FAIL;*/
 
-	m_pModelCom->Render();
+		m_pShaderCom->Begin(0);
+
+		m_pModelCom->Render(i);
+	}
 
 	return S_OK;
 }

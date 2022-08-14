@@ -27,7 +27,7 @@ namespace Engine
 	{
 		XMFLOAT4		vDiffuse;//특정 색상의 재질.
 		XMFLOAT4		vAmbient;
-
+		XMFLOAT4		vSpecular;
 	}MTRLDESC;
 
 	typedef struct tagLineIndices32
@@ -50,6 +50,10 @@ namespace Engine
 		unsigned short _1, _2, _3;
 	}FACEINDICES16;
 
+	typedef struct tagModelMaterial
+	{
+		class CTexture*		pTextures[AI_TEXTURE_TYPE_MAX];
+	}MODEL_MATERIAL;
 
 	typedef struct tagVertex_Texture
 	{		
