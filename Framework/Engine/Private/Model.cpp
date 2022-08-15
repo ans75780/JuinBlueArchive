@@ -162,7 +162,6 @@ CComponent * CModel::Clone(void * pArg)
 		MSG_BOX("Failed to Created : CModel");
 		Safe_Release(pInstance);
 	}
-
 	return pInstance;
 }
 

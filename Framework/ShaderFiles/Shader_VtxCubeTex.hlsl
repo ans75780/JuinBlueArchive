@@ -3,7 +3,7 @@
 
 matrix	g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 
-texture2D	g_DiffuseTexture;
+textureCUBE	g_DiffuseTexture;
 
 sampler DefaultSampler = sampler_state 
 {		
@@ -17,16 +17,16 @@ sampler DefaultSampler = sampler_state
 struct VS_IN
 {
 	float3		vPosition : POSITION;
-	float2		vTexUV : TEXCOORD0;
+	float3		vTexUV : TEXCOORD0;
 };
 
 struct VS_OUT
 {
 	float4		vPosition : SV_POSITION;
-	float2		vTexUV : TEXCOORD0;
+	float3		vTexUV : TEXCOORD0;
 };
 
-VS_OUT VS_MAIN(VS_IN In)
+VS_OUT VS_MAIN_SKY(VS_IN In)
 {
 	VS_OUT		Out = (VS_OUT)0;
 
@@ -49,48 +49,44 @@ VS_OUT VS_MAIN(VS_IN In)
 struct PS_IN
 {
 	float4		vPosition : SV_POSITION;
-	float2		vTexUV : TEXCOORD0;
+	float3		vTexUV : TEXCOORD0;
 };
 
 struct PS_OUT
 {	
 	vector		vColor : SV_TARGET0;	
+	/*vector		vColor : SV_TARGET1;
+	vector		vColor : SV_TARGET2;
+	vector		vColor : SV_TARGET3;
+	vector		vColor : SV_TARGET4;
+	vector		vColor : SV_TARGET5;
+	vector		vColor : SV_TARGET6;
+	vector		vColor : SV_TARGET7;*/
 };
 
-PS_OUT PS_MAIN(PS_IN In)
+PS_OUT PS_MAIN_SKY(PS_IN In)
 {
 	PS_OUT		Out = (PS_OUT)0;
 
 	Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
-	/*if (Out.vColor.a < 0.1f)
-		discard;*/
+	Out.vColor.a = 0.5f;
 
 	return Out;	
 }
 
+
 technique11 DefaultTechnique
 {
-	pass Default
+	pass Sky
 	{
 		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-		SetDepthStencilState(DSS_Default, 0);
-		SetRasterizerState(RS_Default);
+		SetDepthStencilState(DSS_ZEnable_ZWriteEnable_false, 0);
+		SetRasterizerState(RS_Sky);
 
-		VertexShader = compile vs_5_0 VS_MAIN();
+		VertexShader = compile vs_5_0 VS_MAIN_SKY();
 		GeometryShader = NULL;
-		PixelShader = compile ps_5_0 PS_MAIN();
+		PixelShader = compile ps_5_0 PS_MAIN_SKY();
 	}
-	/*pass Default
-	{
-		VertexShader = compile vs_5_0 VS_MAIN();
-		GeometryShader = NULL;
-		PixelShader = compile ps_5_0 PS_MAIN();
-	}
-	pass Default
-	{
-		VertexShader = compile vs_5_0 VS_MAIN();
-		GeometryShader = NULL;
-		PixelShader = compile ps_5_0 PS_MAIN();
-	}*/
+
 }

@@ -30,7 +30,7 @@ HRESULT CTestObject_Model_Haruka::Initialize(void * pArg)
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
-	m_pTransformCom->Set_Scaled(_float3(1.00f, 1.00f, 1.00f));
+	m_pTransformCom->Set_Scaled(_float3(0.01f, 0.01f, 0.01f));
 
 	return S_OK;
 }
@@ -70,6 +70,7 @@ HRESULT CTestObject_Model_Haruka::Render()
 
 	return S_OK;
 }
+
 
 HRESULT CTestObject_Model_Haruka::SetUp_Components()
 {
