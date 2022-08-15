@@ -270,12 +270,27 @@ void CImguiMgr::Tap_Object_CObj(void)
 
 					if (ImGui::TreeNode(tempName))
 					{
-						static float vec4a[4] = { 0.10f, 0.20f, 0.30f, 0.44f };
 						if (ImGui::TreeNode("Transform"))
 						{
-							ImGui::InputFloat3("Scale", vec4a, "%.3f", 0);
-							ImGui::InputFloat3("Rotation", vec4a, "%.3f", 0);
-							ImGui::InputFloat3("Translation", vec4a, "%.3f", 0);
+							auto* temp = (CTransform*)iter_List->Get_Component(TEXT("Com_Transform"));
+
+							_float3 _Scale = temp->Get_Scaled();
+							float _ScaleFloat3[3] = { _Scale.x, _Scale.y, _Scale.z };
+							if (ImGui::InputFloat3("Scale", _ScaleFloat3, "%.3f", 0))
+							{
+								temp->Set_Scaled(_float3(_ScaleFloat3[0], _ScaleFloat3[1], _ScaleFloat3[2]));
+							}
+
+							_vector _Translation = temp->Get_State(CTransform::STATE_TRANSLATION);
+							_float4 _fTrans;
+							XMStoreFloat4(&_fTrans, _Translation);
+							float _TransFloat4[4] = { _fTrans.x, _fTrans.y, _fTrans.z, _fTrans.w };
+							if (ImGui::InputFloat3("Translation", _TransFloat4, "%.3f", 0))
+							{
+								_fTrans = { _TransFloat4[0], _TransFloat4[1], _TransFloat4[2], _TransFloat4[3] };
+								temp->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&_fTrans));
+							}
+
 
 							ImGui::TreePop();
 						}
