@@ -18,6 +18,10 @@ public:
 		XMStoreFloat4x4(&m_TransformState[eState], TransformState);
 	}
 
+	_float4 Get_CamPosition() const {
+		return m_vCamPosition;
+	}
+
 	_matrix Get_Transform(TRANSFORMSTATE eState) {
 		return XMLoadFloat4x4(&m_TransformState[eState]);
 	}

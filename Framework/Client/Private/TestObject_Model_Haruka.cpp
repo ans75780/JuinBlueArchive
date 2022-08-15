@@ -66,12 +66,26 @@ HRESULT CTestObject_Model_Haruka::Render()
 	if (FAILED(SetUp_ShaderResource()))
 		return E_FAIL;
 
-	m_pShaderCom->Begin(0);
+	_uint iNumMeshContainers = m_pModelCom->Get_NumMeshContainers();
+	for (_uint i = 0; i < iNumMeshContainers; ++i)
+	{
+		if (i == 3)
+		{
 
-	m_pModelCom->Render();
+		}
+ 		else if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
+			return E_FAIL;
+		/*if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+		return E_FAIL;*/
+
+		m_pShaderCom->Begin(0);
+
+		m_pModelCom->Render(i);
+	}
 
 	return S_OK;
 }
+
 
 HRESULT CTestObject_Model_Haruka::SetUp_Components()
 {
@@ -104,26 +118,27 @@ HRESULT CTestObject_Model_Haruka::SetUp_ShaderResource()
 	if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", pGameInstance->Get_Transform_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4))))
 		return E_FAIL;
 
-	//const LIGHTDESC* pLightDesc = pGameInstance->Get_LightDesc(0);
-	//
-	//	if (nullptr == pLightDesc)
-	//	return E_FAIL;
 
-	//if (FAILED(m_pShaderCom->Set_RawValue("g_vCamPosition", &pGameInstance->Get_CamPosition(), sizeof(_float4))))
-	//	return E_FAIL;
-	//if (FAILED(m_pShaderCom->Set_RawValue("g_vLightDir", &pLightDesc->vDirection, sizeof(_float4))))
-	//	return E_FAIL;
-	//if (FAILED(m_pShaderCom->Set_RawValue("g_vLightPos", &pLightDesc->vPosition, sizeof(_float4))))
-	//	return E_FAIL;
-	//if (FAILED(m_pShaderCom->Set_RawValue("g_fRange", &pLightDesc->fRange, sizeof(_float))))
-	//	return E_FAIL;
+	const LIGHTDESC* pLightDesc = pGameInstance->Get_LightDesc(0);
 
-	//if (FAILED(m_pShaderCom->Set_RawValue("g_vLightDiffuse", &pLightDesc->vDiffuse, sizeof(_float4))))
-	//	return E_FAIL;
-	//if (FAILED(m_pShaderCom->Set_RawValue("g_vLightAmbient", &pLightDesc->vAmbient, sizeof(_float4))))
-	//	return E_FAIL;
-	//if (FAILED(m_pShaderCom->Set_RawValue("g_vLightSpecular", &pLightDesc->vSpecular, sizeof(_float4))))
-	//	return E_FAIL;
+	if (nullptr == pLightDesc)
+		return E_FAIL;
+
+	if (FAILED(m_pShaderCom->Set_RawValue("g_vCamPosition", &pGameInstance->Get_CamPosition(), sizeof(_float4))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Set_RawValue("g_vLightDir", &pLightDesc->vDirection, sizeof(_float4))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Set_RawValue("g_vLightPos", &pLightDesc->vPosition, sizeof(_float4))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Set_RawValue("g_fRange", &pLightDesc->fRange, sizeof(_float))))
+		return E_FAIL;
+
+	if (FAILED(m_pShaderCom->Set_RawValue("g_vLightDiffuse", &pLightDesc->vDiffuse, sizeof(_float4))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Set_RawValue("g_vLightAmbient", &pLightDesc->vAmbient, sizeof(_float4))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Set_RawValue("g_vLightSpecular", &pLightDesc->vSpecular, sizeof(_float4))))
+		return E_FAIL;
 
 
 	RELEASE_INSTANCE(CGameInstance);

@@ -226,10 +226,17 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 #pragma region 테스트 모델입니다
 
 	/* For.Prototype_Component_Model_*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Test_Prototype_Component_Model_Haruka"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Models/PlayerChara/Haruka_Original/", "Haruka_Original.fbx"))))
+	
+	/* For.Prototype_Component_Model_*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Test_Prototype_Component_Model_ForkLift"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Models/NonAnimModels/ForkLift/", "ForkLift.fbx"))))
 		return E_FAIL;
 
+	
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Test_Prototype_Component_Model_Haruka"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Models/NonAnimModels/Haruka_Original/", "Haruka_Original.fbx"))))
+		return E_FAIL;
+		
 #pragma endregion
 
 	///* For.Prototype_Component_VIBuffer_Cube*/
