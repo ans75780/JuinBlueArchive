@@ -30,7 +30,7 @@ HRESULT CTestObject_Model_Haruka::Initialize(void * pArg)
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
-	m_pTransformCom->Set_Scaled(_float3(0.01f, 0.01f, 0.01f));
+	m_pTransformCom->Set_Scaled(_float3(1.f, 1.f, 1.f));
 
 	return S_OK;
 }
@@ -58,7 +58,11 @@ HRESULT CTestObject_Model_Haruka::Render()
 	_uint iNumMeshContainers = m_pModelCom->Get_NumMeshContainers();
 	for (_uint i = 0; i < iNumMeshContainers; ++i)
 	{
- 		if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
+		if (i == 3)
+		{
+
+		}
+ 		else if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
 			return E_FAIL;
 		/*if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
 		return E_FAIL;*/
@@ -83,7 +87,7 @@ HRESULT CTestObject_Model_Haruka::SetUp_Components()
 		return E_FAIL;
 
 	/* For.Com_Model */
-	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Test_Prototype_Component_Model_ForkLift"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
+	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Test_Prototype_Component_Model_Haruka"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
 		return E_FAIL;
 
 	return S_OK;
