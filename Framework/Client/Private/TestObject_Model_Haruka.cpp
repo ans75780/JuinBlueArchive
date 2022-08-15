@@ -30,7 +30,22 @@ HRESULT CTestObject_Model_Haruka::Initialize(void * pArg)
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
+<<<<<<< Updated upstream
 	m_pTransformCom->Set_Scaled(_float3(1.00f, 1.00f, 1.00f));
+=======
+	//m_pTransformCom->Set_Scaled(_float3(1.00f, 1.00f, 1.00f));
+	//m_pTransformCom->Set_Scaled(_float3(0.01f, 0.01f, 0.01f));
+
+	lstrcpy(m_desc.sz_Name, TEXT("Haruka"));
+
+	if (pArg)
+	{
+		CGameObject::OBJ_DESC* tempDesc = static_cast<CGameObject::OBJ_DESC*>(pArg);
+
+		lstrcpy(m_desc.sz_Name, tempDesc->sz_Name);
+	}
+
+>>>>>>> Stashed changes
 
 	return S_OK;
 }
