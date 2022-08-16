@@ -162,9 +162,11 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Public\Animation.h" />
     <ClInclude Include="..\Public\Base.h" />
     <ClInclude Include="..\Public\BoneNode.h" />
     <ClInclude Include="..\Public\Camera.h" />
+    <ClInclude Include="..\Public\Channel.h" />
     <ClInclude Include="..\Public\Component.h" />
     <ClInclude Include="..\Public\Component_Manager.h" />
     <ClInclude Include="..\Public\CustomFont.h" />
@@ -202,9 +204,11 @@
     <ClInclude Include="..\Public\VIBuffer_Terrain.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Private\Animation.cpp" />
     <ClCompile Include="..\Private\Base.cpp" />
     <ClCompile Include="..\Private\BoneNode.cpp" />
     <ClCompile Include="..\Private\Camera.cpp" />
+    <ClCompile Include="..\Private\Channel.cpp" />
     <ClCompile Include="..\Private\Component.cpp" />
     <ClCompile Include="..\Private\Component_Manager.cpp" />
     <ClCompile Include="..\Private\CustomFont.cpp" />

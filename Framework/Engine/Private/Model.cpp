@@ -2,6 +2,7 @@
 #include "MeshContainer.h"
 #include "Texture.h"
 #include "BoneNode.h"
+#include "Animation.h"
 CModel::CModel(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CComponent(pDevice, pContext)
 {
@@ -15,6 +16,7 @@ CModel::CModel(const CModel & rhs)
 	, m_Materials(rhs.m_Materials)
 	, m_iNumMaterials(rhs.m_iNumMaterials)
 	, m_vecBones(rhs.m_vecBones)
+	, m_Animations(rhs.m_Animations)
 {
 	for (auto& Material : m_Materials)
 	{
@@ -27,6 +29,10 @@ CModel::CModel(const CModel & rhs)
 
 	for (auto& pBoneNode : m_vecBones)
 		Safe_AddRef(pBoneNode);
+
+
+	for (auto& pAnimation : m_Animations)
+		Safe_AddRef(pAnimation);
 
 }
 HRESULT CModel::Initialize_Prototype(MODELTYPE eType, 
@@ -59,7 +65,8 @@ HRESULT CModel::Initialize_Prototype(MODELTYPE eType,
 
 	if (FAILED(Create_MeshContainers()))
 		return E_FAIL;
-
+	if (FAILED(Create_Animations()))
+		return E_FAIL;
 	return S_OK;
 }
 
@@ -185,6 +192,23 @@ HRESULT CModel::Create_Bones(aiNode * pAINode, CBoneNode * pParent, _uint iDepth
 	return S_OK;
 }
 
+HRESULT CModel::Create_Animations()
+{
+	m_iNumAnimations = m_pAIScene->mNumAnimations;
+
+	for (_uint i = 0; i < m_iNumAnimations; ++i)
+	{
+		CAnimation*		pAnimation = CAnimation::Create(m_pAIScene->mAnimations[i], this);
+
+		if (nullptr == pAnimation)
+			return E_FAIL;
+
+		m_Animations.push_back(pAnimation);
+	}
+
+	return S_OK;
+}
+
 CModel * CModel::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, MODELTYPE eType, 
 	const char * pModelFilePath, const char * pModelFileName, _fmatrix TransformMatrix)
 {
@@ -234,6 +258,10 @@ void CModel::Free()
 	
 	m_vecBones.clear();
 
+	for (auto& pAnimation : m_Animations)
+		Safe_Release(pAnimation);
+
+	m_Animations.clear();
 
 	if (false == m_isCloned)
 		m_Importer.FreeScene();

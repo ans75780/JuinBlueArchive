@@ -18,9 +18,12 @@ public:
 		return m_szName;
 	}
 
-	void Set_OffsetMatrix(_fmatrix OffsetMatrix)
-	{
+	void Set_OffsetMatrix(_fmatrix OffsetMatrix) {
 		XMStoreFloat4x4(&m_OffsetMatrix, OffsetMatrix);
+	}
+
+	void Set_TransformationMatrix(_fmatrix TransformationMatrix) {
+		XMStoreFloat4x4(&m_TransformationMatrix, TransformationMatrix);
 	}
 
 public:

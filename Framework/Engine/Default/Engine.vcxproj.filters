@@ -115,6 +115,12 @@
     <ClInclude Include="..\Public\BoneNode.h">
       <Filter>01.Utility\06.Model\01.BoneNode</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Channel.h">
+      <Filter>01.Utility\06.Model\02.Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Animation.h">
+      <Filter>01.Utility\06.Model\02.Animation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -215,6 +221,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\BoneNode.cpp">
       <Filter>01.Utility\06.Model\01.BoneNode</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Animation.cpp">
+      <Filter>01.Utility\06.Model\02.Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Channel.cpp">
+      <Filter>01.Utility\06.Model\02.Animation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -325,6 +337,12 @@
     </Filter>
     <Filter Include="01.Utility\06.Model\01.BoneNode">
       <UniqueIdentifier>{aaac6dd8-f5e6-4e2f-9faa-22408bd5013b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\06.Model\02.Animation">
+      <UniqueIdentifier>{76bacb77-b337-4c5d-adae-1636d64ba866}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\06.Model\02.Animation\Channel">
+      <UniqueIdentifier>{c7baa94f-f5aa-4e94-9da9-e16113dd6f46}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -155,7 +155,7 @@ HRESULT CMeshContainer::Ready_VertexBuffer_Anim(const aiMesh* pAIMesh, CModel* p
 		pNode->Set_OffsetMatrix(XMMatrixTranspose(XMLoadFloat4x4(&OffSetMatrix)));
 
 		m_vecBones.push_back(pNode);
-		Safe_AddRef(pBone);
+		//Safe_AddRef(pBone);
 		/* pAIBone->mNumWeights : 이 뼈는 몇개의 정점에 영향릉 주는지 */
 		for (_uint j = 0; j < pBone->mNumWeights; ++j)
 		{
@@ -227,5 +227,6 @@ CComponent * CMeshContainer::Clone(void * pArg)
 
 void CMeshContainer::Free()
 {
+	m_vecBones.clear();
 	__super::Free();
 }

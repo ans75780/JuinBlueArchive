@@ -46,9 +46,16 @@ private:
 	typedef vector<class CBoneNode*>	BONES;
 
 private:
+	_uint									m_iCurrentAnimationIndex = 0;
+	_uint									m_iNumAnimations;
+	vector<class CAnimation*>				m_Animations;
+	typedef vector<class CAnimation*>		ANIMATIONS;
+
+private:
 	HRESULT Create_MeshContainers();
 	HRESULT	Create_Materials(const char*	pModelFilePath);
 	HRESULT Create_Bones(aiNode* pNode, class CBoneNode* pParent, _uint iDepth);
+	HRESULT Create_Animations();
 
 
 
