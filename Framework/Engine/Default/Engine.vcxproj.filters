@@ -112,6 +112,9 @@
     <ClInclude Include="..\Public\Light_Manager.h">
       <Filter>07. Lights\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\BoneNode.h">
+      <Filter>01.Utility\06.Model\01.BoneNode</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -209,6 +212,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Light_Manager.cpp">
       <Filter>07. Lights\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BoneNode.cpp">
+      <Filter>01.Utility\06.Model\01.BoneNode</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -316,6 +322,9 @@
     </Filter>
     <Filter Include="07. Lights\Manager">
       <UniqueIdentifier>{becff00b-9250-40a4-a2d0-9a620791f969}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\06.Model\01.BoneNode">
+      <UniqueIdentifier>{aaac6dd8-f5e6-4e2f-9faa-22408bd5013b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

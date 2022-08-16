@@ -14,7 +14,8 @@ private:
 	virtual ~CModel() = default;
 
 public:
-	HRESULT Initialize_Prototype(MODELTYPE eType, const char* pModelFilePath, const char* pModelFileName);
+	HRESULT Initialize_Prototype(MODELTYPE eType, 
+		const char* pModelFilePath, const char* pModelFileName, _fmatrix TransformMatrix);
 	HRESULT Initialize(void* pArg) override;
 	HRESULT Render(_uint iMeshIndex);
 
@@ -23,6 +24,10 @@ public:
 
 public:
 	_uint	Get_NumMeshContainers() const { return m_iNumMeshContainers; }
+
+public:
+	class CBoneNode* Find_Bone(const char* pBoneName);
+
 
 private:
 	const aiScene*				m_pAIScene = nullptr;
@@ -35,12 +40,25 @@ private:
 	typedef vector<class CMeshContainer*>	MESHCONTAINERS;
 	_uint			m_iNumMeshContainers = 0;
 	_uint			m_iNumMaterials = 0;
+
+private:
+	vector<class CBoneNode*>			m_vecBones;
+	typedef vector<class CBoneNode*>	BONES;
+
 private:
 	HRESULT Create_MeshContainers();
 	HRESULT	Create_Materials(const char*	pModelFilePath);
+	HRESULT Create_Bones(aiNode* pNode, class CBoneNode* pParent, _uint iDepth);
+
+
+
+
+private:
+	_float4x4	m_TransformMatrix;
 
 public:
-	static CModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, MODELTYPE eType, const char* pModelFilePath, const char* pModelFileName);
+	static CModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, MODELTYPE eType, 
+		const char* pModelFilePath, const char* pModelFileName, _fmatrix TransformMatrix);
 	virtual CComponent* Clone(void* pArg = nullptr) override;
 	virtual void Free() override;
 };

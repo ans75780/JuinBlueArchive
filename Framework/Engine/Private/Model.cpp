@@ -1,6 +1,7 @@
 #include "..\Public\Model.h"
 #include "MeshContainer.h"
 #include "Texture.h"
+#include "BoneNode.h"
 CModel::CModel(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CComponent(pDevice, pContext)
 {
@@ -13,6 +14,7 @@ CModel::CModel(const CModel & rhs)
 	, m_iNumMeshContainers(rhs.m_iNumMeshContainers)
 	, m_Materials(rhs.m_Materials)
 	, m_iNumMaterials(rhs.m_iNumMaterials)
+	, m_vecBones(rhs.m_vecBones)
 {
 	for (auto& Material : m_Materials)
 	{
@@ -23,10 +25,16 @@ CModel::CModel(const CModel & rhs)
 	for (auto& pMeshContainer : m_MeshContainers)
 		Safe_AddRef(pMeshContainer);
 
+	for (auto& pBoneNode : m_vecBones)
+		Safe_AddRef(pBoneNode);
+
 }
-HRESULT CModel::Initialize_Prototype(MODELTYPE eType, const char* pModelFilePath, const char* pModelFileName)
+HRESULT CModel::Initialize_Prototype(MODELTYPE eType, 
+	const char* pModelFilePath, const char* pModelFileName, _fmatrix TransformMatrix)
 {
 	m_eModelType = eType;
+
+	XMStoreFloat4x4(&m_TransformMatrix, TransformMatrix);
 
 	char			szFullPath[MAX_PATH] = "";
 
@@ -38,10 +46,20 @@ HRESULT CModel::Initialize_Prototype(MODELTYPE eType, const char* pModelFilePath
 	else
 		m_pAIScene = m_Importer.ReadFile(szFullPath, aiProcess_ConvertToLeftHanded | aiProcess_GenNormals | aiProcess_CalcTangentSpace);
 
-	if (FAILED(Create_MeshContainers()))
-		return E_FAIL;
 	if (FAILED(Create_Materials(pModelFilePath)))
 		return E_FAIL;
+
+	if (FAILED(Create_Bones(m_pAIScene->mRootNode, nullptr, 0)))
+		return E_FAIL;
+
+	sort(m_vecBones.begin(), m_vecBones.end(), [](CBoneNode* pSour, CBoneNode* pDest)
+	{
+		return pSour->Get_Depth() < pDest->Get_Depth();
+	});
+
+	if (FAILED(Create_MeshContainers()))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -74,13 +92,26 @@ HRESULT CModel::Bind_SRV(CShader * pShader, const char * pConstantName, _uint iM
 	return m_Materials[iMaterialIndex].pTextures[eType]->Set_ShaderResourceView(pShader, pConstantName);
 }
 
+CBoneNode * CModel::Find_Bone(const char * pBoneName)
+{
+	auto	iter = find_if(m_vecBones.begin(), m_vecBones.end(), [&](CBoneNode* pNode)
+	{
+		return !strcmp(pBoneName, pNode->Get_Name());
+	});
+	if (iter == m_vecBones.end())
+		return nullptr;
+
+	return *iter;
+}
+
 HRESULT CModel::Create_MeshContainers()
 {
 	m_iNumMeshContainers = m_pAIScene->mNumMeshes;
 
 	for (_uint i = 0; i < m_iNumMeshContainers; ++i)
 	{
-		CMeshContainer*		pMeshContainer = CMeshContainer::Create(m_pDevice, m_pContext, m_eModelType, m_pAIScene->mMeshes[i]);
+		CMeshContainer*		pMeshContainer = CMeshContainer::Create(m_pDevice, m_pContext, m_eModelType, m_pAIScene->mMeshes[i],
+			this, XMLoadFloat4x4(&m_TransformMatrix));
 		if (nullptr == pMeshContainer)
 			return E_FAIL;
 
@@ -140,11 +171,26 @@ HRESULT CModel::Create_Materials(const char * pModelFilePath)
 	return S_OK;
 }
 
-CModel * CModel::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, MODELTYPE eType, const char * pModelFilePath, const char * pModelFileName)
+HRESULT CModel::Create_Bones(aiNode * pAINode, CBoneNode * pParent, _uint iDepth)
+{
+	CBoneNode*		pBoneNode = CBoneNode::Create(pAINode, pParent, iDepth);
+	if (nullptr == pBoneNode)
+		return E_FAIL;
+
+	m_vecBones.push_back(pBoneNode);
+
+	for (_uint i = 0; i < pAINode->mNumChildren; ++i)
+		Create_Bones(pAINode->mChildren[i], pBoneNode, iDepth + 1);
+
+	return S_OK;
+}
+
+CModel * CModel::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, MODELTYPE eType, 
+	const char * pModelFilePath, const char * pModelFileName, _fmatrix TransformMatrix)
 {
 	CModel*		pInstance = new CModel(pDevice, pContext);
 
-	if (FAILED(pInstance->Initialize_Prototype(eType, pModelFilePath, pModelFileName)))
+	if (FAILED(pInstance->Initialize_Prototype(eType, pModelFilePath, pModelFileName, TransformMatrix)))
 	{
 		MSG_BOX("Failed to Created : CModel");
 		Safe_Release(pInstance);
@@ -182,6 +228,12 @@ void CModel::Free()
 		Safe_Release(pMeshContainer);
 
 	m_MeshContainers.clear();
+
+	for (auto& pBoneNode : m_vecBones)
+		Safe_Release(pBoneNode);
+	
+	m_vecBones.clear();
+
 
 	if (false == m_isCloned)
 		m_Importer.FreeScene();
