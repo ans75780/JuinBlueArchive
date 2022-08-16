@@ -82,6 +82,9 @@
     <ClInclude Include="..\Public\TestObject_Model_Haruka.h">
       <Filter>02.GameObject\TestObject\Model</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\ShaderFiles\Client_Shader_Defines.hpp">
+      <Filter>03.ShaderFiles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -244,6 +247,12 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="..\..\ShaderFiles\Shader_VtxCubeTex.hlsl">
+      <Filter>03.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\ShaderFiles\Shader_VtxModel.hlsl">
+      <Filter>03.ShaderFiles</Filter>
+    </FxCompile>
     <FxCompile Include="..\..\ShaderFiles\Shader_VtxNorTex.hlsl">
       <Filter>03.ShaderFiles</Filter>
     </FxCompile>

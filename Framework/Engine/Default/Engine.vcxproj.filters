@@ -106,6 +106,12 @@
     <ClInclude Include="..\Public\UI_Manager.h">
       <Filter>01.Utility\02.GameObject\UI\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Light.h">
+      <Filter>07. Lights\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Light_Manager.h">
+      <Filter>07. Lights\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -197,6 +203,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\MeshContainer.cpp">
       <Filter>01.Utility\06.Model\00.MeshContainer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Light.cpp">
+      <Filter>07. Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Light_Manager.cpp">
+      <Filter>07. Lights\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -298,6 +310,12 @@
     </Filter>
     <Filter Include="01.Utility\06.Model\00.MeshContainer">
       <UniqueIdentifier>{69ada1fb-6d0c-4f06-8237-d26fd981f22d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="07. Lights">
+      <UniqueIdentifier>{e02fe924-ed71-486b-86c7-5855825009be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="07. Lights\Manager">
+      <UniqueIdentifier>{becff00b-9250-40a4-a2d0-9a620791f969}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

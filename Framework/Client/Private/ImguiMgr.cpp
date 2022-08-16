@@ -15,6 +15,7 @@ IMPLEMENT_SINGLETON(CImguiMgr)
 CImguiMgr::CImguiMgr()
 	: show_demo_window(false), show_mainBar(true)
 	, m_pGameInstance(CGameInstance::Get_Instance())
+	, m_currentLevelID(0)
 {
 	Safe_AddRef(m_pGameInstance);
 }
@@ -140,7 +141,9 @@ void CImguiMgr::HelloJusin_View(void)
 	char tempText_CurrentLevel[64] = "Current Level = \0";
 	char tempText_Level[32] = {};
 
-	switch (m_pGameInstance->Get_CurrentLevelID())
+	m_currentLevelID = m_pGameInstance->Get_CurrentLevelID();
+
+	switch (m_currentLevelID)
 	{
 	case LEVEL_STATIC:
 		strcpy_s(tempText_Level, "LEVEL_STATIC");
@@ -174,9 +177,9 @@ void CImguiMgr::HelloJusin_View(void)
 
 			ImGui::EndTabItem();
 		}
-		if (ImGui::BeginTabItem("Tool"))
+		if (ImGui::BeginTabItem("Object"))
 		{
-			HelloJusin_Tap_Tool();
+			HelloJusin_Tap_Object();
 
 			ImGui::EndTabItem();
 		}
@@ -195,6 +198,8 @@ void CImguiMgr::HelloJusin_View(void)
 
 void CImguiMgr::HelloJusin_Tap_Main(void)			//HelloJusin_Tap_Main
 {
+	ImGuiIO& io = ImGui::GetIO();
+
 	static float f = 0.0f;
 	static int counter = 0;
 	static float backBuffer_Color[4] = { 0.f, 0.f, 1.f, 1.f };
@@ -212,46 +217,100 @@ void CImguiMgr::HelloJusin_Tap_Main(void)			//HelloJusin_Tap_Main
 	ImGui::SameLine();
 	ImGui::Text("counter = %d", counter);
 	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+	
+	if (ImGui::IsMousePosValid())
+		ImGui::Text("Mouse pos: (%g, %g)", io.MousePos.x, io.MousePos.y);
+
+
 }
 
-void CImguiMgr::HelloJusin_Tap_Tool(void)
+void CImguiMgr::HelloJusin_Tap_Object(void)
 {
-	if (ImGui::CollapsingHeader("Current_GameObject"))
+	Tap_Object_CObj();
+
+	ImGui::Separator();
+
+	Tap_Object_CUI();
+}
+
+void CImguiMgr::Tap_Object_CObj(void)
+{
+	if (ImGui::CollapsingHeader("CGameObjects"))
 	{
-		list<CGameObject*> pGameObject_List = m_pGameInstance->Get_GameObjects(m_pGameInstance->Get_CurrentLevelID(), TEXT("Layer_Test"));
+		map<const _tchar*, class CLayer*> pGameObject_Layer = m_pGameInstance->Get_Layer(m_currentLevelID);
 
-		if (pGameObject_List.empty())
-			return;
-
-		int count = 1;
-
-		char tempName[MAX_PATH] = {};
-		char tempNum[32] = {};
-
-		for (auto iter : pGameObject_List)
+		if (pGameObject_Layer.empty())
 		{
-			strcpy_s(tempName, MAX_PATH, ConvertWCtoC(iter->Get_OBJ_DESC().sz_Name));
-			_itoa_s(count, tempNum, 32, 10);
-			strcat_s(tempName, MAX_PATH, "##");
-			strcat_s(tempName, MAX_PATH, tempNum);
-
-			if (ImGui::TreeNode(tempName))
-			{
-				ImGui::Text("number : %d", count);
-
-				ImGui::TreePop();
-			}
-			count++;
-
+			ImGui::Text("Layer is Empty ");
+			return;
 		}
 
+		for (auto& iter_Layer : pGameObject_Layer)		//레이어탐색
+		{
+			if (ImGui::TreeNode(ConvertWCtoC(iter_Layer.first)))	//레이어 이름으로 노드생성
+			{
+				list<CGameObject*> pGameObject_List = m_pGameInstance->Get_GameObjects(m_currentLevelID, iter_Layer.first);
+
+				if (pGameObject_List.empty())
+				{
+					ImGui::Text("GameObject is Empty ");
+					continue;
+				}
+
+				int count = 1;
+
+				char tempName[MAX_PATH] = {};
+				char tempNum[32] = {};
+
+				for (auto& iter_List : pGameObject_List)	//레이어안에있는 오브젝트 순회
+				{
+					strcpy_s(tempName, MAX_PATH, ConvertWCtoC(iter_List->Get_OBJ_DESC().sz_Name));
+					_itoa_s(count, tempNum, 32, 10);
+					strcat_s(tempName, MAX_PATH, tempNum);
+
+					if (ImGui::TreeNode(tempName))
+					{
+						if (ImGui::TreeNode("Transform"))
+						{
+							auto* temp = (CTransform*)iter_List->Get_Component(TEXT("Com_Transform"));
+
+							_float3 _Scale = temp->Get_Scaled();
+							float _ScaleFloat3[3] = { _Scale.x, _Scale.y, _Scale.z };
+							if (ImGui::InputFloat3("Scale", _ScaleFloat3, "%.3f", 0))
+							{
+								temp->Set_Scaled(_float3(_ScaleFloat3[0], _ScaleFloat3[1], _ScaleFloat3[2]));
+							}
+
+							_vector _Translation = temp->Get_State(CTransform::STATE_TRANSLATION);
+							_float4 _fTrans;
+							XMStoreFloat4(&_fTrans, _Translation);
+							float _TransFloat4[4] = { _fTrans.x, _fTrans.y, _fTrans.z, _fTrans.w };
+							if (ImGui::InputFloat3("Translation", _TransFloat4, "%.3f", 0))
+							{
+								_fTrans = { _TransFloat4[0], _TransFloat4[1], _TransFloat4[2], _TransFloat4[3] };
+								temp->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&_fTrans));
+							}
 
 
+							ImGui::TreePop();
+						}
+						ImGui::TreePop();
+					}
+					count++;
+				}
+				ImGui::TreePop();
+			}
+		}
 
 	}
+}
 
+void CImguiMgr::Tap_Object_CUI(void)
+{
+	if (ImGui::CollapsingHeader("CUI"))
+	{
 
-
+	}
 }
 
 void CImguiMgr::HelloJusin_Tap_Level(void)
@@ -277,7 +336,7 @@ void CImguiMgr::HelloJusin_Tap_Level(void)
 			ImGui::TableNextColumn();
 			if(ImGui::Button(buf, ImVec2(-FLT_MIN, 0.0f)))
 			{
-				if (LEVEL_LOADING == m_pGameInstance->Get_CurrentLevelID() || i == m_pGameInstance->Get_CurrentLevelID())
+				if (LEVEL_LOADING == m_currentLevelID || i == m_currentLevelID)
 					continue;
 
 				if (m_pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, (LEVEL)i)))

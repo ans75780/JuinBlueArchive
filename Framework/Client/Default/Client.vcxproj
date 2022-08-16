@@ -165,12 +165,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-<<<<<<< Updated upstream
-=======
-    <ClInclude Include="..\..\ShaderFiles\Client_Shader_Defines.hpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-    </ClInclude>
->>>>>>> Stashed changes
+    <ClInclude Include="..\..\ShaderFiles\Client_Shader_Defines.hpp" />
     <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\Public\Camera_Free.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
@@ -237,6 +232,8 @@
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="..\..\ShaderFiles\Shader_VtxCubeTex.hlsl" />
+    <FxCompile Include="..\..\ShaderFiles\Shader_VtxModel.hlsl" />
     <FxCompile Include="..\..\ShaderFiles\Shader_VtxNorTex.hlsl" />
     <FxCompile Include="..\..\ShaderFiles\Shader_VtxTex.hlsl" />
   </ItemGroup>

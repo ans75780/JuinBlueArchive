@@ -24,8 +24,12 @@ public:
 
 private:
 	void	HelloJusin_View(void);
-	void	HelloJusin_Tap_Main(void);
-	void	HelloJusin_Tap_Tool(void);
+	void		HelloJusin_Tap_Main(void);
+	
+	void		HelloJusin_Tap_Object(void);
+	void			Tap_Object_CObj(void);
+	void			Tap_Object_CUI(void);
+
 	void	HelloJusin_Tap_Level(void);
 
 
@@ -34,6 +38,8 @@ private:
 	CGameInstance*         m_pGameInstance = nullptr;
 	ID3D11Device*         m_pDevice = nullptr;
 	ID3D11DeviceContext*   m_pContext = nullptr;
+
+	_uint m_currentLevelID = 0;
 
 	bool show_demo_window;
 	bool show_mainBar;

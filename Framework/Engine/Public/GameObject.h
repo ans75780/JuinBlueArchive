@@ -11,8 +11,6 @@ public:
 	typedef struct GameObjcetDesc		
 	{
 		_tchar		sz_Name[MAX_PATH];
-		_float4		fPos;
-	
 	}OBJ_DESC;
 
 protected:

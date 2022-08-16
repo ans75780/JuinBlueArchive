@@ -13,12 +13,17 @@ CMeshContainer::CMeshContainer(const CMeshContainer & rhs)
 
 HRESULT CMeshContainer::Initialize_Prototype(CModel::MODELTYPE eType, const aiMesh * pAIMesh)
 {
+	m_iMaterialIndex = pAIMesh->mMaterialIndex;
+	
+	
+	strcpy_s(m_pMeshName,MAX_PATH, pAIMesh->mName.data);
 #pragma region VERTEXBUFFER
 
 	HRESULT		hr = 0;
 
 	if (CModel::TYPE_NONANIM == eType)
 		hr = Ready_VertexBuffer_NonAnim(pAIMesh);
+
 
 	if (FAILED(hr))
 		return E_FAIL;
@@ -72,7 +77,6 @@ HRESULT CMeshContainer::Ready_VertexBuffer_NonAnim(const aiMesh* pAIMesh)
 	m_iStride = sizeof(VTXMODEL);
 	m_iNumVertices = pAIMesh->mNumVertices;
 	m_iNumVertexBuffers = 1;
-
 	ZeroMemory(&m_BufferDesc, sizeof(D3D11_BUFFER_DESC));
 	m_BufferDesc.ByteWidth = m_iStride * m_iNumVertices;
 	m_BufferDesc.Usage = D3D11_USAGE_DEFAULT;

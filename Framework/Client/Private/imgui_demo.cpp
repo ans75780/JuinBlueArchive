@@ -2087,7 +2087,6 @@ static void ShowDemoWindowWidgets()
 
         ImGui::TreePop();
     }
-
     IMGUI_DEMO_MARKER("Widgets/Multi-component Widgets");
     if (ImGui::TreeNode("Multi-component Widgets"))
     {
