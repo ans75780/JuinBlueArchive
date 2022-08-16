@@ -157,6 +157,10 @@ void CImguiMgr::HelloJusin_View(void)
 	case LEVEL_GAMEPLAY:
 		strcpy_s(tempText_Level, "LEVEL_GAMEPLAY");
 		break;
+	case LEVEL_MAPTOOL:
+		strcpy_s(tempText_Level, "LEVEL_MAPTOOL");
+		break;
+
 	case LEVEL_END:
 		strcpy_s(tempText_Level, "ERROR");
 		break;
@@ -328,6 +332,9 @@ void CImguiMgr::HelloJusin_Tap_Level(void)
 				break;
 			case LEVEL_GAMEPLAY:
 				strcpy_s(buf, "LEVEL_GAMEPLAY");
+				break;
+			case LEVEL_MAPTOOL:
+				strcpy_s(buf, "LEVEL_MAPTOOL");
 				break;
 			default:
 				continue;

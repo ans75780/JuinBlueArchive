@@ -26,6 +26,7 @@ public:
 
 public:
 	void DisableCanvas(_uint iLevelIndex);
+
 private:
 	vector<class CUI_Canvas*>			m_vecCanvas;
 	typedef vector<class CUI_Canvas*>	CANVASES;

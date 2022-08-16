@@ -47,6 +47,9 @@ unsigned int APIENTRY LoadingMain(void* pArg)
 	case LEVEL_GAMEPLAY:
 		hr = pLoader->Loading_ForGamePlayLevel();
 		break;
+	case LEVEL_MAPTOOL:
+		hr = pLoader->Loading_ForMapToolLevel();
+		break;
 	}	
 
 	if (FAILED(hr))
@@ -129,7 +132,6 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 	return S_OK;
 }
-
 
 HRESULT CLoader::Loading_ForGamePlayLevel()
 {
@@ -267,6 +269,75 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 
 
 	return S_OK;
+}
+
+HRESULT CLoader::Loading_ForMapToolLevel()
+{
+	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
+	Safe_AddRef(pGameInstance);
+
+#pragma region PROTOTYPE_GAMEOBJECT
+
+	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
+
+	/* For.Prototype_GameObject_Camera_Free*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Camera_Free"),
+		CCamera_Free::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+#pragma endregion
+
+
+#pragma region LOAD_TEXTURE
+
+	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중이비낟. "));
+	//* For.Prototype_Component_Texture_Terrain */
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_MAPTOOL, TEXT("Prototype_Component_Texture_Terrain"),
+	//	CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/Grass_%d.dds"), 2))))
+	//	return E_FAIL;
+
+#pragma endregion
+
+#pragma region LOAD_MODEL
+	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중이비낟. "));
+
+	/* For.Prototype_Component_VIBuffer_Terrain */
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_MAPTOOL, TEXT("Prototype_Component_VIBuffer_Terrain"),
+	//	CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/Height.bmp")))))
+	//	return E_FAIL;
+
+
+	/* For.Prototype_Component_Model_*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_MAPTOOL, TEXT("Test_Prototype_Component_Model_ForkLift"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Models/NonAnimModels/ForkLift/", "ForkLift.fbx"))))
+		return E_FAIL;
+
+	///* For.Prototype_Component_VIBuffer_Cube*/
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Cube"),
+	//	CVIBuffer_Cube::Create(m_pGraphic_Device))))
+	//	return E_FAIL;
+#pragma endregion
+
+#pragma region LOAD_SHADER
+	lstrcpy(m_szLoadingText, TEXT("셰이더를 로딩중이빈다. "));
+
+
+	/* For.Prototype_Component_Shader_VtxTex */
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_MAPTOOL, TEXT("Prototype_Component_Shader_VtxNorTex"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../../ShaderFiles/Shader_VtxNorTex.hlsl"), VTXNORTEX_DECLARATION::Element, VTXNORTEX_DECLARATION::iNumElements))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Shader_VtxModel */
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_MAPTOOL, TEXT("Prototype_Component_Shader_VtxModel"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../../ShaderFiles/Shader_VtxModel.hlsl"), VTXMODEL_DECLARATION::Element, VTXMODEL_DECLARATION::iNumElements))))
+		return E_FAIL;
+#pragma endregion
+
+	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));
+
+	m_isFinished = true;
+
+	Safe_Release(pGameInstance);
 }
 
 CLoader * CLoader::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevel)

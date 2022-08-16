@@ -85,6 +85,9 @@
     <ClInclude Include="..\..\ShaderFiles\Client_Shader_Defines.hpp">
       <Filter>03.ShaderFiles</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Level_MapTool.h">
+      <Filter>01.Level\MapTool</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -155,6 +158,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\UI_TestDialogButton.cpp">
       <Filter>02.GameObject\UI\Dialog\DialogButton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_MapTool.cpp">
+      <Filter>01.Level\MapTool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -234,6 +240,9 @@
     </Filter>
     <Filter Include="02.GameObject\UI\Dialog\DialogButton">
       <UniqueIdentifier>{c10e9d8b-a1b7-4e0d-8c83-e35e276fdf7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Level\MapTool">
+      <UniqueIdentifier>{a67c9f66-02ae-4f1b-9476-9f476b9bfa9f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
