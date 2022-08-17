@@ -129,7 +129,7 @@ HRESULT CMeshContainer::Ready_VertexBuffer_Anim(const aiMesh* pAIMesh, CModel* p
 	m_BufferDesc.MiscFlags = 0;
 
 	VTXANIM*			pVertices = new VTXANIM[m_iNumVertices];
-
+	ZeroMemory(&pVertices, sizeof(VTXANIM) * m_iNumVertices);
 	for (_uint i = 0; i < m_iNumVertices; ++i)
 	{
 		memcpy(&pVertices[i].vPosition, &pAIMesh->mVertices[i], sizeof(_float3));
