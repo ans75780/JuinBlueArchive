@@ -78,9 +78,8 @@ HRESULT CTestObject_Model_Haruka::Render()
 		/*if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
 		return E_FAIL;*/
 
-		m_pShaderCom->Begin(0);
-
-		m_pModelCom->Render(i);
+//		m_pShaderCom->Begin(0);
+		m_pModelCom->Render(i,m_pShaderCom, "g_BoneMatrix");
 	}
 
 	return S_OK;
@@ -90,7 +89,7 @@ HRESULT CTestObject_Model_Haruka::Render()
 HRESULT CTestObject_Model_Haruka::SetUp_Components()
 {
 	/* For.Com_Shader */
-	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxModel"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
+	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxAnimModel"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
 		return E_FAIL;
 
 	/* For.Com_Renderer */

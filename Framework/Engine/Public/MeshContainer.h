@@ -25,10 +25,12 @@ public:
 	HRESULT Ready_VertexBuffer_Anim(const aiMesh* pAIMesh, class CModel* pModel);
 
 public:
-	const char*			Get_Name() const { return m_pMeshName; }
+	void				SetUp_BoneMatrices(_float4x4* pBoneMatrices, _fmatrix TransformationMatrix);
+public:
+	const char*			Get_Name() const { return m_szName; }
 
 private: 
-	char				m_pMeshName[MAX_PATH] = "";
+	char				m_szName[MAX_PATH] = "";
 
 	/* 현재ㅑ 메시컨테이너에게 적용되어야할 머테리얼 인덱스*/
 	_uint				m_iMaterialIndex = 0;

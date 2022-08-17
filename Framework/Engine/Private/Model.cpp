@@ -3,6 +3,7 @@
 #include "Texture.h"
 #include "BoneNode.h"
 #include "Animation.h"
+#include "Shader.h"
 CModel::CModel(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CComponent(pDevice, pContext)
 {
@@ -16,7 +17,10 @@ CModel::CModel(const CModel & rhs)
 	, m_Materials(rhs.m_Materials)
 	, m_iNumMaterials(rhs.m_iNumMaterials)
 	, m_vecBones(rhs.m_vecBones)
+	, m_iCurrentAnimationIndex(rhs.m_iCurrentAnimationIndex)
+	, m_iNumAnimations(rhs.m_iNumAnimations)
 	, m_Animations(rhs.m_Animations)
+	, m_TransformMatrix(rhs.m_TransformMatrix)
 {
 	for (auto& Material : m_Materials)
 	{
@@ -77,15 +81,38 @@ HRESULT CModel::Initialize(void * pArg)
 	return S_OK;
 }
 
-HRESULT CModel::Render(_uint iMeshIndex)
+HRESULT CModel::Render(_uint iMeshIndex, CShader* pShader, const char* pConstantBoneName)
 {
 	if (iMeshIndex >= m_iNumMeshContainers)
 		return E_FAIL;
 
+	/*그리고자 하는 메쉬의 본 정보 */
+	_float4x4			BoneMatrices[256];
+
+	m_MeshContainers[iMeshIndex]->SetUp_BoneMatrices(BoneMatrices, XMLoadFloat4x4(&m_TransformMatrix));
+	pShader->Set_RawValue(pConstantBoneName, BoneMatrices, sizeof(_float4x4) * 256);
 	m_MeshContainers[iMeshIndex]->Render();
+	
+	pShader->Begin(0);
+
 	return S_OK;
 }
 
+
+HRESULT CModel::Play_Animation(_float fTimeDelta)
+{
+	if (m_iCurrentAnimationIndex >= m_iNumAnimations)
+		return E_FAIL;
+
+	m_Animations[m_iCurrentAnimationIndex]->Update_TransformationMatrices(fTimeDelta);
+
+	for (auto& pBoneNode : m_vecBones)
+	{
+		pBoneNode->Update_CombinedTransformationMatrix();
+	}
+
+	return S_OK;
+}
 
 HRESULT CModel::Bind_SRV(CShader * pShader, const char * pConstantName, _uint iMeshContainerIndex, aiTextureType eType)
 {

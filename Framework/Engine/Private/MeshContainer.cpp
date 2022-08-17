@@ -19,7 +19,7 @@ HRESULT CMeshContainer::Initialize_Prototype(CModel::MODELTYPE eType, const aiMe
 	m_iMaterialIndex = pAIMesh->mMaterialIndex;
 
 	
-	strcpy_s(m_pMeshName,MAX_PATH, pAIMesh->mName.data);
+	strcpy_s(m_szName, pAIMesh->mName.data);
 #pragma region VERTEXBUFFER
 
 	HRESULT		hr = 0;
@@ -187,7 +187,16 @@ HRESULT CMeshContainer::Ready_VertexBuffer_Anim(const aiMesh* pAIMesh, CModel* p
 			}
 		}
 	}
+	//뼈가 없는 메쉬의 경우 무조건 뼈를 1개는 가질 수 있도록 함.
+	if (0 == m_iNumBones)
+	{
+		m_iNumBones = 1;
 
+		CBoneNode*	pNode = pModel->Find_Bone(m_szName);
+
+		m_vecBones.push_back(pNode);
+		Safe_AddRef(pNode);
+	}
 	ZeroMemory(&m_SubResourceData, sizeof(D3D11_SUBRESOURCE_DATA));
 	m_SubResourceData.pSysMem = pVertices;
 
@@ -196,6 +205,24 @@ HRESULT CMeshContainer::Ready_VertexBuffer_Anim(const aiMesh* pAIMesh, CModel* p
 
 	Safe_Delete_Array(pVertices);
 	return S_OK;
+}
+
+void CMeshContainer::SetUp_BoneMatrices(_float4x4 * pBoneMatrices, _fmatrix TransformationMatrix)
+{
+	if (m_iNumBones > 256)
+	{
+		MSG_BOX("어.... 본이 ㅈㄴ 많은데요??");
+		return;
+	}
+	_uint iIndex = 0;
+	for (auto& pBone : m_vecBones)
+	{
+		XMStoreFloat4x4
+			(&pBoneMatrices[iIndex],
+			XMMatrixTranspose( pBone->Get_OffsetMatrix() * pBone->Get_CombinedMatrix() * TransformationMatrix)
+			);
+		iIndex++;
+	}
 }
 
 CMeshContainer * CMeshContainer::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, 

@@ -41,6 +41,9 @@ void CAnimation::Update_TransformationMatrices(_float fTimeDelta)
 
 	for (_uint i = 0; i < m_iNumChannels; ++i)
 	{
+		if (m_isFinished)
+			m_Channels[i]->ResetKeyFrame();
+
 		m_Channels[i]->Update_TransformationMatrices(m_fTimeAcc);
 	}
 

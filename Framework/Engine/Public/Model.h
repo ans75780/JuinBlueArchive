@@ -17,9 +17,11 @@ public:
 	HRESULT Initialize_Prototype(MODELTYPE eType, 
 		const char* pModelFilePath, const char* pModelFileName, _fmatrix TransformMatrix);
 	HRESULT Initialize(void* pArg) override;
-	HRESULT Render(_uint iMeshIndex);
+	HRESULT Render(_uint iMeshIndex, class CShader* pShader, const char* pConstantBoneName);
 
 public:
+	HRESULT	Play_Animation(_float fTimeDelta);
+
 	HRESULT Bind_SRV(class CShader* pShader, const char* pContantName, _uint iMeshContainerIndex, aiTextureType eType);
 
 public:

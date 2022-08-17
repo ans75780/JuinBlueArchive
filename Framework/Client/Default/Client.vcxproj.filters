@@ -259,5 +259,8 @@
     <FxCompile Include="..\..\ShaderFiles\Shader_VtxTex.hlsl">
       <Filter>03.ShaderFiles</Filter>
     </FxCompile>
+    <FxCompile Include="..\..\ShaderFiles\Shader_VtxAnimModel.hlsl">
+      <Filter>03.ShaderFiles</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

@@ -115,11 +115,11 @@
     <ClInclude Include="..\Public\BoneNode.h">
       <Filter>01.Utility\06.Model\01.BoneNode</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Channel.h">
-      <Filter>01.Utility\06.Model\02.Animation</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Animation.h">
       <Filter>01.Utility\06.Model\02.Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Channel.h">
+      <Filter>01.Utility\06.Model\02.Animation\Channel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -226,7 +226,7 @@
       <Filter>01.Utility\06.Model\02.Animation</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Channel.cpp">
-      <Filter>01.Utility\06.Model\02.Animation</Filter>
+      <Filter>01.Utility\06.Model\02.Animation\Channel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

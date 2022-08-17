@@ -5,6 +5,14 @@ namespace Engine
 	enum MOUSEBUTTON { MBS_LBUTTON, MBS_RBUTTON, MBS_WHEEL, MBS_X, MBS_END };
 	enum MOUSEMOVE { MMS_X, MMS_Y, MMS_WHEEL, MMS_END };
 
+	typedef struct tagKeyFrame
+	{
+		XMFLOAT3		vScale;
+		XMFLOAT4		vRotation;
+		XMFLOAT3		vPosition;
+		float			fTime;
+	} KEYFRAME;
+
 	//UI타입에 따라 업데이트 순서가 결정됨
 	enum  UI_TYPE { UI_POST, UI_DIALOG_BUTTON, UI_DIALOG, UI_BUTTTON, UI_BACKGROUND, UI_END};
 

@@ -26,6 +26,15 @@ HRESULT CBoneNode::Initialize(aiNode * pAINode, CBoneNode* pParent, _uint iDepth
 	return S_OK;
 }
 
+void CBoneNode::Update_CombinedTransformationMatrix()
+{
+	//부모가 없을 경우 트랜스폼의 매트릭스만
+	if (nullptr == m_pParent)
+		m_CombinedTransformationMatrix = m_TransformationMatrix;
+	else
+		XMStoreFloat4x4(&m_CombinedTransformationMatrix,XMLoadFloat4x4(&m_TransformationMatrix)  * XMLoadFloat4x4(&m_pParent->m_CombinedTransformationMatrix));
+}
+
 CBoneNode * CBoneNode::Create(aiNode * pAINode, CBoneNode* pParent, _uint iDepth)
 {
 	CBoneNode*		pInstance = new CBoneNode();
