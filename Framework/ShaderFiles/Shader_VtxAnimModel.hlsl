@@ -19,11 +19,15 @@ vector		g_vMtrlAmbient = vector(1.f, 1.f, 1.f, 1.f);
 vector		g_vMtrlSpecular = vector(1.f, 1.f, 1.f, 1.f);
 float		g_fPower = 30.f;
 
-matrix		g_BoneMatrices[256];
+struct		tagBoneMatrix
+{
+	matrix		BoneMatrices[256];
+};
 
+tagBoneMatrix		g_Bones;
 
-sampler DefaultSampler = sampler_state 
-{		
+sampler DefaultSampler = sampler_state
+{
 	filter = min_mag_mip_linear;
 	AddressU = wrap;
 	AddressV = wrap;
@@ -34,7 +38,7 @@ struct VS_IN
 	float3		vPosition : POSITION;
 	float3		vNormal : NORMAL;
 	float2		vTexUV : TEXCOORD0;
-	float3		vTangent : TANGENT;	
+	float3		vTangent : TANGENT;
 	uint4		vBlendIndex : BLENDINDEX;
 	float4		vBlendWeight : BLENDWEIGHT;
 };
@@ -58,10 +62,10 @@ VS_OUT VS_MAIN(VS_IN In)
 
 	float			fWeightW = 1.f - (In.vBlendWeight.x + In.vBlendWeight.y + In.vBlendWeight.z);
 
-	matrix			BoneMatrix = g_BoneMatrices[In.vBlendIndex.x] * In.vBlendWeight.x + 
-		g_BoneMatrices[In.vBlendIndex.y] * In.vBlendWeight.y + 
-		g_BoneMatrices[In.vBlendIndex.z] * In.vBlendWeight.z + 
-		g_BoneMatrices[In.vBlendIndex.w] * fWeightW;
+	matrix			BoneMatrix = g_Bones.BoneMatrices[In.vBlendIndex.x] * In.vBlendWeight.x +
+		g_Bones.BoneMatrices[In.vBlendIndex.y] * In.vBlendWeight.y +
+		g_Bones.BoneMatrices[In.vBlendIndex.z] * In.vBlendWeight.z +
+		g_Bones.BoneMatrices[In.vBlendIndex.w] * fWeightW;
 
 	vector		vPosition = mul(vector(In.vPosition, 1.f), BoneMatrix);
 
@@ -70,7 +74,7 @@ VS_OUT VS_MAIN(VS_IN In)
 	Out.vWorldPos = mul(vector(In.vPosition, 1.f), g_WorldMatrix);
 	Out.vTexUV = In.vTexUV;
 
-	return Out;	
+	return Out;
 }
 
 // w나누기연산을 수행하낟. (In 투영스페이스)
@@ -88,8 +92,8 @@ struct PS_IN
 };
 
 struct PS_OUT
-{	
-	vector		vColor : SV_TARGET0;	
+{
+	vector		vColor : SV_TARGET0;
 };
 
 PS_OUT PS_MAIN(PS_IN In)
@@ -113,7 +117,7 @@ PS_OUT PS_MAIN(PS_IN In)
 	if (Out.vColor.a < 0.1f)
 		discard;
 
-	return Out;	
+	return Out;
 }
 
 technique11 DefaultTechnique
@@ -127,5 +131,5 @@ technique11 DefaultTechnique
 		VertexShader = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN();
-	}	
+	}
 }

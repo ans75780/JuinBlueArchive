@@ -82,10 +82,6 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _tchar * pLayerTag)
 
 	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Prototype_GameObject_Camera_Free"), &CameraDesc)))
 		return E_FAIL;
-
-	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Prototype_GameObject_Camera_Free"), &CameraDesc)))
-		return E_FAIL;
-
 	Safe_Release(pGameInstance);
 
 	return S_OK;

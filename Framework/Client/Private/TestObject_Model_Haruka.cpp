@@ -79,7 +79,7 @@ HRESULT CTestObject_Model_Haruka::Render()
 		return E_FAIL;*/
 
 //		m_pShaderCom->Begin(0);
-		m_pModelCom->Render(i,m_pShaderCom, "g_BoneMatrix");
+		m_pModelCom->Render(i,m_pShaderCom, "g_Bones");
 	}
 
 	return S_OK;

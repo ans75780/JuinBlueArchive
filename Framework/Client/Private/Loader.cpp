@@ -230,11 +230,6 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	mat = XMMatrixIdentity();
 	/* For.Prototype_Component_Model_*/
 	
-	/* For.Prototype_Component_Model_*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Test_Prototype_Component_Model_ForkLift"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Models/NonAnimModels/ForkLift/", "ForkLift.fbx", mat))))
-		return E_FAIL;
-
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Test_Prototype_Component_Model_Haruka"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/NonAnimModels/Haruka_Original/", "Haruka_Original.fbx", mat))))
 		return E_FAIL;
@@ -262,7 +257,7 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 
 	/* For.Prototype_Component_Shader_VtxAnimModel */
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxAnimModel"),
-		CShader::Create(m_pDevice, m_pContext, TEXT("../../ShaderFiles/Shader_VtxAnimModel.hlsl"), VTXMODEL_DECLARATION::Element, VTXMODEL_DECLARATION::iNumElements))))
+		CShader::Create(m_pDevice, m_pContext, TEXT("../../ShaderFiles/Shader_VtxAnimModel.hlsl"), VTXANIM_DECLARATION::Element, VTXANIM_DECLARATION::iNumElements))))
 		return E_FAIL;
 
 
