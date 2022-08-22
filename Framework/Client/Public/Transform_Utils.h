@@ -1,23 +1,3 @@
-#pragma once
-#include "GameInstance.h"
-
-namespace Engine
-{
-	CTransform;
-}
-
-
-BEGIN(Client)
-
-class CTransform_Utils
-{
-private:
-	CTransform_Utils() {};
-	~CTransform_Utils() {};
-
-public:
-	static	void	Set_Pos(class CTransform* pTransform, const _float4& fPos);
-	static	void	Add_Pos(class CTransform* pTransform, const _float4& fPos);
-};
-
-END
+version https://git-lfs.github.com/spec/v1
+oid sha256:af4686b06ad76fc97412bc1aef73443b80502961deb53024c0cc0dcfaf6be5db
+size 360
