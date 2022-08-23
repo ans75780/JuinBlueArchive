@@ -39,14 +39,14 @@ CModel::CModel(const CModel & rhs)
 		Safe_AddRef(pAnimation);
 
 }
-HRESULT CModel::Initialize_Prototype(MODELTYPE eType, 
+HRESULT CModel::Initialize_Prototype(MODELTYPE eType,
 	const char* pModelFilePath, const char* pModelFileName, _fmatrix TransformMatrix)
 {
 	m_eModelType = eType;
 
 	XMStoreFloat4x4(&m_TransformMatrix, TransformMatrix);
 
-	char			szFullPath[MAX_PATH] = "";
+	char         szFullPath[MAX_PATH] = "";
 
 	strcpy_s(szFullPath, pModelFilePath);
 	strcat_s(szFullPath, pModelFileName);
@@ -86,16 +86,34 @@ HRESULT CModel::Render(_uint iMeshIndex, CShader* pShader, const char* pConstant
 	if (iMeshIndex >= m_iNumMeshContainers)
 		return E_FAIL;
 
+	if (m_eModelType != MODELTYPE::TYPE_ANIM)
+	{
+		MSG_BOX("어....이거 애니메이션이 없는데요..?");
+		return E_FAIL;
+	}
 	/*그리고자 하는 메쉬의 본 정보 */
-	_float4x4			BoneMatrices[256];
+	_float4x4         BoneMatrices[256];
 
 	m_MeshContainers[iMeshIndex]->SetUp_BoneMatrices(BoneMatrices, XMLoadFloat4x4(&m_TransformMatrix));
 	pShader->Set_RawValue(pConstantBoneName, BoneMatrices, sizeof(_float4x4) * 256);
 	m_MeshContainers[iMeshIndex]->Render();
-	
+
 	pShader->Begin(0);
 
 	return S_OK;
+}
+
+HRESULT CModel::NonAnimRender(_uint iMeshIndex)
+{
+	if (iMeshIndex >= m_iNumMeshContainers)
+		return E_FAIL;
+
+	if (m_eModelType != MODELTYPE::TYPE_NONANIM)
+	{
+		MSG_BOX("어....이건 애니메이션 없는  애들만 가능한데요?");
+		return E_FAIL;
+	}
+	m_MeshContainers[iMeshIndex]->Render();
 }
 
 
@@ -119,7 +137,7 @@ HRESULT CModel::Bind_SRV(CShader * pShader, const char * pConstantName, _uint iM
 	if (iMeshContainerIndex >= m_iNumMeshContainers)
 		return E_FAIL;
 
-	_uint		iMaterialIndex = m_MeshContainers[iMeshContainerIndex]->Get_MaterialIndex();
+	_uint      iMaterialIndex = m_MeshContainers[iMeshContainerIndex]->Get_MaterialIndex();
 	if (iMaterialIndex >= m_iNumMaterials)
 		return E_FAIL;
 
@@ -128,7 +146,7 @@ HRESULT CModel::Bind_SRV(CShader * pShader, const char * pConstantName, _uint iM
 
 CBoneNode * CModel::Find_Bone(const char * pBoneName)
 {
-	auto	iter = find_if(m_vecBones.begin(), m_vecBones.end(), [&](CBoneNode* pNode)
+	auto   iter = find_if(m_vecBones.begin(), m_vecBones.end(), [&](CBoneNode* pNode)
 	{
 		return !strcmp(pBoneName, pNode->Get_Name());
 	});
@@ -144,7 +162,7 @@ HRESULT CModel::Create_MeshContainers()
 
 	for (_uint i = 0; i < m_iNumMeshContainers; ++i)
 	{
-		CMeshContainer*		pMeshContainer = CMeshContainer::Create(m_pDevice, m_pContext, m_eModelType, m_pAIScene->mMeshes[i],
+		CMeshContainer*      pMeshContainer = CMeshContainer::Create(m_pDevice, m_pContext, m_eModelType, m_pAIScene->mMeshes[i],
 			this, XMLoadFloat4x4(&m_TransformMatrix));
 		if (nullptr == pMeshContainer)
 			return E_FAIL;
@@ -158,31 +176,31 @@ HRESULT CModel::Create_MeshContainers()
 HRESULT CModel::Create_Materials(const char * pModelFilePath)
 {
 	m_iNumMaterials = m_pAIScene->mNumMaterials;
-	
+
 	for (_uint i = 0; i < m_iNumMaterials; ++i)
 	{
 		//머테리얼 개수만큼 생성
-		MODEL_MATERIAL	Material;
+		MODEL_MATERIAL   Material;
 		ZeroMemory(&Material, sizeof(MODEL_MATERIAL));
-		for (_uint j = 0; j < AI_TEXTURE_TYPE_MAX;j++)
+		for (_uint j = 0; j < AI_TEXTURE_TYPE_MAX; j++)
 		{
 			//텍스쳐가 받을 수 있는 모든 타입을 받음.
-			char		szFullPath[MAX_PATH] = "";
-			
-			aiString	strPath;
-		
+			char      szFullPath[MAX_PATH] = "";
+
+			aiString   strPath;
+
 			//필요한 텍스쳐의 경로를 반환
 			if (FAILED(m_pAIScene->mMaterials[i]->GetTexture(aiTextureType(j), 0, &strPath)))
 				continue;
 			/*
-				이 작업을 해주는 이유.
-				어씸프가 모델을 로드할 때 나오는 텍스쳐 경로가
-				상대 경로가 아닌 해당 모델을 로드한 곳의
-				절대 경로를 반환한다.
-				그렇기에 이걸 다시 우리의 경로로 만들어주는 작업임.
+			이 작업을 해주는 이유.
+			어씸프가 모델을 로드할 때 나오는 텍스쳐 경로가
+			상대 경로가 아닌 해당 모델을 로드한 곳의
+			절대 경로를 반환한다.
+			그렇기에 이걸 다시 우리의 경로로 만들어주는 작업임.
 			*/
-			char	szFileName[MAX_PATH] = "";
-			char	szExt[MAX_PATH] = "";
+			char   szFileName[MAX_PATH] = "";
+			char   szExt[MAX_PATH] = "";
 
 			_splitpath_s(strPath.data, nullptr, 0, nullptr, 0, szFileName, MAX_PATH, szExt, MAX_PATH);
 
@@ -190,7 +208,7 @@ HRESULT CModel::Create_Materials(const char * pModelFilePath)
 			strcat_s(szFullPath, szFileName);
 			strcat_s(szFullPath, szExt);
 
-			_tchar		szTextureFilePath[MAX_PATH] = TEXT("");
+			_tchar      szTextureFilePath[MAX_PATH] = TEXT("");
 
 			MultiByteToWideChar(CP_ACP, 0, szFullPath, strlen(szFullPath), szTextureFilePath, MAX_PATH);
 
@@ -207,7 +225,7 @@ HRESULT CModel::Create_Materials(const char * pModelFilePath)
 
 HRESULT CModel::Create_Bones(aiNode * pAINode, CBoneNode * pParent, _uint iDepth)
 {
-	CBoneNode*		pBoneNode = CBoneNode::Create(pAINode, pParent, iDepth);
+	CBoneNode*      pBoneNode = CBoneNode::Create(pAINode, pParent, iDepth);
 	if (nullptr == pBoneNode)
 		return E_FAIL;
 
@@ -225,7 +243,7 @@ HRESULT CModel::Create_Animations()
 
 	for (_uint i = 0; i < m_iNumAnimations; ++i)
 	{
-		CAnimation*		pAnimation = CAnimation::Create(m_pAIScene->mAnimations[i], this);
+		CAnimation*      pAnimation = CAnimation::Create(m_pAIScene->mAnimations[i], this);
 
 		if (nullptr == pAnimation)
 			return E_FAIL;
@@ -236,10 +254,10 @@ HRESULT CModel::Create_Animations()
 	return S_OK;
 }
 
-CModel * CModel::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, MODELTYPE eType, 
+CModel * CModel::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, MODELTYPE eType,
 	const char * pModelFilePath, const char * pModelFileName, _fmatrix TransformMatrix)
 {
-	CModel*		pInstance = new CModel(pDevice, pContext);
+	CModel*      pInstance = new CModel(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype(eType, pModelFilePath, pModelFileName, TransformMatrix)))
 	{
@@ -252,7 +270,7 @@ CModel * CModel::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, 
 
 CComponent * CModel::Clone(void * pArg)
 {
-	CModel*		pInstance = new CModel(*this);
+	CModel*      pInstance = new CModel(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
@@ -282,7 +300,7 @@ void CModel::Free()
 
 	for (auto& pBoneNode : m_vecBones)
 		Safe_Release(pBoneNode);
-	
+
 	m_vecBones.clear();
 
 	for (auto& pAnimation : m_Animations)

@@ -228,7 +228,6 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 		return E_FAIL;
 
 #pragma region 테스트 모델입니다
-
 	
 	_matrix mat;
 	mat = XMMatrixIdentity();
