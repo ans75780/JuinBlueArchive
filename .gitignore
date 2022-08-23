@@ -350,4 +350,3 @@ MigrationBackup/
 .ionide/
 Framework/Client/Default/imgui.ini
 Framework/Reference/Librarys/Engine.lib
-*.ini

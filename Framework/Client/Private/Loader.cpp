@@ -325,14 +325,14 @@ HRESULT CLoader::Loading_ForMapToolLevel()
 	//	return E_FAIL;
 
 	/* For.Prototype_Component_Model_City_Building_01*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_MAPTOOL, TEXT("Prototype_Component_Model_City_Building_01"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, 
-			"../../Resources/Models/NonAnimModels/MapProp/city_building_01/", "sb_city_01_building_01.fbx"))))
-		return E_FAIL;
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_MAPTOOL, TEXT("Prototype_Component_Model_City_Building_01"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, 
+	//		"../../Resources/Models/NonAnimModels/MapProp/city_building_01/", "sb_city_01_building_01.fbx"))))
+	//	return E_FAIL;
 
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_MAPTOOL, TEXT("Test_Prototype_Component_Model_Haruka"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Models/NonAnimModels/ForkLift/", "ForkLift.fbx"))))
-		return E_FAIL;
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_MAPTOOL, TEXT("Test_Prototype_Component_Model_Haruka"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Models/NonAnimModels/ForkLift/", "ForkLift.fbx"))))
+	//	return E_FAIL;
 
 	///* For.Prototype_Component_Model_City_Building_01*/
 	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_MAPTOOL, TEXT("Prototype_Component_Model_City_Building_02"),
