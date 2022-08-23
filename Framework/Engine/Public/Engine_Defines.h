@@ -23,7 +23,10 @@
 
 #include <typeinfo.h>
 
+#include <opencv2\opencv.hpp>
+
 using namespace DirectX;
+using namespace cv;
 
 #define DIRECTINPUT_VERSION  0x0800
 #include <dinput.h>
