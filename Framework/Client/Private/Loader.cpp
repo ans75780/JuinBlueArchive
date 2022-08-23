@@ -180,7 +180,7 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 		CTestObject_Test::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	/* For.Prototype_GameObject_TestObject 테스트 하루카 모델 입니다.   */
+	/* For.Prototype_GameObject_TestObject 테스트 하루카 오브젝트 입니다.   */
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Test_Prototype_GameObject_Model_Haruka"),
 		CTestObject_Model_Haruka::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
@@ -236,8 +236,7 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Test_Prototype_Component_Model_Haruka"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/NonAnimModels/Haruka_Original/", "Haruka_Original.fbx", mat))))
-		return E_FAIL;
-		
+		return E_FAIL;		
 #pragma endregion
 
 	///* For.Prototype_Component_VIBuffer_Cube*/

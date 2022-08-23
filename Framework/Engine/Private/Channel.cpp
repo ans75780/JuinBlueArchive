@@ -112,6 +112,17 @@ void CChannel::ResetKeyFrame()
 	m_iCurrentKeyFrame = 0;
 }
 
+HRESULT CChannel::SetUp_BoneNodePtr(CModel * pModel)
+{
+	m_pBoneNode = pModel->Find_Bone(m_szName);
+	if (nullptr == m_pBoneNode)
+		return E_FAIL;
+
+	Safe_AddRef(m_pBoneNode);
+
+	return S_OK;
+}
+
 CChannel * CChannel::Create(aiNodeAnim * pAIChannel, CModel* pModel)
 {
 	CChannel*		pInstance = new CChannel();
@@ -121,6 +132,16 @@ CChannel * CChannel::Create(aiNodeAnim * pAIChannel, CModel* pModel)
 		MSG_BOX("Failed to Created : CChannel");
 		Safe_Release(pInstance);
 	}
+
+	return pInstance;
+}
+
+CChannel * CChannel::Clone(CModel * pModel)
+{
+	CChannel*			pInstance = new CChannel(*this);
+
+	if (FAILED(pInstance->SetUp_BoneNodePtr(pModel)))
+		return nullptr;
 
 	return pInstance;
 }

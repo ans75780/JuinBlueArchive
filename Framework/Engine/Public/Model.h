@@ -16,9 +16,13 @@ private:
 public:
 	HRESULT Initialize_Prototype(MODELTYPE eType, 
 		const char* pModelFilePath, const char* pModelFileName, _fmatrix TransformMatrix);
-	HRESULT Initialize(void* pArg) override;
+	HRESULT Initialize(void * pArg, CModel* pPrototype);
 	HRESULT Render(_uint iMeshIndex, class CShader* pShader, const char* pConstantBoneName);
+	HRESULT NonAnimRender(_uint iMeshIndex);
 
+	void Set_CurrentAnimation(_uint iAnimIndex) {
+		m_iCurrentAnimationIndex = iAnimIndex;
+	}
 public:
 	HRESULT	Play_Animation(_float fTimeDelta);
 

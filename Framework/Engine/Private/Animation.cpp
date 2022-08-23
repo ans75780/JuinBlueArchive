@@ -49,6 +49,16 @@ void CAnimation::Update_TransformationMatrices(_float fTimeDelta)
 
 }
 
+HRESULT CAnimation::Clone_Channel(CAnimation * pPrototype, CModel * pModel)
+{
+	for (auto& pPrototypeChannel : pPrototype->m_Channels)
+	{
+		m_Channels.push_back(pPrototypeChannel->Clone(pModel));
+	}
+
+	return S_OK;
+}
+
 CAnimation * CAnimation::Create(aiAnimation * pAIAnimation, CModel* pModel)
 {
 	CAnimation*		pInstance = new CAnimation();
@@ -58,6 +68,16 @@ CAnimation * CAnimation::Create(aiAnimation * pAIAnimation, CModel* pModel)
 		MSG_BOX("Failed to Created : CAnimation");
 		Safe_Release(pInstance);
 	}
+
+	return pInstance;
+}
+
+CAnimation * CAnimation::Clone(CModel * pModel)
+{
+	CAnimation*		pInstance = new CAnimation(*this);
+
+	if (FAILED(pInstance->Clone_Channel(this, pModel)))
+		return nullptr;
 
 	return pInstance;
 }

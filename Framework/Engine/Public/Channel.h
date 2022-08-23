@@ -16,6 +16,11 @@ public:
 	HRESULT Initialize(aiNodeAnim* pAIChannel, class CModel* pModel);
 	void Update_TransformationMatrices(_float fCurrentTime);
 	void		ResetKeyFrame();
+
+
+public:
+	HRESULT SetUp_BoneNodePtr(class CModel* pModel);
+
 private:
 	char						m_szName[MAX_PATH] = "";
 	_uint						m_iNumKeyframes = 0;
@@ -25,6 +30,7 @@ private:
 
 public:
 	static CChannel* Create(aiNodeAnim* pAIChannel, class CModel* pModel);
+	CChannel* Clone(class CModel* pModel);
 	virtual void Free() override;
 };
 

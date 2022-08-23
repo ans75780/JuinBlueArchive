@@ -41,6 +41,8 @@ HRESULT CTestObject_Model_Haruka::Initialize(void * pArg)
 
 		lstrcpy(m_desc.sz_Name, tempDesc->sz_Name);
 	}
+	m_iAnimIndex = 5;
+	m_pModelCom->Set_CurrentAnimation(m_iAnimIndex);
 
 
 	return S_OK;
@@ -48,6 +50,18 @@ HRESULT CTestObject_Model_Haruka::Initialize(void * pArg)
 
 void CTestObject_Model_Haruka::Tick(_float fTimeDelta)
 {
+	if (KEY(LEFT, TAP))
+	{
+		m_iAnimIndex--;
+		m_pModelCom->Set_CurrentAnimation(m_iAnimIndex);
+	}
+	if (KEY(RIGHT, TAP))
+	{
+		m_iAnimIndex++;
+		m_pModelCom->Set_CurrentAnimation(m_iAnimIndex);
+	}
+
+	m_pModelCom->Play_Animation(fTimeDelta);
 
 }
 
@@ -71,14 +85,14 @@ HRESULT CTestObject_Model_Haruka::Render()
 	{
 		if (i == 3)
 		{
-
+			//입 텍스쳐가 없어서 임시 로 넘김
 		}
- 		else if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
+		else if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
 			return E_FAIL;
 		/*if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
 		return E_FAIL;*/
 
-//		m_pShaderCom->Begin(0);
+		m_pShaderCom->Begin(0);
 		m_pModelCom->Render(i,m_pShaderCom, "g_Bones");
 	}
 

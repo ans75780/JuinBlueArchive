@@ -80,7 +80,7 @@ HRESULT CMapProp::Render()
 
 		m_pShaderCom->Begin(0);
 
-		m_pModelCom->Render(i);
+		m_pModelCom->NonAnimRender(i);
 	}
 
 	return S_OK;

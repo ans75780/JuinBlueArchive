@@ -12,6 +12,8 @@ public:
 	HRESULT Initialize(aiAnimation* pAIAnimation, class CModel* pModel);
 	void Update_TransformationMatrices(_float fTimeDelta);
 
+public:
+	HRESULT Clone_Channel(CAnimation* pPrototype, class CModel* pModel);
 private:
 	char			m_szName[MAX_PATH] = "";
 	_uint			m_iNumChannels = 0; /* 현재 애니메이션이 사용ㅇ해야할 뼈의 갯수. */
@@ -25,7 +27,8 @@ private:
 
 
 public:
-	static CAnimation* Create(aiAnimation* pAIAnimation, class CModel* pModel);
+	static CAnimation* Create(aiAnimation* pAIAnimation, class CModel* pModel);	
+	CAnimation* Clone(class CModel* pModel);
 	virtual void Free() override;
 
 

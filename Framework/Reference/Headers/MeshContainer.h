@@ -23,9 +23,9 @@ public:
 public:
 	HRESULT Ready_VertexBuffer_NonAnim(const aiMesh* pAIMesh, _fmatrix TransformMatrix);
 	HRESULT Ready_VertexBuffer_Anim(const aiMesh* pAIMesh, class CModel* pModel);
-
-public:
+	HRESULT SetUp_BonesPtr(class CModel* pModel);
 	void				SetUp_BoneMatrices(_float4x4* pBoneMatrices, _fmatrix TransformationMatrix);
+
 public:
 	const char*			Get_Name() const { return m_szName; }
 
@@ -37,9 +37,9 @@ private:
 	
 	
 	_uint				m_iNumBones = 0;
+	const aiMesh*		m_pAIMesh = nullptr;
 
 	vector<class CBoneNode*> m_vecBones;
-
 
 public:
 	static CMeshContainer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, 

@@ -12,32 +12,20 @@ CModel::CModel(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 
 CModel::CModel(const CModel & rhs)
 	: CComponent(rhs)
-	, m_MeshContainers(rhs.m_MeshContainers)
+	, m_pAIScene(rhs.m_pAIScene)
 	, m_iNumMeshContainers(rhs.m_iNumMeshContainers)
 	, m_Materials(rhs.m_Materials)
 	, m_iNumMaterials(rhs.m_iNumMaterials)
-	, m_vecBones(rhs.m_vecBones)
 	, m_iCurrentAnimationIndex(rhs.m_iCurrentAnimationIndex)
 	, m_iNumAnimations(rhs.m_iNumAnimations)
-	, m_Animations(rhs.m_Animations)
 	, m_TransformMatrix(rhs.m_TransformMatrix)
+	, m_eModelType(rhs.m_eModelType)
 {
 	for (auto& Material : m_Materials)
 	{
 		for (auto& pTexture : Material.pTextures)
 			Safe_AddRef(pTexture);
 	}
-
-	for (auto& pMeshContainer : m_MeshContainers)
-		Safe_AddRef(pMeshContainer);
-
-	for (auto& pBoneNode : m_vecBones)
-		Safe_AddRef(pBoneNode);
-
-
-	for (auto& pAnimation : m_Animations)
-		Safe_AddRef(pAnimation);
-
 }
 HRESULT CModel::Initialize_Prototype(MODELTYPE eType, 
 	const char* pModelFilePath, const char* pModelFileName, _fmatrix TransformMatrix)
@@ -76,9 +64,35 @@ HRESULT CModel::Initialize_Prototype(MODELTYPE eType,
 
 
 
-HRESULT CModel::Initialize(void * pArg)
+HRESULT CModel::Initialize(void * pArg, CModel* pPrototype)
 {
-	return S_OK;
+	if (FAILED(Create_Bones(m_pAIScene->mRootNode, nullptr, 0)))
+		return E_FAIL;
+
+	sort(m_vecBones.begin(), m_vecBones.end(), [](CBoneNode* pSour, CBoneNode* pDest)
+	{
+		return pSour->Get_Depth() < pDest->Get_Depth();
+	});
+
+	for (auto& pPrototypeMeshContainer : pPrototype->m_MeshContainers)
+	{
+		CMeshContainer*		pMeshContainer = (CMeshContainer*)pPrototypeMeshContainer->Clone();
+		if (nullptr == pMeshContainer)
+			return E_FAIL;
+		pMeshContainer->SetUp_BonesPtr(this);
+
+		m_MeshContainers.push_back(pMeshContainer);
+	}
+
+	for (auto& pPrototypeAnimation : pPrototype->m_Animations)
+	{
+		CAnimation*		pAnimation = pPrototypeAnimation->Clone(this);
+		if (nullptr == pAnimation)
+			return E_FAIL;
+
+		m_Animations.push_back(pAnimation);
+	}
+
 }
 
 HRESULT CModel::Render(_uint iMeshIndex, CShader* pShader, const char* pConstantBoneName)
@@ -86,16 +100,32 @@ HRESULT CModel::Render(_uint iMeshIndex, CShader* pShader, const char* pConstant
 	if (iMeshIndex >= m_iNumMeshContainers)
 		return E_FAIL;
 
-	/*그리고자 하는 메쉬의 본 정보 */
+	/* 그리고자하는 메시컨테이너에 영향을 주는 뼈들의 행렬을 담아준다. */
 	_float4x4			BoneMatrices[256];
 
 	m_MeshContainers[iMeshIndex]->SetUp_BoneMatrices(BoneMatrices, XMLoadFloat4x4(&m_TransformMatrix));
-	pShader->Set_RawValue(pConstantBoneName, BoneMatrices, sizeof(_float4x4) * 256);
-	m_MeshContainers[iMeshIndex]->Render();
-	
+
+	if (0 != m_iNumAnimations)
+		pShader->Set_RawValue(pConstantBoneName, BoneMatrices, sizeof(_float4x4) * 256);
+
 	pShader->Begin(0);
 
+	m_MeshContainers[iMeshIndex]->Render();
+
 	return S_OK;
+}
+
+HRESULT CModel::NonAnimRender(_uint iMeshIndex)
+{
+	if (iMeshIndex >= m_iNumMeshContainers)
+		return E_FAIL;
+
+	if (m_eModelType != MODELTYPE::TYPE_NONANIM)
+	{
+		MSG_BOX("어....이건 애니메이션 없는  애들만 가능한데요?");
+		return E_FAIL;
+	}
+	m_MeshContainers[iMeshIndex]->Render();
 }
 
 
@@ -144,8 +174,7 @@ HRESULT CModel::Create_MeshContainers()
 
 	for (_uint i = 0; i < m_iNumMeshContainers; ++i)
 	{
-		CMeshContainer*		pMeshContainer = CMeshContainer::Create(m_pDevice, m_pContext, m_eModelType, m_pAIScene->mMeshes[i],
-			this, XMLoadFloat4x4(&m_TransformMatrix));
+		CMeshContainer*		pMeshContainer = CMeshContainer::Create(m_pDevice, m_pContext, m_eModelType, m_pAIScene->mMeshes[i], this, XMLoadFloat4x4(&m_TransformMatrix));
 		if (nullptr == pMeshContainer)
 			return E_FAIL;
 
@@ -254,7 +283,7 @@ CComponent * CModel::Clone(void * pArg)
 {
 	CModel*		pInstance = new CModel(*this);
 
-	if (FAILED(pInstance->Initialize(pArg)))
+	if (FAILED(pInstance->Initialize(pArg, this)))
 	{
 		MSG_BOX("Failed to Created : CModel");
 		Safe_Release(pInstance);
@@ -266,6 +295,14 @@ CComponent * CModel::Clone(void * pArg)
 void CModel::Free()
 {
 	__super::Free();
+
+	for (auto& pAnimation : m_Animations)
+		Safe_Release(pAnimation);
+	m_Animations.clear();
+
+	for (auto& pHierarchyNode : m_vecBones)
+		Safe_Release(pHierarchyNode);
+	m_vecBones.clear();
 
 	for (auto& Material : m_Materials)
 	{
@@ -279,16 +316,6 @@ void CModel::Free()
 		Safe_Release(pMeshContainer);
 
 	m_MeshContainers.clear();
-
-	for (auto& pBoneNode : m_vecBones)
-		Safe_Release(pBoneNode);
-	
-	m_vecBones.clear();
-
-	for (auto& pAnimation : m_Animations)
-		Safe_Release(pAnimation);
-
-	m_Animations.clear();
 
 	if (false == m_isCloned)
 		m_Importer.FreeScene();
