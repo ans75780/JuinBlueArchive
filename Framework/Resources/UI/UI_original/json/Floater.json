@@ -1,0 +1,128 @@
+{
+  "m_GameObject": {
+    "m_FileID": 0,
+    "m_PathID": 0
+  },
+  "m_Enabled": 1,
+  "m_Script": {
+    "m_FileID": 0,
+    "m_PathID": -6633576850566954953
+  },
+  "m_Name": "Floater",
+  "material": {
+    "m_FileID": 0,
+    "m_PathID": 7574713516485932716
+  },
+  "mSprites": [
+    {
+      "name": "Imagefont_Block",
+      "x": 114,
+      "y": 7,
+      "width": 139,
+      "height": 42,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "paddingLeft": 8,
+      "paddingRight": 7,
+      "paddingTop": 2,
+      "paddingBottom": 0
+    },
+    {
+      "name": "Imagefont_Cri_Bg",
+      "x": 0,
+      "y": 152,
+      "width": 230,
+      "height": 104,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "paddingLeft": 6,
+      "paddingRight": 11,
+      "paddingTop": 3,
+      "paddingBottom": 5
+    },
+    {
+      "name": "Imagefont_Immune_Unit",
+      "x": 0,
+      "y": 50,
+      "width": 174,
+      "height": 44,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "paddingLeft": 0,
+      "paddingRight": 0,
+      "paddingTop": 0,
+      "paddingBottom": 0
+    },
+    {
+      "name": "Imagefont_Miss_Unit",
+      "x": 0,
+      "y": 5,
+      "width": 113,
+      "height": 44,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "paddingLeft": 19,
+      "paddingRight": 22,
+      "paddingTop": 0,
+      "paddingBottom": 0
+    },
+    {
+      "name": "ImgFont_Resist",
+      "x": 157,
+      "y": 122,
+      "width": 95,
+      "height": 29,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "paddingLeft": 0,
+      "paddingRight": 0,
+      "paddingTop": 0,
+      "paddingBottom": 0
+    },
+    {
+      "name": "ImgFont_Weak",
+      "x": 175,
+      "y": 92,
+      "width": 81,
+      "height": 29,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "paddingLeft": 0,
+      "paddingRight": 0,
+      "paddingTop": 0,
+      "paddingBottom": 0
+    },
+    {
+      "name": "ImgFont_Weak_2",
+      "x": 0,
+      "y": 95,
+      "width": 156,
+      "height": 56,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "paddingLeft": 0,
+      "paddingRight": 0,
+      "paddingTop": 0,
+      "paddingBottom": 0
+    }
+  ],
+  "mPixelSize": 1.0,
+  "mReplacement": {
+    "m_FileID": 0,
+    "m_PathID": 0
+  }
+}
