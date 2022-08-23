@@ -32,6 +32,9 @@ private:
 
 	void	HelloJusin_Tap_Level(void);
 
+private:
+	void		MapTool_View(void);
+
 
 
 private:
@@ -43,6 +46,7 @@ private:
 
 	bool show_demo_window;
 	bool show_mainBar;
+	bool MapToolCheckBox;
 
 public:
 	virtual void Free();

@@ -12,6 +12,8 @@
 
 #pragma endregion
 
+#include "MapProp.h"
+
 
 //#include "Camera_Free.h"
 #include "Camera_Free.h"
@@ -230,14 +232,14 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	/* For.Prototype_Component_Model_*/
 	
 	/* For.Prototype_Component_Model_*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Test_Prototype_Component_Model_ForkLift"),
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Test_Prototype_Component_Model_Haruka"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Models/NonAnimModels/ForkLift/", "ForkLift.fbx"))))
 		return E_FAIL;
 
 	
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Test_Prototype_Component_Model_Haruka"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Models/NonAnimModels/Haruka_Original/", "Haruka_Original.fbx"))))
-		return E_FAIL;
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Test_Prototype_Component_Model_Haruka"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Models/NonAnimModels/Haruka_Original/", "Haruka_Original.fbx"))))
+	//	return E_FAIL;
 		
 #pragma endregion
 
@@ -285,6 +287,11 @@ HRESULT CLoader::Loading_ForMapToolLevel()
 		CCamera_Free::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_MapProp"),
+		CMapProp::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+
 #pragma endregion
 
 
@@ -308,14 +315,34 @@ HRESULT CLoader::Loading_ForMapToolLevel()
 
 
 	/* For.Prototype_Component_Model_*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_MAPTOOL, TEXT("Test_Prototype_Component_Model_ForkLift"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Models/NonAnimModels/ForkLift/", "ForkLift.fbx"))))
-		return E_FAIL;
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_MAPTOOL, TEXT("Test_Prototype_Component_Model_ForkLift"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Models/NonAnimModels/ForkLift/", "ForkLift.fbx"))))
+	//	return E_FAIL;
 
 	///* For.Prototype_Component_VIBuffer_Cube*/
 	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Cube"),
 	//	CVIBuffer_Cube::Create(m_pGraphic_Device))))
 	//	return E_FAIL;
+
+	/* For.Prototype_Component_Model_City_Building_01*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_MAPTOOL, TEXT("Prototype_Component_Model_City_Building_01"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, 
+			"../../Resources/Models/NonAnimModels/MapProp/city_building_01/", "sb_city_01_building_01.fbx"))))
+		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_MAPTOOL, TEXT("Test_Prototype_Component_Model_Haruka"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Models/NonAnimModels/ForkLift/", "ForkLift.fbx"))))
+		return E_FAIL;
+
+	///* For.Prototype_Component_Model_City_Building_01*/
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_MAPTOOL, TEXT("Prototype_Component_Model_City_Building_02"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM,
+	//		"../../Resources/Models/NonAnimModels/MapProp/city_building_02", "sb_city_01_building_02.fbx"))))
+	//	return E_FAIL;
+
+
+
+
 #pragma endregion
 
 #pragma region LOAD_SHADER
@@ -338,6 +365,8 @@ HRESULT CLoader::Loading_ForMapToolLevel()
 	m_isFinished = true;
 
 	Safe_Release(pGameInstance);
+
+	return S_OK;
 }
 
 CLoader * CLoader::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevel)

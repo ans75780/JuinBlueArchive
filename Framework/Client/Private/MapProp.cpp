@@ -1,24 +1,24 @@
 #include "stdafx.h"
-#include "..\Public\TestObject_Model_Haruka.h"
+#include "..\Public\MapProp.h"
 
 #include "GameInstance.h"
 
-CTestObject_Model_Haruka::CTestObject_Model_Haruka(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
+CMapProp::CMapProp(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObject(pDevice, pContext)
 {
 }
 
-CTestObject_Model_Haruka::CTestObject_Model_Haruka(const CTestObject_Model_Haruka & rhs)
+CMapProp::CMapProp(const CMapProp & rhs)
 	: CGameObject(rhs)
 {
 }
 
-HRESULT CTestObject_Model_Haruka::Initialize_Prototype()
+HRESULT CMapProp::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT CTestObject_Model_Haruka::Initialize(void * pArg)
+HRESULT CMapProp::Initialize(void * pArg)
 {
 	CTransform::TRANSFORMDESC		TransformDesc;
 	TransformDesc.fSpeedPerSec = 5.f;
@@ -33,7 +33,7 @@ HRESULT CTestObject_Model_Haruka::Initialize(void * pArg)
 	m_pTransformCom->Set_Scaled(_float3(1.00f, 1.00f, 1.00f));
 	//m_pTransformCom->Set_Scaled(_float3(0.01f, 0.01f, 0.01f));
 
-	lstrcpy(m_desc.sz_Name, TEXT("Haruka"));
+	lstrcpy(m_desc.sz_Name, TEXT("MapProp"));
 
 	if (pArg)
 	{
@@ -46,17 +46,17 @@ HRESULT CTestObject_Model_Haruka::Initialize(void * pArg)
 	return S_OK;
 }
 
-void CTestObject_Model_Haruka::Tick(_float fTimeDelta)
+void CMapProp::Tick(_float fTimeDelta)
 {
 
 }
 
-void CTestObject_Model_Haruka::LateTick(_float fTimeDelta)
+void CMapProp::LateTick(_float fTimeDelta)
 {
 	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
 }
 
-HRESULT CTestObject_Model_Haruka::Render()
+HRESULT CMapProp::Render()
 {
 	if (nullptr == m_pShaderCom ||
 		nullptr == m_pModelCom)
@@ -73,7 +73,7 @@ HRESULT CTestObject_Model_Haruka::Render()
 		{
 
 		}
- 		else if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
+		else if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
 			return E_FAIL;
 		/*if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
 		return E_FAIL;*/
@@ -87,10 +87,10 @@ HRESULT CTestObject_Model_Haruka::Render()
 }
 
 
-HRESULT CTestObject_Model_Haruka::SetUp_Components()
+HRESULT CMapProp::SetUp_Components()
 {
 	/* For.Com_Shader */
-	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxModel"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
+	if (FAILED(__super::Add_Component(LEVEL_MAPTOOL, TEXT("Prototype_Component_Shader_VtxModel"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
 		return E_FAIL;
 
 	/* For.Com_Renderer */
@@ -98,13 +98,13 @@ HRESULT CTestObject_Model_Haruka::SetUp_Components()
 		return E_FAIL;
 
 	/* For.Com_Model */
-	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Test_Prototype_Component_Model_Haruka"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
+	if (FAILED(__super::Add_Component(LEVEL_MAPTOOL, TEXT("Prototype_Component_Model_City_Building_01"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
 		return E_FAIL;
 
 	return S_OK;
 }
 
-HRESULT CTestObject_Model_Haruka::SetUp_ShaderResource()
+HRESULT CMapProp::SetUp_ShaderResource()
 {
 	if (nullptr == m_pShaderCom)
 		return E_FAIL;
@@ -146,33 +146,33 @@ HRESULT CTestObject_Model_Haruka::SetUp_ShaderResource()
 	return S_OK;
 }
 
-CTestObject_Model_Haruka * CTestObject_Model_Haruka::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
+CMapProp * CMapProp::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
-	CTestObject_Model_Haruka*		pInstance = new CTestObject_Model_Haruka(pDevice, pContext);
+	CMapProp*		pInstance = new CMapProp(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Created : CTestObject_Model_Haruka");
+		MSG_BOX("Failed to Created : CMapProp");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-CGameObject * CTestObject_Model_Haruka::Clone(void * pArg)
+CGameObject * CMapProp::Clone(void * pArg)
 {
-	CTestObject_Model_Haruka*		pInstance = new CTestObject_Model_Haruka(*this);
+	CMapProp*		pInstance = new CMapProp(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Cloned : CTestObject_Model_Haruka");
+		MSG_BOX("Failed to Cloned : CMapProp");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CTestObject_Model_Haruka::Free()
+void CMapProp::Free()
 {
 	__super::Free();
 

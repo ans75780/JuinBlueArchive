@@ -6,7 +6,6 @@
 #include "Camera_Free.h"
 #include "Light.h"
 
-
 CLevel_MapTool::CLevel_MapTool(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -117,6 +116,9 @@ HRESULT CLevel_MapTool::Ready_Layer_MapProp(const _tchar * pLayerTag)
 	/* For.Sky */
 	/*if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Prototype_GameObject_Sky"))))
 	return E_FAIL;*/
+
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_MAPTOOL, pLayerTag, TEXT("Prototype_GameObject_MapProp"))))
+		return E_FAIL;
 
 	Safe_Release(pGameInstance);
 

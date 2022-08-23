@@ -13,9 +13,9 @@
 IMPLEMENT_SINGLETON(CImguiMgr)
 
 CImguiMgr::CImguiMgr()
-	: show_demo_window(false), show_mainBar(true)
-	, m_pGameInstance(CGameInstance::Get_Instance())
-	, m_currentLevelID(0)
+	: m_pGameInstance(CGameInstance::Get_Instance())
+	, show_demo_window(false), show_mainBar(true)
+	, MapToolCheckBox(false), m_currentLevelID(0)
 {
 	Safe_AddRef(m_pGameInstance);
 }
@@ -136,7 +136,7 @@ void CImguiMgr::HelloJusin_View(void)
 	if (unsaved_document)   window_flags |= ImGuiWindowFlags_UnsavedDocument;
 #pragma endregion
 
-	ImGui::Begin("Hello, Jusin!", &show_mainBar, window_flags);// Create a window called "Hello, world!" and append into it.
+	ImGui::Begin("Hello, Jusin!", &show_mainBar, window_flags);// 임구이 윈도우 생성
 
 	char tempText_CurrentLevel[64] = "Current Level = \0";
 	char tempText_Level[32] = {};
@@ -170,9 +170,17 @@ void CImguiMgr::HelloJusin_View(void)
 
 	ImGui::Text(tempText_CurrentLevel);
 	
+	if (m_currentLevelID == LEVEL_MAPTOOL)
+	{
+		ImGui::Separator();
+
+		ImGui::Checkbox("MapTool", &MapToolCheckBox);
+
+	}
+
 	ImGui::Separator();
 
-	if (ImGui::BeginTabBar("MainTab", ImGuiTabBarFlags_None))
+	if (ImGui::BeginTabBar("MainTab", ImGuiTabBarFlags_None))	//메인책갈피
 	{
 
 		if (ImGui::BeginTabItem("Main"))
@@ -196,6 +204,8 @@ void CImguiMgr::HelloJusin_View(void)
 
 		ImGui::EndTabBar();
 	}
+	if (MapToolCheckBox)
+		MapTool_View();
 
 	ImGui::End();
 }
@@ -208,7 +218,7 @@ void CImguiMgr::HelloJusin_Tap_Main(void)			//HelloJusin_Tap_Main
 	static int counter = 0;
 	static float backBuffer_Color[4] = { 0.f, 0.f, 1.f, 1.f };
 
-	ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
+	ImGui::Text("BLUE ARCHIVE");               // Display some text (you can use a format strings too)
 	ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
 
 	ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
@@ -282,8 +292,15 @@ void CImguiMgr::Tap_Object_CObj(void)
 							float _ScaleFloat3[3] = { _Scale.x, _Scale.y, _Scale.z };
 							if (ImGui::InputFloat3("Scale", _ScaleFloat3, "%.3f", 0))
 							{
+								for (int plus = 0; plus < 3; ++plus)
+								{
+									if (0.f >= _ScaleFloat3[plus])
+										_ScaleFloat3[plus] = 0.001f;
+								}
+
 								temp->Set_Scaled(_float3(_ScaleFloat3[0], _ScaleFloat3[1], _ScaleFloat3[2]));
 							}
+
 
 							_vector _Translation = temp->Get_State(CTransform::STATE_TRANSLATION);
 							_float4 _fTrans;
@@ -291,7 +308,14 @@ void CImguiMgr::Tap_Object_CObj(void)
 							float _TransFloat4[4] = { _fTrans.x, _fTrans.y, _fTrans.z, _fTrans.w };
 							if (ImGui::InputFloat3("Translation", _TransFloat4, "%.3f", 0))
 							{
+								for (int plus = 0; plus < 4; ++plus)
+								{
+									if (0.f >= _TransFloat4[plus])
+										_TransFloat4[plus] = 0.001f;
+								}
+
 								_fTrans = { _TransFloat4[0], _TransFloat4[1], _TransFloat4[2], _TransFloat4[3] };
+
 								temp->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&_fTrans));
 							}
 
@@ -354,6 +378,15 @@ void CImguiMgr::HelloJusin_Tap_Level(void)
 		ImGui::EndTable();
 	}
 
+}
+
+void CImguiMgr::MapTool_View(void)
+{
+	if (ImGui::Begin("MapTool", &MapToolCheckBox, 0))
+	{
+
+		ImGui::End();
+	}
 }
 
 void CImguiMgr::Free()
