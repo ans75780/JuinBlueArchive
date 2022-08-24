@@ -48,7 +48,7 @@ private:
 	_tchar					m_szLoadingText[MAX_PATH] = TEXT("");
 
 public:
-
+	HRESULT LoadUITexture(char* folderName, void* pGameInstance);
 	
 public:
 	static CLoader* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevel);

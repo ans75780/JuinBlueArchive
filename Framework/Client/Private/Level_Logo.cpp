@@ -55,11 +55,6 @@ HRESULT CLevel_Logo::Render()
 	return S_OK;
 }
 
-HRESULT CLevel_Logo::Ready_UI_Load()
-{
-	return E_NOTIMPL;
-}
-
 HRESULT CLevel_Logo::Ready_Layer_BackGround(const _tchar * pLayerTag)
 {
 	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();

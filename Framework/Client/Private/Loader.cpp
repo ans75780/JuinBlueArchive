@@ -12,6 +12,9 @@
 
 #pragma endregion
 
+#include "StrUtil.h"
+#include "Json_Utility.h"
+
 #include "MapProp.h"
 
 
@@ -122,8 +125,16 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 #pragma endregion
 
-
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중이비낟. "));
+
+#pragma region UI텍스쳐 로드
+
+	LoadUITexture("Combat", pGameInstance);
+	LoadUITexture("Common", pGameInstance);
+	LoadUITexture("Emoji", pGameInstance);
+	LoadUITexture("Floater", pGameInstance);
+	
+#pragma endregion
 
 	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중이비낟. "));
 
@@ -369,6 +380,56 @@ HRESULT CLoader::Loading_ForMapToolLevel()
 	m_isFinished = true;
 
 	Safe_Release(pGameInstance);
+
+	return S_OK;
+}
+
+HRESULT CLoader::LoadUITexture(char * folderName, void * pGameInstance)
+{
+	string jsonPath = "../../Resources/UI/UI_original/json/";
+	jsonPath += folderName;
+	jsonPath += ".json";
+
+	json	JsonUI;
+	if (FAILED(CJson_Utility::Load_Json(CStrUtil::ConvertCtoWC(jsonPath.c_str()), &JsonUI)))
+	{
+		string jsonFail = "제이슨";
+		jsonFail += folderName;
+		jsonFail += "로드 실패";
+		MessageBox(0, CStrUtil::ConvertCtoWC(jsonFail.c_str()), TEXT("System Error"), MB_OK);
+
+		return E_FAIL;
+	}
+
+	auto UI_json_mSprite = JsonUI["mSprites"];
+	for (auto it = UI_json_mSprite.begin(); it != UI_json_mSprite.end(); ++it)
+	{
+		string _name = (*it)["name"];
+
+		string TextureName = _name;
+		TextureName += "_";
+		TextureName += folderName;
+
+		string _ImagePath = "../../Resources/UI/UI_extract/image/";
+		_ImagePath += folderName;
+		_ImagePath += "/";
+		_ImagePath += _name;
+		_ImagePath += ".png";
+
+		CGameInstance* pGamePointer = (CGameInstance*)pGameInstance;
+
+		if (FAILED(pGamePointer->Add_Prototype(LEVEL_STATIC
+			, CStrUtil::ConvertCtoWC(TextureName.c_str())
+			,CTexture::Create(m_pDevice, m_pContext
+			, CStrUtil::ConvertCtoWC(_ImagePath.c_str())))))
+		{
+			string jsonFail = "제이슨을 통한 경로 이미지";
+			jsonFail += folderName;
+			jsonFail += "로드 실패";
+			MessageBox(0, CStrUtil::ConvertCtoWC(jsonFail.c_str()), TEXT("System Error"), MB_OK);
+			return E_FAIL;
+		}
+	}
 
 	return S_OK;
 }
