@@ -3,6 +3,9 @@
 #include "GameInstance.h"
 #include "LEvel_Loading.h"
 
+//Json 사용
+#include "Json_Utility.h"
+#include "StrUtil.h"
 
 CLevel_Logo::CLevel_Logo(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
@@ -15,10 +18,11 @@ HRESULT CLevel_Logo::Initialize()
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 
-	
-
 	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
 		return E_FAIL;	
+
+	//if (FAILED(UI_Extract()))   //UI 이미지 자르기함수
+	//	return E_FAIL;
 
 	return S_OK;
 }
@@ -51,6 +55,11 @@ HRESULT CLevel_Logo::Render()
 	return S_OK;
 }
 
+HRESULT CLevel_Logo::Ready_UI_Load()
+{
+	return E_NOTIMPL;
+}
+
 HRESULT CLevel_Logo::Ready_Layer_BackGround(const _tchar * pLayerTag)
 {
 	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
@@ -63,6 +72,51 @@ HRESULT CLevel_Logo::Ready_Layer_BackGround(const _tchar * pLayerTag)
 
 	Safe_Release(pGameInstance);
 
+	return S_OK;
+}
+
+
+
+
+
+HRESULT CLevel_Logo::UI_Extract()
+{
+	Mat img = imread("../../Resources/UI/UI_original/image/ 자를 이미지 .png", IMREAD_UNCHANGED);
+
+	if (img.empty())
+	{
+		return E_FAIL;
+	}
+
+	json	JsonTemp;
+	
+	if (FAILED(CJson_Utility::Load_Json(CJson_Utility::Complete_Path(
+		L"../../Resources/UI/UI_original/json/제이슨파일.json 빼고넣으셈  ").c_str(), &JsonTemp)))
+	{
+		MSG_BOX("제이슨 실패ㅜㅜ");
+		return E_FAIL;
+	}
+
+	auto json_mSprites = JsonTemp["mSprites"];
+
+	for (auto it = json_mSprites.begin(); it != json_mSprites.end(); ++it)
+	{
+		string _name = (*it)["name"];
+		int _x		= (*it)["x"];
+		int _width = (*it)["width"];
+		int _y		= (*it)["y"];
+		int _height= (*it)["height"];
+
+		Mat cropped_image = img(Range(_y, (_y + _height)), Range(_x, (_x + _width)));
+
+		string savePath = "../../Resources/UI/UI_extract/image/저장할 파일경로/";
+		
+		savePath += _name;
+		savePath += ".png";
+
+		imwrite(savePath.c_str(), cropped_image);
+	}
+	
 	return S_OK;
 }
 

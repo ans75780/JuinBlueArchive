@@ -91,6 +91,12 @@
     <ClInclude Include="..\Public\MapProp.h">
       <Filter>02.GameObject\04. Prop</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Json_Utility.h">
+      <Filter>97.Utils\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\StrUtil.h">
+      <Filter>97.Utils\String_Util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -167,6 +173,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\MapProp.cpp">
       <Filter>02.GameObject\04. Prop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Json_Utility.cpp">
+      <Filter>97.Utils\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\StrUtil.cpp">
+      <Filter>97.Utils\String_Util</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -255,6 +267,12 @@
     </Filter>
     <Filter Include="02.GameObject\04. Prop">
       <UniqueIdentifier>{d7d78f4e-78fa-47de-96f8-99588e694d19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.Utils\Json">
+      <UniqueIdentifier>{737d59a8-2a02-4cb6-82bd-95ea4f7bb4ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.Utils\String_Util">
+      <UniqueIdentifier>{f329fd20-c1fb-47cc-837e-83c0ead04801}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

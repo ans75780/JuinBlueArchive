@@ -20,7 +20,7 @@ public:
 	HRESULT Ready_Layer_Camera(const _tchar* pLayerTag);
 	HRESULT Ready_Light();
 	HRESULT Ready_Layer_MapProp(const _tchar* pLayerTag);
-
+	HRESULT UI_Extract();
 
 public:
 	static CLevel_MapTool* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

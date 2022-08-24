@@ -89,7 +89,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	CUI* pUI = CBackGround::Create(m_pDevice, m_pContext);
 	pUI->LoadUIImage(L"UI_Background");
 	pUI->Set_UIType(UI_TYPE::UI_BACKGROUND);
-	pUI->Set_Size(_float3(1280.f, 720.f, 1.f));
+	pUI->Set_Size(_float3(100.f, 100.f, 1.f));
 	if (FAILED(pGameInstance->Add_UI(LEVEL_LOGO, pUI)))
 	{
 		return E_FAIL;
@@ -97,13 +97,14 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	
 	CUI* pButton = CBackGround::Create(m_pDevice, m_pContext);
 	pButton->LoadUIImage(L"UI_Default");
+	pButton->Set_Pos(_float3(100.f, 100.f, 1.f));
 	pButton->Set_UIType(UI_TYPE::UI_BUTTTON);
 	if (FAILED(pGameInstance->Add_UI(LEVEL_LOGO, pButton)))
 	{
 		return E_FAIL;
 	}
 
-
+	/*
 	CUI_TestDialog* pDialog = CUI_TestDialog::Create(m_pDevice, m_pContext);
 	pDialog->LoadUIImage(L"UI_Background");
 	//pDialog->Set_UIType(UI_TYPE::UI_BUTTTON);
@@ -111,7 +112,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	{
 		return E_FAIL;
 	}
-
+	*/
 	
 	//if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BackGround"),
 	//	CBackGround::Create(m_pDevice, m_pContext))))

@@ -2,6 +2,7 @@
 #include "..\Public\Level_MapTool.h"
 #include "GameInstance.h"
 #include "GameObject.h"
+#include "Json_Utility.h"
 
 #include "Camera_Free.h"
 #include "Light.h"
@@ -20,13 +21,14 @@ HRESULT CLevel_MapTool::Initialize()
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_MapProp(TEXT("Layer_MapProp"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_MapProp(TEXT("Layer_MapProp"))))
+	//	return E_FAIL;
 
 	if (FAILED(Ready_Light()))
 		return E_FAIL;
 
-
+	if (FAILED(UI_Extract()))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -121,6 +123,31 @@ HRESULT CLevel_MapTool::Ready_Layer_MapProp(const _tchar * pLayerTag)
 		return E_FAIL;
 
 	Safe_Release(pGameInstance);
+
+	return S_OK;
+}
+
+HRESULT CLevel_MapTool::UI_Extract()
+{
+	//Mat img = imread("../../Resources/UI/UI_original/image/Floater.png", IMREAD_UNCHANGED);
+
+	//if (img.empty())
+	//{
+	//	return E_FAIL;
+	//}
+
+	////json	JsonTemp;
+	////
+	////if (FAILED(CJson_Utility::Load_Json(CJson_Utility::Complete_Path(
+	////	L"../../Resources/UI/UI_original/json/Floater"))))
+
+
+	//Mat cropped_image = img(Range(152, 256), Range(0, 230));
+
+	//imwrite("../../Resources/UI/UI_extract/image/temp.png", cropped_image);
+
+
+
 
 	return S_OK;
 }

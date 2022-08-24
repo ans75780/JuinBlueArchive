@@ -26,7 +26,6 @@ CUI_Canvas * CUI_Canvas::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pC
 
 void CUI_Canvas::Free()
 {
-	
 	for (auto& vecUI : m_vecUI)
 	{
 		for (auto& UI : vecUI)

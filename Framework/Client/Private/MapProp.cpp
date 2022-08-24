@@ -42,7 +42,6 @@ HRESULT CMapProp::Initialize(void * pArg)
 		lstrcpy(m_desc.sz_Name, tempDesc->sz_Name);
 	}
 
-
 	return S_OK;
 }
 

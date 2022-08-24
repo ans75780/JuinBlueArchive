@@ -35,6 +35,7 @@ private:
 	HRESULT SetUp_Components();
 	HRESULT SetUp_ShaderResource();
 
+
 public:
 	static CBackGround* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual void Free() override;

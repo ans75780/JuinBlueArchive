@@ -1160,9 +1160,7 @@ The function horizontally concatenates two or more cv::Mat matrices (with the sa
     // 1, 2, 3;
     // 1, 2, 3]
 @endcode
-@param src input array or vector of matrices. all of the matrices must have the same number of rows and the same depth.
 @param nsrc number of matrices in src.
-@param dst output array. It has the same number of rows and depth as the src, and the sum of cols of the src.
 @sa cv::vconcat(const Mat*, size_t, OutputArray), @sa cv::vconcat(InputArrayOfArrays, OutputArray) and @sa cv::vconcat(InputArray, InputArray, OutputArray)
 */
 CV_EXPORTS void hconcat(const Mat* src, size_t nsrc, OutputArray dst);
@@ -1743,7 +1741,6 @@ CV_EXPORTS_W void transpose(InputArray src, OutputArray dst);
  *
  * @note Input should be continuous single-channel matrix.
  * @param src input array.
- * @param order a permutation of [0,1,..,N-1] where N is the number of axes of src.
  * The i’th axis of dst will correspond to the axis numbered order[i] of the input.
  * @param dst output array of the same type as src.
  */

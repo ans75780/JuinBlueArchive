@@ -114,6 +114,8 @@ HRESULT CModel::NonAnimRender(_uint iMeshIndex)
 		return E_FAIL;
 	}
 	m_MeshContainers[iMeshIndex]->Render();
+
+	return S_OK;
 }
 
 
@@ -209,8 +211,8 @@ HRESULT CModel::Create_Materials(const char * pModelFilePath)
 			strcat_s(szFullPath, szExt);
 
 			_tchar      szTextureFilePath[MAX_PATH] = TEXT("");
-
-			MultiByteToWideChar(CP_ACP, 0, szFullPath, strlen(szFullPath), szTextureFilePath, MAX_PATH);
+			
+			MultiByteToWideChar(CP_ACP, 0, szFullPath, (int)strlen(szFullPath), szTextureFilePath, MAX_PATH);
 
 			Material.pTextures[j] = CTexture::Create(m_pDevice, m_pContext, szTextureFilePath);
 			if (nullptr == Material.pTextures[j])

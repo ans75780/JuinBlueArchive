@@ -2,6 +2,7 @@
 
 #pragma warning (disable : 4005)
 #pragma warning (disable : 4251)
+#pragma warning (disable : 4819)
 
 #include <d3d11.h>
 #include <DirectXMath.h>
@@ -23,7 +24,9 @@
 
 #include <typeinfo.h>
 
-#include <opencv2\opencv.hpp>
+#include <opencv2\imgcodecs.hpp>
+#include <opencv2\imgproc.hpp>
+
 
 using namespace DirectX;
 using namespace cv;
@@ -38,6 +41,12 @@ using namespace cv;
 #include <map>
 #include <unordered_map>
 #include <algorithm>
+
+#include <fstream>
+#include <iostream>
+#include <string>
+#include "json/json.hpp"
+using json = nlohmann::json;
 
 #include "Engine_Typedef.h"
 #include "Engine_Function.h"

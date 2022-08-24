@@ -8,9 +8,14 @@
 #include "GameObject.h"
 #include "MainApp.h"
 
+#include "StrUtil.h"
+
 #include "Level_Loading.h"
 
 IMPLEMENT_SINGLETON(CImguiMgr)
+
+
+
 
 CImguiMgr::CImguiMgr()
 	: m_pGameInstance(CGameInstance::Get_Instance())
@@ -45,34 +50,6 @@ HRESULT CImguiMgr::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pConte
 	ImGui_ImplDX11_Init(m_pDevice, m_pContext);
 
 	return S_OK;
-}
-
-//wchar_t 에서 char 로의 형변환 함수
-char* ConvertWCtoC(const wchar_t* str)
-{
-	//반환할 char* 변수 선언
-	char* pStr;
-	//입력받은 wchar_t 변수의 길이를 구함
-	int strSize = WideCharToMultiByte(CP_ACP, 0, str, -1, NULL, 0, NULL, NULL);
-	//char* 메모리 할당
-	pStr = new char[strSize];
-	//형 변환
-	WideCharToMultiByte(CP_ACP, 0, str, -1, pStr, strSize, 0, 0);
-	return pStr;
-}
-
-//char 에서 wchar_t 로의 형변환 함수
-wchar_t* ConvertCtoWC(const char* str)
-{
-	//wchar_t형 변수 선언
-	wchar_t* pStr;
-	//멀티 바이트 크기 계산 길이 반환
-	int strSize = MultiByteToWideChar(CP_ACP, 0, str, -1, NULL, NULL);
-	//wchar_t 메모리 할당
-	pStr = new WCHAR[strSize];
-	//형 변환
-	MultiByteToWideChar(CP_ACP, 0, str, (int)strlen(str) + 1, pStr, strSize);
-	return pStr;
 }
 
 
@@ -261,7 +238,7 @@ void CImguiMgr::Tap_Object_CObj(void)
 
 		for (auto& iter_Layer : pGameObject_Layer)		//레이어탐색
 		{
-			if (ImGui::TreeNode(ConvertWCtoC(iter_Layer.first)))	//레이어 이름으로 노드생성
+			if (ImGui::TreeNode(CStrUtil::ConvertWCtoC(iter_Layer.first)))	//레이어 이름으로 노드생성
 			{
 				list<CGameObject*> pGameObject_List = m_pGameInstance->Get_GameObjects(m_currentLevelID, iter_Layer.first);
 
@@ -278,7 +255,7 @@ void CImguiMgr::Tap_Object_CObj(void)
 
 				for (auto& iter_List : pGameObject_List)	//레이어안에있는 오브젝트 순회
 				{
-					strcpy_s(tempName, MAX_PATH, ConvertWCtoC(iter_List->Get_OBJ_DESC().sz_Name));
+					strcpy_s(tempName, MAX_PATH, CStrUtil::ConvertWCtoC(iter_List->Get_OBJ_DESC().sz_Name));
 					_itoa_s(count, tempNum, 32, 10);
 					strcat_s(tempName, MAX_PATH, tempNum);
 
