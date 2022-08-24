@@ -7,6 +7,7 @@ class CAnimation final : public CBase
 {
 private:
 	CAnimation();
+	CAnimation(const CAnimation& rhs);
 	virtual ~CAnimation() = default;
 public:
 	HRESULT Initialize(aiAnimation* pAIAnimation, class CModel* pModel);

@@ -20,13 +20,12 @@ public:
 	HRESULT Render(_uint iMeshIndex, class CShader* pShader, const char* pConstantBoneName);
 	HRESULT NonAnimRender(_uint iMeshIndex);
 
-	void Set_CurrentAnimation(_uint iAnimIndex) {
-		m_iCurrentAnimationIndex = iAnimIndex;
-	}
+	void Set_CurrentAnimation(_uint iAnimIndex);
 public:
 	HRESULT	Play_Animation(_float fTimeDelta);
 
 	HRESULT Bind_SRV(class CShader* pShader, const char* pContantName, _uint iMeshContainerIndex, aiTextureType eType);
+	HRESULT Bind_Texture(class CShader* pShader, const char* pContantName,	class CTexture* pTexture);
 
 public:
 	_uint	Get_NumMeshContainers() const { return m_iNumMeshContainers; }

@@ -6,6 +6,14 @@ CChannel::CChannel()
 {
 }
 
+CChannel::CChannel(const CChannel & rhs)
+	: m_iNumKeyframes(rhs.m_iNumKeyframes)
+	, m_KeyFrames(rhs.m_KeyFrames)
+	, m_iCurrentKeyFrame(rhs.m_iCurrentKeyFrame)
+{
+	strcpy_s(m_szName, rhs.m_szName);
+}
+
 HRESULT CChannel::Initialize(aiNodeAnim * pAIChannel, CModel* pModel)
 {
 	strcpy_s(m_szName, pAIChannel->mNodeName.data);
@@ -98,7 +106,6 @@ void CChannel::Update_TransformationMatrices(_float fCurrentTime)
 		vPosition = XMVectorLerp(vSourPosition, vDestPosition, fRatio);
 		vPosition = XMVectorSetW(vPosition, 1.f);
 	}
-
 
 
 	_matrix		TransformationMatrix = XMMatrixAffineTransformation(vScale, XMVectorSet(0.f, 0.f, 0.f, 1.f), vRotation, vPosition);

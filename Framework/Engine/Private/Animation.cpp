@@ -5,6 +5,16 @@ CAnimation::CAnimation()
 {
 }
 
+CAnimation::CAnimation(const CAnimation & rhs)
+	: m_iNumChannels(rhs.m_iNumChannels)
+	, m_fDuration(rhs.m_fDuration)
+	, m_fTickPerSecond(rhs.m_fTickPerSecond)
+	, m_fTimeAcc(rhs.m_fTimeAcc)
+	, m_isFinished(rhs.m_isFinished)
+{
+	strcpy_s(m_szName, rhs.m_szName);
+}
+
 HRESULT CAnimation::Initialize(aiAnimation * pAIAnimation, class CModel* pModel)
 {
 	strcpy_s(m_szName, pAIAnimation->mName.data);
@@ -38,7 +48,8 @@ void CAnimation::Update_TransformationMatrices(_float fTimeDelta)
 		m_isFinished = true;
 		m_fTimeAcc = 0.f;
 	}
-
+	else
+		m_isFinished = false;
 	for (_uint i = 0; i < m_iNumChannels; ++i)
 	{
 		if (m_isFinished)

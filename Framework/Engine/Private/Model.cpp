@@ -4,6 +4,7 @@
 #include "BoneNode.h"
 #include "Animation.h"
 #include "Shader.h"
+#include "Texture.h"
 CModel::CModel(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CComponent(pDevice, pContext)
 {
@@ -128,6 +129,17 @@ HRESULT CModel::NonAnimRender(_uint iMeshIndex)
 	m_MeshContainers[iMeshIndex]->Render();
 }
 
+void CModel::Set_CurrentAnimation(_uint iAnimIndex)
+{
+	m_iCurrentAnimationIndex = iAnimIndex;
+	for (auto& pBoneNode : m_vecBones)
+	{
+		pBoneNode->Reset_CombinedTransformationMatrix();
+	}
+
+
+}
+
 
 HRESULT CModel::Play_Animation(_float fTimeDelta)
 {
@@ -154,6 +166,11 @@ HRESULT CModel::Bind_SRV(CShader * pShader, const char * pConstantName, _uint iM
 		return E_FAIL;
 
 	return m_Materials[iMaterialIndex].pTextures[eType]->Set_ShaderResourceView(pShader, pConstantName);
+}
+
+HRESULT CModel::Bind_Texture(CShader * pShader, const char * pContantName, CTexture * pTexture)
+{
+	return pTexture->Set_ShaderResourceView(pShader, pContantName);
 }
 
 CBoneNode * CModel::Find_Bone(const char * pBoneName)

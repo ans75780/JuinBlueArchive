@@ -26,6 +26,7 @@ public:
 	virtual HRESULT Render();
 
 private:
+	CTexture*				m_pMouthCom = nullptr;
 	CShader*				m_pShaderCom = nullptr;
 	CRenderer*				m_pRendererCom = nullptr;
 	CModel*					m_pModelCom = nullptr;

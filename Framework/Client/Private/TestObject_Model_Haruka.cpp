@@ -81,17 +81,18 @@ HRESULT CTestObject_Model_Haruka::Render()
 		return E_FAIL;
 
 	_uint iNumMeshContainers = m_pModelCom->Get_NumMeshContainers();
-	for (_uint i = 0; i < iNumMeshContainers; ++i)
+	for (_uint i = 2; i < 3; ++i)
 	{
 		if (i == 3)
 		{
 			//입 텍스쳐가 없어서 임시 로 넘김
+			if (FAILED(m_pModelCom->Bind_Texture(m_pShaderCom, "g_DiffuseTexture", m_pMouthCom)))
+				return E_FAIL;
 		}
 		else if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
 			return E_FAIL;
 		/*if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
 		return E_FAIL;*/
-
 		m_pShaderCom->Begin(0);
 		m_pModelCom->Render(i,m_pShaderCom, "g_Bones");
 	}
@@ -112,6 +113,9 @@ HRESULT CTestObject_Model_Haruka::SetUp_Components()
 
 	/* For.Com_Model */
 	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Test_Prototype_Component_Model_Haruka"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
+		return E_FAIL;
+
+	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Mouth"), TEXT("Com_Mouth"), (CComponent**)&m_pMouthCom)))
 		return E_FAIL;
 
 	return S_OK;
@@ -168,7 +172,6 @@ CTestObject_Model_Haruka * CTestObject_Model_Haruka::Create(ID3D11Device * pDevi
 		MSG_BOX("Failed to Created : CTestObject_Model_Haruka");
 		Safe_Release(pInstance);
 	}
-
 	return pInstance;
 }
 
@@ -193,6 +196,6 @@ void CTestObject_Model_Haruka::Free()
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pRendererCom);
 	Safe_Release(m_pModelCom);
-
+	Safe_Release(m_pMouthCom);
 
 }
