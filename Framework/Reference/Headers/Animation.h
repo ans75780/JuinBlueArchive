@@ -14,7 +14,13 @@ public:
 	void Update_TransformationMatrices(_float fTimeDelta);
 
 public:
+	_bool	IsFinished() { return m_isFinished; }
+
+public:
 	HRESULT Clone_Channel(CAnimation* pPrototype, class CModel* pModel);
+
+
+
 private:
 	char			m_szName[MAX_PATH] = "";
 	_uint			m_iNumChannels = 0; /* 현재 애니메이션이 사용ㅇ해야할 뼈의 갯수. */

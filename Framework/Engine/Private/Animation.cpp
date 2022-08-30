@@ -57,7 +57,50 @@ void CAnimation::Update_TransformationMatrices(_float fTimeDelta)
 
 		m_Channels[i]->Update_TransformationMatrices(m_fTimeAcc);
 	}
+}
 
+void CAnimation::Update(_float fTimeDelta)
+{
+	switch (m_eAnimState)
+	{
+	case Engine::CAnimation::ANIM_STATE::ANIM_PLAY:
+		Update_TransformationMatrices(fTimeDelta);
+		break;
+	case Engine::CAnimation::ANIM_STATE::ANIM_PAUSE:
+		break;
+	case Engine::CAnimation::ANIM_STATE::ANIM_END:
+		break;
+	default:
+		break;
+	}
+}
+
+void CAnimation::Play()
+{
+	m_eAnimState = ANIM_STATE::ANIM_PLAY;
+}
+
+void CAnimation::Pause()
+{
+	m_eAnimState = ANIM_STATE::ANIM_PAUSE;
+}
+
+void CAnimation::Stop()
+{
+	Reset();
+	m_eAnimState = ANIM_STATE::ANIM_PAUSE;
+}
+
+void CAnimation::Reset()
+{
+	m_eAnimState = ANIM_STATE::ANIM_PLAY;
+	m_isFinished = false;
+	m_fTimeAcc = 0.f;
+	for (_uint i = 0; i < m_iNumChannels; ++i)
+	{
+		m_Channels[i]->ResetKeyFrame();
+		m_Channels[i]->Update_TransformationMatrices(m_fTimeAcc);
+	}
 }
 
 HRESULT CAnimation::Clone_Channel(CAnimation * pPrototype, CModel * pModel)

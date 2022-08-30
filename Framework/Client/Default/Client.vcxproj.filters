@@ -91,6 +91,12 @@
     <ClInclude Include="..\Public\MapProp.h">
       <Filter>02.GameObject\04. Prop</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\StateBase.h">
+      <Filter>04. State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\StateMachineBase.h">
+      <Filter>04. State\StateMachine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -167,6 +173,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\MapProp.cpp">
       <Filter>02.GameObject\04. Prop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\StateBase.cpp">
+      <Filter>04. State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\StateMachineBase.cpp">
+      <Filter>04. State\StateMachine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -255,6 +267,18 @@
     </Filter>
     <Filter Include="02.GameObject\04. Prop">
       <UniqueIdentifier>{d7d78f4e-78fa-47de-96f8-99588e694d19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\05.Actor">
+      <UniqueIdentifier>{52440e42-5d7e-4516-bb6e-3b60a4fa5312}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\05.Actor\Interface">
+      <UniqueIdentifier>{a3c6046b-487a-461a-878f-c1e981926d40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. State">
+      <UniqueIdentifier>{603fc8a7-59b9-4d6b-b25c-01fc406e38fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. State\StateMachine">
+      <UniqueIdentifier>{96baef81-a398-4d31-980a-e611d7c7556d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
