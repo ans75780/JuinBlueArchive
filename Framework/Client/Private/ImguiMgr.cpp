@@ -51,6 +51,15 @@ HRESULT CImguiMgr::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pConte
 	ImGui_ImplWin32_Init(g_hWnd);
 	ImGui_ImplDX11_Init(m_pDevice, m_pContext);
 
+
+	//ImGui::Text("cmp hi   hi =  %d", wcscmp(TEXT("hi"), TEXT("hi")));
+	//ImGui::Text("cmp ComTexture_Component Texture=  %d", wcscmp(TEXT("ComTexture_Component"), TEXT("ComTexture")));
+	//ImGui::Text("cmp hiru hiruungdi=  %d", wcscmp(TEXT("hiru"), TEXT("hiruungdi")));
+
+
+
+
+
 	return S_OK;
 }
 
@@ -378,55 +387,89 @@ void CImguiMgr::MapTool_View(void)
 
 void CImguiMgr::UITool_View(void)
 {
-	if (ImGui::Begin("UITool", &UIToolCheckBox, 0))
+
+	ImGui::Begin("UITool", &UIToolCheckBox, 0);
+	ImGui::Text("Make UI");
+
+	const char* UI_Class_Type[] = { "None", "LevelMoveButton", "DialogButton" };
+	static int UI_Class_SelectNum = 0;	//이거로 생성
+	const char* UI_Class_Value = UI_Class_Type[UI_Class_SelectNum];
+	if (ImGui::BeginCombo("Class Type", UI_Class_Value, 0))
 	{
-		ImGui::Text("Make UI");
-		const char* UI_Class_Type[] = { "None", "LevelMoveButton", "DialogButton" };
-		static int UI_Class_SelectNum = 0;	//이거로 생성
-		const char* UI_Class_Value = UI_Class_Type[UI_Class_SelectNum];
-		if (ImGui::BeginCombo("Class Type", UI_Class_Value, 0))
+		for (int i = 0; i < IM_ARRAYSIZE(UI_Class_Type); ++i)
 		{
-			for (int i = 0; i < IM_ARRAYSIZE(UI_Class_Type); ++i)
-			{
-				const bool is_selected = (UI_Class_SelectNum == i);
-				if (ImGui::Selectable(UI_Class_Type[i], is_selected))
-					UI_Class_SelectNum = i;
-			}
-			ImGui::EndCombo();
+			const bool is_selected = (UI_Class_SelectNum == i);
+			if (ImGui::Selectable(UI_Class_Type[i], is_selected))
+				UI_Class_SelectNum = i;
 		}
-
-
-		switch (UI_Class_SelectNum)
-		{
-		case 1:
-			ImGui::Separator();
-			Define_LevelMoveButton();
-			break;
-		case 2:
-			ImGui::Separator();
-			break;
-		default:
-			break;
-		}
-		
-
-
-
-		ImGui::End();
+		ImGui::EndCombo();
 	}
+
+
+	switch (UI_Class_SelectNum)
+	{
+	case 1:
+		ImGui::Separator();
+		Define_LevelMoveButton();
+		break;
+	case 2:
+		ImGui::Separator();
+		break;
+	default:
+		break;
+	}
+
+	ImGui::End();
 }
 
 void CImguiMgr::Define_LevelMoveButton(void)
 {
-	ID3D11ShaderResourceView*			pSRV = nullptr;
-	HRESULT		hr = 0;
-		hr = DirectX::CreateWICTextureFromFile(m_pDevice, L"../../Resources/Default/4ho.png", nullptr, &pSRV);
 
-	if (FAILED(hr))
-		return ;
+#pragma region 이미지받기
+	if (m_ImageVec.empty())
+	{
+		map<const _tchar*, class CComponent*> _ComMap = m_pGameInstance->Get_Prototype_Component_Map(LEVEL_STATIC);
 
-	ImGui::Image(pSRV, ImVec2(100.f, 100.f), ImVec2(0.f, 0.f), ImVec2(1.f, 1.f), ImVec4(1.f, 1.f, 1.f, 1.f), ImVec4(1.f, 1.f, 1.f, 0.5f));
+		if (!_ComMap.empty())
+		{
+			for (const auto& iter : _ComMap)
+			{
+				if (0 < wcscmp(iter.first, TEXT("Prototype_Component_Texture_")))
+				{
+					_tchar _name[MAX_PATH];
 
+					lstrcpy(_name, iter.first + lstrlenW(TEXT("Prototype_Component_Texture_")));
+
+					t_ImageVec _Imagevec;
+					_Imagevec.name = CStrUtil::ConvertWCtoC(_name);
+					_Imagevec.texture = (CTexture*)iter.second;
+
+					m_ImageVec.push_back(_Imagevec);
+				}
+			}
+		}
+	}
+#pragma endregion 
+
+	static unsigned int Image_Num = 0;
+	if (!m_ImageVec.empty())
+	{
+		const char* Image_Value = m_ImageVec[Image_Num].name;
+
+		ImGui::Image(m_ImageVec[Image_Num].texture->Get_ResourceView(), ImVec2(100.f, 100.f), ImVec2(0.f, 0.f), ImVec2(1.f, 1.f), ImVec4(1.f, 1.f, 1.f, 1.f), ImVec4(1.f, 1.f, 1.f, 0.5f));
+
+		if (ImGui::BeginCombo("Static_Image", Image_Value, 0))
+		{
+			for (int i = 0; i < m_ImageVec.size(); ++i)
+			{
+				const bool is_selected = (Image_Num == i);
+				if (ImGui::Selectable(m_ImageVec[i].name, is_selected))
+					Image_Num = i;
+			}
+
+			ImGui::EndCombo();
+		}
+	}
 
 	const char* Render_Type[] = { "UI_POST", "UI_DIALOG_BUTTON", "UI_DIALOG", "UI_BUTTTON", "UI_BACKGROUND", "NONE"};
 	static unsigned int Render_Num = 5;
@@ -461,8 +504,11 @@ void CImguiMgr::Define_LevelMoveButton(void)
 
 	if (ImGui::Button("Create_UI"))
 	{
+		string ImageName = "Prototype_Component_Texture_";
+		ImageName += m_ImageVec[Image_Num].name;
+		
 		CUI * pUI = CUI_LevelMoveButton::Create(m_pDevice, m_pContext);
-		pUI->LoadUIImage(L"UI_Background");
+		pUI->LoadUIImage(CStrUtil::ConvertCtoWC(ImageName.c_str()));
 		pUI->Set_UIType((UI_TYPE)Render_Num);
 		pUI->Set_Size(_float3(UI_Size[0], UI_Size[1], UI_Size[2]));
 		pUI->Set_Pos(_float3(UI_Pos[0], UI_Pos[1], UI_Pos[2]));

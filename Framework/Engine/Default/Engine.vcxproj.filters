@@ -22,9 +22,6 @@
     <ClInclude Include="..\Public\Base.h">
       <Filter>01.Utility\99.SuperClass</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Component.h">
-      <Filter>01.Utility\03.Component</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\GameInstance.h">
       <Filter>01.Utility\00.GameInstance</Filter>
     </ClInclude>
@@ -120,6 +117,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\Channel.h">
       <Filter>01.Utility\06.Model\02.Animation\Channel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Component.h">
+      <Filter>01.Utility\03.Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -59,6 +59,7 @@ public: /* For.Object_Manager */
 public: /* For.Component_Mananger */
 	HRESULT Add_Prototype(_uint iLevelIndex, const _tchar* pPrototypeTag, class CComponent* pPrototype);
 	class CComponent* Clone_Component(_uint iLevelIndex, const _tchar* pPrototypeTag, void* pArg = nullptr);
+	const map<const _tchar*, class CComponent*>&		Get_Prototype_Component_Map(_uint iLevelIndex);
 
 	
 public: /* For.Timer_Manager */

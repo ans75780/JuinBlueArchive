@@ -237,6 +237,14 @@ CComponent * CGameInstance::Clone_Component(_uint iLevelIndex, const _tchar * pP
 	return m_pComponent_Manager->Clone_Component(iLevelIndex, pPrototypeTag, pArg);
 }
 
+const map<const _tchar*, class CComponent*>& CGameInstance::Get_Prototype_Component_Map(_uint iLevelIndex)
+{
+	if (nullptr == m_pComponent_Manager)
+		MSG_BOX("¤¸¤µ;");
+
+	return m_pComponent_Manager->Get_Prototype_Component_Map(iLevelIndex);
+}
+
 HRESULT CGameInstance::Add_Timer(const _tchar * pTimerTag)
 {
 	if (nullptr == m_pTimer_Manager)

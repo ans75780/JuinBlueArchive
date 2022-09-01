@@ -90,7 +90,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	/* For.Prototype_GameObject_BackGround */
 
 	CUI* pUI = CBackGround::Create(m_pDevice, m_pContext);
-	pUI->LoadUIImage(L"UI_Background");
+	pUI->LoadUIImage(L"Prototype_Component_Texture_UI_Background");
 	pUI->Set_UIType(UI_TYPE::UI_BACKGROUND);
 	pUI->Set_Size(_float3(100.f, 100.f, 1.f));
 	if (FAILED(pGameInstance->Add_UI(LEVEL_LOGO, pUI)))
@@ -406,7 +406,8 @@ HRESULT CLoader::LoadUITexture(char * folderName, void * pGameInstance)
 	{
 		string _name = (*it)["name"];
 
-		string TextureName = _name;
+		string TextureName = "Prototype_Component_Texture_";
+		TextureName += _name;
 		TextureName += "_";
 		TextureName += folderName;
 

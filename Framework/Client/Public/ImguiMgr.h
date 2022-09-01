@@ -51,6 +51,13 @@ private:
 	bool	MapToolCheckBox;
 	bool	UIToolCheckBox;
 
+	struct t_ImageVec
+	{
+		CTexture* texture;
+		const char* name;
+	};
+	vector<t_ImageVec> m_ImageVec;
+
 public:
 	virtual void Free();
 }; END

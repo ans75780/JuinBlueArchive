@@ -17,11 +17,11 @@ public:
 public:
 	virtual HRESULT Initialize_Prototype(const _tchar* pTextureFilePath, _uint iNumTextures) ;
 	virtual HRESULT Initialize(void* pArg) override;
+	ID3D11ShaderResourceView*	Get_ResourceView(void);
 
 private:
 	vector<ID3D11ShaderResourceView*>			m_SRVs;
 	typedef vector<ID3D11ShaderResourceView*>	SRVS;
-
 
 public:
 	static CTexture* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pTextureFilePath, _uint iNumTextures = 1);

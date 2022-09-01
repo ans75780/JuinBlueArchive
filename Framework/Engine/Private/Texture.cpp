@@ -60,15 +60,21 @@ HRESULT CTexture::Initialize_Prototype(const _tchar * pTextureFilePath, _uint iN
 
 HRESULT CTexture::Initialize(void * pArg)
 {
-	ZeroMemory(m_TagName, sizeof(_tchar) * MAX_PATH);
-
 	return S_OK;
+}
+
+ID3D11ShaderResourceView * CTexture::Get_ResourceView(void)
+{
+	if(m_SRVs.empty())
+		return nullptr;
+
+	return m_SRVs.front();
 }
 
 CTexture * CTexture::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, const _tchar * pTextureFilePath, _uint iNumTextures)
 {
 	CTexture*		pInstance = new CTexture(pDevice, pContext);
-
+	
 	if (FAILED(pInstance->Initialize_Prototype(pTextureFilePath, iNumTextures)))
 	{
 		MSG_BOX("Failed to Created : CTexture");

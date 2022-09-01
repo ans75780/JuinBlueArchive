@@ -122,19 +122,19 @@ HRESULT CMainApp::Ready_Prototype_Component()
 		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_Default */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("UI_Default"),
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_UI_Default"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/Default%d.jpg"), 2))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_Default */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("UI_Background"),
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_UI_Background"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/AppIcon_Shiroko%d.png"), 1))))
 		return E_FAIL;
 
 	//Safe_AddRef(m_pRenderer);
 
 	/* For.Prototype_Component_Texture_Default */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("UI_TestDialogButton"),
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_UI_TestDialogButton"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/DefaultButton.png"), 1))))
 		return E_FAIL;
 	//Safe_AddRef(m_pRenderer);
