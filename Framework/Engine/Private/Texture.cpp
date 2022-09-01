@@ -60,6 +60,7 @@ HRESULT CTexture::Initialize_Prototype(const _tchar * pTextureFilePath, _uint iN
 
 HRESULT CTexture::Initialize(void * pArg)
 {
+	ZeroMemory(m_TagName, sizeof(_tchar) * MAX_PATH);
 
 	return S_OK;
 }

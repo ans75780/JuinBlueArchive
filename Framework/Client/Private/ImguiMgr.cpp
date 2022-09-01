@@ -12,15 +12,17 @@
 
 #include "Level_Loading.h"
 
+#include "UI.h"
+#include "UI_LevelMoveButton.h"
+
 IMPLEMENT_SINGLETON(CImguiMgr)
-
-
 
 
 CImguiMgr::CImguiMgr()
 	: m_pGameInstance(CGameInstance::Get_Instance())
 	, show_demo_window(false), show_mainBar(true)
 	, MapToolCheckBox(false), m_currentLevelID(0)
+	, UIToolCheckBox(true)
 {
 	Safe_AddRef(m_pGameInstance);
 }
@@ -147,6 +149,9 @@ void CImguiMgr::HelloJusin_View(void)
 
 	ImGui::Text(tempText_CurrentLevel);
 	
+	ImGui::Separator();
+	ImGui::Checkbox("UI_Tool", &UIToolCheckBox);
+
 	if (m_currentLevelID == LEVEL_MAPTOOL)
 	{
 		ImGui::Separator();
@@ -181,6 +186,10 @@ void CImguiMgr::HelloJusin_View(void)
 
 		ImGui::EndTabBar();
 	}
+
+	if (UIToolCheckBox)
+		UITool_View();
+
 	if (MapToolCheckBox)
 		MapTool_View();
 
@@ -362,7 +371,108 @@ void CImguiMgr::MapTool_View(void)
 	if (ImGui::Begin("MapTool", &MapToolCheckBox, 0))
 	{
 
+
 		ImGui::End();
+	}
+}
+
+void CImguiMgr::UITool_View(void)
+{
+	if (ImGui::Begin("UITool", &UIToolCheckBox, 0))
+	{
+		ImGui::Text("Make UI");
+		const char* UI_Class_Type[] = { "None", "LevelMoveButton", "DialogButton" };
+		static int UI_Class_SelectNum = 0;	//이거로 생성
+		const char* UI_Class_Value = UI_Class_Type[UI_Class_SelectNum];
+		if (ImGui::BeginCombo("Class Type", UI_Class_Value, 0))
+		{
+			for (int i = 0; i < IM_ARRAYSIZE(UI_Class_Type); ++i)
+			{
+				const bool is_selected = (UI_Class_SelectNum == i);
+				if (ImGui::Selectable(UI_Class_Type[i], is_selected))
+					UI_Class_SelectNum = i;
+			}
+			ImGui::EndCombo();
+		}
+
+
+		switch (UI_Class_SelectNum)
+		{
+		case 1:
+			ImGui::Separator();
+			Define_LevelMoveButton();
+			break;
+		case 2:
+			ImGui::Separator();
+			break;
+		default:
+			break;
+		}
+		
+
+
+
+		ImGui::End();
+	}
+}
+
+void CImguiMgr::Define_LevelMoveButton(void)
+{
+	ID3D11ShaderResourceView*			pSRV = nullptr;
+	HRESULT		hr = 0;
+		hr = DirectX::CreateWICTextureFromFile(m_pDevice, L"../../Resources/Default/4ho.png", nullptr, &pSRV);
+
+	if (FAILED(hr))
+		return ;
+
+	ImGui::Image(pSRV, ImVec2(100.f, 100.f), ImVec2(0.f, 0.f), ImVec2(1.f, 1.f), ImVec4(1.f, 1.f, 1.f, 1.f), ImVec4(1.f, 1.f, 1.f, 0.5f));
+
+
+	const char* Render_Type[] = { "UI_POST", "UI_DIALOG_BUTTON", "UI_DIALOG", "UI_BUTTTON", "UI_BACKGROUND", "NONE"};
+	static unsigned int Render_Num = 5;
+	const char* Render_Value = Render_Type[Render_Num];
+	if (ImGui::BeginCombo("Render Type", Render_Value, 0))
+	{
+		for (int i = 0; i < IM_ARRAYSIZE(Render_Type); ++i)
+		{
+			const bool is_selected = (Render_Num == i);
+			if (ImGui::Selectable(Render_Type[i], is_selected))
+				Render_Num = i;
+		}
+		ImGui::EndCombo();
+	}
+
+	static _float UI_Size[2] = { 100.f, 100.f };
+	static _float UI_Pos[2] = { 0.f, 0.f };
+
+	if (ImGui::InputFloat2("Set Size", UI_Size, "%.1f", 0))
+	{
+	}
+
+	if (ImGui::InputFloat2("Set Pos", UI_Pos, "%.1f", 0))
+	{
+	}
+
+	if (m_currentLevelID == LEVEL::LEVEL_LOADING || Render_Num == 5)
+	{
+		ImGui::Text("CurrentLevel is LOADING OR RenderType is NONE");
+		return;
+	}
+
+	if (ImGui::Button("Create_UI"))
+	{
+		CUI * pUI = CUI_LevelMoveButton::Create(m_pDevice, m_pContext);
+		pUI->LoadUIImage(L"UI_Background");
+		pUI->Set_UIType((UI_TYPE)Render_Num);
+		pUI->Set_Size(_float3(UI_Size[0], UI_Size[1], UI_Size[2]));
+		pUI->Set_Pos(_float3(UI_Pos[0], UI_Pos[1], UI_Pos[2]));
+
+		if (FAILED(m_pGameInstance->Add_UI(m_currentLevelID, pUI)))
+		{
+			MSG_BOX("UI생성실패");
+		}
+
+		ImGui::Text("Create");
 	}
 }
 

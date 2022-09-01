@@ -10,7 +10,6 @@ CBackGround::CBackGround(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 
 HRESULT CBackGround::Initialize(void * pArg)
 {
-	
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 		

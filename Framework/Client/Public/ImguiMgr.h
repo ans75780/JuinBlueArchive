@@ -35,6 +35,8 @@ private:
 private:
 	void		MapTool_View(void);
 
+	void		UITool_View(void);
+	void		Define_LevelMoveButton(void);
 
 
 private:
@@ -42,11 +44,12 @@ private:
 	ID3D11Device*         m_pDevice = nullptr;
 	ID3D11DeviceContext*   m_pContext = nullptr;
 
-	_uint m_currentLevelID = 0;
+	_uint	m_currentLevelID = 0;
 
-	bool show_demo_window;
-	bool show_mainBar;
-	bool MapToolCheckBox;
+	bool	show_demo_window;
+	bool	show_mainBar;
+	bool	MapToolCheckBox;
+	bool	UIToolCheckBox;
 
 public:
 	virtual void Free();

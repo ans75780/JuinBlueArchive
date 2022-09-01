@@ -63,6 +63,11 @@ HRESULT CLevel_Logo::Ready_Layer_BackGround(const _tchar * pLayerTag)
 	/* For.BackGround */
 	//if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOGO, pLayerTag, TEXT("Prototype_GameObject_BackGround"))))
 	//	return E_FAIL;
+	
+	map<char*, CTexture*> m_vecTextures;
+
+
+	
 
 
 	Safe_Release(pGameInstance);

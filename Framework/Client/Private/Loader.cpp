@@ -98,14 +98,14 @@ HRESULT CLoader::Loading_ForLogoLevel()
 		return E_FAIL;
 	}
 	
-	CUI* pButton = CBackGround::Create(m_pDevice, m_pContext);
-	pButton->LoadUIImage(L"UI_Default");
-	pButton->Set_Pos(_float3(100.f, 100.f, 1.f));
-	pButton->Set_UIType(UI_TYPE::UI_BUTTTON);
-	if (FAILED(pGameInstance->Add_UI(LEVEL_LOGO, pButton)))
-	{
-		return E_FAIL;
-	}
+	//CUI* pButton = CBackGround::Create(m_pDevice, m_pContext);
+	//pButton->LoadUIImage(L"UI_Default");
+	//pButton->Set_Pos(_float3(100.f, 100.f, 1.f));
+	//pButton->Set_UIType(UI_TYPE::UI_BUTTTON);
+	//if (FAILED(pGameInstance->Add_UI(LEVEL_LOGO, pButton)))
+	//{
+	//	return E_FAIL;
+	//}
 
 	/*
 	CUI_TestDialog* pDialog = CUI_TestDialog::Create(m_pDevice, m_pContext);
