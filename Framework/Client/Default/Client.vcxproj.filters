@@ -97,6 +97,9 @@
     <ClInclude Include="..\Public\StateMachineBase.h">
       <Filter>04. State\StateMachine</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Student.h">
+      <Filter>02.GameObject\06. Student</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -179,6 +182,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\StateMachineBase.cpp">
       <Filter>04. State\StateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Student.cpp">
+      <Filter>02.GameObject\06. Student</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -279,6 +285,9 @@
     </Filter>
     <Filter Include="04. State\StateMachine">
       <UniqueIdentifier>{96baef81-a398-4d31-980a-e611d7c7556d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\06. Student">
+      <UniqueIdentifier>{a5477715-8bc1-4140-a022-797e60da67ef}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

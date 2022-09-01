@@ -157,14 +157,10 @@ HRESULT CLevel_GamePlay::Ready_Layer_Test(const _tchar * pLayerTag)
 
 	CGameObject::OBJ_DESC tempDesc;
 
-	lstrcpy(tempDesc.sz_Name, TEXT("Model_Haruka"));
-
-	//if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Test_Prototype_GameObject_Siroko"), (void*)&tempDesc)))
-	//	return E_FAIL;
-
 	/* For.Model.Haruka */
-	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Test_Prototype_GameObject_Model_Haruka"),(void*)&tempDesc)))
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Test_Prototype_GameObject_Model_Haruka"), (void*)&tempDesc)))
 		return E_FAIL;
+
 
 	Safe_Release(pGameInstance);
 

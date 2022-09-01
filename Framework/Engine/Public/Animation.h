@@ -3,7 +3,7 @@
 
 BEGIN(Engine)
 
-class CAnimation final : public CBase
+class ENGINE_DLL CAnimation final : public CBase
 {
 public:
 	enum class ANIM_STATE {ANIM_PLAY, ANIM_PAUSE, ANIM_END};

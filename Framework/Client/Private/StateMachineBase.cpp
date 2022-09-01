@@ -10,7 +10,8 @@ CStateMachineBase::~CStateMachineBase()
 {
 	while (!m_States.empty())
 	{
-		Safe_Delete(m_States.top());
+
+		//Safe_Delete(m_States.top());
 		m_States.pop();
 	}
 }
@@ -29,7 +30,7 @@ HRESULT CStateMachineBase::Update(_float fTimeDelta)
 	if (!m_States.top()->Loop(fTimeDelta))
 	{
 		CStateBase*	pState = m_States.top()->Exit();
-		Safe_Delete(m_States.top());
+		//Safe_Delete(m_States.top());
 		m_States.pop();
 
 		if (nullptr != pState)
@@ -53,7 +54,7 @@ CStateMachineBase * CStateMachineBase::Create(CStateBase * pStateBase)
 	if (FAILED(pInstance->Initialize(pStateBase)))
 	{
 		MSG_BOX("StateMachine Error : Initialize");
-		Safe_Delete(pInstance);
+		//Safe_Delete(pInstance);
 		return nullptr;
 	}
 	

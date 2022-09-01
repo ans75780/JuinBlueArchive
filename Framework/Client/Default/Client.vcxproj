@@ -187,6 +187,7 @@
     <ClInclude Include="..\Public\MapProp.h" />
     <ClInclude Include="..\Public\StateBase.h" />
     <ClInclude Include="..\Public\StateMachineBase.h" />
+    <ClInclude Include="..\Public\Student.h" />
     <ClInclude Include="..\Public\TestObject_Model_Haruka.h" />
     <ClInclude Include="..\Public\TestObject_Test.h" />
     <ClInclude Include="..\Public\Terrain.h" />
@@ -218,6 +219,7 @@
     <ClCompile Include="..\Private\MapProp.cpp" />
     <ClCompile Include="..\Private\StateBase.cpp" />
     <ClCompile Include="..\Private\StateMachineBase.cpp" />
+    <ClCompile Include="..\Private\Student.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp" />
     <ClCompile Include="..\Private\TestObject_Model_Haruka.cpp" />
     <ClCompile Include="..\Private\Transform_Utils.cpp" />

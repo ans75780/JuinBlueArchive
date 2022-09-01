@@ -1,24 +1,28 @@
 #include "stdafx.h"
-#include "..\Public\TestObject_Model_Haruka.h"
+#include "Student.h"
 
 #include "GameInstance.h"
+#include "MeshContainer.h"
 
-CTestObject_Model_Haruka::CTestObject_Model_Haruka(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
+CStudent::CStudent(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, _tchar*	pStudentTag)
 	: CGameObject(pDevice, pContext)
 {
+	lstrcpy(m_szStudentName, pStudentTag);
 }
 
-CTestObject_Model_Haruka::CTestObject_Model_Haruka(const CTestObject_Model_Haruka & rhs)
+
+CStudent::CStudent(const CStudent & rhs)
 	: CGameObject(rhs)
 {
+	lstrcpy(m_szStudentName, rhs.m_szStudentName);
 }
 
-HRESULT CTestObject_Model_Haruka::Initialize_Prototype()
+HRESULT CStudent::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT CTestObject_Model_Haruka::Initialize(void * pArg)
+HRESULT CStudent::Initialize(void * pArg)
 {
 	CTransform::TRANSFORMDESC		TransformDesc;
 	TransformDesc.fSpeedPerSec = 5.f;
@@ -35,12 +39,6 @@ HRESULT CTestObject_Model_Haruka::Initialize(void * pArg)
 
 	lstrcpy(m_desc.sz_Name, TEXT("Haruka"));
 
-	/*if (pArg)
-	{
-		CGameObject::OBJ_DESC* tempDesc = static_cast<CGameObject::OBJ_DESC*>(pArg);
-
-		lstrcpy(m_desc.sz_Name, tempDesc->sz_Name);
-	}*/
 	m_iAnimIndex = 5;
 	m_pModelCom->Set_CurrentAnimation(m_iAnimIndex);
 
@@ -48,7 +46,7 @@ HRESULT CTestObject_Model_Haruka::Initialize(void * pArg)
 	return S_OK;
 }
 
-void CTestObject_Model_Haruka::Tick(_float fTimeDelta)
+void CStudent::Tick(_float fTimeDelta)
 {
 	if (KEY(LEFT, TAP))
 	{
@@ -65,12 +63,12 @@ void CTestObject_Model_Haruka::Tick(_float fTimeDelta)
 
 }
 
-void CTestObject_Model_Haruka::LateTick(_float fTimeDelta)
+void CStudent::LateTick(_float fTimeDelta)
 {
 	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
 }
 
-HRESULT CTestObject_Model_Haruka::Render()
+HRESULT CStudent::Render()
 {
 	if (nullptr == m_pShaderCom ||
 		nullptr == m_pModelCom)
@@ -81,7 +79,8 @@ HRESULT CTestObject_Model_Haruka::Render()
 		return E_FAIL;
 
 	_uint iNumMeshContainers = m_pModelCom->Get_NumMeshContainers();
-	for (_uint i = 2; i < 3; ++i)
+
+	for (_uint i = 0; i < iNumMeshContainers; ++i)
 	{
 		if (i == 3)
 		{
@@ -94,14 +93,14 @@ HRESULT CTestObject_Model_Haruka::Render()
 		/*if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
 		return E_FAIL;*/
 		m_pShaderCom->Begin(0);
-		m_pModelCom->Render(i,m_pShaderCom, "g_Bones");
+		m_pModelCom->Render(i, m_pShaderCom, "g_Bones");
 	}
 
 	return S_OK;
 }
 
 
-HRESULT CTestObject_Model_Haruka::SetUp_Components()
+HRESULT CStudent::SetUp_Components()
 {
 	/* For.Com_Shader */
 	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxAnimModel"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
@@ -111,8 +110,12 @@ HRESULT CTestObject_Model_Haruka::SetUp_Components()
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
 		return E_FAIL;
 
+	_tchar szModelTag[MAX_PATH] = L"Test_Prototype_Component_Model_";
+
+	lstrcat(szModelTag, m_szStudentName);
+
 	/* For.Com_Model */
-	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Test_Prototype_Component_Model_Haruka"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
+	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, szModelTag, TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
 		return E_FAIL;
 
 	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Mouth"), TEXT("Com_Mouth"), (CComponent**)&m_pMouthCom)))
@@ -121,7 +124,7 @@ HRESULT CTestObject_Model_Haruka::SetUp_Components()
 	return S_OK;
 }
 
-HRESULT CTestObject_Model_Haruka::SetUp_ShaderResource()
+HRESULT CStudent::SetUp_ShaderResource()
 {
 	if (nullptr == m_pShaderCom)
 		return E_FAIL;
@@ -163,32 +166,32 @@ HRESULT CTestObject_Model_Haruka::SetUp_ShaderResource()
 	return S_OK;
 }
 
-CTestObject_Model_Haruka * CTestObject_Model_Haruka::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
+CStudent * CStudent::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, _tchar *pStudentTag)
 {
-	CTestObject_Model_Haruka*		pInstance = new CTestObject_Model_Haruka(pDevice, pContext);
+	CStudent*		pInstance = new CStudent(pDevice, pContext, pStudentTag);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Created : CTestObject_Model_Haruka");
+		MSG_BOX("Failed to Created : CStudent");
 		Safe_Release(pInstance);
 	}
 	return pInstance;
 }
 
-CGameObject * CTestObject_Model_Haruka::Clone(void * pArg)
+CGameObject * CStudent::Clone(void * pArg)
 {
-	CTestObject_Model_Haruka*		pInstance = new CTestObject_Model_Haruka(*this);
+	CStudent*		pInstance = new CStudent(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Cloned : CTestObject_Model_Haruka");
+		MSG_BOX("Failed to Cloned : CStudent");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CTestObject_Model_Haruka::Free()
+void CStudent::Free()
 {
 	__super::Free();
 

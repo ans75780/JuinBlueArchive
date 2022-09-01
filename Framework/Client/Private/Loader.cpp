@@ -9,7 +9,7 @@
 #include "UI_TestDialog.h"
 #include "UI_TestDialogButton.h"
 #include "TestObject_Model_Haruka.h"
-
+#include "Student.h"
 #pragma endregion
 
 #include "MapProp.h"
@@ -183,6 +183,10 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	/* For.Prototype_GameObject_TestObject 테스트 하루카 오브젝트 입니다.   */
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Test_Prototype_GameObject_Model_Haruka"),
 		CTestObject_Model_Haruka::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_Student_Haruka"),
+		CStudent::Create(m_pDevice, m_pContext, TEXT("Haruka")))))
 		return E_FAIL;
 
 #pragma endregion

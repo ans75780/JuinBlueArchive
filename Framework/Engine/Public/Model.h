@@ -30,6 +30,10 @@ public:
 public:
 	_uint	Get_NumMeshContainers() const { return m_iNumMeshContainers; }
 
+
+public:
+	class CMeshContainer*		Get_MeshContainers(_uint iIndex);
+
 public:
 	class CBoneNode* Find_Bone(const char* pBoneName);
 

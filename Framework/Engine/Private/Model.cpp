@@ -136,8 +136,6 @@ void CModel::Set_CurrentAnimation(_uint iAnimIndex)
 	{
 		pBoneNode->Reset_CombinedTransformationMatrix();
 	}
-
-
 }
 
 
@@ -172,6 +170,15 @@ HRESULT CModel::Bind_Texture(CShader * pShader, const char * pContantName, CText
 {
 	return pTexture->Set_ShaderResourceView(pShader, pContantName);
 }
+
+CMeshContainer * CModel::Get_MeshContainers(_uint iIndex)
+{
+	if (m_iNumMeshContainers <= iIndex)
+		return nullptr;
+
+	return m_MeshContainers[iIndex];
+}
+
 
 CBoneNode * CModel::Find_Bone(const char * pBoneName)
 {

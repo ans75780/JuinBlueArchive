@@ -5,7 +5,7 @@
 
 BEGIN(Engine)
 
-class CMeshContainer final : public CVIBuffer
+class ENGINE_DLL CMeshContainer final : public CVIBuffer
 {
 private:
 	CMeshContainer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
