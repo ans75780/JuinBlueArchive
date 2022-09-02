@@ -237,11 +237,8 @@ CComponent * CGameInstance::Clone_Component(_uint iLevelIndex, const _tchar * pP
 	return m_pComponent_Manager->Clone_Component(iLevelIndex, pPrototypeTag, pArg);
 }
 
-const map<const _tchar*, class CComponent*>& CGameInstance::Get_Prototype_Component_Map(_uint iLevelIndex)
+map<const _tchar*, class CComponent*> CGameInstance::Get_Prototype_Component_Map(_uint iLevelIndex)
 {
-	if (nullptr == m_pComponent_Manager)
-		MSG_BOX("¤¸¤µ;");
-
 	return m_pComponent_Manager->Get_Prototype_Component_Map(iLevelIndex);
 }
 
@@ -280,6 +277,11 @@ HRESULT CGameInstance::Add_UI(_uint iLevelIndex, CUI * pUI, void * pArg)
 
 
 	return S_OK;
+}
+
+vector<class CUI_Canvas*> CGameInstance::Get_Canvases()
+{
+	return m_pUI_Manager->Get_Canvases();
 }
 
 HRESULT CGameInstance::Add_Light(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, const LIGHTDESC & LightDesc)

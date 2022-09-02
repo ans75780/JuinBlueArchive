@@ -60,6 +60,14 @@ void CComponent_Manager::Clear(_uint iLevelIndex)
 	m_pPrototypes[iLevelIndex].clear();
 }
 
+map<const _tchar*, class CComponent*> CComponent_Manager::Get_Prototype_Component_Map(_uint iLevelIndex)
+{
+	if(m_pPrototypes[iLevelIndex].empty())
+		return map<const _tchar*, class CComponent*>();
+
+	return m_pPrototypes[iLevelIndex];
+}
+
 CComponent * CComponent_Manager::Find_Components(_uint iLevelIndex, const _tchar * pPrototypeTag)
 {
 	auto	iter = find_if(m_pPrototypes[iLevelIndex].begin(), m_pPrototypes[iLevelIndex].end(), CTag_Finder(pPrototypeTag));

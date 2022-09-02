@@ -63,6 +63,14 @@ void CUI_Manager::DisableCanvas(_uint iLevelIndex)
 	
 }
 
+vector<class CUI_Canvas*> CUI_Manager::Get_Canvases()
+{
+	if (m_vecCanvas.empty())
+		return vector<class CUI_Canvas*>();
+
+	return m_vecCanvas;
+}
+
 
 void CUI_Manager::Free()
 {

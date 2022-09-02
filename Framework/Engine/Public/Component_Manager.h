@@ -28,7 +28,7 @@ public:
 	class CComponent* Clone_Component(_uint iLevelIndex, const _tchar* pPrototypeTag, void* pArg);
 public:
 	void Clear(_uint iLevelIndex);
-	const map<const _tchar*, class CComponent*>&		Get_Prototype_Component_Map(_uint iLevelIndex) { return m_pPrototypes[iLevelIndex]; }
+	map<const _tchar*, class CComponent*>		Get_Prototype_Component_Map(_uint iLevelIndex);
 
 private:
 	_uint			m_iNumLevels = 0;

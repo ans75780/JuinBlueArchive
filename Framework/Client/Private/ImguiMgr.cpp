@@ -12,8 +12,10 @@
 
 #include "Level_Loading.h"
 
+#include "UI_Canvas.h"
 #include "UI.h"
 #include "UI_LevelMoveButton.h"
+
 
 IMPLEMENT_SINGLETON(CImguiMgr)
 
@@ -22,7 +24,7 @@ CImguiMgr::CImguiMgr()
 	: m_pGameInstance(CGameInstance::Get_Instance())
 	, show_demo_window(false), show_mainBar(true)
 	, MapToolCheckBox(false), m_currentLevelID(0)
-	, UIToolCheckBox(true)
+	, UIToolCheckBox(false)
 {
 	Safe_AddRef(m_pGameInstance);
 }
@@ -50,15 +52,6 @@ HRESULT CImguiMgr::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pConte
 	// Setup Platform/Renderer backends
 	ImGui_ImplWin32_Init(g_hWnd);
 	ImGui_ImplDX11_Init(m_pDevice, m_pContext);
-
-
-	//ImGui::Text("cmp hi   hi =  %d", wcscmp(TEXT("hi"), TEXT("hi")));
-	//ImGui::Text("cmp ComTexture_Component Texture=  %d", wcscmp(TEXT("ComTexture_Component"), TEXT("ComTexture")));
-	//ImGui::Text("cmp hiru hiruungdi=  %d", wcscmp(TEXT("hiru"), TEXT("hiruungdi")));
-
-
-
-
 
 	return S_OK;
 }
@@ -97,7 +90,7 @@ HRESULT CImguiMgr::Render(void)
 	return S_OK;
 }
 
-void CImguiMgr::HelloJusin_View(void)
+void CImguiMgr::HelloJusin_View(void)	//메인탭임 책갈피로 현재 메인탭 오브젝트탭 레벨이동탭 으로 구성되있음
 {
 #pragma region 임구이바 옵션
 	bool no_titlebar = false;
@@ -158,14 +151,13 @@ void CImguiMgr::HelloJusin_View(void)
 
 	ImGui::Text(tempText_CurrentLevel);
 	
-	ImGui::Separator();
-	ImGui::Checkbox("UI_Tool", &UIToolCheckBox);
+
 
 	if (m_currentLevelID == LEVEL_MAPTOOL)
 	{
 		ImGui::Separator();
-
 		ImGui::Checkbox("MapTool", &MapToolCheckBox);
+		ImGui::Checkbox("UI_Tool", &UIToolCheckBox);
 
 	}
 
@@ -205,7 +197,7 @@ void CImguiMgr::HelloJusin_View(void)
 	ImGui::End();
 }
 
-void CImguiMgr::HelloJusin_Tap_Main(void)			//HelloJusin_Tap_Main
+void CImguiMgr::HelloJusin_Tap_Main(void)			//메인탭의 1번째 책갈피임
 {
 	ImGuiIO& io = ImGui::GetIO();
 
@@ -233,7 +225,7 @@ void CImguiMgr::HelloJusin_Tap_Main(void)			//HelloJusin_Tap_Main
 
 }
 
-void CImguiMgr::HelloJusin_Tap_Object(void)
+void CImguiMgr::HelloJusin_Tap_Object(void)	//Main탭의  OBJ리스트와, UI 리스트 나열
 {
 	Tap_Object_CObj();
 
@@ -242,7 +234,7 @@ void CImguiMgr::HelloJusin_Tap_Object(void)
 	Tap_Object_CUI();
 }
 
-void CImguiMgr::Tap_Object_CObj(void)
+void CImguiMgr::Tap_Object_CObj(void)	//현재레벨에 존재하는 오브젝트들 나열
 {
 	if (ImGui::CollapsingHeader("CGameObjects"))
 	{
@@ -328,15 +320,68 @@ void CImguiMgr::Tap_Object_CObj(void)
 	}
 }
 
-void CImguiMgr::Tap_Object_CUI(void)
+void CImguiMgr::Tap_Object_CUI(void)		//UI 오브젝트리스트 나열		
 {
 	if (ImGui::CollapsingHeader("CUI"))
 	{
+		vector<CUI_Canvas*> pCanvas = m_pGameInstance->Get_Canvases();
+
+		if (pCanvas.empty())
+		{
+			ImGui::Text("UI_Canvas is empty");
+			return;
+		}
+
+		_uint UILevelCount = 0;
+
+		for (auto& iter_Canvas : pCanvas)
+		{
+			char UICanvasTreeName[32] = {};
+
+			switch (UILevelCount)
+			{
+			case Client::LEVEL_STATIC:
+				strcpy_s(UICanvasTreeName, 32, "LEVEL_STATIC");
+				break;
+			case Client::LEVEL_LOGO:
+				strcpy_s(UICanvasTreeName, 32, "LEVEL_LOGO");
+				break;
+			case Client::LEVEL_GAMEPLAY:
+				strcpy_s(UICanvasTreeName, 32, "LEVEL_GAMEPLAY");
+				break;
+			case Client::LEVEL_MAPTOOL:
+				strcpy_s(UICanvasTreeName, 32, "LEVEL_MAPTOOL");
+				break;
+			default:
+				++UILevelCount;
+				continue;
+				break;
+			}
+
+			if (ImGui::TreeNode(UICanvasTreeName))
+			{
+				vector<CUI*>* UIVec = iter_Canvas->Get_UIVec();
+
+				for (_uint i = 0; i < LEVEL_END; i++)
+				{
+					for (auto& iter_UIVec : UIVec[i])	//레벨별분류?
+					{
+						if (ImGui::TreeNode("btn"))
+						{
+							ImGui::TreePop();
+						}
+					}
+				}
+				ImGui::TreePop();
+			}
+			++UILevelCount;
+		}
+		
 
 	}
 }
 
-void CImguiMgr::HelloJusin_Tap_Level(void)
+void CImguiMgr::HelloJusin_Tap_Level(void)	//레벨탭으로 레벨이동할수있게 해두었음
 {
 	if (ImGui::BeginTable("split", 2, ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings))
 	{
@@ -375,7 +420,7 @@ void CImguiMgr::HelloJusin_Tap_Level(void)
 
 }
 
-void CImguiMgr::MapTool_View(void)
+void CImguiMgr::MapTool_View(void)		//맵툴  새창을띄움	
 {
 	if (ImGui::Begin("MapTool", &MapToolCheckBox, 0))
 	{
@@ -385,14 +430,13 @@ void CImguiMgr::MapTool_View(void)
 	}
 }
 
-void CImguiMgr::UITool_View(void)
+void CImguiMgr::UITool_View(void)	//UI툴  새창을 띄움
 {
-
 	ImGui::Begin("UITool", &UIToolCheckBox, 0);
 	ImGui::Text("Make UI");
 
 	const char* UI_Class_Type[] = { "None", "LevelMoveButton", "DialogButton" };
-	static int UI_Class_SelectNum = 0;	//이거로 생성
+	static int UI_Class_SelectNum = 0;
 	const char* UI_Class_Value = UI_Class_Type[UI_Class_SelectNum];
 	if (ImGui::BeginCombo("Class Type", UI_Class_Value, 0))
 	{
@@ -406,7 +450,7 @@ void CImguiMgr::UITool_View(void)
 	}
 
 
-	switch (UI_Class_SelectNum)
+	switch (UI_Class_SelectNum)	//버튼클래스 생성
 	{
 	case 1:
 		ImGui::Separator();
@@ -422,8 +466,11 @@ void CImguiMgr::UITool_View(void)
 	ImGui::End();
 }
 
-void CImguiMgr::Define_LevelMoveButton(void)
+void CImguiMgr::Define_LevelMoveButton(void)	//LevelButton 을 정의하고 만들어줌 (Create는 밖으로 뻴것같음)
+
 {
+	static _float UI_Size[2] = { 100.f, 100.f };
+	static _float UI_Pos[2] = { 0.f, 0.f };
 
 #pragma region 이미지받기
 	if (m_ImageVec.empty())
@@ -464,7 +511,26 @@ void CImguiMgr::Define_LevelMoveButton(void)
 			{
 				const bool is_selected = (Image_Num == i);
 				if (ImGui::Selectable(m_ImageVec[i].name, is_selected))
+				{
 					Image_Num = i;
+
+					ID3D11Resource* pResource = nullptr;
+					m_ImageVec[Image_Num].texture->Get_ResourceView()->GetResource(&pResource);
+					D3D11_RESOURCE_DIMENSION resourceType;
+					pResource->GetType(&resourceType);
+
+					if (D3D11_RESOURCE_DIMENSION_TEXTURE2D == resourceType)
+					{
+						ID3D11Texture2D* pTexture2D = (ID3D11Texture2D*)pResource;
+						D3D11_TEXTURE2D_DESC desc;
+						pTexture2D->GetDesc(&desc);
+
+						UI_Size[0] = (float)desc.Width;
+						UI_Size[1] = (float)desc.Height;
+					}
+
+
+				}
 			}
 
 			ImGui::EndCombo();
@@ -484,9 +550,6 @@ void CImguiMgr::Define_LevelMoveButton(void)
 		}
 		ImGui::EndCombo();
 	}
-
-	static _float UI_Size[2] = { 100.f, 100.f };
-	static _float UI_Pos[2] = { 0.f, 0.f };
 
 	if (ImGui::InputFloat2("Set Size", UI_Size, "%.1f", 0))
 	{

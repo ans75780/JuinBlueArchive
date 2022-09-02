@@ -59,7 +59,7 @@ public: /* For.Object_Manager */
 public: /* For.Component_Mananger */
 	HRESULT Add_Prototype(_uint iLevelIndex, const _tchar* pPrototypeTag, class CComponent* pPrototype);
 	class CComponent* Clone_Component(_uint iLevelIndex, const _tchar* pPrototypeTag, void* pArg = nullptr);
-	const map<const _tchar*, class CComponent*>&		Get_Prototype_Component_Map(_uint iLevelIndex);
+	map<const _tchar*, class CComponent*>		Get_Prototype_Component_Map(_uint iLevelIndex);
 
 	
 public: /* For.Timer_Manager */
@@ -73,6 +73,7 @@ public : /*For. Key_Manager*/
 
 public: /*For. UI_Maanger*/
 	HRESULT Add_UI(_uint iLevelIndex, class CUI* pUI, void* pArg = nullptr);
+	vector<class CUI_Canvas*> Get_Canvases();
 
 
 public: /* For.PipeLine */

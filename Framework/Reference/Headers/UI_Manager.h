@@ -26,6 +26,7 @@ public:
 
 public:
 	void DisableCanvas(_uint iLevelIndex);
+	vector<class CUI_Canvas*> Get_Canvases();
 
 private:
 	vector<class CUI_Canvas*>			m_vecCanvas;
@@ -33,6 +34,7 @@ private:
 	_uint					m_iNumLevels = 0;
 
 public:
+
 };
 
 END
