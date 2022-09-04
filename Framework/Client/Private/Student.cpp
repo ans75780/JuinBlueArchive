@@ -39,9 +39,6 @@ HRESULT CStudent::Initialize(void * pArg)
 	m_pTransformCom->Set_Scaled(_float3(1.00f, 1.00f, 1.00f));
 	//m_pTransformCom->Set_Scaled(_float3(0.01f, 0.01f, 0.01f));
 
-	lstrcpy(m_desc.sz_Name, TEXT("Haruka"));
-
-
 	m_pStateMachine = CStateMachineBase::Create(this);
 
 	CState_Student_Idle* state = (CState_Student_Idle*)CState_Student_Idle::Create(this);

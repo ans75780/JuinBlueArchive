@@ -185,6 +185,9 @@ HRESULT CModel::Bind_SRV(CShader * pShader, const char * pConstantName, CMeshCon
 	if (iMaterialIndex >= m_iNumMaterials)
 		return E_FAIL;
 
+	if (nullptr == m_Materials[iMaterialIndex].pTextures[eType])
+		return E_FAIL;
+
 	return m_Materials[iMaterialIndex].pTextures[eType]->Set_ShaderResourceView(pShader, pConstantName);
 }
 
@@ -195,6 +198,9 @@ HRESULT CModel::Bind_SRV(CShader * pShader, const char * pConstantName, _uint iM
 
 	_uint		iMaterialIndex = m_MeshContainers[iMeshContainerIndex]->Get_MaterialIndex();
 	if (iMaterialIndex >= m_iNumMaterials)
+		return E_FAIL;
+
+	if (nullptr == m_Materials[iMaterialIndex].pTextures[eType])
 		return E_FAIL;
 
 	return m_Materials[iMaterialIndex].pTextures[eType]->Set_ShaderResourceView(pShader, pConstantName);

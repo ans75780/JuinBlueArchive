@@ -176,18 +176,17 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 
 #pragma region 테스트 오브젝트입니다
 	/* For.Prototype_GameObject_TestObject 테스트 시로코 앱아이콘 입니다.   */
-	if (FAILED(pGameInstance->Add_Prototype(TEXT("Test_Prototype_GameObject_Siroko"),
-		CTestObject_Test::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
+
 
 	/* For.Prototype_GameObject_TestObject 테스트 하루카 오브젝트 입니다.   */
-	if (FAILED(pGameInstance->Add_Prototype(TEXT("Test_Prototype_GameObject_Model_Haruka"),
-		CTestObject_Model_Haruka::Create(m_pDevice, m_pContext))))
+
+
+
+
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_Student_Serika"),
+		CStudent::Create(m_pDevice, m_pContext, TEXT("Serika")))))
 		return E_FAIL;
 
-	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_Student_Haruka"),
-		CStudent::Create(m_pDevice, m_pContext, TEXT("Haruka")))))
-		return E_FAIL;
 
 #pragma endregion
 
@@ -222,17 +221,18 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	mat = XMMatrixIdentity();
 	/* For.Prototype_Component_Model_*/
 	
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Test_Prototype_Component_Model_Haruka"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/NonAnimModels/Haruka_Original/", "Haruka_Original.fbx", mat))))
-		return E_FAIL;		
+	
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Test_Prototype_Component_Model_Serika"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Serika_Original/", "Serika_Original.fbx", mat))))
+		return E_FAIL;
+
 #pragma endregion
 
 	///* For.Prototype_Component_VIBuffer_Cube*/
 	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Cube"),
 	//	CVIBuffer_Cube::Create(m_pGraphic_Device))))
 	//	return E_FAIL;
-#pragma endregion
-
+          
 #pragma region LOAD_SHADER
 
 	lstrcpy(m_szLoadingText, TEXT("셰이더를 로딩중이빈다. "));
