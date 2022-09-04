@@ -1,38 +1,19 @@
 #include "stdafx.h"
 #include "..\Public\StateBase.h"
 #include "Animation.h"
+#include "Engine_Defines.h"
+#include "Student.h"
+#include "Model.h"
 
-CStateBase::CStateBase(CAnimation * pAnimation, STATE_TYPE eType)
-	:m_pAnimation(pAnimation), m_eStateType(eType)
+CStateBase::CStateBase(CStudent * pStudent)
+	: m_pStudent(pStudent)
 {
-}
-
-CStateBase::~CStateBase()
-{
-}
-
-void CStateBase::Enter()
-{
+	Safe_AddRef(m_pStudent);
+	m_pModel = (CModel*)m_pStudent->Get_Component(L"Com_Model");
 }
 
 _bool CStateBase::Loop(_float fTimeDelta)
 {
-	m_pAnimation->Update_TransformationMatrices(fTimeDelta);
-
-	if (m_pAnimation->IsFinished())
-	{
-		switch (m_eStateType)
-		{
-		case Client::CStateBase::STATE_TYPE::ONCE:
-			return false;
-		case Client::CStateBase::STATE_TYPE::LOOP:
-			break;
-		case Client::CStateBase::STATE_TYPE::NONE:
-			break;
-		default:
-			break;
-		}
-	}
 	return true;
 }
 
@@ -41,10 +22,9 @@ CStateBase* CStateBase::Exit()
 	return nullptr;
 }
 
-CStateBase * CStateBase::Create(CAnimation * pAnimation, STATE_TYPE eType)
-{
-	CStateBase*		pInstance = new CStateBase(pAnimation, eType);
 
-	return pInstance;
+void CStateBase::Free()
+{
+	Safe_Release(m_pStudent);
 }
 

@@ -26,21 +26,24 @@ public:
 	virtual void Tick(_float fTimeDelta);
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
+	virtual HRESULT Render_MeshPart(CMeshContainer* pMesh);
+
+	const _tchar*	Get_Name() { return m_szStudentName; }
 
 private:
-	CTexture*				m_pMouthCom = nullptr;
-	CShader*				m_pShaderCom = nullptr;
-	CRenderer*				m_pRendererCom = nullptr;
-	CModel*					m_pModelCom = nullptr;
+	class CStateMachineBase* m_pStateMachine = nullptr;
+	CShader*				 m_pShaderCom = nullptr;
+	CRenderer*				 m_pRendererCom = nullptr;
+	CModel*					 m_pModelCom = nullptr;
 
 
 private:
 	CMeshContainer*			m_pHalo = nullptr;
 	CMeshContainer*			m_pBody = nullptr;
-	CMeshContainer*			m_pHead = nullptr;
+	CMeshContainer*			m_pHair = nullptr;
 	CMeshContainer*			m_pFace = nullptr;
+	CMeshContainer*			m_pHead = nullptr;
 	CMeshContainer*			m_pWeapon = nullptr;
-
 private:
 	_uint					m_iAnimIndex = 0;
 	_tchar					m_szStudentName[MAX_PATH];

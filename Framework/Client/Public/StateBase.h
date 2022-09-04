@@ -1,35 +1,34 @@
 #pragma once
 #include "Client_Defines.h"
 #include "Engine_Defines.h"
-
+#include "Base.h"
 namespace Engine
 {
 	class CAnimation;
+	class CModel;
 }
 
 BEGIN(Client)
 
-class CStateBase
+class CStateBase : public CBase
 {
-public:
-	enum class STATE_TYPE{ONCE, LOOP, NONE};
-private:
-		CStateBase(class CAnimation* pAnimation, STATE_TYPE eType);
-virtual	~CStateBase();
+protected:
+		CStateBase(class CStudent* pStudent);
+virtual	~CStateBase() = default;
 
 public:
-	virtual void		Enter();
-	virtual _bool		Loop(_float fTimeDelta);
-	virtual CStateBase*	Exit();
+	virtual HRESULT		Initialize() = 0;
+	virtual void		Enter() = 0;
+	virtual _bool		Loop(_float fTimeDelta) = 0;
+	virtual CStateBase*	Exit() = 0;
 public:
 	class CAnimation*	Get_Animation() { return m_pAnimation; }
 protected:
-	_uint				m_iAnimationIndex = 0;
 	class CAnimation*	m_pAnimation = nullptr;
-	STATE_TYPE			m_eStateType;
+	class CModel*		m_pModel = nullptr;
+	class CStudent*		m_pStudent = nullptr;
 
 public:
-	CStateBase*			Create(class CAnimation* pAnimation, STATE_TYPE eType);
-
+	virtual void			Free();
 };
 END

@@ -100,6 +100,9 @@
     <ClInclude Include="..\Public\Student.h">
       <Filter>02.GameObject\06. Student</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\State_Student_Idle.h">
+      <Filter>04. State\Idle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -185,6 +188,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Student.cpp">
       <Filter>02.GameObject\06. Student</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Student_Idle.cpp">
+      <Filter>04. State\Idle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -283,11 +289,14 @@
     <Filter Include="04. State">
       <UniqueIdentifier>{603fc8a7-59b9-4d6b-b25c-01fc406e38fa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04. State\StateMachine">
-      <UniqueIdentifier>{96baef81-a398-4d31-980a-e611d7c7556d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObject\06. Student">
       <UniqueIdentifier>{a5477715-8bc1-4140-a022-797e60da67ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. State\Idle">
+      <UniqueIdentifier>{7604fe63-d291-4b4a-8da4-9e6621296a6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. State\StateMachine">
+      <UniqueIdentifier>{96baef81-a398-4d31-980a-e611d7c7556d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

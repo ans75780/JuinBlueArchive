@@ -3,6 +3,8 @@
 
 #include "GameInstance.h"
 #include "MeshContainer.h"
+#include "StateMachineBase.h"
+#include "State_Student_Idle.h"
 
 CStudent::CStudent(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, _tchar*	pStudentTag)
 	: CGameObject(pDevice, pContext)
@@ -39,27 +41,21 @@ HRESULT CStudent::Initialize(void * pArg)
 
 	lstrcpy(m_desc.sz_Name, TEXT("Haruka"));
 
-	m_iAnimIndex = 5;
-	m_pModelCom->Set_CurrentAnimation(m_iAnimIndex);
 
+	m_pStateMachine = CStateMachineBase::Create(this);
 
+	CState_Student_Idle* state = (CState_Student_Idle*)CState_Student_Idle::Create(this);
+
+	m_pStateMachine->Setup_StateMachine(state);
+	//m_pModelCom->Set_CurrentAnimation(3);
 	return S_OK;
 }
 
 void CStudent::Tick(_float fTimeDelta)
 {
-	if (KEY(LEFT, TAP))
-	{
-		m_iAnimIndex--;
-		m_pModelCom->Set_CurrentAnimation(m_iAnimIndex);
-	}
-	if (KEY(RIGHT, TAP))
-	{
-		m_iAnimIndex++;
-		m_pModelCom->Set_CurrentAnimation(m_iAnimIndex);
-	}
-
-	m_pModelCom->Play_Animation(fTimeDelta);
+	m_pStateMachine->Update(fTimeDelta);
+	
+	//m_pModelCom->Play_Animation(fTimeDelta);
 
 }
 
@@ -80,21 +76,24 @@ HRESULT CStudent::Render()
 
 	_uint iNumMeshContainers = m_pModelCom->Get_NumMeshContainers();
 
-	for (_uint i = 0; i < iNumMeshContainers; ++i)
-	{
-		if (i == 3)
-		{
-			//입 텍스쳐가 없어서 임시 로 넘김
-			if (FAILED(m_pModelCom->Bind_Texture(m_pShaderCom, "g_DiffuseTexture", m_pMouthCom)))
-				return E_FAIL;
-		}
-		else if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
-			return E_FAIL;
-		/*if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
-		return E_FAIL;*/
-		m_pShaderCom->Begin(0);
-		m_pModelCom->Render(i, m_pShaderCom, "g_Bones");
-	}
+	
+	Render_MeshPart(m_pHair);
+	Render_MeshPart(m_pBody);
+	Render_MeshPart(m_pFace);
+	Render_MeshPart(m_pHead);
+	Render_MeshPart(m_pWeapon);
+	Render_MeshPart(m_pHalo);
+	
+
+	return S_OK;
+}
+
+HRESULT CStudent::Render_MeshPart(CMeshContainer * pMesh)
+{
+	if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", pMesh, aiTextureType_DIFFUSE)))
+		return E_FAIL;
+	m_pShaderCom->Begin(0);
+	m_pModelCom->Render(pMesh, m_pShaderCom, "g_Bones");
 
 	return S_OK;
 }
@@ -118,8 +117,13 @@ HRESULT CStudent::SetUp_Components()
 	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, szModelTag, TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
 		return E_FAIL;
 
-	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Mouth"), TEXT("Com_Mouth"), (CComponent**)&m_pMouthCom)))
-		return E_FAIL;
+	m_pHair = m_pModelCom->Get_MeshContainers(0);
+	m_pBody = m_pModelCom->Get_MeshContainers(1);
+	m_pFace = m_pModelCom->Get_MeshContainers(2);
+	m_pHead = m_pModelCom->Get_MeshContainers(4);
+	m_pWeapon = m_pModelCom->Get_MeshContainers(5);
+	m_pHalo = m_pModelCom->Get_MeshContainers(6);
+
 
 	return S_OK;
 }
@@ -199,6 +203,6 @@ void CStudent::Free()
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pRendererCom);
 	Safe_Release(m_pModelCom);
-	Safe_Release(m_pMouthCom);
+	Safe_Release(m_pStateMachine);
 
 }

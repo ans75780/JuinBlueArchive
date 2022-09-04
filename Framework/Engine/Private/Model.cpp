@@ -116,6 +116,23 @@ HRESULT CModel::Render(_uint iMeshIndex, CShader* pShader, const char* pConstant
 	return S_OK;
 }
 
+HRESULT CModel::Render(CMeshContainer * pMesh, CShader * pShader, const char * pConstantBoneName)
+{
+	/* 그리고자하는 메시컨테이너에 영향을 주는 뼈들의 행렬을 담아준다. */
+	_float4x4			BoneMatrices[256];
+
+	pMesh->SetUp_BoneMatrices(BoneMatrices, XMLoadFloat4x4(&m_TransformMatrix));
+
+	if (0 != m_iNumAnimations)
+		pShader->Set_RawValue(pConstantBoneName, BoneMatrices, sizeof(_float4x4) * 256);
+
+	pShader->Begin(0);
+
+	pMesh->Render();
+
+	return S_OK;
+}
+
 HRESULT CModel::NonAnimRender(_uint iMeshIndex)
 {
 	if (iMeshIndex >= m_iNumMeshContainers)
@@ -146,12 +163,29 @@ HRESULT CModel::Play_Animation(_float fTimeDelta)
 
 	m_Animations[m_iCurrentAnimationIndex]->Update_TransformationMatrices(fTimeDelta);
 
+	Update_CombinedMatrix();
+
+	return S_OK;
+}
+
+void CModel::Update_CombinedMatrix()
+{
 	for (auto& pBoneNode : m_vecBones)
 	{
 		pBoneNode->Update_CombinedTransformationMatrix();
 	}
+}
 
-	return S_OK;
+HRESULT CModel::Bind_SRV(CShader * pShader, const char * pConstantName, CMeshContainer * pMesh, aiTextureType eType)
+{
+	if (nullptr == pMesh)
+		return E_FAIL;
+
+	_uint		iMaterialIndex = pMesh->Get_MaterialIndex();
+	if (iMaterialIndex >= m_iNumMaterials)
+		return E_FAIL;
+
+	return m_Materials[iMaterialIndex].pTextures[eType]->Set_ShaderResourceView(pShader, pConstantName);
 }
 
 HRESULT CModel::Bind_SRV(CShader * pShader, const char * pConstantName, _uint iMeshContainerIndex, aiTextureType eType)
@@ -169,6 +203,22 @@ HRESULT CModel::Bind_SRV(CShader * pShader, const char * pConstantName, _uint iM
 HRESULT CModel::Bind_Texture(CShader * pShader, const char * pContantName, CTexture * pTexture)
 {
 	return pTexture->Set_ShaderResourceView(pShader, pContantName);
+}
+
+
+CAnimation * CModel::Get_AnimationFromName(const char * pName)
+{
+	CAnimation* pAnimation = nullptr;
+
+
+	for (auto& anim : m_Animations)
+	{
+		if (!strcmp(pName, anim->Get_Name()))
+		{
+			pAnimation = anim;
+		}
+	}
+	return pAnimation;
 }
 
 CMeshContainer * CModel::Get_MeshContainers(_uint iIndex)
@@ -212,11 +262,15 @@ HRESULT CModel::Create_Materials(const char * pModelFilePath)
 {
 	m_iNumMaterials = m_pAIScene->mNumMaterials;
 	
+	
 	for (_uint i = 0; i < m_iNumMaterials; ++i)
 	{
 		//머테리얼 개수만큼 생성
 		MODEL_MATERIAL	Material;
 		ZeroMemory(&Material, sizeof(MODEL_MATERIAL));
+
+		strcpy_s(Material.szTextureNames, m_pAIScene->mMaterials[i]->GetName().data);
+
 		for (_uint j = 0; j < AI_TEXTURE_TYPE_MAX;j++)
 		{
 			//텍스쳐가 받을 수 있는 모든 타입을 받음.

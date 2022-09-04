@@ -18,12 +18,16 @@ public:
 		const char* pModelFilePath, const char* pModelFileName, _fmatrix TransformMatrix);
 	HRESULT Initialize(void * pArg, CModel* pPrototype);
 	HRESULT Render(_uint iMeshIndex, class CShader* pShader, const char* pConstantBoneName);
+	HRESULT Render(class CMeshContainer* pMesh, class CShader* pShader, const char* pConstantBoneName);
+
 	HRESULT NonAnimRender(_uint iMeshIndex);
 
 	void Set_CurrentAnimation(_uint iAnimIndex);
+
 public:
 	HRESULT	Play_Animation(_float fTimeDelta);
-
+	void	Update_CombinedMatrix();
+	HRESULT Bind_SRV(class CShader* pShader, const char* pContantName, class CMeshContainer* pMesh, aiTextureType eType);
 	HRESULT Bind_SRV(class CShader* pShader, const char* pContantName, _uint iMeshContainerIndex, aiTextureType eType);
 	HRESULT Bind_Texture(class CShader* pShader, const char* pContantName,	class CTexture* pTexture);
 
@@ -31,6 +35,8 @@ public:
 	_uint	Get_NumMeshContainers() const { return m_iNumMeshContainers; }
 
 
+public:
+	class CAnimation*	Get_AnimationFromName(const char* pName);
 public:
 	class CMeshContainer*		Get_MeshContainers(_uint iIndex);
 

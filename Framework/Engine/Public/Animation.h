@@ -23,6 +23,8 @@ public:
 	void	Reset();
 	ANIM_STATE	Get_AnimState(){ return m_eAnimState; }
 	_bool	IsFinished() { return m_isFinished; }
+	const	char*		Get_Name() { return m_szName; }
+
 public:
 	HRESULT Clone_Channel(CAnimation* pPrototype, class CModel* pModel);
 private:

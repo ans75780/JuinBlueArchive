@@ -3,21 +3,15 @@
 #include "Animation.h"
 #include "StateBase.h"
 #include "Engine_Defines.h"
-CStateMachineBase::CStateMachineBase()
-{
-}
-CStateMachineBase::~CStateMachineBase()
-{
-	while (!m_States.empty())
-	{
+#include "Student.h"
 
-		//Safe_Delete(m_States.top());
-		m_States.pop();
-	}
+CStateMachineBase::CStateMachineBase(CStudent * pStudent)
+	:m_pStudent(pStudent)
+{
+	Safe_AddRef(m_pStudent);
 }
 
-
-HRESULT CStateMachineBase::Initialize(CStateBase * pStateBase)
+HRESULT CStateMachineBase::Initialize()
 {
 	return S_OK;
 }
@@ -27,10 +21,10 @@ HRESULT CStateMachineBase::Update(_float fTimeDelta)
 	if (m_States.empty())
 		return E_FAIL;
 
-	if (!m_States.top()->Loop(fTimeDelta))
+	if (m_States.top()->Loop(fTimeDelta))
 	{
 		CStateBase*	pState = m_States.top()->Exit();
-		//Safe_Delete(m_States.top());
+		Safe_Release(m_States.top());
 		m_States.pop();
 
 		if (nullptr != pState)
@@ -42,21 +36,51 @@ HRESULT CStateMachineBase::Update(_float fTimeDelta)
 	return S_OK;
 }
 
+HRESULT CStateMachineBase::Setup_StateMachine(CStateBase * pState)
+{
+	if (nullptr == pState)
+		return E_FAIL;
+	Clear();
+
+	m_States.push(pState);
+
+	return S_OK;
+}
+
+void CStateMachineBase::Clear()
+{
+	while (!m_States.empty())
+	{
+		Safe_Release(m_States.top());
+		m_States.pop();
+	}
+}
+
 CStateBase * const CStateMachineBase::Get_CurrentState()
 {
 	return m_States.top();
 }
 
-CStateMachineBase * CStateMachineBase::Create(CStateBase * pStateBase)
+CStateMachineBase * CStateMachineBase::Create(CStudent * pStudent)
 {
-	CStateMachineBase*		pInstance = new CStateMachineBase();
+	CStateMachineBase*		pInstance = new CStateMachineBase(pStudent);
 
-	if (FAILED(pInstance->Initialize(pStateBase)))
+	if (FAILED(pInstance->Initialize()))
 	{
 		MSG_BOX("StateMachine Error : Initialize");
 		//Safe_Delete(pInstance);
 		return nullptr;
 	}
-	
+
 	return pInstance;
+}
+
+void CStateMachineBase::Free()
+{
+	while (!m_States.empty())
+	{
+		Safe_Release(m_States.top());
+		m_States.pop();
+	}
+	Safe_Release(m_pStudent);
 }
