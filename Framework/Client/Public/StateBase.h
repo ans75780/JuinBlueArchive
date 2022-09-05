@@ -27,7 +27,6 @@ protected:
 	class CAnimation*	m_pAnimation = nullptr;
 	class CModel*		m_pModel = nullptr;
 	class CStudent*		m_pStudent = nullptr;
-
 public:
 	virtual void			Free();
 };

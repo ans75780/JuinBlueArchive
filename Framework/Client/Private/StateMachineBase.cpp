@@ -24,9 +24,13 @@ HRESULT CStateMachineBase::Update(_float fTimeDelta)
 	if (m_States.top()->Loop(fTimeDelta))
 	{
 		CStateBase*	pState = m_States.top()->Exit();
-		Safe_Release(m_States.top());
-		m_States.pop();
 
+		//가장 마지막 상태는 지워지지않음.
+		if (m_States.size() > 1)
+		{ 
+			Safe_Release(m_States.top());
+			m_States.pop();
+		}
 		if (nullptr != pState)
 		{
 			pState->Enter();

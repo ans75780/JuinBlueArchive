@@ -5,7 +5,7 @@
 #include "MeshContainer.h"
 #include "StateMachineBase.h"
 #include "State_Student_Idle.h"
-
+#include "State_Student_Run.h"
 CStudent::CStudent(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, _tchar*	pStudentTag)
 	: CGameObject(pDevice, pContext)
 {
@@ -41,7 +41,7 @@ HRESULT CStudent::Initialize(void * pArg)
 
 	m_pStateMachine = CStateMachineBase::Create(this);
 
-	CState_Student_Idle* state = (CState_Student_Idle*)CState_Student_Idle::Create(this);
+	CState_Student_Idle* state = CState_Student_Idle::Create(this);
 
 	m_pStateMachine->Setup_StateMachine(state);
 	//m_pModelCom->Set_CurrentAnimation(3);
@@ -72,16 +72,19 @@ HRESULT CStudent::Render()
 		return E_FAIL;
 
 	_uint iNumMeshContainers = m_pModelCom->Get_NumMeshContainers();
+	for (_uint i = 0; i < iNumMeshContainers; i++)
+	{
+		if (i == 2)
+		{
 
-	
-	Render_MeshPart(m_pHair);
-	Render_MeshPart(m_pBody);
-	Render_MeshPart(m_pFace);
-	Render_MeshPart(m_pHead);
-	Render_MeshPart(m_pWeapon);
-	Render_MeshPart(m_pHalo);
-	
-
+		}
+		else if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
+			return E_FAIL;
+		/*if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+		return E_FAIL;*/
+		m_pShaderCom->Begin(0);
+		m_pModelCom->Render(i, m_pShaderCom, "g_Bones");
+	}
 	return S_OK;
 }
 
@@ -106,7 +109,7 @@ HRESULT CStudent::SetUp_Components()
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
 		return E_FAIL;
 
-	_tchar szModelTag[MAX_PATH] = L"Test_Prototype_Component_Model_";
+	_tchar szModelTag[MAX_PATH] = L"Prototype_Component_Model_";
 
 	lstrcat(szModelTag, m_szStudentName);
 
@@ -114,12 +117,8 @@ HRESULT CStudent::SetUp_Components()
 	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, szModelTag, TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
 		return E_FAIL;
 
-	m_pHair = m_pModelCom->Get_MeshContainers(0);
-	m_pBody = m_pModelCom->Get_MeshContainers(1);
-	m_pFace = m_pModelCom->Get_MeshContainers(2);
-	m_pHead = m_pModelCom->Get_MeshContainers(4);
-	m_pWeapon = m_pModelCom->Get_MeshContainers(5);
-	m_pHalo = m_pModelCom->Get_MeshContainers(6);
+	
+
 
 
 	return S_OK;

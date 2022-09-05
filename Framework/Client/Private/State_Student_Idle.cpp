@@ -4,6 +4,8 @@
 #include "StateBase.h"
 #include "Model.h"
 #include "Animation.h"
+#include "State_Student_Run.h"
+#include "GameInstance.h"
 CState_Student_Idle::CState_Student_Idle(CStudent * pStudent)
 	:CStateBase(pStudent)
 {
@@ -38,15 +40,22 @@ _bool CState_Student_Idle::Loop(_float fTimeDelta)
 {
 	m_pAnimation->Update(fTimeDelta);
 	m_pModel->Update_CombinedMatrix();
+
+	if(KEY(Q, TAP))
+	{
+		return true;
+	}
+
+
 	return false;
 }
 
 CStateBase * CState_Student_Idle::Exit()
 {
-	return nullptr;
+	return CState_Student_Run::Create(m_pStudent);
 }
 
-CStateBase * CState_Student_Idle::Create(CStudent * pStudent)
+CState_Student_Idle * CState_Student_Idle::Create(CStudent * pStudent)
 {
 	CState_Student_Idle*	pInstance = new CState_Student_Idle(pStudent);
 

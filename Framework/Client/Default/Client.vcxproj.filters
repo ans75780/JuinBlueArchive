@@ -103,6 +103,9 @@
     <ClInclude Include="..\Public\State_Student_Idle.h">
       <Filter>04. State\Idle</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\State_Student_Run.h">
+      <Filter>04. State\Run</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -191,6 +194,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\State_Student_Idle.cpp">
       <Filter>04. State\Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Student_Run.cpp">
+      <Filter>04. State\Run</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -297,6 +303,9 @@
     </Filter>
     <Filter Include="04. State\StateMachine">
       <UniqueIdentifier>{96baef81-a398-4d31-980a-e611d7c7556d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. State\Run">
+      <UniqueIdentifier>{e8beed87-7a6f-44d2-9eb3-201c7da6035e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

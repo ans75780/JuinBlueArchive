@@ -175,22 +175,13 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	//	return E_FAIL;
 
 #pragma region 테스트 오브젝트입니다
-	/* For.Prototype_GameObject_TestObject 테스트 시로코 앱아이콘 입니다.   */
-
-
-	/* For.Prototype_GameObject_TestObject 테스트 하루카 오브젝트 입니다.   */
-
-
-
 
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_Student_Serika"),
 		CStudent::Create(m_pDevice, m_pContext, TEXT("Serika")))))
 		return E_FAIL;
 
-
 #pragma endregion
 
-#pragma endregion
 
 #pragma region LOAD_TEXTURE
 
@@ -212,26 +203,16 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	/* For.Prototype_Component_VIBuffer_Terrain */
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Terrain"),
 		CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/Height.bmp")))))
-		return E_FAIL;
-
-#pragma region 테스트 모델입니다
-
-	
+		return E_FAIL;	
 	_matrix mat;
 	mat = XMMatrixIdentity();
 	/* For.Prototype_Component_Model_*/
-	
-	
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Test_Prototype_Component_Model_Serika"),
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Serika"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Serika_Original/", "Serika_Original.fbx", mat))))
 		return E_FAIL;
 
-#pragma endregion
 
-	///* For.Prototype_Component_VIBuffer_Cube*/
-	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Cube"),
-	//	CVIBuffer_Cube::Create(m_pGraphic_Device))))
-	//	return E_FAIL;
+#pragma endregion
           
 #pragma region LOAD_SHADER
 

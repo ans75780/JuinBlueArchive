@@ -15,7 +15,7 @@ public:
 	virtual void Enter() override;
 	virtual _bool Loop(_float fTimeDelta) override;
 	virtual CStateBase * Exit() override;
-	static  CStateBase * Create(class CStudent * pStudent);
+	static  CState_Student_Idle * Create(class CStudent * pStudent);
 
 };
 
