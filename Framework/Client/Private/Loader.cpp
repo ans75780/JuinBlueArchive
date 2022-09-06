@@ -21,8 +21,7 @@
 #include "Terrain.h"
 //#include "Player.h"
 //#include "Effect.h"
-//#include "Sky.h"
-
+#include "Sky.h"
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice(pDevice)
 	, m_pContext(pContext)
@@ -154,15 +153,16 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 		CCamera_Free::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	///* For.Prototype_GameObject_Player */
-	//if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Player"),
-	//	CPlayer::Create(m_pGraphic_Device))))
-	//	return E_FAIL;
+	/* For.Prototype_Student_Serika */
 
-	///* For.Prototype_GameObject_Sky */
-	//if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Sky"),
-	//	CSky::Create(m_pGraphic_Device))))
-	//	return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_Student_Serika"),
+		CStudent::Create(m_pDevice, m_pContext, TEXT("Serika")))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Sky */
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Sky"),
+		CSky::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	///* For.Prototype_GameObject_Monster */
 	//if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Monster"),
@@ -174,14 +174,18 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	//	CEffect::Create(m_pGraphic_Device))))
 	//	return E_FAIL;
 
-#pragma region 테스트 오브젝트입니다
-
-	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_Student_Serika"),
-		CStudent::Create(m_pDevice, m_pContext, TEXT("Serika")))))
-		return E_FAIL;
-
 #pragma endregion
 
+#pragma region BUFFER
+	lstrcpy(m_szLoadingText, TEXT("버퍼를 로딩중이비낟. "));
+
+	///* For.Prototype_Component_VIBuffer_Cube*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Cube"),
+		CVIBuffer_Cube::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+
+#pragma endregion
 
 #pragma region LOAD_TEXTURE
 
@@ -192,8 +196,14 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 		return E_FAIL;
 
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Mouth"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Texture/Character_Mouth.png"), 1))))
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/Character_Mouth.png"), 1))))
 		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Sky */
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Sky"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/SkyBox/Sky_%d.dds"), 4))))
+		return E_FAIL;
+
 #pragma endregion
 
 #pragma region LOAD_MODEL
@@ -230,6 +240,11 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	/* For.Prototype_Component_Shader_VtxAnimModel */
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxAnimModel"),
 		CShader::Create(m_pDevice, m_pContext, TEXT("../../ShaderFiles/Shader_VtxAnimModel.hlsl"), VTXANIM_DECLARATION::Element, VTXANIM_DECLARATION::iNumElements))))
+		return E_FAIL;
+	
+	/* For.Prototype_Component_Shader_VtxCubeTex */
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxCubeTex"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../../ShaderFiles/Shader_VtxCubeTex.hlsl"), VTXCUBETEX_DECLARATION::Element, VTXCUBETEX_DECLARATION::iNumElements))))
 		return E_FAIL;
 
 
@@ -274,6 +289,9 @@ HRESULT CLoader::Loading_ForMapToolLevel()
 	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_MAPTOOL, TEXT("Prototype_Component_Texture_Terrain"),
 	//	CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/Grass_%d.dds"), 2))))
 	//	return E_FAIL;
+
+
+
 
 #pragma endregion
 
@@ -330,6 +348,9 @@ HRESULT CLoader::Loading_ForMapToolLevel()
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_MAPTOOL, TEXT("Prototype_Component_Shader_VtxModel"),
 		CShader::Create(m_pDevice, m_pContext, TEXT("../../ShaderFiles/Shader_VtxModel.hlsl"), VTXMODEL_DECLARATION::Element, VTXMODEL_DECLARATION::iNumElements))))
 		return E_FAIL;
+
+
+
 #pragma endregion
 
 	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));

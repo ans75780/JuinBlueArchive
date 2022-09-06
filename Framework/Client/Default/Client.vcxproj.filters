@@ -79,9 +79,6 @@
     <ClInclude Include="..\Public\UI_TestDialogButton.h">
       <Filter>02.GameObject\03. UI\Dialog\DialogButton</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\ShaderFiles\Client_Shader_Defines.hpp">
-      <Filter>03.ShaderFiles</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Level_MapTool.h">
       <Filter>01.Level\MapTool</Filter>
     </ClInclude>
@@ -105,6 +102,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\State_Student_Run.h">
       <Filter>04. State\Run</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShaderFiles\Client_Shader_Defines.hpp">
+      <Filter>03.ShaderFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Sky.h">
+      <Filter>05.Sky</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -197,6 +200,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\State_Student_Run.cpp">
       <Filter>04. State\Run</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Sky.cpp">
+      <Filter>05.Sky</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -306,6 +312,9 @@
     </Filter>
     <Filter Include="04. State\Run">
       <UniqueIdentifier>{e8beed87-7a6f-44d2-9eb3-201c7da6035e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.Sky">
+      <UniqueIdentifier>{06cd8182-810e-41a9-ba1d-2f9fe59c9685}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

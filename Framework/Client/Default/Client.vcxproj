@@ -165,7 +165,9 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\ShaderFiles\Client_Shader_Defines.hpp" />
+    <ClInclude Include="..\..\ShaderFiles\Client_Shader_Defines.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\Public\Camera_Free.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
@@ -185,6 +187,7 @@
     <ClInclude Include="..\Public\Loader.h" />
     <ClInclude Include="..\Public\MainApp.h" />
     <ClInclude Include="..\Public\MapProp.h" />
+    <ClInclude Include="..\Public\Sky.h" />
     <ClInclude Include="..\Public\StateBase.h" />
     <ClInclude Include="..\Public\StateMachineBase.h" />
     <ClInclude Include="..\Public\State_Student_Idle.h" />
@@ -219,6 +222,7 @@
     <ClCompile Include="..\Private\Loader.cpp" />
     <ClCompile Include="..\Private\MainApp.cpp" />
     <ClCompile Include="..\Private\MapProp.cpp" />
+    <ClCompile Include="..\Private\Sky.cpp" />
     <ClCompile Include="..\Private\StateBase.cpp" />
     <ClCompile Include="..\Private\StateMachineBase.cpp" />
     <ClCompile Include="..\Private\State_Student_Idle.cpp" />
