@@ -18,7 +18,9 @@ HRESULT CUI::Initialize(void * arg)
 {
 	CTransform::TRANSFORMDESC		TransformDesc;
 
-	ZeroMemory(m_pUIName, sizeof(_tchar)*MAX_PATH);
+	ZeroMemory(m_szUIName, sizeof(_tchar) * MAX_PATH);
+	ZeroMemory(m_szUITextureTag, sizeof(_tchar) * MAX_PATH);
+	ZeroMemory(m_szUIClass, sizeof(_tchar) * MAX_PATH);
 
 	if (arg == nullptr)
 	{
@@ -144,8 +146,12 @@ CUI * CUI::Get_MouseOveredUI(const POINT & pt)
 
 HRESULT CUI::LoadUIImage(const _tchar * TextureTag, _uint iLevel)
 {
+	lstrcpy(m_szUITextureTag, TextureTag);
+
 	if (FAILED(__super::Add_Component(iLevel, TextureTag, TEXT("Com_Texture"), (CComponent**)&m_pTextureCom)))
 		return E_FAIL;
+
+
 	return S_OK;
 }
 

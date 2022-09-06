@@ -73,9 +73,12 @@ public : /*For. Key_Manager*/
 
 public: /*For. UI_Manager*/
 	HRESULT Add_UI(_uint iLevelIndex, class CUI* pUI, void* pArg = nullptr);
+	HRESULT Save_UIVec(void);
 	vector<class CUI_Canvas*> Get_Canvases();
 	void	Set_LevelEditMode(_bool _check) { m_pUI_Manager->Set_LevelEditMode(_check); }
 	void	Set_EditLevel(_uint _Level) { m_pUI_Manager->Set_EditLevel(_Level); }
+
+	
 
 public: /* For.PipeLine */
 	void Set_Transform(CPipeLine::TRANSFORMSTATE eState, _fmatrix TransformState);

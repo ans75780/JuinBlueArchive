@@ -32,11 +32,18 @@ public:
 	UI_TYPE			Get_UIType() { return m_eUIType; }
 	void			Set_UIType(UI_TYPE _eType) { m_eUIType = _eType; }
 public:
-	const _tchar*	Get_UIName() { return m_pUIName; }
-	void			Set_UIName(_tchar* _szName) { lstrcpy(m_pUIName, _szName); }
+	const _tchar*	Get_UIName() { return m_szUIName; }
+	void			Set_UIName(_tchar* _szName) { lstrcpy(m_szUIName, _szName); }
+public:
+	const _tchar*	Get_UIClassName() { return m_szUIClass; }
+	const _tchar*	Get_UITextureName() { return m_szUITextureTag; }
+
 public:
 	CUI*			Get_Parent() { return m_pParent; }
 	void			Add_Child(CUI*	_pChild);
+public:
+	_uint			Get_UILevel() { return m_iLevel; }
+	void			Set_UILevel(_uint _level) { m_iLevel = _level; }
 
 public:
 	virtual CUI*	Get_MouseOveredUI(const POINT& pt);
@@ -62,11 +69,17 @@ protected:
 	CVIBuffer_Rect*			m_pVIBufferCom = nullptr;
 
 protected:
-	_tchar			m_pUIName[MAX_PATH] = L"";
+	_tchar			m_szUIName[MAX_PATH] = L"";
+	_tchar			m_szUIClass[MAX_PATH] = L"";
+	_tchar			m_szUITextureTag[MAX_PATH] = L"";
+
 	_float3			m_fPos;
 	_float3			m_fSize;
 	CUI*			m_pParent = nullptr;
 	vector<CUI*>	m_vecChild;
+
+	_uint			m_iLevel = 0;
+
 
 protected:
 	/*

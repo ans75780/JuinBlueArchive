@@ -96,6 +96,8 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	pUI->Set_UIType(UI_TYPE::UI_BACKGROUND);
 	pUI->Set_Size(_float3(100.f, 100.f, 1.f));
 	pUI->Set_UIName(TEXT("Logo_BACKGROUND_Shiroko"));
+	
+	pUI->Set_UILevel(LEVEL_LOGO);
 	if (FAILED(pGameInstance->Add_UI(LEVEL_LOGO, pUI)))
 	{
 		return E_FAIL;
@@ -107,7 +109,8 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	pUI2->Set_Size(_float3(100.f, 100.f, 1.f));
 	pUI2->Set_Pos(_float3(-200.f, 0.f, 0.f));
 	pUI2->Set_UIName(TEXT("Logo_BACKGROUND_Shiroko"));
-
+	
+	pUI2->Set_UILevel(LEVEL_MAPTOOL);
 	if (FAILED(pGameInstance->Add_UI(LEVEL_MAPTOOL, pUI2)))
 	{
 		return E_FAIL;

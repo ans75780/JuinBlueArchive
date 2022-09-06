@@ -1,0 +1,40 @@
+[
+    {
+        "UI": {
+            "ClassName": "CBackGround",
+            "Level": 2,
+            "Name": "Prototype_Component_Texture_UI_Background",
+            "Pos": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Size": {
+                "x": 100.0,
+                "y": 100.0,
+                "z": 1.0
+            },
+            "TextureName": "Logo_BACKGROUND_Shiroko",
+            "Type": 4
+        }
+    },
+    {
+        "UI": {
+            "ClassName": "CUI_LevelMoveButton",
+            "Level": 4,
+            "Name": "Prototype_Component_Texture_UI_Background",
+            "Pos": {
+                "x": -200.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Size": {
+                "x": 100.0,
+                "y": 100.0,
+                "z": 1.0
+            },
+            "TextureName": "Logo_BACKGROUND_Shiroko",
+            "Type": 4
+        }
+    }
+]

@@ -17,6 +17,7 @@ HRESULT CBackGround::Initialize(void * pArg)
 		return E_FAIL;
 
 	m_eUIType = UI_DIALOG;
+	lstrcpy(m_szUIClass, TEXT("CBackGround"));
 
 	m_fPos = _float3(0.f, 0.f, 0.f);
 	m_fSize = _float3(200, 200, 1.f);

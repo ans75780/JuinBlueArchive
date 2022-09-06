@@ -15,9 +15,10 @@ HRESULT CUI_LevelMoveButton::Initialize(void * pArg)
 		return E_FAIL;
 
 	m_eUIType = UI_BUTTTON;
+	lstrcpy(m_szUIClass, TEXT("CUI_LevelMoveButton"));
 
 	m_fPos = _float3(0.f, 0.f, 0.f);
-	m_fSize = _float3(200, 200, 1.f);
+	m_fSize = _float3(100.f, 100.f, 1.f);
 
 	return S_OK;
 }

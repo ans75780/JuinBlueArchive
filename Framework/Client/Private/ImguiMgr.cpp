@@ -434,16 +434,33 @@ void CImguiMgr::UITool_View(void)	//UI툴  새창을 띄움
 
 	if (ImGui::Button("Save"))
 	{
-		//
+		m_pGameInstance->Save_UIVec();
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("Load"))
 	{
-		//
 	}
 	ImGui::Separator();
 
+	const char*	UI_Set_Level[] = { "LEVEL_LOGO", "LEVEL_GAMEPLAY", "LEVEL_MAPTOOL" };
+	static int	UI_Set_LevelNum = 2;
+	const char* UI_Set_Level_Value = UI_Set_Level[UI_Set_LevelNum];
+	static bool	UI_EditMode = false;
 	
+	m_pGameInstance->Set_LevelEditMode(UI_EditMode);
+	
+	ImGui::Checkbox("Edit_UI_Select", &UI_EditMode);
+	if (ImGui::BeginCombo("Level_Select", UI_Set_Level_Value, 0))
+	{
+		for (int i = 0; i < IM_ARRAYSIZE(UI_Set_Level); ++i)
+		{
+			const bool is_selected = (UI_Set_LevelNum == i);
+			if (ImGui::Selectable(UI_Set_Level[i], is_selected))
+				UI_Set_LevelNum = i;
+		}
+		m_pGameInstance->Set_EditLevel((_uint)UI_Set_LevelNum + 2);  //스태틱 로딩 해서 +2
+		ImGui::EndCombo();
+	}
 
 	ImGui::Separator();
 	
@@ -467,7 +484,10 @@ void CImguiMgr::UITool_View(void)	//UI툴  새창을 띄움
 	{
 	case 1:
 		ImGui::Separator();
-		Define_LevelMoveButton();
+		if(UI_EditMode)
+			Define_LevelMoveButton((_uint)UI_Set_LevelNum + 2);
+		else
+			Define_LevelMoveButton(m_currentLevelID);
 		break;
 	case 2:
 		ImGui::Separator();
@@ -479,7 +499,7 @@ void CImguiMgr::UITool_View(void)	//UI툴  새창을 띄움
 	ImGui::End();
 }
 
-void CImguiMgr::Define_LevelMoveButton(void)	//LevelButton 을 정의하고 만들어줌 (Create는 밖으로 뻴것같음)
+void CImguiMgr::Define_LevelMoveButton(_uint _Level)	//LevelButton 을 정의하고 만들어줌 (Create는 밖으로 뻴것같음)
 
 {
 	static _float UI_Size[3] = { 100.f, 100.f, 1.f };
@@ -571,7 +591,7 @@ void CImguiMgr::Define_LevelMoveButton(void)	//LevelButton 을 정의하고 만들어줌 
 
 	if (m_currentLevelID == LEVEL::LEVEL_LOADING || Render_Num == 5)
 	{
-		ImGui::Text("CurrentLevel is LOADING OR RenderType is NONE");
+		ImGui::Text("RenderType is NONE");
 		return;
 	}
 
@@ -587,7 +607,7 @@ void CImguiMgr::Define_LevelMoveButton(void)	//LevelButton 을 정의하고 만들어줌 
 		pUI->Set_Size(_float3(UI_Size[0], UI_Size[1], UI_Size[2]));
 		pUI->Set_Pos(_float3(UI_Pos[0], UI_Pos[1], UI_Pos[2]));
 
-		if (FAILED(m_pGameInstance->Add_UI(m_currentLevelID, pUI)))
+		if (FAILED(m_pGameInstance->Add_UI(_Level, pUI)))	//받아온레벨에다 생성
 		{
 			MSG_BOX("UI생성실패");
 		}

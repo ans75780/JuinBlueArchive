@@ -279,6 +279,14 @@ HRESULT CGameInstance::Add_UI(_uint iLevelIndex, CUI * pUI, void * pArg)
 	return S_OK;
 }
 
+HRESULT CGameInstance::Save_UIVec(void)
+{
+	if (nullptr == m_pUI_Manager)
+		return E_FAIL;
+
+	return m_pUI_Manager->Save_UIVec();
+}
+
 vector<class CUI_Canvas*> CGameInstance::Get_Canvases()
 {
 	return m_pUI_Manager->Get_Canvases();

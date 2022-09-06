@@ -36,8 +36,8 @@ private:
 	void		MapTool_View(void);
 	
 	void		UITool_View(void);
-	void			Define_LevelMoveButton(void);
-
+	void			Define_LevelMoveButton(_uint _Level);
+	
 
 private:
 	CGameInstance*         m_pGameInstance = nullptr;
