@@ -10,6 +10,8 @@
 #include "UI_TestDialogButton.h"
 #include "TestObject_Model_Haruka.h"
 
+#include "UI_LevelMoveButton.h"
+
 #pragma endregion
 
 #include "StrUtil.h"
@@ -93,7 +95,20 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	pUI->LoadUIImage(L"Prototype_Component_Texture_UI_Background");
 	pUI->Set_UIType(UI_TYPE::UI_BACKGROUND);
 	pUI->Set_Size(_float3(100.f, 100.f, 1.f));
+	pUI->Set_UIName(TEXT("Logo_BACKGROUND_Shiroko"));
 	if (FAILED(pGameInstance->Add_UI(LEVEL_LOGO, pUI)))
+	{
+		return E_FAIL;
+	}
+
+	CUI* pUI2 = CUI_LevelMoveButton::Create(m_pDevice, m_pContext);
+	pUI2->LoadUIImage(L"Prototype_Component_Texture_UI_Background");
+	pUI2->Set_UIType(UI_TYPE::UI_BACKGROUND);
+	pUI2->Set_Size(_float3(100.f, 100.f, 1.f));
+	pUI2->Set_Pos(_float3(-200.f, 0.f, 0.f));
+	pUI2->Set_UIName(TEXT("Logo_BACKGROUND_Shiroko"));
+
+	if (FAILED(pGameInstance->Add_UI(LEVEL_MAPTOOL, pUI2)))
 	{
 		return E_FAIL;
 	}

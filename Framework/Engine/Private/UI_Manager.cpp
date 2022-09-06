@@ -11,6 +11,9 @@ CUI_Manager::CUI_Manager()
 
 HRESULT CUI_Manager::Setup_Manager(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, const GRAPHICDESC & GraphicDesc, _uint iNumLevels)
 {
+	m_iEditLevel = 0;
+	m_bLevelEditMode = false;
+
 	m_iNumLevels = iNumLevels;
 
 	m_vecCanvas.reserve(iNumLevels);
@@ -37,6 +40,16 @@ void CUI_Manager::Tick(_float fTimeDelta)
 {
 	CGameInstance* instance = GET_INSTANCE(CGameInstance);
 
+#if _DEBUG
+	if (m_bLevelEditMode)
+	{
+		m_vecCanvas[m_iEditLevel]->Tick(fTimeDelta);
+
+		RELEASE_INSTANCE(CGameInstance);
+		return;
+	}
+#endif
+
 	_uint	iLevel = instance->Get_CurrentLevelID();
 
 	m_vecCanvas[iLevel]->Tick(fTimeDelta);
@@ -48,12 +61,19 @@ void CUI_Manager::LateTick(_float fTimeDelta)
 {
 	CGameInstance* instance = GET_INSTANCE(CGameInstance);
 
+#if _DEBUG
+	if (m_bLevelEditMode)
+	{
+		m_vecCanvas[m_iEditLevel]->LateTick(fTimeDelta);
+
+		RELEASE_INSTANCE(CGameInstance);
+		return;
+	}
+#endif
 
 	_uint	iLevel = instance->Get_CurrentLevelID();
 
-
 	m_vecCanvas[iLevel]->LateTick(fTimeDelta);
-
 
 	RELEASE_INSTANCE(CGameInstance);
 }

@@ -15,6 +15,7 @@
 #include "UI_Canvas.h"
 #include "UI.h"
 #include "UI_LevelMoveButton.h"
+#include "Json_Utility.h"
 
 
 IMPLEMENT_SINGLETON(CImguiMgr)
@@ -24,7 +25,7 @@ CImguiMgr::CImguiMgr()
 	: m_pGameInstance(CGameInstance::Get_Instance())
 	, show_demo_window(false), show_mainBar(true)
 	, MapToolCheckBox(false), m_currentLevelID(0)
-	, UIToolCheckBox(false)
+	, UIToolCheckBox(true)
 {
 	Safe_AddRef(m_pGameInstance);
 }
@@ -340,9 +341,6 @@ void CImguiMgr::Tap_Object_CUI(void)		//UI 오브젝트리스트 나열
 
 			switch (UILevelCount)
 			{
-			case Client::LEVEL_STATIC:
-				strcpy_s(UICanvasTreeName, 32, "LEVEL_STATIC");
-				break;
 			case Client::LEVEL_LOGO:
 				strcpy_s(UICanvasTreeName, 32, "LEVEL_LOGO");
 				break;
@@ -366,7 +364,7 @@ void CImguiMgr::Tap_Object_CUI(void)		//UI 오브젝트리스트 나열
 				{
 					for (auto& iter_UIVec : UIVec[i])	//레벨별분류?
 					{
-						if (ImGui::TreeNode("btn"))
+						if (ImGui::TreeNode(CStrUtil::ConvertWCtoC((iter_UIVec->Get_UIName()))))
 						{
 							ImGui::TreePop();
 						}
@@ -433,6 +431,22 @@ void CImguiMgr::MapTool_View(void)		//맵툴  새창을띄움
 void CImguiMgr::UITool_View(void)	//UI툴  새창을 띄움
 {
 	ImGui::Begin("UITool", &UIToolCheckBox, 0);
+
+	if (ImGui::Button("Save"))
+	{
+		//
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Load"))
+	{
+		//
+	}
+	ImGui::Separator();
+
+	
+
+	ImGui::Separator();
+	
 	ImGui::Text("Make UI");
 
 	const char* UI_Class_Type[] = { "None", "LevelMoveButton", "DialogButton" };
@@ -448,7 +462,6 @@ void CImguiMgr::UITool_View(void)	//UI툴  새창을 띄움
 		}
 		ImGui::EndCombo();
 	}
-
 
 	switch (UI_Class_SelectNum)	//버튼클래스 생성
 	{
@@ -469,8 +482,9 @@ void CImguiMgr::UITool_View(void)	//UI툴  새창을 띄움
 void CImguiMgr::Define_LevelMoveButton(void)	//LevelButton 을 정의하고 만들어줌 (Create는 밖으로 뻴것같음)
 
 {
-	static _float UI_Size[2] = { 100.f, 100.f };
-	static _float UI_Pos[2] = { 0.f, 0.f };
+	static _float UI_Size[3] = { 100.f, 100.f, 1.f };
+	static _float UI_Pos[3] = { 0.f, 0.f, 0.f };
+	static char UI_Name[MAX_PATH] = {};
 
 #pragma region 이미지받기
 	if (m_ImageVec.empty())
@@ -551,13 +565,9 @@ void CImguiMgr::Define_LevelMoveButton(void)	//LevelButton 을 정의하고 만들어줌 
 		ImGui::EndCombo();
 	}
 
-	if (ImGui::InputFloat2("Set Size", UI_Size, "%.1f", 0))
-	{
-	}
-
-	if (ImGui::InputFloat2("Set Pos", UI_Pos, "%.1f", 0))
-	{
-	}
+	ImGui::InputText("Name", UI_Name, MAX_PATH);
+	ImGui::InputFloat2("Set Size", UI_Size, "%.1f", 0);
+	ImGui::InputFloat2("Set Pos", UI_Pos, "%.1f", 0);
 
 	if (m_currentLevelID == LEVEL::LEVEL_LOADING || Render_Num == 5)
 	{
@@ -573,6 +583,7 @@ void CImguiMgr::Define_LevelMoveButton(void)	//LevelButton 을 정의하고 만들어줌 
 		CUI * pUI = CUI_LevelMoveButton::Create(m_pDevice, m_pContext);
 		pUI->LoadUIImage(CStrUtil::ConvertCtoWC(ImageName.c_str()));
 		pUI->Set_UIType((UI_TYPE)Render_Num);
+		pUI->Set_UIName(CStrUtil::ConvertCtoWC(UI_Name));
 		pUI->Set_Size(_float3(UI_Size[0], UI_Size[1], UI_Size[2]));
 		pUI->Set_Pos(_float3(UI_Pos[0], UI_Pos[1], UI_Pos[2]));
 
@@ -584,6 +595,7 @@ void CImguiMgr::Define_LevelMoveButton(void)	//LevelButton 을 정의하고 만들어줌 
 		ImGui::Text("Create");
 	}
 }
+
 
 void CImguiMgr::Free()
 {

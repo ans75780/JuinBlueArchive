@@ -33,7 +33,7 @@ public:
 	void			Set_UIType(UI_TYPE _eType) { m_eUIType = _eType; }
 public:
 	const _tchar*	Get_UIName() { return m_pUIName; }
-
+	void			Set_UIName(_tchar* _szName) { lstrcpy(m_pUIName, _szName); }
 public:
 	CUI*			Get_Parent() { return m_pParent; }
 	void			Add_Child(CUI*	_pChild);
@@ -62,7 +62,6 @@ protected:
 	CVIBuffer_Rect*			m_pVIBufferCom = nullptr;
 
 protected:
-	
 	_tchar			m_pUIName[MAX_PATH] = L"";
 	_float3			m_fPos;
 	_float3			m_fSize;

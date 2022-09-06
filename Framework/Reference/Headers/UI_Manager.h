@@ -25,13 +25,19 @@ public:
 	void LateTick(_float fTimeDelta);
 
 public:
-	void DisableCanvas(_uint iLevelIndex);
+	void	DisableCanvas(_uint iLevelIndex);
 	vector<class CUI_Canvas*> Get_Canvases();
+
+	void	Set_LevelEditMode(_bool _check)	{ m_bLevelEditMode = _check; }
+	void	Set_EditLevel(_uint _Level)		{ m_iEditLevel = _Level; }
 
 private:
 	vector<class CUI_Canvas*>			m_vecCanvas;
 	typedef vector<class CUI_Canvas*>	CANVASES;
 	_uint					m_iNumLevels = 0;
+
+	_bool					m_bLevelEditMode;
+	_uint					m_iEditLevel;
 
 public:
 

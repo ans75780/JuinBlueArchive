@@ -34,9 +34,9 @@ private:
 
 private:
 	void		MapTool_View(void);
-
+	
 	void		UITool_View(void);
-	void		Define_LevelMoveButton(void);
+	void			Define_LevelMoveButton(void);
 
 
 private:
