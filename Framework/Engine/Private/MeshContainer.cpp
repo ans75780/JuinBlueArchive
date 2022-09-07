@@ -10,15 +10,17 @@ CMeshContainer::CMeshContainer(ID3D11Device * pDevice, ID3D11DeviceContext * pCo
 
 CMeshContainer::CMeshContainer(const CMeshContainer & rhs)
 	: CVIBuffer(rhs)
+	, m_pAIMesh(rhs.m_pAIMesh)
+	, m_iMaterialIndex(rhs.m_iMaterialIndex)
 {
-
+	strcpy_s(m_szName, rhs.m_szName);
 }
 HRESULT CMeshContainer::Initialize_Prototype(CModel::MODELTYPE eType, const aiMesh * pAIMesh, 
 			CModel* pModel, _fmatrix TransformMatrix)
 {
+	m_pAIMesh = pAIMesh;
 	m_iMaterialIndex = pAIMesh->mMaterialIndex;
 
-	
 	strcpy_s(m_szName, pAIMesh->mName.data);
 #pragma region VERTEXBUFFER
 
@@ -129,7 +131,7 @@ HRESULT CMeshContainer::Ready_VertexBuffer_Anim(const aiMesh* pAIMesh, CModel* p
 	m_BufferDesc.MiscFlags = 0;
 
 	VTXANIM*			pVertices = new VTXANIM[m_iNumVertices];
-	ZeroMemory(&pVertices, sizeof(VTXANIM) * m_iNumVertices);
+	ZeroMemory(pVertices, sizeof(VTXANIM) * m_iNumVertices);
 	for (_uint i = 0; i < m_iNumVertices; ++i)
 	{
 		memcpy(&pVertices[i].vPosition, &pAIMesh->mVertices[i], sizeof(_float3));
@@ -206,6 +208,45 @@ HRESULT CMeshContainer::Ready_VertexBuffer_Anim(const aiMesh* pAIMesh, CModel* p
 	Safe_Delete_Array(pVertices);
 	return S_OK;
 }
+
+HRESULT CMeshContainer::SetUp_BonesPtr(CModel * pModel)
+{
+	m_iNumBones = m_pAIMesh->mNumBones;
+
+	for (_uint i = 0; i < m_iNumBones; ++i)
+	{
+		aiBone*		pAIBone = m_pAIMesh->mBones[i];
+
+		_float4x4	OffSetMatrix;
+
+		memcpy(&OffSetMatrix, &pAIBone->mOffsetMatrix, sizeof(_float4x4));
+
+		CBoneNode*		pHierarchyNode = pModel->Find_Bone(pAIBone->mName.data);
+		if (nullptr == pHierarchyNode)
+			return E_FAIL;
+
+		pHierarchyNode->Set_OffsetMatrix(XMMatrixTranspose(XMLoadFloat4x4(&OffSetMatrix)));
+
+		m_vecBones.push_back(pHierarchyNode);
+
+		Safe_AddRef(pHierarchyNode);
+	}
+
+	if (0 == m_iNumBones)
+	{
+		m_iNumBones = 1;
+
+		CBoneNode*		pHierarchyNode = pModel->Find_Bone(m_szName);
+		if (nullptr == pHierarchyNode)
+			return E_FAIL;
+
+		m_vecBones.push_back(pHierarchyNode);
+
+		Safe_AddRef(pHierarchyNode);
+	}
+}
+
+
 
 void CMeshContainer::SetUp_BoneMatrices(_float4x4 * pBoneMatrices, _fmatrix TransformationMatrix)
 {

@@ -34,7 +34,7 @@ public:
 public:
 	HRESULT Initialize(aiNode* pAINode, class CBoneNode* pParent, _uint iDepth);
 	void	Update_CombinedTransformationMatrix();
-
+	void	Reset_CombinedTransformationMatrix();
 private:
 	_uint			m_iDepth = 0;
 	char			m_szName[MAX_PATH] = "";

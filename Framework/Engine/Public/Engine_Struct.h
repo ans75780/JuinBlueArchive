@@ -63,7 +63,9 @@ namespace Engine
 
 	typedef struct tagModelMaterial
 	{
-		class CTexture*		pTextures[AI_TEXTURE_TYPE_MAX];
+		class	CTexture*		pTextures[AI_TEXTURE_TYPE_MAX];
+		char	szTextureNames	[MAX_PATH];
+
 	}MODEL_MATERIAL;
 
 	typedef struct tagVertex_Texture

@@ -35,6 +35,11 @@ void CBoneNode::Update_CombinedTransformationMatrix()
 		XMStoreFloat4x4(&m_CombinedTransformationMatrix,XMLoadFloat4x4(&m_TransformationMatrix)  * XMLoadFloat4x4(&m_pParent->m_CombinedTransformationMatrix));
 }
 
+void CBoneNode::Reset_CombinedTransformationMatrix()
+{
+	XMStoreFloat4x4(&m_CombinedTransformationMatrix, XMMatrixIdentity());
+}
+
 CBoneNode * CBoneNode::Create(aiNode * pAINode, CBoneNode* pParent, _uint iDepth)
 {
 	CBoneNode*		pInstance = new CBoneNode();

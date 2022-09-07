@@ -59,7 +59,7 @@ HRESULT CObject_Manager::Add_Prototype(const _tchar * pPrototypeTag, CGameObject
 	return S_OK;
 }
 
-HRESULT CObject_Manager::Add_GameObject(_uint iLevelIndex, const _tchar * pLayerTag, const _tchar * pPrototypeTag, void* pArg)
+HRESULT CObject_Manager::Add_GameObject(_uint iLevelIndex, const _tchar * pLayerTag, const _tchar * pPrototypeTag, void* pArg, CGameObject** pObject)
 {
 	CGameObject*		pPrototype = Find_Prototype(pPrototypeTag);
 	if (nullptr == pPrototype)
@@ -80,6 +80,9 @@ HRESULT CObject_Manager::Add_GameObject(_uint iLevelIndex, const _tchar * pLayer
 	}
 	else
 		pLayer->Add_GameObject(pCloneObject);	
+
+	if (nullptr != pObject)
+		(*pObject) = pCloneObject;
 
 	return S_OK;
 }

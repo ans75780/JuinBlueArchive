@@ -26,14 +26,18 @@ public:
 	virtual HRESULT Render();
 
 private:
+	CTexture*				m_pMouthCom = nullptr;
 	CShader*				m_pShaderCom = nullptr;
 	CRenderer*				m_pRendererCom = nullptr;
 	CModel*					m_pModelCom = nullptr;
 
 private:
+	_uint					m_iAnimIndex = 0;
+
+private:
 	HRESULT SetUp_Components();
 	HRESULT SetUp_ShaderResource();
-
+	
 
 public:
 	static CTestObject_Model_Haruka* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
