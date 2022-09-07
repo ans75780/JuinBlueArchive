@@ -156,21 +156,6 @@ void CModel::Set_CurrentAnimation(_uint iAnimIndex)
 	}
 }
 
-HRESULT CModel::NonAnimRender(_uint iMeshIndex)
-{
-	if (iMeshIndex >= m_iNumMeshContainers)
-		return E_FAIL;
-
-	if (m_eModelType != MODELTYPE::TYPE_NONANIM)
-	{
-		MSG_BOX("어....이건 애니메이션 없는  애들만 가능한데요?");
-		return E_FAIL;
-	}
-	m_MeshContainers[iMeshIndex]->Render();
-
-	return S_OK;
-}
-
 
 HRESULT CModel::Play_Animation(_float fTimeDelta)
 {

@@ -14,7 +14,7 @@ private:
 	virtual ~CModel() = default;
 
 public:
-	HRESULT Initialize_Prototype(MODELTYPE eType, 
+	HRESULT Initialize_Prototype(MODELTYPE eType,
 		const char* pModelFilePath, const char* pModelFileName, _fmatrix TransformMatrix);
 	HRESULT Initialize(void * pArg, CModel* pPrototype);
 	HRESULT Render(_uint iMeshIndex, class CShader* pShader, const char* pConstantBoneName);
@@ -32,7 +32,7 @@ public:
 	HRESULT Bind_Texture(class CShader* pShader, const char* pContantName,	class CTexture* pTexture);
 
 public:
-	_uint	Get_NumMeshContainers() const { return m_iNumMeshContainers; }
+	_uint   Get_NumMeshContainers() const { return m_iNumMeshContainers; }
 
 
 public:
@@ -45,30 +45,30 @@ public:
 
 
 private:
-	const aiScene*				m_pAIScene = nullptr;
-	Assimp::Importer			m_Importer;
-	MODELTYPE					m_eModelType = TYPE_END;
+	const aiScene*            m_pAIScene = nullptr;
+	Assimp::Importer         m_Importer;
+	MODELTYPE               m_eModelType = TYPE_END;
 
 private:
-	vector<MODEL_MATERIAL>					m_Materials;
-	vector<class CMeshContainer*>			m_MeshContainers;
-	typedef vector<class CMeshContainer*>	MESHCONTAINERS;
-	_uint			m_iNumMeshContainers = 0;
-	_uint			m_iNumMaterials = 0;
+	vector<MODEL_MATERIAL>               m_Materials;
+	vector<class CMeshContainer*>         m_MeshContainers;
+	typedef vector<class CMeshContainer*>   MESHCONTAINERS;
+	_uint         m_iNumMeshContainers = 0;
+	_uint         m_iNumMaterials = 0;
 
 private:
-	vector<class CBoneNode*>			m_vecBones;
-	typedef vector<class CBoneNode*>	BONES;
+	vector<class CBoneNode*>         m_vecBones;
+	typedef vector<class CBoneNode*>   BONES;
 
 private:
-	_uint									m_iCurrentAnimationIndex = 0;
-	_uint									m_iNumAnimations;
-	vector<class CAnimation*>				m_Animations;
-	typedef vector<class CAnimation*>		ANIMATIONS;
+	_uint                           m_iCurrentAnimationIndex = 0;
+	_uint                           m_iNumAnimations;
+	vector<class CAnimation*>            m_Animations;
+	typedef vector<class CAnimation*>      ANIMATIONS;
 
 private:
 	HRESULT Create_MeshContainers();
-	HRESULT	Create_Materials(const char*	pModelFilePath);
+	HRESULT   Create_Materials(const char*   pModelFilePath);
 	HRESULT Create_Bones(aiNode* pNode, class CBoneNode* pParent, _uint iDepth);
 	HRESULT Create_Animations();
 
@@ -76,10 +76,10 @@ private:
 
 
 private:
-	_float4x4	m_TransformMatrix;
+	_float4x4   m_TransformMatrix;
 
 public:
-	static CModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, MODELTYPE eType, 
+	static CModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, MODELTYPE eType,
 		const char* pModelFilePath, const char* pModelFileName, _fmatrix TransformMatrix);
 	virtual CComponent* Clone(void* pArg = nullptr) override;
 	virtual void Free() override;
