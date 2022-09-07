@@ -24,7 +24,7 @@ public:
 	HRESULT Ready_VertexBuffer_NonAnim(const aiMesh* pAIMesh, _fmatrix TransformMatrix);
 	HRESULT Ready_VertexBuffer_Anim(const aiMesh* pAIMesh, class CModel* pModel);
 	HRESULT SetUp_BonesPtr(class CModel* pModel);
-	void				SetUp_BoneMatrices(_float4x4* pBoneMatrices, _fmatrix TransformationMatrix);
+	void	SetUp_BoneMatrices(_float4x4* pBoneMatrices, _fmatrix TransformationMatrix);
 
 public:
 	const char*			Get_Name() const { return m_szName; }

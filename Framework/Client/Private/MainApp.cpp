@@ -38,6 +38,9 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(Ready_Static_Resource()))
 		return E_FAIL;
 
+	if (FAILED(Ready_Static_Models()))
+		return E_FAIL;
+
 	if (FAILED(Open_Level(LEVEL_LOGO)))
 		return E_FAIL;
 
@@ -139,6 +142,19 @@ HRESULT CMainApp::Ready_Prototype_Component()
 		return E_FAIL;
 	//Safe_AddRef(m_pRenderer);
 
+
+	/* For.Prototype_Component_Shader_VtxAnimModel */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxAnimModel"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../../ShaderFiles/Shader_VtxAnimModel.hlsl"), VTXANIM_DECLARATION::Element, VTXANIM_DECLARATION::iNumElements))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Shader_VtxCubeTex */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxCubeTex"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../../ShaderFiles/Shader_VtxCubeTex.hlsl"), VTXCUBETEX_DECLARATION::Element, VTXCUBETEX_DECLARATION::iNumElements))))
+		return E_FAIL;
+
+
+
 	return S_OK;
 }
 
@@ -155,6 +171,25 @@ HRESULT CMainApp::Ready_Static_Resource()
 		return E_FAIL;
 
 	return S_OK;
+}
+
+HRESULT CMainApp::Ready_Static_Models()
+{
+	_matrix mat;
+	_float4x4 ScaleMatrix;
+	mat = XMMatrixIdentity();
+
+
+	/* For.Prototype_Component_Model_Serika*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Serika"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Serika_Original/", "Serika_Original.fbx", mat))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_Serika*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Haruka"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Haruka_Original/", "Haruka_Original.fbx", mat))))
+		return E_FAIL;
+
 }
 
 CMainApp * CMainApp::Create()

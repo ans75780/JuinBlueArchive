@@ -109,6 +109,24 @@
     <ClInclude Include="..\Public\Sky.h">
       <Filter>05.Sky</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Camera_Event.h">
+      <Filter>02.GameObject\01. Camera\Camera_Event</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Formation.h">
+      <Filter>01.Level\Formation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Camera_Formation.h">
+      <Filter>02.GameObject\01. Camera\Camera_Formation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Formation.h">
+      <Filter>02.GameObject\07.Formation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Student_Formation_Idle.h">
+      <Filter>04. State\Formation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Student_Formation_Pickup.h">
+      <Filter>04. State\Formation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -203,6 +221,24 @@
     </ClCompile>
     <ClCompile Include="..\Private\Sky.cpp">
       <Filter>05.Sky</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera_Event.cpp">
+      <Filter>02.GameObject\01. Camera\Camera_Event</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Student_Formation_Idle.cpp">
+      <Filter>04. State\Formation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Formation.cpp">
+      <Filter>01.Level\Formation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera_Formation.cpp">
+      <Filter>02.GameObject\01. Camera\Camera_Formation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Formation.cpp">
+      <Filter>02.GameObject\07.Formation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Student_Formation_Pickup.cpp">
+      <Filter>04. State\Formation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -307,14 +343,32 @@
     <Filter Include="04. State\Idle">
       <UniqueIdentifier>{7604fe63-d291-4b4a-8da4-9e6621296a6f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05.Sky">
+      <UniqueIdentifier>{06cd8182-810e-41a9-ba1d-2f9fe59c9685}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\99. TestObject\Plane">
+      <UniqueIdentifier>{89280b89-4dda-4350-b9ec-e15cef8bc86c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\01. Camera\Camera_Event">
+      <UniqueIdentifier>{301e37c4-57ad-4f28-b739-944eff4800de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Level\Formation">
+      <UniqueIdentifier>{fcf1538e-17e9-4145-8d55-3d703fe54e30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. State\Formation">
+      <UniqueIdentifier>{68ed6730-4b2b-4804-8881-e85dcb6d0a74}</UniqueIdentifier>
+    </Filter>
     <Filter Include="04. State\StateMachine">
       <UniqueIdentifier>{96baef81-a398-4d31-980a-e611d7c7556d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObject\07.Formation">
+      <UniqueIdentifier>{21a7108e-7177-40a3-9e95-1ab62c7ee622}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\01. Camera\Camera_Formation">
+      <UniqueIdentifier>{0e8f6928-0fec-4546-a13a-9183d73e939f}</UniqueIdentifier>
+    </Filter>
     <Filter Include="04. State\Run">
       <UniqueIdentifier>{e8beed87-7a6f-44d2-9eb3-201c7da6035e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05.Sky">
-      <UniqueIdentifier>{06cd8182-810e-41a9-ba1d-2f9fe59c9685}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

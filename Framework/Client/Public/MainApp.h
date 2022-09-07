@@ -30,6 +30,7 @@ private:
 	HRESULT Open_Level(LEVEL eLevelID);
 	HRESULT Ready_Prototype_Component();
 	HRESULT Ready_Static_Resource();
+	HRESULT Ready_Static_Models();
 
 
 public:

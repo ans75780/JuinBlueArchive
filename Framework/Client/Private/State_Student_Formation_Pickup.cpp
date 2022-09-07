@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "State_Student_Run.h"
+#include "State_Student_Formation_Pickup.h"
 #include "Student.h"
 #include "Transform.h"
 #include "Model.h"
@@ -7,19 +7,19 @@
 #include "Engine_Defines.h"
 #include "GameInstance.h"
 #include "Key_Manager.h"
-CState_Student_Run::CState_Student_Run(CStudent * pStudent)
+CState_Student_Formation_Pickup::CState_Student_Formation_Pickup(CStudent * pStudent)
 	:CStateBase(pStudent)
 {
 
 }
 
-HRESULT CState_Student_Run::Initialize()
+HRESULT CState_Student_Formation_Pickup::Initialize()
 {
 	char pAnimaitonStr[MAX_PATH];
 
 	WideCharToMultiByte(CP_ACP, 0, m_pStudent->Get_Name(), MAX_PATH, pAnimaitonStr, MAX_PATH, NULL, NULL);
 
-	strcat_s(pAnimaitonStr, "_Original_Cafe_Walk");
+	strcat_s(pAnimaitonStr, "_Original_Formation_Pickup");
 
 	m_pAnimation = m_pModel->Get_AnimationFromName(pAnimaitonStr);
 
@@ -31,15 +31,16 @@ HRESULT CState_Student_Run::Initialize()
 	return S_OK;
 }
 
-void CState_Student_Run::Enter()
+void CState_Student_Formation_Pickup::Enter()
 {
 
 }
 
-_bool CState_Student_Run::Loop(_float fTimeDelta)
+_bool CState_Student_Formation_Pickup::Loop(_float fTimeDelta)
 {
 	m_pAnimation->Update(fTimeDelta);
 	m_pModel->Update_CombinedMatrix();
+	
 	if (KEY(Q, AWAY))
 	{
 		return true;
@@ -48,14 +49,14 @@ _bool CState_Student_Run::Loop(_float fTimeDelta)
 	return false;
 }
 
-CStateBase * CState_Student_Run::Exit()
+CStateBase * CState_Student_Formation_Pickup::Exit()
 {
 	return nullptr;
 }
 
-CState_Student_Run * CState_Student_Run::Create(CStudent * pStudent)
+CState_Student_Formation_Pickup * CState_Student_Formation_Pickup::Create(CStudent * pStudent)
 {
-	CState_Student_Run*	pInstance = new CState_Student_Run(pStudent);
+	CState_Student_Formation_Pickup*	pInstance = new CState_Student_Formation_Pickup(pStudent);
 
 	if (FAILED(pInstance->Initialize()))
 	{

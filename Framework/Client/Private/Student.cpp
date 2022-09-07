@@ -74,12 +74,8 @@ HRESULT CStudent::Render()
 	_uint iNumMeshContainers = m_pModelCom->Get_NumMeshContainers();
 	for (_uint i = 0; i < iNumMeshContainers; i++)
 	{
-		if (i == 2)
-		{
-
-		}
-		else if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
-			return E_FAIL;
+		if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
+			continue;
 		/*if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
 		return E_FAIL;*/
 		m_pShaderCom->Begin(0);
@@ -102,7 +98,7 @@ HRESULT CStudent::Render_MeshPart(CMeshContainer * pMesh)
 HRESULT CStudent::SetUp_Components()
 {
 	/* For.Com_Shader */
-	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxAnimModel"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxAnimModel"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
 		return E_FAIL;
 
 	/* For.Com_Renderer */
@@ -114,13 +110,10 @@ HRESULT CStudent::SetUp_Components()
 	lstrcat(szModelTag, m_szStudentName);
 
 	/* For.Com_Model */
-	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, szModelTag, TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, szModelTag, TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
 		return E_FAIL;
 
 	
-
-
-
 	return S_OK;
 }
 

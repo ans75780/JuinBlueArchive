@@ -27,7 +27,6 @@ public:
 
 public:
 	class CStateBase* const	Get_CurrentState();
-
 private:
 	class CStudent*				m_pStudent = nullptr;
 	stack<class CStateBase*>	m_States;

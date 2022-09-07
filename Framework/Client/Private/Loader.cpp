@@ -11,7 +11,7 @@
 #include "TestObject_Model_Haruka.h"
 #include "Student.h"
 #pragma endregion
-
+#include "Camera_Formation.h"
 #include "MapProp.h"
 
 
@@ -47,6 +47,9 @@ unsigned int APIENTRY LoadingMain(void* pArg)
 		break;
 	case LEVEL_GAMEPLAY:
 		hr = pLoader->Loading_ForGamePlayLevel();
+		break;
+	case LEVEL_FORMATION:
+		hr = pLoader->Loading_ForFormationLevel();
 		break;
 	case LEVEL_MAPTOOL:
 		hr = pLoader->Loading_ForMapToolLevel();
@@ -134,6 +137,40 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	return S_OK;
 }
 
+HRESULT CLoader::Loading_ForFormationLevel()
+{
+	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
+	Safe_AddRef(pGameInstance);
+
+
+	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
+
+
+	/* For.Prototype_GameObject_Camera_Free*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Camera_Formation"),
+		CCamera_Formation::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_Student_Serika"),
+		CStudent::Create(m_pDevice, m_pContext, TEXT("Serika")))))
+		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_Student_Haruka"),
+		CStudent::Create(m_pDevice, m_pContext, TEXT("Haruka")))))
+		return E_FAIL;
+
+
+	m_isFinished = true;
+
+	lstrcpy(m_szLoadingText, TEXT("로딩 끝."));
+
+
+	Safe_Release(pGameInstance);
+	return S_OK;
+}
+
+
 HRESULT CLoader::Loading_ForGamePlayLevel()
 {
 	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
@@ -157,6 +194,11 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_Student_Serika"),
 		CStudent::Create(m_pDevice, m_pContext, TEXT("Serika")))))
+		return E_FAIL;
+
+
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_Student_Haruka"),
+		CStudent::Create(m_pDevice, m_pContext, TEXT("Haruka")))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Sky */
@@ -213,12 +255,6 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	/* For.Prototype_Component_VIBuffer_Terrain */
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Terrain"),
 		CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/Height.bmp")))))
-		return E_FAIL;	
-	_matrix mat;
-	mat = XMMatrixIdentity();
-	/* For.Prototype_Component_Model_*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Serika"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Serika_Original/", "Serika_Original.fbx", mat))))
 		return E_FAIL;
 
 
@@ -226,27 +262,7 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
           
 #pragma region LOAD_SHADER
 
-	lstrcpy(m_szLoadingText, TEXT("셰이더를 로딩중이빈다. "));
-	/* For.Prototype_Component_Shader_VtxTex */
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxNorTex"),
-		CShader::Create(m_pDevice, m_pContext, TEXT("../../ShaderFiles/Shader_VtxNorTex.hlsl"), VTXNORTEX_DECLARATION::Element, VTXNORTEX_DECLARATION::iNumElements))))
-		return E_FAIL;
-
-	/* For.Prototype_Component_Shader_VtxModel */
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxModel"),
-		CShader::Create(m_pDevice, m_pContext, TEXT("../../ShaderFiles/Shader_VtxModel.hlsl"), VTXMODEL_DECLARATION::Element, VTXMODEL_DECLARATION::iNumElements))))
-		return E_FAIL;
-
-	/* For.Prototype_Component_Shader_VtxAnimModel */
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxAnimModel"),
-		CShader::Create(m_pDevice, m_pContext, TEXT("../../ShaderFiles/Shader_VtxAnimModel.hlsl"), VTXANIM_DECLARATION::Element, VTXANIM_DECLARATION::iNumElements))))
-		return E_FAIL;
 	
-	/* For.Prototype_Component_Shader_VtxCubeTex */
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxCubeTex"),
-		CShader::Create(m_pDevice, m_pContext, TEXT("../../ShaderFiles/Shader_VtxCubeTex.hlsl"), VTXCUBETEX_DECLARATION::Element, VTXCUBETEX_DECLARATION::iNumElements))))
-		return E_FAIL;
-
 
 #pragma endregion
 
@@ -361,6 +377,7 @@ HRESULT CLoader::Loading_ForMapToolLevel()
 
 	return S_OK;
 }
+
 
 CLoader * CLoader::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevel)
 {
