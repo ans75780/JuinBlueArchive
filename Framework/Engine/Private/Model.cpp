@@ -144,6 +144,7 @@ HRESULT CModel::NonAnimRender(_uint iMeshIndex)
 		return E_FAIL;
 	}
 	m_MeshContainers[iMeshIndex]->Render();
+	return S_OK;
 }
 
 void CModel::Set_CurrentAnimation(_uint iAnimIndex)

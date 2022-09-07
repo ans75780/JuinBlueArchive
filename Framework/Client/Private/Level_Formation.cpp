@@ -9,8 +9,8 @@
 #include "Student.h"
 #include "Animation.h"
 #include "StateMachineBase.h"
-
-
+#include "Level_GamePlay.h"
+#include "Level_Loading.h"
 CLevel_Formation::CLevel_Formation(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -51,6 +51,18 @@ HRESULT CLevel_Formation::Initialize()
 void CLevel_Formation::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
+	if (GetKeyState(VK_SPACE) & 0x8000)
+	{
+		CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
+		Safe_AddRef(pGameInstance);
+
+		if (FAILED(pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_GAMEPLAY))))
+			return;
+
+		Safe_Release(pGameInstance);
+	}
+
 }
 
 HRESULT CLevel_Formation::Render()

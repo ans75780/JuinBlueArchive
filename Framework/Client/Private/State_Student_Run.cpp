@@ -19,7 +19,7 @@ HRESULT CState_Student_Run::Initialize()
 
 	WideCharToMultiByte(CP_ACP, 0, m_pStudent->Get_Name(), MAX_PATH, pAnimaitonStr, MAX_PATH, NULL, NULL);
 
-	strcat_s(pAnimaitonStr, "_Original_Cafe_Walk");
+	strcat_s(pAnimaitonStr, "_Original_Move_Ing");
 
 	m_pAnimation = m_pModel->Get_AnimationFromName(pAnimaitonStr);
 
