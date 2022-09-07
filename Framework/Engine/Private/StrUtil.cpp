@@ -1,7 +1,4 @@
-#include "stdafx.h"
 #include "..\Public\StrUtil.h"
-
-BEGIN(Client)
 
 CStrUtil::CStrUtil()
 {
@@ -11,7 +8,6 @@ CStrUtil::CStrUtil()
 CStrUtil::~CStrUtil()
 {
 }
-
 
 //wchar_t 에서 char 로의 형변환 함수
 char * CStrUtil::ConvertWCtoC(const wchar_t * str)
@@ -41,4 +37,3 @@ wchar_t * CStrUtil::ConvertCtoWC(const char * str)
 	return pStr;
 }
 
-END

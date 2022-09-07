@@ -409,15 +409,19 @@ HRESULT CLoader::LoadUITexture(char * folderName, void * pGameInstance)
 	jsonPath += ".json";
 
 	json	JsonUI;
-	if (FAILED(CJson_Utility::Load_Json(CStrUtil::ConvertCtoWC(jsonPath.c_str()), &JsonUI)))
+	wchar_t* pUtil_jsonPath = CStrUtil::ConvertCtoWC(jsonPath.c_str());
+	if (FAILED(CJson_Utility::Load_Json(pUtil_jsonPath, &JsonUI)))
 	{
 		string jsonFail = "제이슨";
 		jsonFail += folderName;
 		jsonFail += "로드 실패";
-		MessageBox(0, CStrUtil::ConvertCtoWC(jsonFail.c_str()), TEXT("System Error"), MB_OK);
+		wchar_t* pUtil_Fail = CStrUtil::ConvertCtoWC(jsonFail.c_str());
 
+		MessageBox(0, pUtil_Fail, TEXT("System Error"), MB_OK);
+		Safe_Delete_Array(pUtil_Fail);
 		return E_FAIL;
 	}
+	Safe_Delete_Array(pUtil_jsonPath);
 
 	auto UI_json_mSprite = JsonUI["mSprites"];
 	for (auto it = UI_json_mSprite.begin(); it != UI_json_mSprite.end(); ++it)
@@ -445,9 +449,13 @@ HRESULT CLoader::LoadUITexture(char * folderName, void * pGameInstance)
 			string jsonFail = "제이슨을 통한 경로 이미지";
 			jsonFail += folderName;
 			jsonFail += "로드 실패";
-			MessageBox(0, CStrUtil::ConvertCtoWC(jsonFail.c_str()), TEXT("System Error"), MB_OK);
+			wchar_t* pUtil_JsonFail = CStrUtil::ConvertCtoWC(jsonFail.c_str());
+
+			MessageBox(0, pUtil_JsonFail, TEXT("System Error"), MB_OK);
+			Safe_Delete_Array(pUtil_JsonFail);
 			return E_FAIL;
 		}
+
 	}
 
 	return S_OK;

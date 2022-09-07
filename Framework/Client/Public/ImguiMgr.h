@@ -38,7 +38,8 @@ private:
 	void		UITool_View(void);
 	void			Define_LevelMoveButton(_uint _Level);
 	
-
+private:
+	void		Load_UIVec(void);
 private:
 	CGameInstance*         m_pGameInstance = nullptr;
 	ID3D11Device*         m_pDevice = nullptr;
@@ -54,7 +55,7 @@ private:
 	struct t_ImageVec
 	{
 		CTexture* texture;
-		const char* name;
+		char name[MAX_PATH];
 	};
 	vector<t_ImageVec> m_ImageVec;
 

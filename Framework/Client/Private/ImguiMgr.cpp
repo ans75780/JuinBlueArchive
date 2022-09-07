@@ -8,8 +8,6 @@
 #include "GameObject.h"
 #include "MainApp.h"
 
-#include "StrUtil.h"
-
 #include "Level_Loading.h"
 
 #include "UI_Canvas.h"
@@ -17,6 +15,7 @@
 #include "UI_LevelMoveButton.h"
 #include "Json_Utility.h"
 
+#include "StrUtil.h"
 
 IMPLEMENT_SINGLETON(CImguiMgr)
 
@@ -28,6 +27,7 @@ CImguiMgr::CImguiMgr()
 	, UIToolCheckBox(true)
 {
 	Safe_AddRef(m_pGameInstance);
+
 }
 
 HRESULT CImguiMgr::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -53,6 +53,7 @@ HRESULT CImguiMgr::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pConte
 	// Setup Platform/Renderer backends
 	ImGui_ImplWin32_Init(g_hWnd);
 	ImGui_ImplDX11_Init(m_pDevice, m_pContext);
+
 
 	return S_OK;
 }
@@ -249,7 +250,9 @@ void CImguiMgr::Tap_Object_CObj(void)	//ÇöÀç·¹º§¿¡ Á¸ÀçÇÏ´Â ¿ÀºêÁ§Æ®µé ³ª¿­
 
 		for (auto& iter_Layer : pGameObject_Layer)		//·¹ÀÌ¾îÅ½»ö
 		{
-			if (ImGui::TreeNode(CStrUtil::ConvertWCtoC(iter_Layer.first)))	//·¹ÀÌ¾î ÀÌ¸§À¸·Î ³ëµå»ý¼º
+			char* pUtil_LayerNode = CStrUtil::ConvertWCtoC(iter_Layer.first);
+
+			if (ImGui::TreeNode(pUtil_LayerNode))	//·¹ÀÌ¾î ÀÌ¸§À¸·Î ³ëµå»ý¼º
 			{
 				list<CGameObject*> pGameObject_List = m_pGameInstance->Get_GameObjects(m_currentLevelID, iter_Layer.first);
 
@@ -266,7 +269,9 @@ void CImguiMgr::Tap_Object_CObj(void)	//ÇöÀç·¹º§¿¡ Á¸ÀçÇÏ´Â ¿ÀºêÁ§Æ®µé ³ª¿­
 
 				for (auto& iter_List : pGameObject_List)	//·¹ÀÌ¾î¾È¿¡ÀÖ´Â ¿ÀºêÁ§Æ® ¼øÈ¸
 				{
-					strcpy_s(tempName, MAX_PATH, CStrUtil::ConvertWCtoC(iter_List->Get_OBJ_DESC().sz_Name));
+					char* pUtil_Name = CStrUtil::ConvertWCtoC(iter_List->Get_OBJ_DESC().sz_Name);
+
+					strcpy_s(tempName, MAX_PATH, pUtil_Name);
 					_itoa_s(count, tempNum, 32, 10);
 					strcat_s(tempName, MAX_PATH, tempNum);
 
@@ -313,9 +318,11 @@ void CImguiMgr::Tap_Object_CObj(void)	//ÇöÀç·¹º§¿¡ Á¸ÀçÇÏ´Â ¿ÀºêÁ§Æ®µé ³ª¿­
 						ImGui::TreePop();
 					}
 					count++;
+					Safe_Delete_Array(pUtil_Name);
 				}
 				ImGui::TreePop();
 			}
+			Safe_Delete_Array(pUtil_LayerNode);
 		}
 
 	}
@@ -364,10 +371,12 @@ void CImguiMgr::Tap_Object_CUI(void)		//UI ¿ÀºêÁ§Æ®¸®½ºÆ® ³ª¿­
 				{
 					for (auto& iter_UIVec : UIVec[i])	//·¹º§º°ºÐ·ù?
 					{
-						if (ImGui::TreeNode(CStrUtil::ConvertWCtoC((iter_UIVec->Get_UIName()))))
+						char* pUtil_UIName = CStrUtil::ConvertWCtoC(iter_UIVec->Get_UIName());
+						if (ImGui::TreeNode(pUtil_UIName))
 						{
 							ImGui::TreePop();
 						}
+						Safe_Delete_Array(pUtil_UIName);
 					}
 				}
 				ImGui::TreePop();
@@ -439,6 +448,7 @@ void CImguiMgr::UITool_View(void)	//UIÅø  »õÃ¢À» ¶ç¿ò
 	ImGui::SameLine();
 	if (ImGui::Button("Load"))
 	{
+		Load_UIVec();
 	}
 	ImGui::Separator();
 
@@ -522,10 +532,15 @@ void CImguiMgr::Define_LevelMoveButton(_uint _Level)	//LevelButton À» Á¤ÀÇÇÏ°í ¸
 					lstrcpy(_name, iter.first + lstrlenW(TEXT("Prototype_Component_Texture_")));
 
 					t_ImageVec _Imagevec;
-					_Imagevec.name = CStrUtil::ConvertWCtoC(_name);
+					ZeroMemory(&_Imagevec, sizeof(t_ImageVec));
+					char* pUtil_name = CStrUtil::ConvertWCtoC(_name);
+
+					strcpy_s(_Imagevec.name, MAX_PATH, pUtil_name);
 					_Imagevec.texture = (CTexture*)iter.second;
 
 					m_ImageVec.push_back(_Imagevec);
+
+					Safe_Delete_Array(pUtil_name);
 				}
 			}
 		}
@@ -563,7 +578,7 @@ void CImguiMgr::Define_LevelMoveButton(_uint _Level)	//LevelButton À» Á¤ÀÇÇÏ°í ¸
 						UI_Size[1] = (float)desc.Height;
 					}
 
-
+					
 				}
 			}
 
@@ -601,9 +616,10 @@ void CImguiMgr::Define_LevelMoveButton(_uint _Level)	//LevelButton À» Á¤ÀÇÇÏ°í ¸
 		ImageName += m_ImageVec[Image_Num].name;
 		
 		CUI * pUI = CUI_LevelMoveButton::Create(m_pDevice, m_pContext);
+
 		pUI->LoadUIImage(CStrUtil::ConvertCtoWC(ImageName.c_str()));
-		pUI->Set_UIType((UI_TYPE)Render_Num);
 		pUI->Set_UIName(CStrUtil::ConvertCtoWC(UI_Name));
+		pUI->Set_UIType((UI_TYPE)Render_Num);
 		pUI->Set_Size(_float3(UI_Size[0], UI_Size[1], UI_Size[2]));
 		pUI->Set_Pos(_float3(UI_Pos[0], UI_Pos[1], UI_Pos[2]));
 
@@ -612,10 +628,71 @@ void CImguiMgr::Define_LevelMoveButton(_uint _Level)	//LevelButton À» Á¤ÀÇÇÏ°í ¸
 			MSG_BOX("UI»ý¼º½ÇÆÐ");
 		}
 
+
 		ImGui::Text("Create");
 	}
 }
 
+void CImguiMgr::Load_UIVec(void)
+{
+	json loadJson;
+
+	ifstream fin;
+	fin.open("../../Resources/Data/SaveData.json");
+
+	if (fin.is_open())
+		fin >> (loadJson);
+	else
+	{
+		MSG_BOX("JSON_UI ºÒ·¯¿À±â ½ÇÆÐ");
+		return;
+	}
+	fin.close();
+
+	auto UIJsonVec = loadJson["UI"];
+
+	for (auto it = UIJsonVec.begin(); it != UIJsonVec.end(); ++it)
+	{
+		string	_ClassName = (*it)["ClassName"];
+		string	_TextureName = (*it)["TextureName"];
+		string	_Name = (*it)["Name"];
+
+		_uint	_Level = (*it)["Level"];
+		_uint	_Type = (*it)["Type"];
+
+
+		_float3 _Pos;
+		_Pos.x = (*it)["Pos_x"];
+		_Pos.y = (*it)["Pos_y"];
+		_Pos.z = (*it)["Pos_z"];
+
+		_float3 _Size;
+		_Size.x = (*it)["Size_x"];
+		_Size.y = (*it)["Size_y"];
+		_Size.z = (*it)["Size_z"];
+
+		CUI* pUI = CUI_LevelMoveButton::Create(m_pDevice, m_pContext);
+
+		_tchar* pUtil_ImageTag = CStrUtil::ConvertCtoWC(_TextureName.c_str());
+		_tchar* pUtil_Name = CStrUtil::ConvertCtoWC(_Name.c_str());
+
+		pUI->LoadUIImage(pUtil_ImageTag);
+		pUI->Set_UIType((UI_TYPE)_Type);
+		pUI->Set_Size(_float3(_Size.x, _Size.y, _Size.z));
+		pUI->Set_Pos(_float3(_Pos.x, _Pos.y, _Pos.z));
+		pUI->Set_UIName(pUtil_Name);
+		pUI->Set_UILevel(_Level);
+
+		if (FAILED(m_pGameInstance->Add_UI(_Level, pUI)))
+		{
+			MSG_BOX("UIÁ¤º¸ ºÒ·¯¿À±â ½ÇÆÐ");
+		}
+
+		Safe_Delete_Array(pUtil_ImageTag);
+		Safe_Delete_Array(pUtil_Name);
+	}
+	return;
+}
 
 void CImguiMgr::Free()
 {

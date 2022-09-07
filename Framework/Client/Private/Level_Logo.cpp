@@ -5,7 +5,6 @@
 
 //Json »ç¿ë
 #include "Json_Utility.h"
-#include "StrUtil.h"
 
 CLevel_Logo::CLevel_Logo(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)

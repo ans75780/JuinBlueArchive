@@ -1,40 +1,30 @@
-[
+{
+  "UI": [
     {
-        "UI": {
-            "ClassName": "CBackGround",
-            "Level": 2,
-            "Name": "Prototype_Component_Texture_UI_Background",
-            "Pos": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "Size": {
-                "x": 100.0,
-                "y": 100.0,
-                "z": 1.0
-            },
-            "TextureName": "Logo_BACKGROUND_Shiroko",
-            "Type": 4
-        }
+      "ClassName": "CBackGround",
+      "Level": 2,
+      "Name": "Logo_BACKGROUND_Shiroko",
+      "Pos_x": 0.0,
+      "Pos_y": 0.0,
+      "Pos_z": 0.0,
+      "Size_x": 100.0,
+      "Size_y": 100.0,
+      "Size_z": 1.0,
+      "TextureName": "Prototype_Component_Texture_UI_Background",
+      "Type": 4
     },
     {
-        "UI": {
-            "ClassName": "CUI_LevelMoveButton",
-            "Level": 4,
-            "Name": "Prototype_Component_Texture_UI_Background",
-            "Pos": {
-                "x": -200.0,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "Size": {
-                "x": 100.0,
-                "y": 100.0,
-                "z": 1.0
-            },
-            "TextureName": "Logo_BACKGROUND_Shiroko",
-            "Type": 4
-        }
+      "ClassName": "CUI_LevelMoveButton",
+      "Level": 4,
+      "Name": "Logo_BACKGROUND_Shiroko",
+      "Pos_x": -200.0,
+      "Pos_y": 0.0,
+      "Pos_z": 0.0,
+      "Size_x": 100.0,
+      "Size_y": 100.0,
+      "Size_z": 1.0,
+      "TextureName": "Prototype_Component_Texture_UI_Background",
+      "Type": 4
     }
-]
+  ]
+}

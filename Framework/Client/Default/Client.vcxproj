@@ -186,7 +186,6 @@
     <ClInclude Include="..\Public\Loader.h" />
     <ClInclude Include="..\Public\MainApp.h" />
     <ClInclude Include="..\Public\MapProp.h" />
-    <ClInclude Include="..\Public\StrUtil.h" />
     <ClInclude Include="..\Public\TestObject_Model_Haruka.h" />
     <ClInclude Include="..\Public\TestObject_Test.h" />
     <ClInclude Include="..\Public\Terrain.h" />
@@ -218,7 +217,6 @@
     <ClCompile Include="..\Private\Loader.cpp" />
     <ClCompile Include="..\Private\MainApp.cpp" />
     <ClCompile Include="..\Private\MapProp.cpp" />
-    <ClCompile Include="..\Private\StrUtil.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp" />
     <ClCompile Include="..\Private\TestObject_Model_Haruka.cpp" />
     <ClCompile Include="..\Private\Transform_Utils.cpp" />

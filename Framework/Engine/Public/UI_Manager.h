@@ -33,9 +33,6 @@ public:
 	void	Set_LevelEditMode(_bool _check)	{ m_bLevelEditMode = _check; }
 	void	Set_EditLevel(_uint _Level)		{ m_iEditLevel = _Level; }
 private:
-	char* Convert_WCtoC(const wchar_t* str);
-	wchar_t* Convert_CtoWC(const char* str);
-
 	vector<class CUI_Canvas*>			m_vecCanvas;
 	typedef vector<class CUI_Canvas*>	CANVASES;
 	_uint					m_iNumLevels = 0;

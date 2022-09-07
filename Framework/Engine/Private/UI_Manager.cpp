@@ -3,6 +3,8 @@
 #include "UI.h"
 #include "UI_Canvas.h"
 
+#include "StrUtil.h"
+
 IMPLEMENT_SINGLETON(CUI_Manager);
 
 CUI_Manager::CUI_Manager()
@@ -93,8 +95,8 @@ vector<class CUI_Canvas*> CUI_Manager::Get_Canvases()
 
 HRESULT CUI_Manager::Save_UIVec()
 {
-	json root, element;
-	string strOutput;
+	json root;
+
 	for (auto& pCanvas : m_vecCanvas)
 	{
 		vector<class CUI*>* UI_vec = pCanvas->Get_UIVec();
@@ -103,40 +105,42 @@ HRESULT CUI_Manager::Save_UIVec()
 		{
 			for (auto& it : UI_vec[i])
 			{
-				char* _TextureName = Convert_WCtoC(it->Get_UITextureName());
-				char* _ClassName = Convert_WCtoC(it->Get_UIClassName());
-				char* _Name = Convert_WCtoC(it->Get_UIName());
+				json element;
+
+				char* _TextureName = CStrUtil::ConvertWCtoC(it->Get_UITextureName());
+				char* _ClassName = CStrUtil::ConvertWCtoC(it->Get_UIClassName());
+				char* _Name = CStrUtil::ConvertWCtoC(it->Get_UIName());
 				
-				element["UI"]["ClassName"] = _ClassName;
-				element["UI"]["Name"] = _TextureName;
-				element["UI"]["TextureName"] = _Name;
+				element["TextureName"] = _TextureName;
+				element["ClassName"] = _ClassName;
+				element["Name"] = _Name;
 
-				element["UI"]["Level"] = it->Get_UILevel();
-				element["UI"]["Type"] = it->Get_UIType();
+				element["Level"] = it->Get_UILevel();
+				element["Type"] = it->Get_UIType();
 
-				element["UI"]["Size"]["x"] = it->Get_Size().x;
-				element["UI"]["Size"]["y"] = it->Get_Size().y;
-				element["UI"]["Size"]["z"] = it->Get_Size().z;
+				element["Size_x"] = it->Get_Size().x;
+				element["Size_y"] = it->Get_Size().y;
+				element["Size_z"] = it->Get_Size().z;
 
-				element["UI"]["Pos"]["x"] = it->Get_Pos().x;
-				element["UI"]["Pos"]["y"] = it->Get_Pos().y;
-				element["UI"]["Pos"]["z"] = it->Get_Pos().z;
+				element["Pos_x"] = it->Get_Pos().x;
+				element["Pos_y"] = it->Get_Pos().y;
+				element["Pos_z"] = it->Get_Pos().z;
 					
-				delete[] _Name;
-				delete[] _ClassName;
-				delete[] _TextureName;
+				Safe_Delete_Array(_Name);
+				Safe_Delete_Array(_ClassName);
+				Safe_Delete_Array(_TextureName);
 
-				root.push_back(element);
+
+				root["UI"].push_back(element);
 			}
 		}
-
 	}
 
 	ofstream fout;
 	fout.open(L"../../Resources/Data/SaveData.json");
 
 	if (fout.is_open())
-		fout << root.dump(4) << endl;
+		fout << root.dump(2) << endl;
 	else
 		return E_FAIL;
 
@@ -145,25 +149,6 @@ HRESULT CUI_Manager::Save_UIVec()
 	MSG_BOX("SAVE¼º°ø");
 	return S_OK;
 }
-
-char * CUI_Manager::Convert_WCtoC(const wchar_t * str)
-{
-	char* pStr;
-	int strSize = WideCharToMultiByte(CP_ACP, 0, str, -1, NULL, 0, NULL, NULL);
-	pStr = new char[strSize];
-	WideCharToMultiByte(CP_ACP, 0, str, -1, pStr, strSize, 0, 0);
-	return pStr;
-}
-
-wchar_t * CUI_Manager::Convert_CtoWC(const char * str)
-{
-	wchar_t* pStr;
-	int strSize = MultiByteToWideChar(CP_ACP, 0, str, -1, NULL, NULL);
-	pStr = new WCHAR[strSize];
-	MultiByteToWideChar(CP_ACP, 0, str, (int)strlen(str) + 1, pStr, strSize);
-	return pStr;
-}
-
 
 void CUI_Manager::Free()
 {

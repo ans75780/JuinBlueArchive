@@ -1,11 +1,12 @@
 #pragma once
-#include "GameInstance.h"
 
-BEGIN(Client)
+#include "Engine_Defines.h"
 
-class CStrUtil
+BEGIN(Engine)
+
+class ENGINE_DLL CStrUtil
 {
-private:
+public:
 	CStrUtil();
 	~CStrUtil();
 
