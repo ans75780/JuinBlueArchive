@@ -9,10 +9,12 @@
 #include "UI_TestDialog.h"
 #include "UI_TestDialogButton.h"
 #include "TestObject_Model_Haruka.h"
+#include "Student.h"
 
 #include "UI_LevelMoveButton.h"
 
 #pragma endregion
+#include "Camera_Formation.h"
 
 #include "StrUtil.h"
 #include "Json_Utility.h"
@@ -26,8 +28,7 @@
 #include "Terrain.h"
 //#include "Player.h"
 //#include "Effect.h"
-//#include "Sky.h"
-
+#include "Sky.h"
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice(pDevice)
 	, m_pContext(pContext)
@@ -53,6 +54,9 @@ unsigned int APIENTRY LoadingMain(void* pArg)
 		break;
 	case LEVEL_GAMEPLAY:
 		hr = pLoader->Loading_ForGamePlayLevel();
+		break;
+	case LEVEL_FORMATION:
+		hr = pLoader->Loading_ForFormationLevel();
 		break;
 	case LEVEL_MAPTOOL:
 		hr = pLoader->Loading_ForMapToolLevel();
@@ -165,6 +169,40 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	return S_OK;
 }
 
+HRESULT CLoader::Loading_ForFormationLevel()
+{
+	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
+	Safe_AddRef(pGameInstance);
+
+
+	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
+
+
+	/* For.Prototype_GameObject_Camera_Free*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Camera_Formation"),
+		CCamera_Formation::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_Student_Serika"),
+		CStudent::Create(m_pDevice, m_pContext, TEXT("Serika")))))
+		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_Student_Haruka"),
+		CStudent::Create(m_pDevice, m_pContext, TEXT("Haruka")))))
+		return E_FAIL;
+
+
+	m_isFinished = true;
+
+	lstrcpy(m_szLoadingText, TEXT("로딩 끝."));
+
+
+	Safe_Release(pGameInstance);
+	return S_OK;
+}
+
+
 HRESULT CLoader::Loading_ForGamePlayLevel()
 {
 	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
@@ -184,15 +222,21 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 		CCamera_Free::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	///* For.Prototype_GameObject_Player */
-	//if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Player"),
-	//	CPlayer::Create(m_pGraphic_Device))))
-	//	return E_FAIL;
+	/* For.Prototype_Student_Serika */
 
-	///* For.Prototype_GameObject_Sky */
-	//if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Sky"),
-	//	CSky::Create(m_pGraphic_Device))))
-	//	return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_Student_Serika"),
+		CStudent::Create(m_pDevice, m_pContext, TEXT("Serika")))))
+		return E_FAIL;
+
+
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_Student_Haruka"),
+		CStudent::Create(m_pDevice, m_pContext, TEXT("Haruka")))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Sky */
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Sky"),
+		CSky::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	///* For.Prototype_GameObject_Monster */
 	//if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Monster"),
@@ -204,18 +248,16 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	//	CEffect::Create(m_pGraphic_Device))))
 	//	return E_FAIL;
 
-#pragma region 테스트 오브젝트입니다
-	/* For.Prototype_GameObject_TestObject 테스트 시로코 앱아이콘 입니다.   */
-	if (FAILED(pGameInstance->Add_Prototype(TEXT("Test_Prototype_GameObject_Siroko"),
-		CTestObject_Test::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-
-	/* For.Prototype_GameObject_TestObject 테스트 하루카 모델 입니다.   */
-	if (FAILED(pGameInstance->Add_Prototype(TEXT("Test_Prototype_GameObject_Model_Haruka"),
-		CTestObject_Model_Haruka::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-
 #pragma endregion
+
+#pragma region BUFFER
+	lstrcpy(m_szLoadingText, TEXT("버퍼를 로딩중이비낟. "));
+
+	///* For.Prototype_Component_VIBuffer_Cube*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Cube"),
+		CVIBuffer_Cube::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 
 #pragma endregion
 
@@ -227,25 +269,15 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/Grass_%d.dds"), 2))))
 		return E_FAIL;
 
-	///* For.Prototype_Component_Texture_Player */
-	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Player"),
-	//	CTexture::Create(m_pGraphic_Device, CTexture::TYPE_DEFAULT, TEXT("../Bin/Resources/Textures/Player/Player.jpg"), 1))))
-	//	return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Mouth"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/Character_Mouth.png"), 1))))
+		return E_FAIL;
 
-	///* For.Prototype_Component_Texture_Sky */
-	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Sky"),
-	//	CTexture::Create(m_pGraphic_Device, CTexture::TYPE_CUBE, TEXT("../Bin/Resources/Textures/SkyBox/Sky_%d.dds"), 4))))
-	//	return E_FAIL;
+	/* For.Prototype_Component_Texture_Sky */
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Sky"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/SkyBox/Sky_%d.dds"), 4))))
+		return E_FAIL;
 
-	///* For.Prototype_Component_Texture_Monster */
-	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Monster"),
-	//	CTexture::Create(m_pGraphic_Device, CTexture::TYPE_DEFAULT, TEXT("../Bin/Resources/Textures/Snow/Snow.png"), 1))))
-	//	return E_FAIL;
-
-	///* For.Prototype_Component_Texture_Explosion */
-	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Explosion"),
-	//	CTexture::Create(m_pGraphic_Device, CTexture::TYPE_DEFAULT, TEXT("../Bin/Resources/Textures/Explosion/Explosion%d.png"), 90))))
-	//	return E_FAIL;
 #pragma endregion
 
 #pragma region LOAD_MODEL
@@ -257,42 +289,12 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 		CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/Height.bmp")))))
 		return E_FAIL;
 
-#pragma region 테스트 모델입니다
-	
-	_matrix mat;
-	mat = XMMatrixIdentity();
-	/* For.Prototype_Component_Model_*/
-	
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Test_Prototype_Component_Model_Haruka"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/NonAnimModels/Haruka_Original/", "Haruka_Original.fbx", mat))))
-		return E_FAIL;
-		
-#pragma endregion
 
-	///* For.Prototype_Component_VIBuffer_Cube*/
-	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Cube"),
-	//	CVIBuffer_Cube::Create(m_pGraphic_Device))))
-	//	return E_FAIL;
 #pragma endregion
-
+          
 #pragma region LOAD_SHADER
 
-	lstrcpy(m_szLoadingText, TEXT("셰이더를 로딩중이빈다. "));
-	/* For.Prototype_Component_Shader_VtxTex */
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxNorTex"),
-		CShader::Create(m_pDevice, m_pContext, TEXT("../../ShaderFiles/Shader_VtxNorTex.hlsl"), VTXNORTEX_DECLARATION::Element, VTXNORTEX_DECLARATION::iNumElements))))
-		return E_FAIL;
-
-	/* For.Prototype_Component_Shader_VtxModel */
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxModel"),
-		CShader::Create(m_pDevice, m_pContext, TEXT("../../ShaderFiles/Shader_VtxModel.hlsl"), VTXMODEL_DECLARATION::Element, VTXMODEL_DECLARATION::iNumElements))))
-		return E_FAIL;
-
-	/* For.Prototype_Component_Shader_VtxAnimModel */
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxAnimModel"),
-		CShader::Create(m_pDevice, m_pContext, TEXT("../../ShaderFiles/Shader_VtxAnimModel.hlsl"), VTXANIM_DECLARATION::Element, VTXANIM_DECLARATION::iNumElements))))
-		return E_FAIL;
-
+	
 
 #pragma endregion
 
@@ -335,6 +337,9 @@ HRESULT CLoader::Loading_ForMapToolLevel()
 	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_MAPTOOL, TEXT("Prototype_Component_Texture_Terrain"),
 	//	CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/Grass_%d.dds"), 2))))
 	//	return E_FAIL;
+
+
+
 
 #pragma endregion
 
@@ -391,6 +396,9 @@ HRESULT CLoader::Loading_ForMapToolLevel()
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_MAPTOOL, TEXT("Prototype_Component_Shader_VtxModel"),
 		CShader::Create(m_pDevice, m_pContext, TEXT("../../ShaderFiles/Shader_VtxModel.hlsl"), VTXMODEL_DECLARATION::Element, VTXMODEL_DECLARATION::iNumElements))))
 		return E_FAIL;
+
+
+
 #pragma endregion
 
 	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));

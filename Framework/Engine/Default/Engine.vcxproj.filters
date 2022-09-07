@@ -115,6 +115,9 @@
     <ClInclude Include="..\Public\Channel.h">
       <Filter>01.Utility\06.Model\02.Animation\Channel</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_Cube.h">
+      <Filter>01.Utility\03.Component\00.VIBuffer\Cube</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\Component.h">
       <Filter>01.Utility\03.Component</Filter>
     </ClInclude>
@@ -230,6 +233,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Channel.cpp">
       <Filter>01.Utility\06.Model\02.Animation\Channel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_Cube.cpp">
+      <Filter>01.Utility\03.Component\00.VIBuffer\Cube</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\StrUtil.cpp">
       <Filter>01.Utility\98.String_Util</Filter>
@@ -349,6 +355,9 @@
     </Filter>
     <Filter Include="01.Utility\06.Model\02.Animation\Channel">
       <UniqueIdentifier>{c7baa94f-f5aa-4e94-9da9-e16113dd6f46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Component\00.VIBuffer\Cube">
+      <UniqueIdentifier>{50282951-d8c8-430e-832b-a84aec9a2f9c}</UniqueIdentifier>
     </Filter>
     <Filter Include="01.Utility\98.String_Util">
       <UniqueIdentifier>{d7422812-7e74-4996-9df7-c973c294bf13}</UniqueIdentifier>

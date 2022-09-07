@@ -27,6 +27,9 @@ public:
 	OBJ_DESC Get_OBJ_DESC() { return m_desc; }
 
 public:
+	class CTransform*	Get_Transform() { return m_pTransformCom; }
+
+public:
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* pArg);
 	virtual void	Tick(_float fTimeDelta);

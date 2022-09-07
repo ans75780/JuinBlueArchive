@@ -4,6 +4,7 @@
 #include "BoneNode.h"
 #include "Animation.h"
 #include "Shader.h"
+#include "Texture.h"
 CModel::CModel(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CComponent(pDevice, pContext)
 {
@@ -12,32 +13,20 @@ CModel::CModel(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 
 CModel::CModel(const CModel & rhs)
 	: CComponent(rhs)
-	, m_MeshContainers(rhs.m_MeshContainers)
+	, m_pAIScene(rhs.m_pAIScene)
 	, m_iNumMeshContainers(rhs.m_iNumMeshContainers)
 	, m_Materials(rhs.m_Materials)
 	, m_iNumMaterials(rhs.m_iNumMaterials)
-	, m_vecBones(rhs.m_vecBones)
 	, m_iCurrentAnimationIndex(rhs.m_iCurrentAnimationIndex)
 	, m_iNumAnimations(rhs.m_iNumAnimations)
-	, m_Animations(rhs.m_Animations)
 	, m_TransformMatrix(rhs.m_TransformMatrix)
+	, m_eModelType(rhs.m_eModelType)
 {
 	for (auto& Material : m_Materials)
 	{
 		for (auto& pTexture : Material.pTextures)
 			Safe_AddRef(pTexture);
 	}
-
-	for (auto& pMeshContainer : m_MeshContainers)
-		Safe_AddRef(pMeshContainer);
-
-	for (auto& pBoneNode : m_vecBones)
-		Safe_AddRef(pBoneNode);
-
-
-	for (auto& pAnimation : m_Animations)
-		Safe_AddRef(pAnimation);
-
 }
 HRESULT CModel::Initialize_Prototype(MODELTYPE eType,
 	const char* pModelFilePath, const char* pModelFileName, _fmatrix TransformMatrix)
@@ -76,9 +65,35 @@ HRESULT CModel::Initialize_Prototype(MODELTYPE eType,
 
 
 
-HRESULT CModel::Initialize(void * pArg)
+HRESULT CModel::Initialize(void * pArg, CModel* pPrototype)
 {
-	return S_OK;
+	if (FAILED(Create_Bones(m_pAIScene->mRootNode, nullptr, 0)))
+		return E_FAIL;
+
+	sort(m_vecBones.begin(), m_vecBones.end(), [](CBoneNode* pSour, CBoneNode* pDest)
+	{
+		return pSour->Get_Depth() < pDest->Get_Depth();
+	});
+
+	for (auto& pPrototypeMeshContainer : pPrototype->m_MeshContainers)
+	{
+		CMeshContainer*		pMeshContainer = (CMeshContainer*)pPrototypeMeshContainer->Clone();
+		if (nullptr == pMeshContainer)
+			return E_FAIL;
+		pMeshContainer->SetUp_BonesPtr(this);
+
+		m_MeshContainers.push_back(pMeshContainer);
+	}
+
+	for (auto& pPrototypeAnimation : pPrototype->m_Animations)
+	{
+		CAnimation*		pAnimation = pPrototypeAnimation->Clone(this);
+		if (nullptr == pAnimation)
+			return E_FAIL;
+
+		m_Animations.push_back(pAnimation);
+	}
+
 }
 
 HRESULT CModel::Render(_uint iMeshIndex, CShader* pShader, const char* pConstantBoneName)
@@ -95,10 +110,17 @@ HRESULT CModel::Render(_uint iMeshIndex, CShader* pShader, const char* pConstant
 	_float4x4         BoneMatrices[256];
 
 	m_MeshContainers[iMeshIndex]->SetUp_BoneMatrices(BoneMatrices, XMLoadFloat4x4(&m_TransformMatrix));
-	pShader->Set_RawValue(pConstantBoneName, BoneMatrices, sizeof(_float4x4) * 256);
+
+	if (0 != m_iNumAnimations)
+		pShader->Set_RawValue(pConstantBoneName, BoneMatrices, sizeof(_float4x4) * 256);
+
+	pShader->Begin(0);
+
 	m_MeshContainers[iMeshIndex]->Render();
 
 	pShader->Begin(0);
+
+	pMesh->Render();
 
 	return S_OK;
 }
@@ -126,12 +148,32 @@ HRESULT CModel::Play_Animation(_float fTimeDelta)
 
 	m_Animations[m_iCurrentAnimationIndex]->Update_TransformationMatrices(fTimeDelta);
 
+	Update_CombinedMatrix();
+
+	return S_OK;
+}
+
+void CModel::Update_CombinedMatrix()
+{
 	for (auto& pBoneNode : m_vecBones)
 	{
 		pBoneNode->Update_CombinedTransformationMatrix();
 	}
+}
 
-	return S_OK;
+HRESULT CModel::Bind_SRV(CShader * pShader, const char * pConstantName, CMeshContainer * pMesh, aiTextureType eType)
+{
+	if (nullptr == pMesh)
+		return E_FAIL;
+
+	_uint		iMaterialIndex = pMesh->Get_MaterialIndex();
+	if (iMaterialIndex >= m_iNumMaterials)
+		return E_FAIL;
+
+	if (nullptr == m_Materials[iMaterialIndex].pTextures[eType])
+		return E_FAIL;
+
+	return m_Materials[iMaterialIndex].pTextures[eType]->Set_ShaderResourceView(pShader, pConstantName);
 }
 
 HRESULT CModel::Bind_SRV(CShader * pShader, const char * pConstantName, _uint iMeshContainerIndex, aiTextureType eType)
@@ -143,8 +185,41 @@ HRESULT CModel::Bind_SRV(CShader * pShader, const char * pConstantName, _uint iM
 	if (iMaterialIndex >= m_iNumMaterials)
 		return E_FAIL;
 
+	if (nullptr == m_Materials[iMaterialIndex].pTextures[eType])
+		return E_FAIL;
+
 	return m_Materials[iMaterialIndex].pTextures[eType]->Set_ShaderResourceView(pShader, pConstantName);
 }
+
+HRESULT CModel::Bind_Texture(CShader * pShader, const char * pContantName, CTexture * pTexture)
+{
+	return pTexture->Set_ShaderResourceView(pShader, pContantName);
+}
+
+
+CAnimation * CModel::Get_AnimationFromName(const char * pName)
+{
+	CAnimation* pAnimation = nullptr;
+
+
+	for (auto& anim : m_Animations)
+	{
+		if (!strcmp(pName, anim->Get_Name()))
+		{
+			pAnimation = anim;
+		}
+	}
+	return pAnimation;
+}
+
+CMeshContainer * CModel::Get_MeshContainers(_uint iIndex)
+{
+	if (m_iNumMeshContainers <= iIndex)
+		return nullptr;
+
+	return m_MeshContainers[iIndex];
+}
+
 
 CBoneNode * CModel::Find_Bone(const char * pBoneName)
 {
@@ -184,7 +259,10 @@ HRESULT CModel::Create_Materials(const char * pModelFilePath)
 		//머테리얼 개수만큼 생성
 		MODEL_MATERIAL   Material;
 		ZeroMemory(&Material, sizeof(MODEL_MATERIAL));
-		for (_uint j = 0; j < AI_TEXTURE_TYPE_MAX; j++)
+
+		strcpy_s(Material.szTextureNames, m_pAIScene->mMaterials[i]->GetName().data);
+
+		for (_uint j = 0; j < AI_TEXTURE_TYPE_MAX;j++)
 		{
 			//텍스쳐가 받을 수 있는 모든 타입을 받음.
 			char      szFullPath[MAX_PATH] = "";
@@ -274,7 +352,7 @@ CComponent * CModel::Clone(void * pArg)
 {
 	CModel*      pInstance = new CModel(*this);
 
-	if (FAILED(pInstance->Initialize(pArg)))
+	if (FAILED(pInstance->Initialize(pArg, this)))
 	{
 		MSG_BOX("Failed to Created : CModel");
 		Safe_Release(pInstance);
@@ -286,6 +364,14 @@ CComponent * CModel::Clone(void * pArg)
 void CModel::Free()
 {
 	__super::Free();
+
+	for (auto& pAnimation : m_Animations)
+		Safe_Release(pAnimation);
+	m_Animations.clear();
+
+	for (auto& pHierarchyNode : m_vecBones)
+		Safe_Release(pHierarchyNode);
+	m_vecBones.clear();
 
 	for (auto& Material : m_Materials)
 	{

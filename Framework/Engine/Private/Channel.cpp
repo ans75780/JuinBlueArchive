@@ -6,6 +6,14 @@ CChannel::CChannel()
 {
 }
 
+CChannel::CChannel(const CChannel & rhs)
+	: m_iNumKeyframes(rhs.m_iNumKeyframes)
+	, m_KeyFrames(rhs.m_KeyFrames)
+	, m_iCurrentKeyFrame(rhs.m_iCurrentKeyFrame)
+{
+	strcpy_s(m_szName, rhs.m_szName);
+}
+
 HRESULT CChannel::Initialize(aiNodeAnim * pAIChannel, CModel* pModel)
 {
 	strcpy_s(m_szName, pAIChannel->mNodeName.data);
@@ -100,7 +108,6 @@ void CChannel::Update_TransformationMatrices(_float fCurrentTime)
 	}
 
 
-
 	_matrix		TransformationMatrix = XMMatrixAffineTransformation(vScale, XMVectorSet(0.f, 0.f, 0.f, 1.f), vRotation, vPosition);
 
 	if (nullptr != m_pBoneNode)
@@ -112,6 +119,17 @@ void CChannel::ResetKeyFrame()
 	m_iCurrentKeyFrame = 0;
 }
 
+HRESULT CChannel::SetUp_BoneNodePtr(CModel * pModel)
+{
+	m_pBoneNode = pModel->Find_Bone(m_szName);
+	if (nullptr == m_pBoneNode)
+		return E_FAIL;
+
+	Safe_AddRef(m_pBoneNode);
+
+	return S_OK;
+}
+
 CChannel * CChannel::Create(aiNodeAnim * pAIChannel, CModel* pModel)
 {
 	CChannel*		pInstance = new CChannel();
@@ -121,6 +139,16 @@ CChannel * CChannel::Create(aiNodeAnim * pAIChannel, CModel* pModel)
 		MSG_BOX("Failed to Created : CChannel");
 		Safe_Release(pInstance);
 	}
+
+	return pInstance;
+}
+
+CChannel * CChannel::Clone(CModel * pModel)
+{
+	CChannel*			pInstance = new CChannel(*this);
+
+	if (FAILED(pInstance->SetUp_BoneNodePtr(pModel)))
+		return nullptr;
 
 	return pInstance;
 }
