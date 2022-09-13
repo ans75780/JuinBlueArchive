@@ -1,8 +1,6 @@
 #include "..\Public\Key_Manager.h"
-#include "GameInstance.h"
 
-
-IMPLEMENT_SINGLETON(CKey_Manager);
+IMPLEMENT_SINGLETON(CKey_Manager)
 
 _uint g_Arr[(_uint)KEY::LAST] = {
 	VK_LEFT,//LEFT,

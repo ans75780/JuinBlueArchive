@@ -244,6 +244,7 @@ HRESULT CMeshContainer::SetUp_BonesPtr(CModel * pModel)
 
 		Safe_AddRef(pHierarchyNode);
 	}
+	return S_OK;
 }
 
 

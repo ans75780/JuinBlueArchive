@@ -127,6 +127,9 @@
     <ClInclude Include="..\Public\StrUtil.h">
       <Filter>01.Utility\98.String_Util</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CFrustum.h">
+      <Filter>01.Utility\07.Frustum</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -239,6 +242,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\StrUtil.cpp">
       <Filter>01.Utility\98.String_Util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CFrustum.cpp">
+      <Filter>01.Utility\07.Frustum</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -361,6 +367,9 @@
     </Filter>
     <Filter Include="01.Utility\98.String_Util">
       <UniqueIdentifier>{d7422812-7e74-4996-9df7-c973c294bf13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\07.Frustum">
+      <UniqueIdentifier>{e4e18fbd-16d4-4d6a-8694-4ded5f4dac34}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

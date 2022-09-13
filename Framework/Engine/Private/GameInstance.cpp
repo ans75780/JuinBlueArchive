@@ -14,6 +14,7 @@ CGameInstance::CGameInstance()
 	, m_pKey_Manager(CKey_Manager::Get_Instance())
 	, m_pUI_Manager(CUI_Manager::Get_Instance())
 	, m_pLight_Manager(CLight_Manager::Get_Instance())
+	, m_pFrustum(CFrustum::Get_Instance())
 
 	
 {	
@@ -27,6 +28,8 @@ CGameInstance::CGameInstance()
 	Safe_AddRef(m_pGraphic_Device);
 	Safe_AddRef(m_pKey_Manager);
 	Safe_AddRef(m_pUI_Manager);
+	Safe_AddRef(m_pFrustum);
+
 
 }
 
@@ -59,6 +62,9 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, cons
 	if (FAILED(m_pUI_Manager->Setup_Manager(*ppDeviceOut, *ppDeviceContextOut, GraphicDesc, iNumLevels)))
 		return E_FAIL;
 
+	if (FAILED(m_pFrustum->Initialize()))
+		return E_FAIL;
+
 	return S_OK;	
 }
 
@@ -83,6 +89,8 @@ HRESULT CGameInstance::Tick_Engine(_float fTimeDelta)
 	m_pUI_Manager->Tick(fTimeDelta);
 
 	m_pPipeLine->Tick();
+
+	m_pFrustum->Tick();
 
 	m_pObject_Manager->LateTick(fTimeDelta);
 	m_pUI_Manager->LateTick(fTimeDelta);
@@ -143,8 +151,6 @@ HRESULT CGameInstance::Present()
 
 	return S_OK;
 }
-
-
 
 _byte CGameInstance::Get_DIKeyState(_ubyte byKeyID)
 {
@@ -308,6 +314,14 @@ const LIGHTDESC * CGameInstance::Get_LightDesc(_uint iIndex)
 	return m_pLight_Manager->Get_LightDesc(iIndex);
 }
 
+_bool CGameInstance::IsIn_Frustum_InWorldSpace(_fvector vWorldPoint, _float fRange)
+{
+	if (m_pFrustum == nullptr)
+		return false;
+
+	return m_pFrustum->IsIn_Frustum_InWorldSpace(vWorldPoint, fRange);
+}
+
 void CGameInstance::Set_Transform(CPipeLine::TRANSFORMSTATE eState, _fmatrix TransformState)
 {
 	if (nullptr == m_pPipeLine)
@@ -373,6 +387,9 @@ void CGameInstance::Release_Engine()
 	CKey_Manager::Get_Instance()->Destroy_Instance();
 
 	CUI_Manager::Get_Instance()->Destroy_Instance();
+
+	CFrustum::Get_Instance()->Destroy_Instance();
+
 }
 
 void CGameInstance::Free()
@@ -387,4 +404,6 @@ void CGameInstance::Free()
 	Safe_Release(m_pGraphic_Device);
 	Safe_Release(m_pKey_Manager);
 	Safe_Release(m_pUI_Manager);
+	Safe_Release(m_pFrustum);
+
 }

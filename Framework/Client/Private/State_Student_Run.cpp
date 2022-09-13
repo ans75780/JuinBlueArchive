@@ -44,7 +44,15 @@ _bool CState_Student_Run::Loop(_float fTimeDelta)
 	{
 		return true;
 	}
-
+	m_pTransform->Go_Straight(fTimeDelta);
+	if (KEY(A, HOLD))
+	{
+		m_pTransform->Go_Left(fTimeDelta);
+	}
+	if (KEY(D, HOLD))
+	{
+		m_pTransform->Go_Right(fTimeDelta);
+	}
 	return false;
 }
 

@@ -52,6 +52,9 @@ void CStudent::Tick(_float fTimeDelta)
 {
 	m_pStateMachine->Update(fTimeDelta);
 	
+
+
+
 	//m_pModelCom->Play_Animation(fTimeDelta);
 
 }

@@ -103,9 +103,6 @@
     <ClInclude Include="..\Public\State_Student_Run.h">
       <Filter>04. State\Run</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\ShaderFiles\Client_Shader_Defines.hpp">
-      <Filter>03.ShaderFiles</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Sky.h">
       <Filter>05.Sky</Filter>
     </ClInclude>
@@ -132,6 +129,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\UI_LevelMoveButton.h">
       <Filter>02.GameObject\03. UI\02. UI_Button\01. LevelMoveButton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShaderFiles\Client_Shader_Defines.hpp">
+      <Filter>03.ShaderFiles</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

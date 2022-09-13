@@ -10,6 +10,7 @@
 #include "UI_Manager.h"
 #include "PipeLine.h"
 #include "Light_Manager.h"
+#include "CFrustum.h"
 
 /* 1. 게임내에 필요한 객체(매니져등)들을 모아서 보관한다. */
 /* 2. 클라이언트 개발자가 접근하기좋은 루트를 제공해준다. 나. */
@@ -92,9 +93,8 @@ public: /* For.Light_Manager */
 	HRESULT Add_Light(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const LIGHTDESC & LightDesc);
 	const LIGHTDESC* Get_LightDesc(_uint iIndex);
 
-public:
-
-
+public: /* For.Frustom */
+	_bool	IsIn_Frustum_InWorldSpace(_fvector vWorldPoint, _float fRange = 0);
 
 
 private:
@@ -107,7 +107,7 @@ private:
 	CUI_Manager*					m_pUI_Manager = nullptr;
 	CTimer_Manager*					m_pTimer_Manager = nullptr;
 	CLight_Manager*					m_pLight_Manager = nullptr;
-
+	CFrustum*						m_pFrustum = nullptr;
 public:
 	inline	_float4	Get_BackBufferColor() { return m_BackBuffer_Color; }
 	inline	void	Set_BackBufferColor(_float4 _color) { m_BackBuffer_Color = _color; }
