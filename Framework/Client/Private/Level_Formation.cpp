@@ -11,6 +11,7 @@
 #include "StateMachineBase.h"
 #include "Level_GamePlay.h"
 #include "Level_Loading.h"
+#include "Transform.h"
 CLevel_Formation::CLevel_Formation(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -135,7 +136,21 @@ HRESULT CLevel_Formation::Ready_Layer_Student(const _tchar * pLayerTag)
 	if (FAILED(pGameInstance->Add_GameObject(LEVEL_FORMATION, pLayerTag, TEXT("Prototype_Student_Serika"), (void*)&tempDesc, &pStudent)))
 		return E_FAIL;
 	((CStudent*)pStudent)->Get_StateMachine()->Setup_StateMachine(CState_Student_Formation_Idle::Create((CStudent*)pStudent));
+	XMVECTOR vTranslation;
+	vTranslation = XMVectorSet(-1.f, 0.f, 0.f, 1.f);
+
+	((CTransform*)pStudent->Get_Component(L"Com_Transform"))->Set_State(CTransform::STATE_TRANSLATION, vTranslation);
+
+
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_FORMATION, pLayerTag, TEXT("Prototype_Student_Haruka"), (void*)&tempDesc, &pStudent)))
+		return E_FAIL;
+	((CStudent*)pStudent)->Get_StateMachine()->Setup_StateMachine(CState_Student_Formation_Idle::Create((CStudent*)pStudent));
 	
+	vTranslation = XMVectorSet(1.f, 0.f, 0.f, 1.f);
+
+	((CTransform*)pStudent->Get_Component(L"Com_Transform"))->Set_State(CTransform::STATE_TRANSLATION, vTranslation);
+
+
 	Safe_Release(pGameInstance);
 
 	return S_OK;

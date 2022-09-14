@@ -1,6 +1,19 @@
 {
   "UI": [
     {
+      "ClassName": "CUI_LevelMoveButton",
+      "Level": 0,
+      "Name": "",
+      "Pos_x": 100.0,
+      "Pos_y": 0.0,
+      "Pos_z": 0.0,
+      "Size_x": 34.0,
+      "Size_y": 28.0,
+      "Size_z": 1.0,
+      "TextureName": "Prototype_Component_Texture_Combat_Nearlydead_Count_5_Combat",
+      "Type": 0
+    },
+    {
       "ClassName": "CBackGround",
       "Level": 2,
       "Name": "Logo_BACKGROUND_Shiroko",
@@ -8,7 +21,7 @@
       "Pos_y": 0.0,
       "Pos_z": 0.0,
       "Size_x": 100.0,
-      "Size_y": 100.0,
+      "Size_y": 300.0,
       "Size_z": 1.0,
       "TextureName": "Prototype_Component_Texture_UI_Background",
       "Type": 4

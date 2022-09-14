@@ -14,7 +14,7 @@ CUI_Canvas::CUI_Canvas(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 CUI_Canvas * CUI_Canvas::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
 	CUI_Canvas*	pInstance = new CUI_Canvas(pDevice, pContext);
-	
+
 	if (FAILED(pInstance->Initialize()))
 	{
 		MSG_BOX("Initialize Error : CUI_Canvas");
@@ -86,7 +86,7 @@ void CUI_Canvas::LateTick(_float fTimeDelta)
 
 HRESULT CUI_Canvas::Render()
 {
-	
+
 	return S_OK;
 }
 
@@ -95,7 +95,7 @@ void CUI_Canvas::Check_UI(CUI * pUI)
 	POINT pt = GETMOUSEPOS;
 
 	CUI*	pMouseOveredUI = nullptr;
-	
+
 	if (KEY(LBUTTON, TAP))
 	{
 		pMouseOveredUI = pUI->Get_MouseOveredUI(pt);

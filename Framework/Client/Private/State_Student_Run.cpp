@@ -44,8 +44,17 @@ _bool CState_Student_Run::Loop(_float fTimeDelta)
 	{
 		return true;
 	}
+	m_pTransform->Go_Straight(fTimeDelta);
+	if (KEY(J, AWAY))
+	{
+		m_pTransform->Go_Left(fTimeDelta);
+	}
+	else if (KEY(K, AWAY))
+	{
+		m_pTransform->Go_Right(fTimeDelta);
+	}
 
-	return false;
+	return false; 
 }
 
 CStateBase * CState_Student_Run::Exit()

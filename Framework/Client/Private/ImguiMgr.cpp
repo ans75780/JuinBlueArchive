@@ -367,7 +367,7 @@ void CImguiMgr::Tap_Object_CUI(void)		//UI 오브젝트리스트 나열
 			{
 				vector<CUI*>* UIVec = iter_Canvas->Get_UIVec();
 
-				for (_uint i = 0; i < LEVEL_END; i++)
+				for (_uint i = 0; i < 5; i++)
 				{
 					for (auto& iter_UIVec : UIVec[i])	//레벨별분류?
 					{

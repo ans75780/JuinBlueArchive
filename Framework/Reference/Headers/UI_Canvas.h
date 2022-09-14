@@ -11,7 +11,7 @@ private:
 	~CUI_Canvas() = default;
 public:
 	static CUI_Canvas*	Create(ID3D11Device* pDevice, ID3D11DeviceContext*	pContext);
-	
+
 	void		Free() override;
 
 public:
@@ -22,7 +22,7 @@ public:
 
 public:
 	void		Add_UI(class CUI* pUI);
-	vector<class CUI*>*		Get_UIVec() {  return m_vecUI; }
+	vector<class CUI*>*		Get_UIVec() { return m_vecUI; }
 
 private:
 	void					Check_UI(CUI*	pUI);
