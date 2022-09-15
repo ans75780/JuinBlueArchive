@@ -41,7 +41,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -207,6 +207,7 @@
     <ClInclude Include="..\Public\UI_LevelMoveButton.h" />
     <ClInclude Include="..\Public\UI_TestDialog.h" />
     <ClInclude Include="..\Public\UI_TestDialogButton.h" />
+    <ClInclude Include="..\Public\UserData.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -250,6 +251,7 @@
     <ClCompile Include="..\Private\UI_LevelMoveButton.cpp" />
     <ClCompile Include="..\Private\UI_TestDialog.cpp" />
     <ClCompile Include="..\Private\UI_TestDialogButton.cpp" />
+    <ClCompile Include="..\Private\UserData.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

@@ -52,20 +52,19 @@ void CFrustum::Tick()
 	_matrix	ProjMatrixInv = XMMatrixInverse(nullptr, pPipeLine->
 		Get_Transform(CPipeLine::D3DTS_PROJ));
 
-	_vector vPoints[8];
-
+	
 	for (_uint i = 0; i < 8; ++i)
 	{
-		vPoints[i] = XMVector4Transform(XMLoadFloat4(&m_vOriginPoints[i]), ProjMatrixInv);
-		vPoints[i] = XMVector4Transform(vPoints[i], ViewMatrixInv);
+		m_vWorldPoints[i] = XMVector4Transform(XMLoadFloat4(&m_vOriginPoints[i]), ProjMatrixInv);
+		m_vWorldPoints[i] = XMVector4Transform(m_vWorldPoints[i], ViewMatrixInv);
 	}
 
-	XMStoreFloat4(&m_vWorldPlane[0], XMPlaneFromPoints(vPoints[1], vPoints[5], vPoints[6]));
-	XMStoreFloat4(&m_vWorldPlane[1], XMPlaneFromPoints(vPoints[4], vPoints[0], vPoints[3]));
-	XMStoreFloat4(&m_vWorldPlane[2], XMPlaneFromPoints(vPoints[4], vPoints[5], vPoints[1]));
-	XMStoreFloat4(&m_vWorldPlane[3], XMPlaneFromPoints(vPoints[3], vPoints[2], vPoints[6]));
-	XMStoreFloat4(&m_vWorldPlane[4], XMPlaneFromPoints(vPoints[5], vPoints[4], vPoints[7]));
-	XMStoreFloat4(&m_vWorldPlane[5], XMPlaneFromPoints(vPoints[0], vPoints[1], vPoints[2]));
+	XMStoreFloat4(&m_vWorldPlane[0], XMPlaneFromPoints(m_vWorldPoints[1], m_vWorldPoints[5], m_vWorldPoints[6]));
+	XMStoreFloat4(&m_vWorldPlane[1], XMPlaneFromPoints(m_vWorldPoints[4], m_vWorldPoints[0], m_vWorldPoints[3]));
+	XMStoreFloat4(&m_vWorldPlane[2], XMPlaneFromPoints(m_vWorldPoints[4], m_vWorldPoints[5], m_vWorldPoints[1]));
+	XMStoreFloat4(&m_vWorldPlane[3], XMPlaneFromPoints(m_vWorldPoints[3], m_vWorldPoints[2], m_vWorldPoints[6]));
+	XMStoreFloat4(&m_vWorldPlane[4], XMPlaneFromPoints(m_vWorldPoints[5], m_vWorldPoints[4], m_vWorldPoints[7]));
+	XMStoreFloat4(&m_vWorldPlane[5], XMPlaneFromPoints(m_vWorldPoints[0], m_vWorldPoints[1], m_vWorldPoints[2]));
 
 	RELEASE_INSTANCE(CPipeLine);
 }
@@ -82,4 +81,37 @@ _bool CFrustum::IsIn_Frustum_InWorldSpace(_fvector vWorldPoint, _float fRange)
 		}
 	}
 	return true;
+}
+
+_bool CFrustum::IsIn_Frustum_InLocalSpace(_fvector vLocalPoint, _float fRange)
+{
+	for (_uint i = 0; i < 6; i++)
+	{
+		if (fRange < XMVectorGetX(
+			XMPlaneDotCoord(XMLoadFloat4(&m_vLocalPlane[i]), vLocalPoint)
+		))
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+void CFrustum::Transform_ToLocalSpace(_fmatrix WorldMatrixInv)
+{
+
+	_vector vLocalPoints[8];
+
+	//8개의 정점을 역행렬과 곱해 로컬 스페이스로 변경했다.
+	for (_uint i = 0; i < 8; i++)
+	{
+		vLocalPoints[i] = XMVector3TransformCoord(m_vWorldPoints[i], WorldMatrixInv);
+	}
+	XMStoreFloat4(&m_vLocalPlane[0], XMPlaneFromPoints(vLocalPoints[1], vLocalPoints[5], vLocalPoints[6]));
+	XMStoreFloat4(&m_vLocalPlane[1], XMPlaneFromPoints(vLocalPoints[4], vLocalPoints[0], vLocalPoints[3]));
+	XMStoreFloat4(&m_vLocalPlane[2], XMPlaneFromPoints(vLocalPoints[4], vLocalPoints[5], vLocalPoints[1]));
+	XMStoreFloat4(&m_vLocalPlane[3], XMPlaneFromPoints(vLocalPoints[3], vLocalPoints[2], vLocalPoints[6]));
+	XMStoreFloat4(&m_vLocalPlane[4], XMPlaneFromPoints(vLocalPoints[5], vLocalPoints[4], vLocalPoints[7]));
+	XMStoreFloat4(&m_vLocalPlane[5], XMPlaneFromPoints(vLocalPoints[0], vLocalPoints[1], vLocalPoints[2]));
+
 }

@@ -15,9 +15,14 @@ public:
 	virtual HRESULT Initialize_Prototype(const _tchar* pHeightMapFilePath);
 	virtual HRESULT Initialize(void* pArg) override;
 
+public:
+	void	Culling(_fmatrix WorldMatrixInv);
+
+
 private:
 	_ulong					m_iNumVerticesX, m_iNumVerticesZ;
-
+	FACEINDICES32*			m_pFaceIndices = nullptr;
+	class CQuadTree*		m_pQuadTree = nullptr;
 public:
 	static CVIBuffer_Terrain* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pHeightMapFilePath);
 	virtual CComponent* Clone(void* pArg = nullptr) override;

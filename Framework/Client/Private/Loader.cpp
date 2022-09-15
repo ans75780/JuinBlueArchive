@@ -120,30 +120,6 @@ HRESULT CLoader::Loading_ForLogoLevel()
 		return E_FAIL;
 	}
 	
-	//CUI* pButton = CBackGround::Create(m_pDevice, m_pContext);
-	//pButton->LoadUIImage(L"UI_Default");
-	//pButton->Set_Pos(_float3(100.f, 100.f, 1.f));
-	//pButton->Set_UIType(UI_TYPE::UI_BUTTTON);
-	//if (FAILED(pGameInstance->Add_UI(LEVEL_LOGO, pButton)))
-	//{
-	//	return E_FAIL;
-	//}
-
-	/*
-	CUI_TestDialog* pDialog = CUI_TestDialog::Create(m_pDevice, m_pContext);
-	pDialog->LoadUIImage(L"UI_Background");
-	//pDialog->Set_UIType(UI_TYPE::UI_BUTTTON);
-	if (FAILED(pGameInstance->Add_UI(LEVEL_LOGO, pDialog)))
-	{
-		return E_FAIL;
-	}
-	*/
-	
-	//if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BackGround"),
-	//	CBackGround::Create(m_pDevice, m_pContext))))
-	//	return E_FAIL;
-
-		
 
 #pragma endregion
 
@@ -175,7 +151,7 @@ HRESULT CLoader::Loading_ForFormationLevel()
 	Safe_AddRef(pGameInstance);
 
 
-	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
+	lstrcpy(m_szLoadingText, TEXT("로딩중..햄버거..먹고싶다.."));
 
 
 	/* For.Prototype_GameObject_Camera_Free*/
@@ -192,6 +168,15 @@ HRESULT CLoader::Loading_ForFormationLevel()
 		CStudent::Create(m_pDevice, m_pContext, TEXT("Haruka")))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_Sky */
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Sky"),
+		CSky::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Sky */
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_FORMATION, TEXT("Prototype_Component_Texture_Formaiton_Background"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/SkyBox/Background.dds"), 1))))
+		return E_FAIL;
 
 	m_isFinished = true;
 
@@ -253,12 +238,7 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 #pragma region BUFFER
 	lstrcpy(m_szLoadingText, TEXT("버퍼를 로딩중이비낟. "));
 
-	///* For.Prototype_Component_VIBuffer_Cube*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Cube"),
-		CVIBuffer_Cube::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-
-
+	
 #pragma endregion
 
 #pragma region LOAD_TEXTURE

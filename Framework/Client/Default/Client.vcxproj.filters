@@ -133,6 +133,9 @@
     <ClInclude Include="..\..\ShaderFiles\Client_Shader_Defines.hpp">
       <Filter>03.ShaderFiles</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\UserData.h">
+      <Filter>06. User</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -251,6 +254,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\UI_LevelMoveButton.cpp">
       <Filter>02.GameObject\03. UI\02. UI_Button\01. LevelMoveButton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UserData.cpp">
+      <Filter>06. User</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -390,6 +396,9 @@
     </Filter>
     <Filter Include="02.GameObject\03. UI\02. UI_Button\01. LevelMoveButton">
       <UniqueIdentifier>{115c9f2b-a1c1-45b1-85ab-8903c95813a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. User">
+      <UniqueIdentifier>{452e91d5-a4d2-4a41-a5d4-a4a4c0cd6679}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

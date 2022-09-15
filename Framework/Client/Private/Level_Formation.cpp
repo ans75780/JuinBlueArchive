@@ -11,6 +11,7 @@
 #include "StateMachineBase.h"
 #include "Level_GamePlay.h"
 #include "Level_Loading.h"
+#include "PipeLine.h"
 CLevel_Formation::CLevel_Formation(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -25,8 +26,8 @@ HRESULT CLevel_Formation::Initialize()
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
-	//if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
-	//	return E_FAIL;
+	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
+		return E_FAIL;
 
 	//if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"))))
 	//	return E_FAIL;
@@ -62,7 +63,34 @@ void CLevel_Formation::Tick(_float fTimeDelta)
 
 		Safe_Release(pGameInstance);
 	}
+	if (KEY(LBUTTON, HOLD))
+	{
+		POINT pt = GETMOUSEPOS;
 
+		_float4 vMouseViewPort;
+
+		vMouseViewPort.z = 1.f;
+		//대략적인 투영스페이스 공간
+		vMouseViewPort.x = (pt.x - (g_iWinCX / 2)) / (_float)(g_iWinCX / 2);
+		vMouseViewPort.y = -1 * ((pt.y - (g_iWinCY / 2)) / (_float)(g_iWinCY / 2));
+		vMouseViewPort.w = 1.f;
+
+		CGameInstance*	pGameInstance = GET_INSTANCE(CGameInstance);
+
+		_vector vecMouse;
+		vecMouse = XMLoadFloat4(&vMouseViewPort);
+		_vector vWorldPosFromMouse;
+		_matrix matViewInv = XMMatrixInverse(nullptr, pGameInstance->Get_Transform(CPipeLine::D3DTS_VIEW));
+		_matrix matProjInv = XMMatrixInverse(nullptr, pGameInstance->Get_Transform(CPipeLine::D3DTS_PROJ));
+		vWorldPosFromMouse = XMVector3TransformCoord(vecMouse, matProjInv);
+		vWorldPosFromMouse = XMVector3TransformCoord(vWorldPosFromMouse, matViewInv);
+
+		
+		m_vecStudent[0]->Set_Transform(vWorldPosFromMouse);
+
+		RELEASE_INSTANCE(CGameInstance);
+	}
+	
 }
 
 HRESULT CLevel_Formation::Render()
@@ -86,7 +114,7 @@ HRESULT CLevel_Formation::Ready_Layer_Camera(const _tchar * pLayerTag)
 	CCamera::CAMERADESC			CameraDesc;
 	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
 
-	CameraDesc.vEye = _float4(0.0f, 0.f, -3.f, 1.f);
+	CameraDesc.vEye = _float4(0.0f, 0.f, -2.5f, 1.f);
 	CameraDesc.vAt = _float4(0.f, 0.f, 0.f, 1.f);
 	CameraDesc.TransformDesc.fSpeedPerSec = 5.f;
 	CameraDesc.TransformDesc.fRotationPerSec = XMConvertToRadians(90.0f);
@@ -110,7 +138,8 @@ HRESULT CLevel_Formation::Ready_Layer_BackGround(const _tchar * pLayerTag)
 	Safe_AddRef(pGameInstance);
 
 	/* For.Sky */
-	if (FAILED(pGameInstance->Add_GameObject(LEVEL_FORMATION, pLayerTag, TEXT("Prototype_GameObject_Sky"))))
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_STATIC, pLayerTag, TEXT("Prototype_GameObject_Sky"), 
+		L"Prototype_Component_Texture_Formaiton_Background")))
 		return E_FAIL;
 
 	Safe_Release(pGameInstance);
@@ -136,8 +165,9 @@ HRESULT CLevel_Formation::Ready_Layer_Student(const _tchar * pLayerTag)
 		return E_FAIL;
 	((CStudent*)pStudent)->Get_StateMachine()->Setup_StateMachine(CState_Student_Formation_Idle::Create((CStudent*)pStudent));
 	
-	Safe_Release(pGameInstance);
+	m_vecStudent.push_back((CStudent*)pStudent);
 
+	Safe_Release(pGameInstance);
 	return S_OK;
 }
 

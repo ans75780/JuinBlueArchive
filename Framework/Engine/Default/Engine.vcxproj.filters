@@ -130,6 +130,9 @@
     <ClInclude Include="..\Public\CFrustum.h">
       <Filter>01.Utility\07.Frustum</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CQuadTree.h">
+      <Filter>01.Utility\03.Component\00.VIBuffer\QuadTree</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -245,6 +248,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CFrustum.cpp">
       <Filter>01.Utility\07.Frustum</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CQuadTree.cpp">
+      <Filter>01.Utility\03.Component\00.VIBuffer\QuadTree</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -370,6 +376,9 @@
     </Filter>
     <Filter Include="01.Utility\07.Frustum">
       <UniqueIdentifier>{e4e18fbd-16d4-4d6a-8694-4ded5f4dac34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Component\00.VIBuffer\QuadTree">
+      <UniqueIdentifier>{a298ea93-1d28-479e-9026-fc8111dad396}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

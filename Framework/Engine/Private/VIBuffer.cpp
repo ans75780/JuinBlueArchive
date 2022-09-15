@@ -85,6 +85,11 @@ void CVIBuffer::Free()
 {
 	__super::Free();
 
+	if (m_isCloned == false)
+	{
+		Safe_Delete(m_pVerticesPos);
+	}
+
 	Safe_Release(m_pVB);
 	Safe_Release(m_pIB);
 }

@@ -27,7 +27,8 @@ public:
 	HRESULT Ready_Light();
 
 
-
+private:
+	vector<class CStudent*> m_vecStudent;
 public:
 	static CLevel_Formation* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual void Free() override;

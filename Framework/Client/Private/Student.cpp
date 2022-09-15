@@ -52,9 +52,6 @@ void CStudent::Tick(_float fTimeDelta)
 {
 	m_pStateMachine->Update(fTimeDelta);
 	
-
-
-
 	//m_pModelCom->Play_Animation(fTimeDelta);
 
 }
@@ -95,6 +92,11 @@ HRESULT CStudent::Render_MeshPart(CMeshContainer * pMesh)
 	m_pModelCom->Render(pMesh, m_pShaderCom, "g_Bones");
 
 	return S_OK;
+}
+
+void CStudent::Set_Transform(_vector vPos)
+{
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vPos);
 }
 
 

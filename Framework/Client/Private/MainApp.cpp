@@ -2,7 +2,7 @@
 #include "..\Public\MainApp.h"
 #include "GameInstance.h"
 #include "Level_Loading.h"
-
+#include "UserData.h"
 #include "ImguiMgr.h"
 
 CMainApp::CMainApp()
@@ -40,6 +40,8 @@ HRESULT CMainApp::Initialize()
 
 	if (FAILED(Ready_Static_Models()))
 		return E_FAIL;
+
+	//CUserData::Get_Instance()->Initialize();
 
 	if (FAILED(Open_Level(LEVEL_LOGO)))
 		return E_FAIL;
@@ -153,8 +155,10 @@ HRESULT CMainApp::Ready_Prototype_Component()
 		CShader::Create(m_pDevice, m_pContext, TEXT("../../ShaderFiles/Shader_VtxCubeTex.hlsl"), VTXCUBETEX_DECLARATION::Element, VTXCUBETEX_DECLARATION::iNumElements))))
 		return E_FAIL;
 
-
-
+	///* For.Prototype_Component_VIBuffer_Cube*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"),
+		CVIBuffer_Cube::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 	return S_OK;
 }
 
@@ -215,7 +219,7 @@ void CMainApp::Free()
 	//Safe_Release(m_pRenderer);
 	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);
-	Safe_Release(m_pGameInstance);		
-
+	Safe_Release(m_pGameInstance);
+	//CUserData::Get_Instance()->Release();
 	CGameInstance::Release_Engine();	
 }

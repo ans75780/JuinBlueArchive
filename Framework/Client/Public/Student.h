@@ -30,7 +30,7 @@ public:
 
 	const _tchar*	Get_Name() { return m_szStudentName; }
 	class CStateMachineBase*		Get_StateMachine() { return m_pStateMachine; }
-
+	void	Set_Transform(_vector vPos);
 
 private:
 	class CStateMachineBase* m_pStateMachine = nullptr;
