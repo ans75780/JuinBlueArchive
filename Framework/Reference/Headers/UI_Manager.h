@@ -29,6 +29,7 @@ public:
 	vector<class CUI_Canvas*> Get_Canvases();
 
 	HRESULT	Save_UIVec();
+	void	Clear_UIVec();
 
 	void	Set_LevelEditMode(_bool _check)	{ m_bLevelEditMode = _check; }
 	void	Set_EditLevel(_uint _Level)		{ m_iEditLevel = _Level; }

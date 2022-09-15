@@ -152,7 +152,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Test(const _tchar * pLayerTag)
 	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
 	Safe_AddRef(pGameInstance);
 
-	CGameObject::OBJ_DESC tempDesc;
+	//CGameObject::OBJ_DESC tempDesc;
 
 	//if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Prototype_Student_Serika"), (void*)&tempDesc)))
 	//	return E_FAIL;

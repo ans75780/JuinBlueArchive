@@ -3,6 +3,8 @@
 #include "UI.h"
 #include "UI_Canvas.h"
 
+#include "../../Client/Public/UI_LevelMoveButton.h"
+
 #include "StrUtil.h"
 
 IMPLEMENT_SINGLETON(CUI_Manager);
@@ -125,7 +127,12 @@ HRESULT CUI_Manager::Save_UIVec()
 				element["Pos_x"] = it->Get_Pos().x;
 				element["Pos_y"] = it->Get_Pos().y;
 				element["Pos_z"] = it->Get_Pos().z;
-					
+				
+				if (!strcmp(_ClassName, "CUI_LevelMoveButton"))
+				{
+					element["MoveLevel"] = dynamic_cast<CUI_LevelMoveButton*>(it)->GetMoveLevel();
+				}
+
 				Safe_Delete_Array(_Name);
 				Safe_Delete_Array(_ClassName);
 				Safe_Delete_Array(_TextureName);
@@ -150,12 +157,10 @@ HRESULT CUI_Manager::Save_UIVec()
 	return S_OK;
 }
 
-void CUI_Manager::UIClear()
+void CUI_Manager::Clear_UIVec()
 {
 	for (auto& pCanvas : m_vecCanvas)
-	{
-		pCanvas;
-	}
+		pCanvas->Clear_UIVec();
 }
 
 void CUI_Manager::Free()

@@ -77,8 +77,7 @@ public: /*For. UI_Manager*/
 	vector<class CUI_Canvas*> Get_Canvases();
 	void	Set_LevelEditMode(_bool _check) { m_pUI_Manager->Set_LevelEditMode(_check); }
 	void	Set_EditLevel(_uint _Level) { m_pUI_Manager->Set_EditLevel(_Level); }
-
-	
+	void	Clear_UIVec() { m_pUI_Manager->Clear_UIVec(); }
 
 public: /* For.PipeLine */
 	void Set_Transform(CPipeLine::TRANSFORMSTATE eState, _fmatrix TransformState);

@@ -16,6 +16,7 @@ public:
 
 public:
 	virtual HRESULT Initialize(void *arg = nullptr);
+	virtual HRESULT initialization();
 	virtual void Tick(_float fTimeDelta);
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
@@ -52,7 +53,7 @@ public:
 
 public:
 	virtual void	OnEvent(_uint iEventNum);
-
+	void			Dead() { m_bDead = true; }
 public:
 	virtual void	OnLButtonDown();
 	virtual void	OnLButtonUp();
@@ -70,8 +71,8 @@ protected:
 
 protected:
 	_tchar			m_szUIName[MAX_PATH] = L"";
-	_tchar			m_szUIClass[MAX_PATH] = L"";
 	_tchar			m_szUITextureTag[MAX_PATH] = L"";
+	_tchar			m_szUIClass[MAX_PATH] = L"";
 
 	_float3			m_fPos;
 	_float3			m_fSize;
@@ -79,7 +80,8 @@ protected:
 	vector<CUI*>	m_vecChild;
 
 	_uint			m_iLevel = 0;
-
+	
+	_bool			m_bDead = false;
 
 protected:
 	/*

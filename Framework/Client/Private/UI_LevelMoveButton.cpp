@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "..\Public\UI_LevelMoveButton.h"
+#include "Level_Loading.h"
 
 #include "ImguiMgr.h"
 
@@ -19,8 +20,13 @@ HRESULT CUI_LevelMoveButton::Initialize(void * pArg)
 	m_eUIType = UI_BUTTTON;
 	lstrcpy(m_szUIClass, TEXT("CUI_LevelMoveButton"));
 
-	m_fPos = _float3(0.f, 0.f, 0.f);
-	m_fSize = _float3(100.f, 100.f, 1.f);
+
+	return S_OK;
+}
+
+HRESULT CUI_LevelMoveButton::initialization()
+{
+	m_fOriginSize = m_fSize;
 
 	return S_OK;
 }
@@ -28,6 +34,23 @@ HRESULT CUI_LevelMoveButton::Initialize(void * pArg)
 void CUI_LevelMoveButton::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
+	if (m_bUIButtonDown)
+	{
+		m_fSize.x = m_fOriginSize.x * 0.01f * 80.f;
+		m_fSize.y = m_fOriginSize.y * 0.01f * 80.f;
+
+		POINT ptTemp = GETMOUSEPOS;
+
+		if (nullptr == Get_MouseOveredUI(ptTemp))
+			m_bUIButtonDown = false;
+	}
+	else
+	{
+		m_fSize = m_fOriginSize;
+	}
+
+
 }
 
 void CUI_LevelMoveButton::LateTick(_float fTimeDelta)
@@ -55,16 +78,46 @@ HRESULT CUI_LevelMoveButton::Render()
 
 void CUI_LevelMoveButton::OnLButtonDown()
 {
+	m_bUIButtonDown = true;
 }
 
 void CUI_LevelMoveButton::OnLButtonUp()
 {
+	if (m_bUIButtonDown)
+	{
+		if (LEVEL_END != m_MoveLevel)
+		{
+			CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+#if _DEBUG
+			CImguiMgr* pImgui = GET_INSTANCE(CImguiMgr);
+
+			if (!pImgui->Get_LevelMoveMode())  //레벨이동모드 켜져있음 이동 하도록함
+			{
+				RELEASE_INSTANCE(CImguiMgr);
+				RELEASE_INSTANCE(CGameInstance);
+				m_bUIButtonDown = false;
+				return;
+			}
+			RELEASE_INSTANCE(CImguiMgr);
+#endif
+
+			if (FAILED(pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, (LEVEL)m_MoveLevel))))
+				MSG_BOX("레벨이동버튼 실패");
+
+			RELEASE_INSTANCE(CGameInstance);
+		}
+
+		m_bUIButtonDown = false;
+	}
 }
 
 void CUI_LevelMoveButton::OnLButtonClicked()
 {
 #if _DEBUG
 	CImguiMgr* pImgui = GET_INSTANCE(CImguiMgr);
+	
+	pImgui->Set_SelectUI(this);
 
 	RELEASE_INSTANCE(CImguiMgr);
 #endif

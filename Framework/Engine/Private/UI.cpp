@@ -9,7 +9,7 @@ _float4x4	CUI::g_UIMatProj;
 
 
 CUI::CUI(ID3D11Device * pDevice, ID3D11DeviceContext * pDeviceContext)
-	:CGameObject(pDevice, pDeviceContext),m_bMouseClicked(false), m_bMouseOver(false)
+	:CGameObject(pDevice, pDeviceContext),m_bMouseClicked(false), m_bMouseOver(false),m_bDead(false)
 {
 
 }
@@ -50,9 +50,13 @@ HRESULT CUI::Initialize(void * arg)
 	return S_OK;
 }
 
+HRESULT CUI::initialization()
+{
+	return S_OK;
+}
+
 void CUI::Tick(_float fTimeDelta)
 {
-
 }
 
 void CUI::LateTick(_float fTimeDelta)

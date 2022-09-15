@@ -93,7 +93,7 @@ HRESULT CModel::Initialize(void * pArg, CModel* pPrototype)
 
 		m_Animations.push_back(pAnimation);
 	}
-
+	return S_OK;
 }
 
 HRESULT CModel::Render(_uint iMeshIndex, CShader* pShader, const char* pConstantBoneName)

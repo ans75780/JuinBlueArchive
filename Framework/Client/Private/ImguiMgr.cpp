@@ -10,11 +10,12 @@
 
 #include "Level_Loading.h"
 
-#include "UI_Canvas.h"
 #include "UI.h"
+#include "UI_Canvas.h"
 #include "UI_LevelMoveButton.h"
-#include "Json_Utility.h"
+#include "BackGround.h"
 
+#include "Json_Utility.h"
 #include "StrUtil.h"
 
 IMPLEMENT_SINGLETON(CImguiMgr)
@@ -24,10 +25,9 @@ CImguiMgr::CImguiMgr()
 	: m_pGameInstance(CGameInstance::Get_Instance())
 	, show_demo_window(false), show_mainBar(true)
 	, MapToolCheckBox(false), m_currentLevelID(0)
-	, UIToolCheckBox(true)
+	, UIToolCheckBox(true), m_pSelectUI(nullptr)
 {
 	Safe_AddRef(m_pGameInstance);
-
 }
 
 HRESULT CImguiMgr::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -92,7 +92,7 @@ HRESULT CImguiMgr::Render(void)
 	return S_OK;
 }
 
-void CImguiMgr::HelloJusin_View(void)	//메인탭임 책갈피로 현재 메인탭 오브젝트탭 레벨이동탭 으로 구성되있음
+void CImguiMgr::HelloJusin_View(void)	//메인탭임 책갈피로 현재 메인탭 오브젝트탭 레밸이동탭 으로 구성되있음
 {
 #pragma region 임구이바 옵션
 	bool no_titlebar = false;
@@ -401,21 +401,23 @@ void CImguiMgr::UITool_View(void)	//UI툴  새창을 띄움
 	ImGui::Begin("UITool", &UIToolCheckBox, 0);
 
 	if (ImGui::Button("Save"))
-	{
-		m_pGameInstance->Save_UIVec();
-	}
+		m_pGameInstance->Save_UIVec();//세이브
+	
 	ImGui::SameLine();
-	if (ImGui::Button("Load"))
-	{
+	
+	if (ImGui::Button("Load"))//로드
 		Load_UIVec();
-	}
+	
 	ImGui::Separator();
 
-	const char*	UI_Set_Level[] = { "LEVEL_LOGO", "LEVEL_GAMEPLAY", "LEVEL_FORMATION", "LEVEL_MAPTOOL" };
+	const char*	UI_Set_Level[] = { SELECT_LEVEL };	//@@@@@@@@@@@@@@@@@@@레벨추가시 헤더에있는거 추가좀@@@@@@@@@@@@@@@@@@@
 	static int	UI_Set_LevelNum = 2;
 	const char* UI_Set_Level_Value = UI_Set_Level[UI_Set_LevelNum];
 	static bool	UI_EditMode = false;
 	
+	if (false == UI_EditMode && (m_currentLevelID != LEVEL_STATIC && m_currentLevelID != LEVEL_LOADING)) //에디트모드 꺼져있을땐 항상 현재스테이지로 생성하도록
+		UI_Set_LevelNum = m_currentLevelID - 2;
+
 	m_pGameInstance->Set_LevelEditMode(UI_EditMode);
 	
 	ImGui::Checkbox("Edit_UI_Select", &UI_EditMode);
@@ -434,8 +436,7 @@ void CImguiMgr::UITool_View(void)	//UI툴  새창을 띄움
 	ImGui::Separator();
 	
 	ImGui::Text("Make UI");
-
-	const char* UI_Class_Type[] = { "None", "LevelMoveButton", "DialogButton" };
+	const char* UI_Class_Type[] = { "None", "LevelMoveButton", "DialogButton" };	//UI 추가할때마다 생성해주기
 	static int UI_Class_SelectNum = 0;
 	const char* UI_Class_Value = UI_Class_Type[UI_Class_SelectNum];
 	if (ImGui::BeginCombo("Class Type", UI_Class_Value, 0))
@@ -453,8 +454,8 @@ void CImguiMgr::UITool_View(void)	//UI툴  새창을 띄움
 	{
 	case 1:
 		ImGui::Separator();
-		if(UI_EditMode)
-			Define_LevelMoveButton((_uint)UI_Set_LevelNum + 2);	//레벨스태틱과 로딩 이후의 레벨
+		if(UI_EditMode)		//에디트모드True 일때만 정해진 레벨에 생성 
+			Define_LevelMoveButton((_uint)UI_Set_LevelNum + 2);	//레벨스태틱과 로딩 이후의 레벨 +
 		else
 			Define_LevelMoveButton(m_currentLevelID);
 		break;
@@ -465,7 +466,126 @@ void CImguiMgr::UITool_View(void)	//UI툴  새창을 띄움
 		break;
 	}
 
+	ImGui::Separator();
+	ImGui::Separator();
+	ImGui::Checkbox("UseLevelMoveUIButton", &m_bSelectUILevelMoveMode);
+	ImGui::Separator();
+	
+	UITool_SelectUI();	//선택한 UI의 정보 읽기 및 쓰기
+	
+
 	ImGui::End();
+}
+
+void CImguiMgr::UITool_SelectUI(void)
+{
+	static _uint ChangeLevelID = m_currentLevelID;
+
+	if (KEY(RBUTTON, TAP))
+		m_pSelectUI = nullptr;
+	if (ChangeLevelID != m_currentLevelID)
+	{
+		ChangeLevelID = m_currentLevelID;
+		m_pSelectUI = nullptr;
+	}
+
+	static CUI* ChancgeUI = nullptr;
+	static _float InputSize[3] = { 100.f, 100.f, 1.f };
+	static _float InputPos[3] = { 0.f, 0.f, 0.f };
+	static char InputName[MAX_PATH] = {};
+	static unsigned int MoveLevelSelNum = 5;	//LEVEL_END임
+
+	ImGui::Text("Select_UI_Desc");
+
+	if (nullptr == m_pSelectUI)
+	{
+		ImGui::Text("\n	select UI is NULL");
+		return;
+	}
+
+	if (m_pSelectUI != ChancgeUI)	//클릭한게 바뀔경우 한번만실행
+	{
+		ChancgeUI = m_pSelectUI;
+
+		char* tempName = CStrUtil::ConvertWCtoC(m_pSelectUI->Get_UIName());
+		strcpy_s(InputName, MAX_PATH, tempName);
+		Safe_Delete_Array(tempName);
+
+		_float3 tempSize = m_pSelectUI->Get_Size();
+		
+		InputSize[0] = tempSize.x;
+		InputSize[1] = tempSize.y;
+		
+		_float3 tempPos = m_pSelectUI->Get_Pos();
+		
+		InputPos[0] = tempPos.x;
+		InputPos[1] = tempPos.y;
+
+		MoveLevelSelNum = dynamic_cast<CUI_LevelMoveButton*>(m_pSelectUI)->GetMoveLevel() - 2; //스태틱,로딩레벨을 뺀 레벨
+	}
+
+	if (ImGui::InputText("Name##2", InputName, MAX_PATH))
+	{
+		_tchar* temp = CStrUtil::ConvertCtoWC(InputName);
+		m_pSelectUI->Set_UIName(temp);
+		Safe_Delete_Array(temp);
+	}
+
+	if (ImGui::InputFloat2("Set Size##2", InputSize, "%.1f", 0))
+	{
+		for (int i = 0; i < 2; i++)
+		{
+			if (0.f >= InputSize[i])
+				InputSize[i] = 1.f;
+		}
+		m_pSelectUI->Set_Size(_float3(InputSize[0], InputSize[1], InputSize[2]));
+	}
+
+	if (ImGui::InputFloat2("Set Pos##2", InputPos, "%.1f", 0))
+	{
+		m_pSelectUI->Set_Pos(_float3(InputPos[0], InputPos[1], InputPos[2]));
+	}
+	
+	
+	const char* MoveLevelList[] = { SELECT_LEVEL, "LEVEL_END" };
+	const char* MoveLevelValue = MoveLevelList[MoveLevelSelNum];
+	if (ImGui::BeginCombo("Btn Event MoveLevel", MoveLevelValue, 0))
+	{
+		for (int i = 0; i < IM_ARRAYSIZE(MoveLevelList); ++i)
+		{
+			const bool is_selected = (MoveLevelSelNum == i);
+			if (ImGui::Selectable(MoveLevelList[i], is_selected))
+			{
+				MoveLevelSelNum = i;
+
+				dynamic_cast<CUI_LevelMoveButton*>(m_pSelectUI)->SetMoveLevel(MoveLevelSelNum + 2);
+			}
+		}
+		ImGui::EndCombo();
+	}
+
+
+	ImGui::Checkbox("MouseMove", &m_bSelectUIMove);
+	
+	if (m_bSelectUIMove)
+	{
+		ImGuiIO& io = ImGui::GetIO();
+		_float Offset[2] = { g_iWinCX * 0.5f  , g_iWinCY * 0.5f };
+
+		InputPos[0] = io.MousePos.x - Offset[0];
+		InputPos[1] = Offset[1] - io.MousePos.y ;
+		m_pSelectUI->Set_Pos(_float3(InputPos[0], InputPos[1], InputPos[2]));
+		
+		if (KEY(LBUTTON, TAP))
+			m_bSelectUIMove = false;
+	}
+
+	if (ImGui::Button("DELETE"))
+	{
+		m_pSelectUI->Dead();
+		m_pSelectUI = nullptr;
+	}
+
 }
 
 void CImguiMgr::Define_LevelMoveButton(_uint _Level)	//LevelButton 을 정의하고 만들어줌 (Create는 밖으로 뻴것같음)
@@ -580,6 +700,7 @@ void CImguiMgr::Define_LevelMoveButton(_uint _Level)	//LevelButton 을 정의하고 �
 		pUI->Set_Size(_float3(UI_Size[0], UI_Size[1], UI_Size[2]));
 		pUI->Set_Pos(_float3(UI_Pos[0], UI_Pos[1], UI_Pos[2]));
 		pUI->Set_UILevel(_Level);
+		pUI->initialization();
 
 		if (FAILED(m_pGameInstance->Add_UI(_Level, pUI)))	//받아온레벨에다 생성
 		{
@@ -593,7 +714,7 @@ void CImguiMgr::Define_LevelMoveButton(_uint _Level)	//LevelButton 을 정의하고 �
 
 void CImguiMgr::Load_UIVec(void)
 {
-
+	m_pGameInstance->Clear_UIVec();
 
 	json loadJson;
 
@@ -629,8 +750,23 @@ void CImguiMgr::Load_UIVec(void)
 		_Size.x = (*it)["Size_x"];
 		_Size.y = (*it)["Size_y"];
 		_Size.z = (*it)["Size_z"];
+		
+		CUI* pUI = nullptr;
 
-		CUI* pUI = CUI_LevelMoveButton::Create(m_pDevice, m_pContext);
+		if (!strcmp(_ClassName.c_str(), "CBackGround"))
+			pUI = CBackGround::Create(m_pDevice, m_pContext);
+		else if (!strcmp(_ClassName.c_str(), "CUI_LevelMoveButton"))
+		{
+			pUI = CUI_LevelMoveButton::Create(m_pDevice, m_pContext);
+			_uint	_MoveLevel = (*it)["MoveLevel"];
+			dynamic_cast<CUI_LevelMoveButton*>(pUI)->SetMoveLevel(_MoveLevel);
+		}
+
+		if (nullptr == pUI)
+		{
+			MSG_BOX("클래스정보 에러로 생성불가");
+			return;
+		}
 
 		_tchar* pUtil_ImageTag = CStrUtil::ConvertCtoWC(_TextureName.c_str());
 		_tchar* pUtil_Name = CStrUtil::ConvertCtoWC(_Name.c_str());
@@ -642,6 +778,8 @@ void CImguiMgr::Load_UIVec(void)
 		pUI->Set_UIName(pUtil_Name);
 		pUI->Set_UILevel(_Level);
 
+		pUI->initialization();
+
 		if (FAILED(m_pGameInstance->Add_UI(_Level, pUI)))
 		{
 			MSG_BOX("UI정보 불러오기 실패");
@@ -650,10 +788,13 @@ void CImguiMgr::Load_UIVec(void)
 		Safe_Delete_Array(pUtil_ImageTag);
 		Safe_Delete_Array(pUtil_Name);
 	}
+
+	MSG_BOX("로드성공");
+
 	return;
 }
 
-void CImguiMgr::GetLevelString(char * str, _uint len, _uint _LEVEL)
+void CImguiMgr::GetLevelString(char * str, _uint len, _uint _LEVEL) //@@@@@@@@@@@@@@@@@@@레벨추가시 업데이트@@@@@@@@@@@@@@@@@@@
 {
 	_uint _LevelID = m_currentLevelID;
 
@@ -670,6 +811,9 @@ void CImguiMgr::GetLevelString(char * str, _uint len, _uint _LEVEL)
 		break;
 	case LEVEL_LOGO:
 		strcpy_s(str, len, "LEVEL_LOGO");
+		break;
+	case LEVEL_LOBBY:
+		strcpy_s(str, len, "LEVEL_LOBBY");
 		break;
 	case LEVEL_GAMEPLAY:
 		strcpy_s(str, len, "LEVEL_GAMEPLAY");

@@ -3,6 +3,7 @@
 #include "Loader.h"
 
 #include "Level_Logo.h"
+#include "Level_Lobby.h"
 #include "Level_GamePlay.h"
 #include "Level_MapTool.h"
 #include "Level_Formation.h"
@@ -34,7 +35,7 @@ void CLevel_Loading::Tick(_float fTimeDelta)
 
 	if (true == m_pLoader->is_Finished())
 	{
-		if (GetKeyState(VK_RETURN) & 0x8000)
+		//if (GetKeyState(VK_RETURN) & 0x8000)
 		{
 			CLevel*			pLevel = nullptr;
 
@@ -42,6 +43,9 @@ void CLevel_Loading::Tick(_float fTimeDelta)
 			{
 			case LEVEL_LOGO:
 				pLevel = CLevel_Logo::Create(m_pDevice, m_pContext);
+				break;
+			case LEVEL_LOBBY:
+				pLevel = CLevel_Lobby::Create(m_pDevice, m_pContext);
 				break;
 			case LEVEL_GAMEPLAY:
 				pLevel = CLevel_GamePlay::Create(m_pDevice, m_pContext);

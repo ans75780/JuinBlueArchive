@@ -17,6 +17,7 @@ HRESULT CBackGround::Initialize(void * pArg)
 		return E_FAIL;
 
 	m_eUIType = UI_DIALOG;
+
 	lstrcpy(m_szUIClass, TEXT("CBackGround"));
 
 	m_fPos = _float3(0.f, 0.f, 0.f);
@@ -25,6 +26,11 @@ HRESULT CBackGround::Initialize(void * pArg)
 	//m_pTransformCom->Set_Scaled(_float3(m_fSizeX, m_fSizeY, 1.f));
 	//m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION,
 	
+	return S_OK;
+}
+
+HRESULT CBackGround::initialization()
+{
 	return S_OK;
 }
 

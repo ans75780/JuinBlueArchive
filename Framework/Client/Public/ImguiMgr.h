@@ -5,12 +5,15 @@
 
 BEGIN(Engine)
 class CGameInstance;
+class CUI;
 END
 
 BEGIN(Client)
 
 class CImguiMgr : public CBase
 {
+#define SELECT_LEVEL "LEVEL_LOGO", "LEVEL_LOBBY", "LEVEL_GAMEPLAY", "LEVEL_FORMATION", "LEVEL_MAPTOOL"	//레벨추가시 변경
+
 	DECLARE_SINGLETON(CImguiMgr)
 
 private:
@@ -36,6 +39,7 @@ private:
 	void		MapTool_View(void);
 	
 	void		UITool_View(void);
+	void			UITool_SelectUI(void);
 	void			Define_LevelMoveButton(_uint _Level);
 	
 private:
@@ -47,8 +51,8 @@ private:
 	ID3D11Device*         m_pDevice = nullptr;
 	ID3D11DeviceContext*   m_pContext = nullptr;
 
-	_uint	m_currentLevelID = 0;
 
+	_uint	m_currentLevelID = 0;
 	bool	show_demo_window;
 	bool	show_mainBar;
 	bool	MapToolCheckBox;
@@ -60,7 +64,14 @@ private:
 		char name[MAX_PATH];
 	};
 	vector<t_ImageVec> m_ImageVec;
+	
+	CUI*	m_pSelectUI;
+	bool	m_bSelectUIMove = false;
+	bool	m_bSelectUILevelMoveMode = false;
 
+public:
+	void	Set_SelectUI(CUI* _UI) { m_pSelectUI = _UI; }
+	bool	Get_LevelMoveMode() { return m_bSelectUILevelMoveMode; }
 public:
 	virtual void Free();
 }; END

@@ -44,9 +44,18 @@ void CUI_Canvas::Add_UI(CUI * pUI)
 	m_vecUI[eUIType].push_back(pUI);
 }
 
-void CUI_Canvas::Clear_UI()//@@@@ UI 로드시킬때 지우기위해서 이니셜라이즈 새로하는게아니라 안에있는것만 지우게하려는기능만드는중
+void CUI_Canvas::Clear_UIVec()
 {
-
+	for (auto& vecUI : m_vecUI)
+	{
+		if (vecUI.empty())
+			continue;
+		for (auto& UI : vecUI)
+		{
+			Safe_Release(UI);
+		}
+		vecUI.clear();
+	}
 }
 
 HRESULT CUI_Canvas::Initialize()
@@ -60,17 +69,28 @@ HRESULT CUI_Canvas::Initialize()
 void CUI_Canvas::Tick(_float fTimeDelta)
 {
 	m_bEventCurFrame = false;
+
+	_uint uCnt;
 	for (auto& vecUI : m_vecUI)
 	{
+		uCnt = 0;
 		for (auto& UI : vecUI)
 		{
 			if (!UI->Get_Enable())
 				continue;
+			if (UI->m_bDead)
+			{
+				UI->Free();
+				vecUI.erase(vecUI.begin() + uCnt);
+				break;
+			}
+
 			UI->Tick(fTimeDelta);
 			if (m_bEventCurFrame == false)
 			{
 				Check_UI(UI);
 			}
+			uCnt++;
 		}
 	}
 }

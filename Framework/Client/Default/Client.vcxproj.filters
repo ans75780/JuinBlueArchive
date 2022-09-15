@@ -23,13 +23,13 @@
       <Filter>01.Level\GamePlay</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Level_Loading.h">
-      <Filter>01.Level\Loading</Filter>
+      <Filter>01.Level\00. Loading</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Level_Logo.h">
-      <Filter>01.Level\Logo</Filter>
+      <Filter>01.Level\01. Logo</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Loader.h">
-      <Filter>01.Level\Loading\Loader</Filter>
+      <Filter>01.Level\00. Loading\Loader</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BackGround.h">
       <Filter>02.GameObject\00. BackGround</Filter>
@@ -133,6 +133,9 @@
     <ClInclude Include="..\Public\UI_LevelMoveButton.h">
       <Filter>02.GameObject\03. UI\02. UI_Button\01. LevelMoveButton</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Level_Lobby.h">
+      <Filter>01.Level\02. Lobby</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -148,13 +151,13 @@
       <Filter>01.Level\GamePlay</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Level_Loading.cpp">
-      <Filter>01.Level\Loading</Filter>
+      <Filter>01.Level\00. Loading</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Level_Logo.cpp">
-      <Filter>01.Level\Logo</Filter>
+      <Filter>01.Level\01. Logo</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Loader.cpp">
-      <Filter>01.Level\Loading\Loader</Filter>
+      <Filter>01.Level\00. Loading\Loader</Filter>
     </ClCompile>
     <ClCompile Include="..\private\BackGround.cpp">
       <Filter>02.GameObject\00. BackGround</Filter>
@@ -252,6 +255,9 @@
     <ClCompile Include="..\Private\UI_LevelMoveButton.cpp">
       <Filter>02.GameObject\03. UI\02. UI_Button\01. LevelMoveButton</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Level_Lobby.cpp">
+      <Filter>01.Level\02. Lobby</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -274,17 +280,8 @@
     <Filter Include="01.Level">
       <UniqueIdentifier>{21371941-8fc0-43d9-b47a-6f347c9fae61}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Level\Logo">
-      <UniqueIdentifier>{289b4d09-7c95-466b-9f74-173b2e22e40e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Level\GamePlay">
       <UniqueIdentifier>{2c0cd078-e1ec-4276-a003-e7ec4d0edcf0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Level\Loading">
-      <UniqueIdentifier>{807441ba-e54d-4b86-960a-e96a8505241f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Level\Loading\Loader">
-      <UniqueIdentifier>{33e1de52-700d-4cac-9e56-af962b2b6268}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObject">
       <UniqueIdentifier>{57f74c26-08d1-4431-861b-7a6105d37c3f}</UniqueIdentifier>
@@ -390,6 +387,18 @@
     </Filter>
     <Filter Include="02.GameObject\03. UI\02. UI_Button\01. LevelMoveButton">
       <UniqueIdentifier>{115c9f2b-a1c1-45b1-85ab-8903c95813a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Level\00. Loading">
+      <UniqueIdentifier>{807441ba-e54d-4b86-960a-e96a8505241f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Level\00. Loading\Loader">
+      <UniqueIdentifier>{33e1de52-700d-4cac-9e56-af962b2b6268}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Level\01. Logo">
+      <UniqueIdentifier>{289b4d09-7c95-466b-9f74-173b2e22e40e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Level\02. Lobby">
+      <UniqueIdentifier>{b9c2b90b-ba80-4621-b4f6-fdffb5e71fd1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
