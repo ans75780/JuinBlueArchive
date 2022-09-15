@@ -40,6 +40,8 @@ private:
 	
 private:
 	void		Load_UIVec(void);
+	void		GetLevelString(char * str, _uint len, _uint _LEVEL = 0);
+
 private:
 	CGameInstance*         m_pGameInstance = nullptr;
 	ID3D11Device*         m_pDevice = nullptr;

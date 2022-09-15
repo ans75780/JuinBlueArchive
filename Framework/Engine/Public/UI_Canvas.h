@@ -23,6 +23,7 @@ public:
 public:
 	void		Add_UI(class CUI* pUI);
 	vector<class CUI*>*		Get_UIVec() { return m_vecUI; }
+	void					Clear_UI();
 
 private:
 	void					Check_UI(CUI*	pUI);

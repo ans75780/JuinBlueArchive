@@ -38,8 +38,8 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(Ready_Static_Resource()))
 		return E_FAIL;
 
-	if (FAILED(Ready_Static_Models()))
-		return E_FAIL;
+	//if (FAILED(Ready_Static_Models()))
+	//	return E_FAIL;
 
 	if (FAILED(Open_Level(LEVEL_LOGO)))
 		return E_FAIL;
@@ -190,6 +190,7 @@ HRESULT CMainApp::Ready_Static_Models()
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Haruka_Original/", "Haruka_Original.fbx", mat))))
 		return E_FAIL;
 
+	return S_OK;
 }
 
 CMainApp * CMainApp::Create()

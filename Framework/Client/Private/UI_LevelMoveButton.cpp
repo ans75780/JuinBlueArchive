@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "..\Public\UI_LevelMoveButton.h"
 
+#include "ImguiMgr.h"
+
 CUI_LevelMoveButton::CUI_LevelMoveButton(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CUI(pDevice, pContext)
 {
@@ -61,6 +63,11 @@ void CUI_LevelMoveButton::OnLButtonUp()
 
 void CUI_LevelMoveButton::OnLButtonClicked()
 {
+#if _DEBUG
+	CImguiMgr* pImgui = GET_INSTANCE(CImguiMgr);
+
+	RELEASE_INSTANCE(CImguiMgr);
+#endif
 }
 
 HRESULT CUI_LevelMoveButton::SetUp_Components()

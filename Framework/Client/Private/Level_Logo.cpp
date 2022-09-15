@@ -35,7 +35,7 @@ void CLevel_Logo::Tick(_float fTimeDelta)
 		CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
 		Safe_AddRef(pGameInstance);
 
-		if (FAILED(pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_FORMATION))))
+		if (FAILED(pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_GAMEPLAY))))
 			return;
 
 		Safe_Release(pGameInstance);
@@ -63,11 +63,6 @@ HRESULT CLevel_Logo::Ready_Layer_BackGround(const _tchar * pLayerTag)
 	//if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOGO, pLayerTag, TEXT("Prototype_GameObject_BackGround"))))
 	//	return E_FAIL;
 	
-	map<char*, CTexture*> m_vecTextures;
-
-
-	
-
 
 	Safe_Release(pGameInstance);
 

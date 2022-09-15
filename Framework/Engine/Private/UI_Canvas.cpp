@@ -44,6 +44,11 @@ void CUI_Canvas::Add_UI(CUI * pUI)
 	m_vecUI[eUIType].push_back(pUI);
 }
 
+void CUI_Canvas::Clear_UI()//@@@@ UI 로드시킬때 지우기위해서 이니셜라이즈 새로하는게아니라 안에있는것만 지우게하려는기능만드는중
+{
+
+}
+
 HRESULT CUI_Canvas::Initialize()
 {
 	m_bOnDialog = false;

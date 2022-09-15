@@ -150,6 +150,14 @@ HRESULT CUI_Manager::Save_UIVec()
 	return S_OK;
 }
 
+void CUI_Manager::UIClear()
+{
+	for (auto& pCanvas : m_vecCanvas)
+	{
+		pCanvas;
+	}
+}
+
 void CUI_Manager::Free()
 {
 	for (auto& pCanvas : m_vecCanvas)

@@ -99,6 +99,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	pUI->LoadUIImage(L"Prototype_Component_Texture_UI_Background");
 	pUI->Set_UIType(UI_TYPE::UI_BACKGROUND);
 	pUI->Set_Size(_float3(100.f, 100.f, 1.f));
+	pUI->Set_Pos(_float3(-200.f, -200.f, 0.f));
 	pUI->Set_UIName(TEXT("Logo_BACKGROUND_Shiroko"));
 	
 	pUI->Set_UILevel(LEVEL_LOGO);
@@ -107,18 +108,31 @@ HRESULT CLoader::Loading_ForLogoLevel()
 		return E_FAIL;
 	}
 
-	CUI* pUI2 = CUI_LevelMoveButton::Create(m_pDevice, m_pContext);
+	CUI* pUI2 = CBackGround::Create(m_pDevice, m_pContext);
 	pUI2->LoadUIImage(L"Prototype_Component_Texture_UI_Background");
 	pUI2->Set_UIType(UI_TYPE::UI_BACKGROUND);
 	pUI2->Set_Size(_float3(100.f, 100.f, 1.f));
-	pUI2->Set_Pos(_float3(-200.f, 0.f, 0.f));
+	pUI2->Set_Pos(_float3(300.f, 300.f, 0.f));
 	pUI2->Set_UIName(TEXT("Logo_BACKGROUND_Shiroko"));
-	
-	pUI2->Set_UILevel(LEVEL_MAPTOOL);
-	if (FAILED(pGameInstance->Add_UI(LEVEL_MAPTOOL, pUI2)))
+
+	pUI2->Set_UILevel(LEVEL_LOGO);
+	if (FAILED(pGameInstance->Add_UI(LEVEL_LOGO, pUI2)))
 	{
 		return E_FAIL;
 	}
+
+	//CUI* pUI2 = CUI_LevelMoveButton::Create(m_pDevice, m_pContext);
+	//pUI2->LoadUIImage(L"Prototype_Component_Texture_UI_Background");
+	//pUI2->Set_UIType(UI_TYPE::UI_BACKGROUND);
+	//pUI2->Set_Size(_float3(100.f, 100.f, 1.f));
+	//pUI2->Set_Pos(_float3(-200.f, 0.f, 0.f));
+	//pUI2->Set_UIName(TEXT("Logo_BACKGROUND_Shiroko"));
+	//
+	//pUI2->Set_UILevel(LEVEL_MAPTOOL);
+	//if (FAILED(pGameInstance->Add_UI(LEVEL_MAPTOOL, pUI2)))
+	//{
+	//	return E_FAIL;
+	//}
 	
 	//CUI* pButton = CBackGround::Create(m_pDevice, m_pContext);
 	//pButton->LoadUIImage(L"UI_Default");
@@ -222,16 +236,16 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 		CCamera_Free::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	/* For.Prototype_Student_Serika */
 
-	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_Student_Serika"),
-		CStudent::Create(m_pDevice, m_pContext, TEXT("Serika")))))
-		return E_FAIL;
+	///* For.Prototype_Student_Serika */
+	//if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_Student_Serika"),
+	//	CStudent::Create(m_pDevice, m_pContext, TEXT("Serika")))))
+	//	return E_FAIL;
 
 
-	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_Student_Haruka"),
-		CStudent::Create(m_pDevice, m_pContext, TEXT("Haruka")))))
-		return E_FAIL;
+	//if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_Student_Haruka"),
+	//	CStudent::Create(m_pDevice, m_pContext, TEXT("Haruka")))))
+	//	return E_FAIL;
 
 	/* For.Prototype_GameObject_Sky */
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Sky"),

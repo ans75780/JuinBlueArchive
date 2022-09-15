@@ -134,10 +134,10 @@ CUI * CUI::Get_MouseOveredUI(const POINT & pt)
 {
 	RECT rect;
 	POINT Offset = CKey_Manager::Get_Instance()->Get_MouseOffset();
-	rect.bottom = (LONG)(fabsf(m_fPos.y) + (m_fSize.y  * 0.5f)) + Offset.y;
-	rect.left = (LONG)(fabsf(m_fPos.x) - (m_fSize.x  * 0.5f)) + Offset.x;
-	rect.right = (LONG)(fabsf(m_fPos.x) + (m_fSize.x  * 0.5f)) + Offset.x;;
-	rect.top = (LONG)(fabsf(m_fPos.y) - (m_fSize.y  * 0.5f)) + Offset.y;;
+	rect.left =		Offset.x + (LONG)(m_fPos.x - (m_fSize.x  * 0.5f));
+	rect.top =		Offset.y - (LONG)(m_fPos.y + (m_fSize.y  * 0.5f));
+	rect.right =	Offset.x + (LONG)(m_fPos.x + (m_fSize.x  * 0.5f));
+	rect.bottom =	Offset.y - (LONG)(m_fPos.y - (m_fSize.y  * 0.5f));
 	if (PtInRect(&rect, pt))
 		return this;
 	else

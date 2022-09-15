@@ -126,35 +126,12 @@ void CImguiMgr::HelloJusin_View(void)	//¸ÞÀÎÅÇÀÓ Ã¥°¥ÇÇ·Î ÇöÀç ¸ÞÀÎÅÇ ¿ÀºêÁ§Æ®ÅÇ
 
 	m_currentLevelID = m_pGameInstance->Get_CurrentLevelID();
 
-	switch (m_currentLevelID)
-	{
-	case LEVEL_STATIC:
-		strcpy_s(tempText_Level, "LEVEL_STATIC");
-		break;
-	case LEVEL_LOADING:
-		strcpy_s(tempText_Level, "LEVEL_LOADING");
-		break;
-	case LEVEL_LOGO:
-		strcpy_s(tempText_Level, "LEVEL_LOGO");
-		break;
-	case LEVEL_GAMEPLAY:
-		strcpy_s(tempText_Level, "LEVEL_GAMEPLAY");
-		break;
-	case LEVEL_MAPTOOL:
-		strcpy_s(tempText_Level, "LEVEL_MAPTOOL");
-		break;
-
-	case LEVEL_END:
-		strcpy_s(tempText_Level, "ERROR");
-		break;
-	}
+	GetLevelString(tempText_Level, 32);
 
 	strcat_s(tempText_CurrentLevel, tempText_Level);
 
 	ImGui::Text(tempText_CurrentLevel);
 	
-
-
 	if (m_currentLevelID == LEVEL_MAPTOOL)
 	{
 		ImGui::Separator();
@@ -346,30 +323,21 @@ void CImguiMgr::Tap_Object_CUI(void)		//UI ¿ÀºêÁ§Æ®¸®½ºÆ® ³ª¿­
 		{
 			char UICanvasTreeName[32] = {};
 
-			switch (UILevelCount)
+			if (UILevelCount == LEVEL_STATIC || UILevelCount == LEVEL_LOADING || UILevelCount == LEVEL_END)
 			{
-			case Client::LEVEL_LOGO:
-				strcpy_s(UICanvasTreeName, 32, "LEVEL_LOGO");
-				break;
-			case Client::LEVEL_GAMEPLAY:
-				strcpy_s(UICanvasTreeName, 32, "LEVEL_GAMEPLAY");
-				break;
-			case Client::LEVEL_MAPTOOL:
-				strcpy_s(UICanvasTreeName, 32, "LEVEL_MAPTOOL");
-				break;
-			default:
 				++UILevelCount;
 				continue;
-				break;
 			}
+
+			GetLevelString(UICanvasTreeName, 32, UILevelCount);  //·¹º§¹®ÀÚ¿­³Ö±â
 
 			if (ImGui::TreeNode(UICanvasTreeName))
 			{
 				vector<CUI*>* UIVec = iter_Canvas->Get_UIVec();
 
-				for (_uint i = 0; i < 5; i++)
+				for (_uint i = 0; i < UI_END; i++)
 				{
-					for (auto& iter_UIVec : UIVec[i])	//·¹º§º°ºÐ·ù?
+					for (auto& iter_UIVec : UIVec[i])
 					{
 						char* pUtil_UIName = CStrUtil::ConvertWCtoC(iter_UIVec->Get_UIName());
 						if (ImGui::TreeNode(pUtil_UIName))
@@ -396,22 +364,13 @@ void CImguiMgr::HelloJusin_Tap_Level(void)	//·¹º§ÅÇÀ¸·Î ·¹º§ÀÌµ¿ÇÒ¼öÀÖ°Ô ÇØµÎ¾úÀ
 		{
 			char buf[32];
 
-			switch (i)
-			{
-			case LEVEL_LOGO:
-				strcpy_s(buf, "LEVEL_LOGO");
-				break;
-			case LEVEL_GAMEPLAY:
-				strcpy_s(buf, "LEVEL_GAMEPLAY");
-				break;
-			case LEVEL_MAPTOOL:
-				strcpy_s(buf, "LEVEL_MAPTOOL");
-				break;
-			default:
+			if (i == LEVEL_STATIC || i == LEVEL_LOADING || i == LEVEL_END)
 				continue;
-				break;
-			}
+
+			GetLevelString(buf, 32, i);
+
 			ImGui::TableNextColumn();
+
 			if(ImGui::Button(buf, ImVec2(-FLT_MIN, 0.0f)))
 			{
 				if (LEVEL_LOADING == m_currentLevelID || i == m_currentLevelID)
@@ -452,7 +411,7 @@ void CImguiMgr::UITool_View(void)	//UIÅø  »õÃ¢À» ¶ç¿ò
 	}
 	ImGui::Separator();
 
-	const char*	UI_Set_Level[] = { "LEVEL_LOGO", "LEVEL_GAMEPLAY", "LEVEL_MAPTOOL" };
+	const char*	UI_Set_Level[] = { "LEVEL_LOGO", "LEVEL_GAMEPLAY", "LEVEL_FORMATION", "LEVEL_MAPTOOL" };
 	static int	UI_Set_LevelNum = 2;
 	const char* UI_Set_Level_Value = UI_Set_Level[UI_Set_LevelNum];
 	static bool	UI_EditMode = false;
@@ -495,7 +454,7 @@ void CImguiMgr::UITool_View(void)	//UIÅø  »õÃ¢À» ¶ç¿ò
 	case 1:
 		ImGui::Separator();
 		if(UI_EditMode)
-			Define_LevelMoveButton((_uint)UI_Set_LevelNum + 2);
+			Define_LevelMoveButton((_uint)UI_Set_LevelNum + 2);	//·¹º§½ºÅÂÆ½°ú ·Îµù ÀÌÈÄÀÇ ·¹º§
 		else
 			Define_LevelMoveButton(m_currentLevelID);
 		break;
@@ -577,8 +536,6 @@ void CImguiMgr::Define_LevelMoveButton(_uint _Level)	//LevelButton À» Á¤ÀÇÇÏ°í ¸
 						UI_Size[0] = (float)desc.Width;
 						UI_Size[1] = (float)desc.Height;
 					}
-
-					
 				}
 			}
 
@@ -622,6 +579,7 @@ void CImguiMgr::Define_LevelMoveButton(_uint _Level)	//LevelButton À» Á¤ÀÇÇÏ°í ¸
 		pUI->Set_UIType((UI_TYPE)Render_Num);
 		pUI->Set_Size(_float3(UI_Size[0], UI_Size[1], UI_Size[2]));
 		pUI->Set_Pos(_float3(UI_Pos[0], UI_Pos[1], UI_Pos[2]));
+		pUI->Set_UILevel(_Level);
 
 		if (FAILED(m_pGameInstance->Add_UI(_Level, pUI)))	//¹Þ¾Æ¿Â·¹º§¿¡´Ù »ý¼º
 		{
@@ -635,6 +593,8 @@ void CImguiMgr::Define_LevelMoveButton(_uint _Level)	//LevelButton À» Á¤ÀÇÇÏ°í ¸
 
 void CImguiMgr::Load_UIVec(void)
 {
+
+
 	json loadJson;
 
 	ifstream fin;
@@ -659,7 +619,6 @@ void CImguiMgr::Load_UIVec(void)
 
 		_uint	_Level = (*it)["Level"];
 		_uint	_Type = (*it)["Type"];
-
 
 		_float3 _Pos;
 		_Pos.x = (*it)["Pos_x"];
@@ -690,6 +649,40 @@ void CImguiMgr::Load_UIVec(void)
 
 		Safe_Delete_Array(pUtil_ImageTag);
 		Safe_Delete_Array(pUtil_Name);
+	}
+	return;
+}
+
+void CImguiMgr::GetLevelString(char * str, _uint len, _uint _LEVEL)
+{
+	_uint _LevelID = m_currentLevelID;
+
+	if (0 < _LEVEL)	//µé¾î¿Â ·¹º§°ªÀÌ ÀÖÀ»°æ¿ì ±× ·¹º§¿¡ ¸Â´Â ¹®ÀÚ¿­·Î ³Ñ°ÜÁÜ  _LEVELÀº 0À¸·Î µðÆúÆ®°ªÀÖÀ½
+		_LevelID = _LEVEL;
+
+	switch (_LevelID)
+	{
+	case LEVEL_STATIC:
+		strcpy_s(str, len, "LEVEL_STATIC");
+		break;
+	case LEVEL_LOADING:
+		strcpy_s(str, len, "LEVEL_LOADING");
+		break;
+	case LEVEL_LOGO:
+		strcpy_s(str, len, "LEVEL_LOGO");
+		break;
+	case LEVEL_GAMEPLAY:
+		strcpy_s(str, len, "LEVEL_GAMEPLAY");
+		break;
+	case LEVEL_FORMATION:
+		strcpy_s(str, len, "LEVEL_FORMATION");
+		break;
+	case LEVEL_MAPTOOL:
+		strcpy_s(str, len, "LEVEL_MAPTOOL");
+		break;
+	case LEVEL_END:
+		strcpy_s(str, len, "ERROR");
+		break;
 	}
 	return;
 }
