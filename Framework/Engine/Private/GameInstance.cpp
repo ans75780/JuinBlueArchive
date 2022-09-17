@@ -31,6 +31,8 @@ CGameInstance::CGameInstance()
 	Safe_AddRef(m_pFrustum);
 
 
+
+	
 }
 
 HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, const GRAPHICDESC& GraphicDesc, ID3D11Device** ppDeviceOut, ID3D11DeviceContext** ppDeviceContextOut)
@@ -360,6 +362,12 @@ _float4 CGameInstance::Get_CamPosition()
 		return _float4(0.f, 0.f, 0.f, 1.f);
 
 	return m_pPipeLine->Get_CamPosition();
+}
+
+RAYDESC & CGameInstance::Get_Ray()
+{
+	// TODO: 여기에 반환 구문을 삽입합니다.
+	return m_pPipeLine->Get_Ray();
 }
 
 

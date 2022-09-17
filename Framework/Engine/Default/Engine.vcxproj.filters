@@ -133,6 +133,12 @@
     <ClInclude Include="..\Public\CQuadTree.h">
       <Filter>01.Utility\03.Component\00.VIBuffer\QuadTree</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Collider.h">
+      <Filter>01.Utility\03.Component\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DebugDraw.h">
+      <Filter>01.Utility\03.Component\Collider\DebugDraw</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -251,6 +257,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\CQuadTree.cpp">
       <Filter>01.Utility\03.Component\00.VIBuffer\QuadTree</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Collider.cpp">
+      <Filter>01.Utility\03.Component\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DebugDraw.cpp">
+      <Filter>01.Utility\03.Component\Collider\DebugDraw</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -379,6 +391,12 @@
     </Filter>
     <Filter Include="01.Utility\03.Component\00.VIBuffer\QuadTree">
       <UniqueIdentifier>{a298ea93-1d28-479e-9026-fc8111dad396}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Component\Collider">
+      <UniqueIdentifier>{3b1e6af4-8067-4bf7-a6db-5c20a836b51a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Component\Collider\DebugDraw">
+      <UniqueIdentifier>{72824170-a440-4466-bf83-c9d195576128}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

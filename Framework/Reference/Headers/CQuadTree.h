@@ -22,7 +22,7 @@ private:
 	_uint		m_iCorner[CORNER::CORNER_END];
 
 public:
-	CQuadTree*		Create()
+	CQuadTree*		Create();
 };
 
 END

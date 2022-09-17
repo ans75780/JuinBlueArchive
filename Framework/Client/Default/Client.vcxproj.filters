@@ -136,6 +136,12 @@
     <ClInclude Include="..\Public\UserData.h">
       <Filter>06. User</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\State_Student_Default.h">
+      <Filter>04. State\DefaultState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Student_Callsign.h">
+      <Filter>04. State\CallSign</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -257,6 +263,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\UserData.cpp">
       <Filter>06. User</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Student_Default.cpp">
+      <Filter>04. State\DefaultState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Student_Callsign.cpp">
+      <Filter>04. State\CallSign</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -399,6 +411,15 @@
     </Filter>
     <Filter Include="06. User">
       <UniqueIdentifier>{452e91d5-a4d2-4a41-a5d4-a4a4c0cd6679}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\For.FormationLevel">
+      <UniqueIdentifier>{7bb8cc3e-d96c-4fb8-bebf-45bc18dd1502}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. State\DefaultState">
+      <UniqueIdentifier>{d7694f8d-13d4-4c4e-a667-d40b81b8f466}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. State\CallSign">
+      <UniqueIdentifier>{276d26cf-8b53-4732-b947-eff88e76dbfe}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

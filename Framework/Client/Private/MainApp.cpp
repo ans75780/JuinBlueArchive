@@ -4,6 +4,7 @@
 #include "Level_Loading.h"
 #include "UserData.h"
 #include "ImguiMgr.h"
+#include "Collider.h"
 
 CMainApp::CMainApp()
 	: m_pGameInstance(CGameInstance::Get_Instance())
@@ -41,7 +42,7 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(Ready_Static_Models()))
 		return E_FAIL;
 
-	//CUserData::Get_Instance()->Initialize();
+	CUserData::Get_Instance()->Initialize();
 
 	if (FAILED(Open_Level(LEVEL_LOGO)))
 		return E_FAIL;
@@ -159,6 +160,25 @@ HRESULT CMainApp::Ready_Prototype_Component()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"),
 		CVIBuffer_Cube::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
+
+	/* For.Prototype_Component_Collider_AABB */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
+		CCollider::Create(m_pDevice, m_pContext, CCollider::TYPE_AABB))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Collider_OBB */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Collider_OBB"),
+		CCollider::Create(m_pDevice, m_pContext, CCollider::TYPE_OBB))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Collider_SPHERE */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Collider_SPHERE"),
+		CCollider::Create(m_pDevice, m_pContext, CCollider::TYPE_SPHERE))))
+		return E_FAIL;
+
+
+
 	return S_OK;
 }
 
@@ -194,6 +214,12 @@ HRESULT CMainApp::Ready_Static_Models()
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Haruka_Original/", "Haruka_Original.fbx", mat))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Model_Serika*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Zunko"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Zunko_Original/", "Zunko_Original.fbx", mat))))
+		return E_FAIL;
+
+	return S_OK;
 }
 
 CMainApp * CMainApp::Create()
@@ -220,6 +246,6 @@ void CMainApp::Free()
 	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);
 	Safe_Release(m_pGameInstance);
-	//CUserData::Get_Instance()->Release();
+	CUserData::Get_Instance()->Release();
 	CGameInstance::Release_Engine();	
 }

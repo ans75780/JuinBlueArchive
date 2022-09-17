@@ -24,6 +24,8 @@ public:
 
 private:
 	class CTransform*	m_pTransform = nullptr;
+
+
 };
 
 END

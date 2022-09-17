@@ -16,6 +16,8 @@ public:
 	HRESULT Clear_BackBuffer_View(_float4 vClearColor);
 	HRESULT Clear_DepthStencil_View();
 	HRESULT Present();
+	_float2		Get_ViewPort() { return m_ViewPort; }
+
 private:	
 
 	/* 메모리 할당. (정점버퍼, 인덱스버퍼, 텍스쳐로드) */
@@ -29,6 +31,8 @@ private:
 	// ID3D11ShaderResourceView*
 	ID3D11RenderTargetView*		m_pBackBufferRTV = nullptr;
 	ID3D11DepthStencilView*		m_pDepthStencilView = nullptr;
+
+	_float2						m_ViewPort;
 
 private:
 	HRESULT Ready_SwapChain(HWND hWnd, GRAPHICDESC::WINMODE WinMode, _uint iWinCX, _uint iWinCY);

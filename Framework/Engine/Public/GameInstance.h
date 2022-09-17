@@ -35,7 +35,7 @@ public: /* For.Graphic_Device */
 	HRESULT Clear_BackBuffer_View(_float4 vClearColor);
 	HRESULT Clear_DepthStencil_View();
 	HRESULT Present();
-
+	_float2	Get_ViewPort() { return m_pGraphic_Device->Get_ViewPort(); }
 
 public: /* For.Input_Device */
 	_byte Get_DIKeyState(_ubyte byKeyID);
@@ -87,6 +87,8 @@ public: /* For.PipeLine */
 	const _float4x4* Get_Transform_float4x4(CPipeLine::TRANSFORMSTATE eState);
 	const _float4x4* Get_Transform_TP(CPipeLine::TRANSFORMSTATE eState);
 	_float4 Get_CamPosition();
+
+	RAYDESC&	Get_Ray();
 
 
 public: /* For.Light_Manager */

@@ -169,10 +169,12 @@
     <ClInclude Include="..\Public\Camera.h" />
     <ClInclude Include="..\Public\CFrustum.h" />
     <ClInclude Include="..\Public\Channel.h" />
+    <ClInclude Include="..\Public\Collider.h" />
     <ClInclude Include="..\Public\Component.h" />
     <ClInclude Include="..\Public\Component_Manager.h" />
     <ClInclude Include="..\Public\CQuadTree.h" />
     <ClInclude Include="..\Public\CustomFont.h" />
+    <ClInclude Include="..\Public\DebugDraw.h" />
     <ClInclude Include="..\Public\Engine_Defines.h" />
     <ClInclude Include="..\Public\Engine_Function.h" />
     <ClInclude Include="..\Public\Engine_Functor.h" />
@@ -215,10 +217,12 @@
     <ClCompile Include="..\Private\Camera.cpp" />
     <ClCompile Include="..\Private\CFrustum.cpp" />
     <ClCompile Include="..\Private\Channel.cpp" />
+    <ClCompile Include="..\Private\Collider.cpp" />
     <ClCompile Include="..\Private\Component.cpp" />
     <ClCompile Include="..\Private\Component_Manager.cpp" />
     <ClCompile Include="..\Private\CQuadTree.cpp" />
     <ClCompile Include="..\Private\CustomFont.cpp" />
+    <ClCompile Include="..\Private\DebugDraw.cpp" />
     <ClCompile Include="..\Private\Engine_Struct.cpp" />
     <ClCompile Include="..\Private\GameInstance.cpp" />
     <ClCompile Include="..\Private\GameObject.cpp" />

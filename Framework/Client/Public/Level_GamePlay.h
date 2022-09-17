@@ -5,6 +5,9 @@
 
 BEGIN(Client)
 
+
+
+
 class CLevel_GamePlay final : public CLevel
 {
 public:
@@ -22,10 +25,12 @@ public:
 	HRESULT Ready_Layer_Player(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_Monster(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_Effect(const _tchar* pLayerTag);
-	HRESULT Ready_Layer_Test(const _tchar* pLayerTag);
+	HRESULT Ready_Layer_Student(const _tchar* pLayerTag);
 	HRESULT Ready_Light();
 
-	
+private:
+	vector<class CStudent*> m_vecStudent;
+	vector<_vector>			m_vecFormationPos;
 
 public:
 	static CLevel_GamePlay* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

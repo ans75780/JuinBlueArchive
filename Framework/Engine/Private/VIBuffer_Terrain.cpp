@@ -150,7 +150,7 @@ void CVIBuffer_Terrain::Culling(_fmatrix WorldMatrixInv)
 	pFrustum->Transform_ToLocalSpace(WorldMatrixInv);
 
 	_uint		iNumFaces = 0;
-	m_pQuadTree->Culling();
+	//m_pQuadTree->Culling();
 	/*모든 삼각형들이 절두체 안에 존재하는지 비교한다.*/
 	for (_uint i = 0; i < m_iNumVerticesZ - 1; ++i)
 	{

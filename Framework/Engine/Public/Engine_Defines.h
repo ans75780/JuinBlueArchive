@@ -14,6 +14,9 @@
 #include <DirectXTK/SpriteBatch.h>
 #include <DirectXTK/SpriteFont.h>
 #include <DirectXTK/ScreenGrab.h>
+#include <DirectXTK/PrimitiveBatch.h>
+#include <DirectXTK/VertexTypes.h>
+#include <DirectXTK/Effects.h>
 
 #include <assimp/scene.h>
 #include <assimp/Importer.hpp>
@@ -24,6 +27,8 @@
 #include <d3dcompiler.h>
 
 #include <typeinfo.h>
+
+#include <DirectXCollision.h>
 
 #include <opencv2\imgcodecs.hpp>
 #include <opencv2\imgproc.hpp>

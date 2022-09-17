@@ -34,6 +34,9 @@ public:
 		return &m_TransformState_TP[eState];
 	}
 
+	RAYDESC		Get_Ray();
+
+
 public:
 	void Tick();
 

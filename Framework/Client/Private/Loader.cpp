@@ -159,7 +159,6 @@ HRESULT CLoader::Loading_ForFormationLevel()
 		CCamera_Formation::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_Student_Serika"),
 		CStudent::Create(m_pDevice, m_pContext, TEXT("Serika")))))
 		return E_FAIL;
@@ -167,6 +166,11 @@ HRESULT CLoader::Loading_ForFormationLevel()
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_Student_Haruka"),
 		CStudent::Create(m_pDevice, m_pContext, TEXT("Haruka")))))
 		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_Student_Zunko"),
+		CStudent::Create(m_pDevice, m_pContext, TEXT("Zunko")))))
+		return E_FAIL;
+
 
 	/* For.Prototype_GameObject_Sky */
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Sky"),
@@ -213,9 +217,12 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 		CStudent::Create(m_pDevice, m_pContext, TEXT("Serika")))))
 		return E_FAIL;
 
-
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_Student_Haruka"),
 		CStudent::Create(m_pDevice, m_pContext, TEXT("Haruka")))))
+		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_Student_Zunko"),
+		CStudent::Create(m_pDevice, m_pContext, TEXT("Zunko")))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Sky */

@@ -6,6 +6,9 @@
 #include "StateMachineBase.h"
 #include "State_Student_Idle.h"
 #include "State_Student_Run.h"
+#include "Collider.h"
+
+
 CStudent::CStudent(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, _tchar*	pStudentTag)
 	: CGameObject(pDevice, pContext)
 {
@@ -52,6 +55,11 @@ void CStudent::Tick(_float fTimeDelta)
 {
 	m_pStateMachine->Update(fTimeDelta);
 	
+
+	m_pSphereCom->Update(m_pTransformCom->Get_WorldMatrix());
+	m_pAABBCom->Update(m_pTransformCom->Get_WorldMatrix());
+	m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
+
 	//m_pModelCom->Play_Animation(fTimeDelta);
 
 }
@@ -81,6 +89,19 @@ HRESULT CStudent::Render()
 		m_pShaderCom->Begin(0);
 		m_pModelCom->Render(i, m_pShaderCom, "g_Bones");
 	}
+
+#ifdef _DEBUG
+	
+	CGameInstance*	pInstance = GET_INSTANCE(CGameInstance);
+
+	if (pInstance->Get_CurrentLevelID() == LEVEL_FORMATION)
+		m_pAABBCom->Render();
+	//m_pOBBCom->Render();
+	//m_pSphereCom->Render();
+#endif // _DEBUG
+
+
+	RELEASE_INSTANCE(CGameInstance);
 	return S_OK;
 }
 
@@ -99,6 +120,10 @@ void CStudent::Set_Transform(_vector vPos)
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vPos);
 }
 
+_bool CStudent::Collision_AABB(RAYDESC & ray, _float & distance)
+{
+	return m_pAABBCom->Collision_AABB(ray, distance);
+}
 
 HRESULT CStudent::SetUp_Components()
 {
@@ -118,7 +143,38 @@ HRESULT CStudent::SetUp_Components()
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, szModelTag, TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
 		return E_FAIL;
 
-	
+
+	/* For.Com_AABB */
+	CCollider::COLLIDERDESC			ColliderDesc;
+	ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
+
+	ColliderDesc.vScale = _float3(0.5f, 1.f, 0.5f);
+	ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
+	ColliderDesc.vTranslation = _float3(0.f, ColliderDesc.vScale.y * 0.5f, 0.f);
+
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"), TEXT("Com_AABB"), (CComponent**)&m_pAABBCom, &ColliderDesc)))
+		return E_FAIL;
+
+	/* For.Com_OBB */
+	ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
+
+	ColliderDesc.vScale = _float3(1.2f, 1.2f, 1.2f);
+	ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
+	ColliderDesc.vTranslation = _float3(0.f, ColliderDesc.vScale.y * 0.5f, 0.f);
+
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
+		return E_FAIL;
+
+	/* For.Com_SPHERE */
+	ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
+
+	ColliderDesc.vScale = _float3(1.f, 1.f, 1.f);
+	ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
+	ColliderDesc.vTranslation = _float3(0.f, ColliderDesc.vScale.y * 0.5f, 0.f);
+
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_SPHERE"), TEXT("Com_SPHERE"), (CComponent**)&m_pSphereCom, &ColliderDesc)))
+		return E_FAIL;
+
 	return S_OK;
 }
 

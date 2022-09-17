@@ -37,25 +37,7 @@ void CCamera_Formation::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	if (KEY(A,HOLD))
-	{
-		m_pTransformCom->Go_Left(fTimeDelta);
-	}
-	if (KEY(D, HOLD))
-	{
-		m_pTransformCom->Go_Right(fTimeDelta);
-	}
-
-	if (KEY(W, HOLD))
-	{
-		m_pTransformCom->Go_Up(fTimeDelta);
-	}
-
-	if (KEY(S, HOLD))
-	{
-		m_pTransformCom->Go_Down(fTimeDelta);
-	}
-
+	
 	if (FAILED(Bind_PipeLine()))
 		return;
 
