@@ -127,6 +127,18 @@
     <ClInclude Include="..\Public\StrUtil.h">
       <Filter>01.Utility\98.String_Util</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CFrustum.h">
+      <Filter>01.Utility\07.Frustum</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CQuadTree.h">
+      <Filter>01.Utility\03.Component\00.VIBuffer\QuadTree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Collider.h">
+      <Filter>01.Utility\03.Component\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DebugDraw.h">
+      <Filter>01.Utility\03.Component\Collider\DebugDraw</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\Font_Manager.h">
       <Filter>01.Utility\Font\Manager</Filter>
     </ClInclude>
@@ -242,6 +254,18 @@
     </ClCompile>
     <ClCompile Include="..\Private\StrUtil.cpp">
       <Filter>01.Utility\98.String_Util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CFrustum.cpp">
+      <Filter>01.Utility\07.Frustum</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CQuadTree.cpp">
+      <Filter>01.Utility\03.Component\00.VIBuffer\QuadTree</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Collider.cpp">
+      <Filter>01.Utility\03.Component\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DebugDraw.cpp">
+      <Filter>01.Utility\03.Component\Collider\DebugDraw</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Font_Manager.cpp">
       <Filter>01.Utility\Font\Manager</Filter>
@@ -367,6 +391,18 @@
     </Filter>
     <Filter Include="01.Utility\98.String_Util">
       <UniqueIdentifier>{d7422812-7e74-4996-9df7-c973c294bf13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\07.Frustum">
+      <UniqueIdentifier>{e4e18fbd-16d4-4d6a-8694-4ded5f4dac34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Component\00.VIBuffer\QuadTree">
+      <UniqueIdentifier>{a298ea93-1d28-479e-9026-fc8111dad396}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Component\Collider">
+      <UniqueIdentifier>{3b1e6af4-8067-4bf7-a6db-5c20a836b51a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Component\Collider\DebugDraw">
+      <UniqueIdentifier>{72824170-a440-4466-bf83-c9d195576128}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

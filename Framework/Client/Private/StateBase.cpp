@@ -10,6 +10,7 @@ CStateBase::CStateBase(CStudent * pStudent)
 {
 	Safe_AddRef(m_pStudent);
 	m_pModel = (CModel*)m_pStudent->Get_Component(L"Com_Model");
+	m_bCalledExit = false;
 }
 
 _bool CStateBase::Loop(_float fTimeDelta)

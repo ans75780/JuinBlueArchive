@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "..\Public\Camera_Formation.h"
 #include "GameInstance.h"
-
+#include "Key_Manager.h"
+#include "GameInstance.h"
 CCamera_Formation::CCamera_Formation(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CCamera(pDevice, pContext)
 {
@@ -36,8 +37,12 @@ void CCamera_Formation::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
+	
 	if (FAILED(Bind_PipeLine()))
 		return;
+
+
+
 }
 
 void CCamera_Formation::LateTick(_float fTimeDelta)

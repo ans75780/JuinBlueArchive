@@ -4,6 +4,7 @@
 #pragma warning (disable : 4251)
 #pragma warning (disable : 4819)
 
+
 #include <d3d11.h>
 #include <DirectXMath.h>
 
@@ -13,6 +14,9 @@
 #include <DirectXTK/SpriteBatch.h>
 #include <DirectXTK/SpriteFont.h>
 #include <DirectXTK/ScreenGrab.h>
+#include <DirectXTK/PrimitiveBatch.h>
+#include <DirectXTK/VertexTypes.h>
+#include <DirectXTK/Effects.h>
 
 #include <assimp/scene.h>
 #include <assimp/Importer.hpp>
@@ -24,7 +28,8 @@
 
 #include <typeinfo.h>
 
-#include <opencv2\opencv.hpp>
+#include <DirectXCollision.h>
+
 #include <opencv2\imgcodecs.hpp>
 #include <opencv2\imgproc.hpp>
 

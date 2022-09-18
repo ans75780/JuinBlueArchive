@@ -103,9 +103,6 @@
     <ClInclude Include="..\Public\State_Student_Run.h">
       <Filter>04. State\Run</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\ShaderFiles\Client_Shader_Defines.hpp">
-      <Filter>03.ShaderFiles</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Sky.h">
       <Filter>05.Sky</Filter>
     </ClInclude>
@@ -132,6 +129,18 @@
     </ClInclude>
     <ClInclude Include="..\Public\UI_LevelMoveButton.h">
       <Filter>02.GameObject\03. UI\02. UI_Button\01. LevelMoveButton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShaderFiles\Client_Shader_Defines.hpp">
+      <Filter>03.ShaderFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UserData.h">
+      <Filter>06. User</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Student_Default.h">
+      <Filter>04. State\DefaultState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Student_Callsign.h">
+      <Filter>04. State\CallSign</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Level_Lobby.h">
       <Filter>01.Level\02. Lobby</Filter>
@@ -257,6 +266,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\Level_Lobby.cpp">
       <Filter>01.Level\02. Lobby</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UserData.cpp">
+      <Filter>06. User</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Student_Default.cpp">
+      <Filter>04. State\DefaultState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Student_Callsign.cpp">
+      <Filter>04. State\CallSign</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -387,6 +405,18 @@
     </Filter>
     <Filter Include="02.GameObject\03. UI\02. UI_Button\01. LevelMoveButton">
       <UniqueIdentifier>{115c9f2b-a1c1-45b1-85ab-8903c95813a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. User">
+      <UniqueIdentifier>{452e91d5-a4d2-4a41-a5d4-a4a4c0cd6679}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\For.FormationLevel">
+      <UniqueIdentifier>{7bb8cc3e-d96c-4fb8-bebf-45bc18dd1502}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. State\DefaultState">
+      <UniqueIdentifier>{d7694f8d-13d4-4c4e-a667-d40b81b8f466}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. State\CallSign">
+      <UniqueIdentifier>{276d26cf-8b53-4732-b947-eff88e76dbfe}</UniqueIdentifier>
     </Filter>
     <Filter Include="01.Level\00. Loading">
       <UniqueIdentifier>{807441ba-e54d-4b86-960a-e96a8505241f}</UniqueIdentifier>

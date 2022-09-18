@@ -5,6 +5,12 @@ namespace Engine
 	enum MOUSEBUTTON { MBS_LBUTTON, MBS_RBUTTON, MBS_WHEEL, MBS_X, MBS_END };
 	enum MOUSEMOVE { MMS_X, MMS_Y, MMS_WHEEL, MMS_END };
 
+	typedef struct tagRayDesc
+	{
+		_vector	vRayOrigin;
+		_vector	vRayDir;
+	}RAYDESC;
+
 	typedef struct tagKeyFrame
 	{
 		XMFLOAT3		vScale;

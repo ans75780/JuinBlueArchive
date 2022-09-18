@@ -8,7 +8,7 @@ class CShader;
 class CRenderer;
 class CModel;
 class CMeshContainer;
-
+class CCollider;
 END
 
 BEGIN(Client)
@@ -30,14 +30,21 @@ public:
 
 	const _tchar*	Get_Name() { return m_szStudentName; }
 	class CStateMachineBase*		Get_StateMachine() { return m_pStateMachine; }
+	void	Set_Transform(_vector vPos);
 
 
+	_bool	Collision_AABB(RAYDESC& ray, _float& distance);
+
+
+	CCollider*		Get_AABB() { return m_pAABBCom; }
 private:
 	class CStateMachineBase* m_pStateMachine = nullptr;
 	CShader*				 m_pShaderCom = nullptr;
 	CRenderer*				 m_pRendererCom = nullptr;
 	CModel*					 m_pModelCom = nullptr;
-
+	CCollider*				m_pAABBCom = nullptr;
+	CCollider*				m_pOBBCom = nullptr;
+	CCollider*				m_pSphereCom = nullptr;
 
 private:
 	CMeshContainer*			m_pHalo = nullptr;

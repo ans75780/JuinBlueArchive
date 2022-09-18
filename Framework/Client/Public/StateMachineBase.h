@@ -23,6 +23,9 @@ public:
 
 public:
 	HRESULT		Setup_StateMachine(class CStateBase* pState);
+
+	HRESULT		Add_State(class CStateBase* pState);
+
 	void		Clear();
 
 public:

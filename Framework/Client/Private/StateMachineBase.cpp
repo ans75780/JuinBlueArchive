@@ -51,6 +51,16 @@ HRESULT CStateMachineBase::Setup_StateMachine(CStateBase * pState)
 	return S_OK;
 }
 
+HRESULT CStateMachineBase::Add_State(CStateBase * pState)
+{
+	if (nullptr == pState)
+		return E_FAIL;
+
+	m_States.push(pState);
+
+	return S_OK;
+}
+
 void CStateMachineBase::Clear()
 {
 	while (!m_States.empty())

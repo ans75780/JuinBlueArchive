@@ -33,7 +33,7 @@ protected:
 	_uint							m_iNumVertexBuffers = 0;
 	DXGI_FORMAT						m_eIndexFormat;
 	D3D11_PRIMITIVE_TOPOLOGY		m_eToplogy;
-
+	_float3*							m_pVerticesPos = nullptr;
 protected:
 	
 	

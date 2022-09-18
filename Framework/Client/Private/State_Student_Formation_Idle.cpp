@@ -27,7 +27,6 @@ HRESULT CState_Student_Formation_Idle::Initialize()
 		return E_FAIL;
 
 	m_pAnimation->Play();
-
 	return S_OK;
 }
 
@@ -39,15 +38,16 @@ _bool CState_Student_Formation_Idle::Loop(_float fTimeDelta)
 {
 	m_pAnimation->Update(fTimeDelta);
 	m_pModel->Update_CombinedMatrix();
-	if (KEY(Q, TAP))
-	{
+
+	if (m_bCalledExit)
 		return true;
-	}
+
 	return false;
 }
 
 CStateBase * CState_Student_Formation_Idle::Exit()
 {
+	m_bCalledExit = false;
 	return CState_Student_Formation_Pickup::Create(m_pStudent);
 }
 

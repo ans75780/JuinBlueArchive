@@ -11,6 +11,7 @@
 #include "PipeLine.h"
 #include "Font_Manager.h"
 #include "Light_Manager.h"
+#include "CFrustum.h"
 
 /* 1. 게임내에 필요한 객체(매니져등)들을 모아서 보관한다. */
 /* 2. 클라이언트 개발자가 접근하기좋은 루트를 제공해준다. 나. */
@@ -35,7 +36,7 @@ public: /* For.Graphic_Device */
 	HRESULT Clear_BackBuffer_View(_float4 vClearColor);
 	HRESULT Clear_DepthStencil_View();
 	HRESULT Present();
-
+	_float2	Get_ViewPort() { return m_pGraphic_Device->Get_ViewPort(); }
 
 public: /* For.Input_Device */
 	_byte Get_DIKeyState(_ubyte byKeyID);
@@ -87,6 +88,7 @@ public: /* For.PipeLine */
 	const _float4x4* Get_Transform_TP(CPipeLine::TRANSFORMSTATE eState);
 	_float4 Get_CamPosition();
 
+	RAYDESC&	Get_Ray();
 public: /* For.Font_Manager */
 	HRESULT Add_Font(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pFontTag, const _tchar* pFontFilePath);
 	HRESULT Render_Font(const _tchar* pFontTag, const _tchar* pString, const _float2& vPosition, _fvector vColor);
@@ -95,6 +97,9 @@ public: /* For.Font_Manager */
 public: /* For.Light_Manager */
 	HRESULT Add_Light(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const LIGHTDESC & LightDesc);
 	const LIGHTDESC* Get_LightDesc(_uint iIndex);
+
+public: /* For.Frustom */
+	_bool	IsIn_Frustum_InWorldSpace(_fvector vWorldPoint, _float fRange = 0);
 
 
 private:
@@ -108,7 +113,7 @@ private:
 	CTimer_Manager*					m_pTimer_Manager = nullptr;
 	CFont_Manager*					m_pFont_Manager = nullptr;
 	CLight_Manager*					m_pLight_Manager = nullptr;
-
+	CFrustum*						m_pFrustum = nullptr;
 public:
 	inline	_float4	Get_BackBufferColor() { return m_BackBuffer_Color; }
 	inline	void	Set_BackBufferColor(_float4 _color) { m_BackBuffer_Color = _color; }

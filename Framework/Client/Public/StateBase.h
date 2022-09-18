@@ -23,10 +23,16 @@ public:
 	virtual CStateBase*	Exit() = 0;
 public:
 	class CAnimation*	Get_Animation() { return m_pAnimation; }
+	void	CallExit() { m_bCalledExit = true; }
+
 protected:
 	class CAnimation*	m_pAnimation = nullptr;
 	class CModel*		m_pModel = nullptr;
 	class CStudent*		m_pStudent = nullptr;
+
+protected:
+	_bool				m_bCalledExit;
+
 public:
 	virtual void			Free();
 };

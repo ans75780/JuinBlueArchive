@@ -32,12 +32,9 @@ private:
 	CRenderer*				m_pRendererCom = nullptr;		
 	CVIBuffer_Cube*			m_pVIBufferCom = nullptr;
 
-
-
 private:
 	HRESULT SetUp_Components();
 	HRESULT SetUp_ShaderResource();
-
 public:
 	static CSky* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;

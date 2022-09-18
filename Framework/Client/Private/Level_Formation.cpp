@@ -11,7 +11,10 @@
 #include "StateMachineBase.h"
 #include "Level_GamePlay.h"
 #include "Level_Loading.h"
-#include "Transform.h"
+#include "PipeLine.h"
+#include "Collider.h"
+#include "UserData.h"
+#include "State_Student_Formation_Pickup.h"
 CLevel_Formation::CLevel_Formation(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -23,11 +26,16 @@ HRESULT CLevel_Formation::Initialize()
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 
+
+	m_vecFormationPos.push_back(XMVectorSet(-2.f, -1.f, 0.f, 1.f));
+	m_vecFormationPos.push_back(XMVectorSet(0.f, -1.f, 0.f, 1.f));
+	m_vecFormationPos.push_back(XMVectorSet(2.f, -1.f, 0.f, 1.f));
+
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
-	//if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
-	//	return E_FAIL;
+	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
+		return E_FAIL;
 
 	//if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"))))
 	//	return E_FAIL;
@@ -44,7 +52,16 @@ HRESULT CLevel_Formation::Initialize()
 	if (FAILED(Ready_Light()))
 		return E_FAIL;
 
+	_float3 vPos = { 0.f,0.f,0.f };
+	_float3 vSize = { 10.f,10.f,0.1f };
+	
+	m_iPickedIndex = 256;
 
+	
+
+
+
+	m_pRayBoard = new BoundingBox(vPos, vSize);
 
 	return S_OK;
 }
@@ -56,14 +73,104 @@ void CLevel_Formation::Tick(_float fTimeDelta)
 	if (GetKeyState(VK_SPACE) & 0x8000)
 	{
 		CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
-		Safe_AddRef(pGameInstance);
-
+	
+		vector<wstring>& m_vecUserData_Formation = CUserData::Get_Instance()->Get_Formation();
+		m_vecUserData_Formation.clear();
+		for (_uint i = 0; i < m_vecStudent.size(); i++)
+		{
+			m_vecUserData_Formation.push_back(m_vecStudent[i]->Get_Name());
+		}
 		if (FAILED(pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_GAMEPLAY))))
 			return;
-
-		Safe_Release(pGameInstance);
+	}
+	CGameInstance* pInst = GET_INSTANCE(CGameInstance);
+	RAYDESC ray;
+	_float distance = 0.f;
+	ray = pInst->Get_Ray();
+	if (KEY(LBUTTON, TAP) && m_bPicked == false)
+	{
+		for(_uint i = 0 ; i < m_vecStudent.size();i++)
+		if (m_vecStudent[i]->Collision_AABB(ray, distance))
+		{
+			m_iPickedIndex = i;
+			m_bPicked = true;
+			m_vecStudent[m_iPickedIndex]->Get_StateMachine()->Get_CurrentState()->CallExit();
+			break;
+		}
 	}
 
+	if (KEY(LBUTTON, HOLD))
+	{
+		if (m_bPicked)
+		{
+			if (m_pRayBoard->Intersects(ray.vRayOrigin, ray.vRayDir, distance))
+			{
+				_vector pickedPos = ray.vRayOrigin + ray.vRayDir * distance;
+
+				
+				BoundingBox* box = m_vecStudent[m_iPickedIndex]->Get_AABB()->Get_AABB();
+				pickedPos -= XMLoadFloat3(&box->Extents);
+				pickedPos = XMVectorSetZ(pickedPos, 0.f);
+
+				m_vecStudent[m_iPickedIndex]->Set_Transform(pickedPos);
+
+			}
+			for (_uint i = 0; i < m_vecStudent.size(); i++)
+			{
+				if (i == m_iPickedIndex)
+					continue;
+				m_vecStudent[i]->Set_Transform(m_vecFormationPos[i]);
+				if (m_vecStudent[m_iPickedIndex]->Get_AABB()->Collision_AABB((m_vecStudent[i]->Get_AABB())))
+				{
+					
+					_vector vPos = m_vecFormationPos[i];
+					
+					vPos = XMVectorSetZ(vPos, 0.3);
+	
+					m_vecStudent[i]->Set_Transform(vPos);
+				
+					break;
+				}
+			}
+
+		}
+	}
+
+	if (KEY(LBUTTON, AWAY))
+	{
+		_bool bChange = false;
+		if (m_iPickedIndex > 3)
+			return;
+		for (_uint i = 0; i < m_vecStudent.size(); i++)
+		{
+			if (i == m_iPickedIndex)
+				continue;
+
+			if (m_vecStudent[m_iPickedIndex]->Get_AABB()->Collision_AABB((m_vecStudent[i]->Get_AABB())))
+			{
+				//집은 캐릭터가 다른 캐릭터 위에 겹쳐져 있다면. 둘의 위치를 교환
+				m_vecStudent[m_iPickedIndex]->Set_Transform(m_vecFormationPos[i]);
+				m_vecStudent[i]->Set_Transform(m_vecFormationPos[m_iPickedIndex]);
+
+
+				//둘의 벡터 위치를 교환
+				CStudent*	pStudent = m_vecStudent[m_iPickedIndex];
+				m_vecStudent[m_iPickedIndex] = m_vecStudent[i];
+				m_vecStudent[i] = pStudent;
+
+				m_vecStudent[i]->Get_StateMachine()->Get_CurrentState()->CallExit();
+				bChange = true;
+				break;
+			}
+		}
+		if (!bChange)
+		{
+			m_vecStudent[m_iPickedIndex]->Set_Transform(m_vecFormationPos[m_iPickedIndex]);
+			m_vecStudent[m_iPickedIndex]->Get_StateMachine()->Get_CurrentState()->CallExit();
+		}
+		m_bPicked = false;
+	}
+	RELEASE_INSTANCE(CGameInstance);
 }
 
 HRESULT CLevel_Formation::Render()
@@ -88,7 +195,7 @@ HRESULT CLevel_Formation::Ready_Layer_Camera(const _tchar * pLayerTag)
 	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
 
 	CameraDesc.vEye = _float4(0.0f, 0.f, -3.f, 1.f);
-	CameraDesc.vAt = _float4(0.f, 0.f, 0.f, 1.f);
+	CameraDesc.vAt = _float4(0.f, 0.f, -1.f, 1.f);
 	CameraDesc.TransformDesc.fSpeedPerSec = 5.f;
 	CameraDesc.TransformDesc.fRotationPerSec = XMConvertToRadians(90.0f);
 
@@ -111,7 +218,8 @@ HRESULT CLevel_Formation::Ready_Layer_BackGround(const _tchar * pLayerTag)
 	Safe_AddRef(pGameInstance);
 
 	/* For.Sky */
-	if (FAILED(pGameInstance->Add_GameObject(LEVEL_FORMATION, pLayerTag, TEXT("Prototype_GameObject_Sky"))))
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_STATIC, pLayerTag, TEXT("Prototype_GameObject_Sky"), 
+		L"Prototype_Component_Texture_Formaiton_Background")))
 		return E_FAIL;
 
 	Safe_Release(pGameInstance);
@@ -133,26 +241,26 @@ HRESULT CLevel_Formation::Ready_Layer_Student(const _tchar * pLayerTag)
 
 	CGameObject* pStudent = nullptr;
 
-	if (FAILED(pGameInstance->Add_GameObject(LEVEL_FORMATION, pLayerTag, TEXT("Prototype_Student_Serika"), (void*)&tempDesc, &pStudent)))
-		return E_FAIL;
-	((CStudent*)pStudent)->Get_StateMachine()->Setup_StateMachine(CState_Student_Formation_Idle::Create((CStudent*)pStudent));
-	XMVECTOR vTranslation;
-	vTranslation = XMVectorSet(-1.f, 0.f, 0.f, 1.f);
+	_tchar	szStudentPath[MAX_PATH] = L"Prototype_Student_";
+	_tchar	szStudentPullName[MAX_PATH] = L"";
 
-	((CTransform*)pStudent->Get_Component(L"Com_Transform"))->Set_State(CTransform::STATE_TRANSLATION, vTranslation);
+	vector<wstring> m_formationStr = CUserData::Get_Instance()->Get_Formation();
+	for (_uint i = 0; i < m_formationStr.size(); i++)
+	{
+		
+		lstrcpy(szStudentPullName, szStudentPath);
+		lstrcat(szStudentPullName, m_formationStr[i].c_str());
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_FORMATION, pLayerTag, szStudentPullName, (void*)&tempDesc, &pStudent)))
+			return E_FAIL;
+		((CStudent*)pStudent)->Get_StateMachine()->Setup_StateMachine(CState_Student_Formation_Idle::Create((CStudent*)pStudent));
+		
+		((CStudent*)pStudent)->Set_Transform(m_vecFormationPos[i]);
+		m_vecStudent.push_back((CStudent*)pStudent);
+		
 
 
-	if (FAILED(pGameInstance->Add_GameObject(LEVEL_FORMATION, pLayerTag, TEXT("Prototype_Student_Haruka"), (void*)&tempDesc, &pStudent)))
-		return E_FAIL;
-	((CStudent*)pStudent)->Get_StateMachine()->Setup_StateMachine(CState_Student_Formation_Idle::Create((CStudent*)pStudent));
-	
-	vTranslation = XMVectorSet(1.f, 0.f, 0.f, 1.f);
-
-	((CTransform*)pStudent->Get_Component(L"Com_Transform"))->Set_State(CTransform::STATE_TRANSLATION, vTranslation);
-
-
+	}
 	Safe_Release(pGameInstance);
-
 	return S_OK;
 }
 
@@ -210,6 +318,6 @@ CLevel_Formation * CLevel_Formation::Create(ID3D11Device* pDevice, ID3D11DeviceC
 void CLevel_Formation::Free()
 {
 	__super::Free();
-
+	Safe_Delete(m_pRayBoard);
 }
 

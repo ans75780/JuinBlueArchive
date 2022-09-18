@@ -3,7 +3,7 @@
 
 namespace Engine
 {
-	CTransform;
+	class CTransform;
 }
 
 

@@ -42,7 +42,7 @@ protected:
 
 protected:
 	HRESULT Bind_PipeLine();	
-
+	
 public:
 	virtual CGameObject* Clone(void* pArg) = 0;
 	virtual void Free() override;

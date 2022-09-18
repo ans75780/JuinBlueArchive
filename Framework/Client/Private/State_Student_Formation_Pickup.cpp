@@ -28,6 +28,8 @@ HRESULT CState_Student_Formation_Pickup::Initialize()
 
 	m_pAnimation->Play();
 	m_pTransform = m_pStudent->Get_Transform();
+
+
 	return S_OK;
 }
 
@@ -41,10 +43,8 @@ _bool CState_Student_Formation_Pickup::Loop(_float fTimeDelta)
 	m_pAnimation->Update(fTimeDelta);
 	m_pModel->Update_CombinedMatrix();
 	
-	if (KEY(Q, AWAY))
-	{
+	if (m_bCalledExit)
 		return true;
-	}
 
 	return false;
 }

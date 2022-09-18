@@ -40,6 +40,7 @@ void CTerrain::Tick(_float fTimeDelta)
 
 void CTerrain::LateTick(_float fTimeDelta)
 {
+	m_pVIBufferCom->Culling(m_pTransformCom->Get_WorldMatrix());
 	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
 }
 
