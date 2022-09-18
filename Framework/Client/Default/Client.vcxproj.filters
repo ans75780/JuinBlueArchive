@@ -400,6 +400,9 @@
     <Filter Include="01.Level\02. Lobby">
       <UniqueIdentifier>{b9c2b90b-ba80-4621-b4f6-fdffb5e71fd1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObject\03. UI\03. UI_Text">
+      <UniqueIdentifier>{b15bf238-2e5d-4183-89a0-9422f902af02}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">

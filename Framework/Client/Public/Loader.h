@@ -50,9 +50,6 @@ private:
 	CRITICAL_SECTION		m_CriticalSection;
 	_bool					m_isFinished = false;
 	_tchar					m_szLoadingText[MAX_PATH] = TEXT("");
-
-public:
-	HRESULT LoadUITexture(char* folderName, void* pGameInstance);
 	
 public:
 	static CLoader* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevel);

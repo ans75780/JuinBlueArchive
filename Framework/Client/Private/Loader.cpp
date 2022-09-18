@@ -91,23 +91,10 @@ HRESULT CLoader::Loading_ForLogoLevel()
 {
 	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
 	Safe_AddRef(pGameInstance);
-	
-#pragma region PROTOTYPE_GAMEOBJECT
 
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
 
-#pragma endregion
-
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중이비낟. "));
-
-#pragma region UI텍스쳐 로드
-
-	LoadUITexture("Combat", pGameInstance);
-	LoadUITexture("Common", pGameInstance);
-	LoadUITexture("Emoji", pGameInstance);
-	LoadUITexture("Floater", pGameInstance);
-	
-#pragma endregion
 
 	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중이비낟. "));
 
@@ -191,7 +178,7 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	/* For.Prototype_GameObject_Camera_Free*/
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Camera_Free"),
 		CCamera_Free::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
+		return E_FAIL;		//왠진모르겠지만 얘지우면 레퍼런스카운트 잘받아짐
 
 
 	///* For.Prototype_Student_Serika */
@@ -224,7 +211,7 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 #pragma region BUFFER
 	lstrcpy(m_szLoadingText, TEXT("버퍼를 로딩중이비낟. "));
 
-	///* For.Prototype_Component_VIBuffer_Cube*/
+	//* For.Prototype_Component_VIBuffer_Cube*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Cube"),
 		CVIBuffer_Cube::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
@@ -377,65 +364,6 @@ HRESULT CLoader::Loading_ForMapToolLevel()
 	m_isFinished = true;
 
 	Safe_Release(pGameInstance);
-
-	return S_OK;
-}
-
-HRESULT CLoader::LoadUITexture(char * folderName, void * pGameInstance)
-{
-	string jsonPath = "../../Resources/UI/UI_original/json/";
-	jsonPath += folderName;
-	jsonPath += ".json";
-
-	json	JsonUI;
-	wchar_t* pUtil_jsonPath = CStrUtil::ConvertCtoWC(jsonPath.c_str());
-	if (FAILED(CJson_Utility::Load_Json(pUtil_jsonPath, &JsonUI)))
-	{
-		string jsonFail = "제이슨";
-		jsonFail += folderName;
-		jsonFail += "로드 실패";
-		wchar_t* pUtil_Fail = CStrUtil::ConvertCtoWC(jsonFail.c_str());
-
-		MessageBox(0, pUtil_Fail, TEXT("System Error"), MB_OK);
-		Safe_Delete_Array(pUtil_Fail);
-		return E_FAIL;
-	}
-	Safe_Delete_Array(pUtil_jsonPath);
-
-	auto UI_json_mSprite = JsonUI["mSprites"];
-	for (auto it = UI_json_mSprite.begin(); it != UI_json_mSprite.end(); ++it)
-	{
-		string _name = (*it)["name"];
-
-		string TextureName = "Prototype_Component_Texture_";
-		TextureName += _name;
-		TextureName += "_";
-		TextureName += folderName;
-
-		string _ImagePath = "../../Resources/UI/UI_extract/image/";
-		_ImagePath += folderName;
-		_ImagePath += "/";
-		_ImagePath += _name;
-		_ImagePath += ".png";
-
-		CGameInstance* pGamePointer = (CGameInstance*)pGameInstance;
-
-		if (FAILED(pGamePointer->Add_Prototype(LEVEL_STATIC
-			, CStrUtil::ConvertCtoWC(TextureName.c_str())
-			,CTexture::Create(m_pDevice, m_pContext
-			, CStrUtil::ConvertCtoWC(_ImagePath.c_str())))))
-		{
-			string jsonFail = "제이슨을 통한 경로 이미지";
-			jsonFail += folderName;
-			jsonFail += "로드 실패";
-			wchar_t* pUtil_JsonFail = CStrUtil::ConvertCtoWC(jsonFail.c_str());
-
-			MessageBox(0, pUtil_JsonFail, TEXT("System Error"), MB_OK);
-			Safe_Delete_Array(pUtil_JsonFail);
-			return E_FAIL;
-		}
-
-	}
 
 	return S_OK;
 }

@@ -9,6 +9,7 @@
 #include "Key_Manager.h"
 #include "UI_Manager.h"
 #include "PipeLine.h"
+#include "Font_Manager.h"
 #include "Light_Manager.h"
 
 /* 1. 게임내에 필요한 객체(매니져등)들을 모아서 보관한다. */
@@ -86,14 +87,14 @@ public: /* For.PipeLine */
 	const _float4x4* Get_Transform_TP(CPipeLine::TRANSFORMSTATE eState);
 	_float4 Get_CamPosition();
 
+public: /* For.Font_Manager */
+	HRESULT Add_Font(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pFontTag, const _tchar* pFontFilePath);
+	HRESULT Render_Font(const _tchar* pFontTag, const _tchar* pString, const _float2& vPosition, _fvector vColor);
+
 
 public: /* For.Light_Manager */
 	HRESULT Add_Light(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const LIGHTDESC & LightDesc);
 	const LIGHTDESC* Get_LightDesc(_uint iIndex);
-
-public:
-
-
 
 
 private:
@@ -105,6 +106,7 @@ private:
 	CKey_Manager*					m_pKey_Manager = nullptr;
 	CUI_Manager*					m_pUI_Manager = nullptr;
 	CTimer_Manager*					m_pTimer_Manager = nullptr;
+	CFont_Manager*					m_pFont_Manager = nullptr;
 	CLight_Manager*					m_pLight_Manager = nullptr;
 
 public:

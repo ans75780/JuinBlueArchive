@@ -13,11 +13,15 @@ CGameInstance::CGameInstance()
 	, m_pPipeLine(CPipeLine::Get_Instance())
 	, m_pKey_Manager(CKey_Manager::Get_Instance())
 	, m_pUI_Manager(CUI_Manager::Get_Instance())
+	, m_pFont_Manager(CFont_Manager::Get_Instance())
 	, m_pLight_Manager(CLight_Manager::Get_Instance())
 
 	
 {	
 	Safe_AddRef(m_pLight_Manager);
+	Safe_AddRef(m_pFont_Manager);
+	Safe_AddRef(m_pUI_Manager);
+	Safe_AddRef(m_pKey_Manager);
 	Safe_AddRef(m_pPipeLine);
 	Safe_AddRef(m_pTimer_Manager);
 	Safe_AddRef(m_pComponent_Manager);
@@ -25,15 +29,15 @@ CGameInstance::CGameInstance()
 	Safe_AddRef(m_pLevel_Manager);
 	Safe_AddRef(m_pInput_Device);
 	Safe_AddRef(m_pGraphic_Device);
-	Safe_AddRef(m_pKey_Manager);
-	Safe_AddRef(m_pUI_Manager);
-
 }
 
 HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, const GRAPHICDESC& GraphicDesc, ID3D11Device** ppDeviceOut, ID3D11DeviceContext** ppDeviceContextOut)
 {
-	if (nullptr == m_pGraphic_Device)
-		return E_FAIL;	
+	if (nullptr == m_pGraphic_Device ||
+		nullptr == m_pInput_Device ||
+		nullptr == m_pObject_Manager ||
+		nullptr == m_pComponent_Manager)
+		return E_FAIL;
 
 	/* 그래픽디바이스. */
 	if (FAILED(m_pGraphic_Device->Ready_Graphic_Device(GraphicDesc.hWnd, GraphicDesc.isWindowMode, GraphicDesc.iWinCX, GraphicDesc.iWinCY, ppDeviceOut, ppDeviceContextOut)))
@@ -85,6 +89,7 @@ HRESULT CGameInstance::Tick_Engine(_float fTimeDelta)
 	m_pPipeLine->Tick();
 
 	m_pObject_Manager->LateTick(fTimeDelta);
+
 	m_pUI_Manager->LateTick(fTimeDelta);
 	return S_OK;
 }
@@ -348,6 +353,22 @@ _float4 CGameInstance::Get_CamPosition()
 	return m_pPipeLine->Get_CamPosition();
 }
 
+HRESULT CGameInstance::Add_Font(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, const _tchar * pFontTag, const _tchar * pFontFilePath)
+{
+	if (nullptr == m_pFont_Manager)
+		return E_FAIL;
+
+	return m_pFont_Manager->Add_Font(pDevice, pContext, pFontTag, pFontFilePath);
+}
+
+HRESULT CGameInstance::Render_Font(const _tchar * pFontTag, const _tchar * pString, const _float2 & vPosition, _fvector vColor)
+{
+	if (nullptr == m_pFont_Manager)
+		return E_FAIL;
+
+	return m_pFont_Manager->Render_Font(pFontTag, pString, vPosition, vColor);
+}
+
 
 
 void CGameInstance::Release_Engine()
@@ -364,6 +385,8 @@ void CGameInstance::Release_Engine()
 
 	CPipeLine::Get_Instance()->Destroy_Instance();
 	
+	CFont_Manager::Get_Instance()->Destroy_Instance();
+
 	CLight_Manager::Get_Instance()->Destroy_Instance();
 
 	CInput_Device::Get_Instance()->Destroy_Instance();	
@@ -378,6 +401,7 @@ void CGameInstance::Release_Engine()
 void CGameInstance::Free()
 {
 	Safe_Release(m_pLight_Manager);
+	Safe_Release(m_pFont_Manager);
 	Safe_Release(m_pPipeLine);
 	Safe_Release(m_pTimer_Manager);
 	Safe_Release(m_pComponent_Manager);

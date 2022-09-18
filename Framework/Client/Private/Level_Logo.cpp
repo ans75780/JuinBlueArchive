@@ -11,7 +11,7 @@
 CLevel_Logo::CLevel_Logo(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
 {
-
+	
 }
 
 HRESULT CLevel_Logo::Initialize()
@@ -21,9 +21,6 @@ HRESULT CLevel_Logo::Initialize()
 
 	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
 		return E_FAIL;	
-
-	//if (FAILED(UI_Extract()))   //UI 이미지 자르기함수
-	//	return E_FAIL;
 
 	return S_OK;
 }

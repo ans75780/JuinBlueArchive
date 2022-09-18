@@ -127,6 +127,9 @@
     <ClInclude Include="..\Public\StrUtil.h">
       <Filter>01.Utility\98.String_Util</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Font_Manager.h">
+      <Filter>01.Utility\Font\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -239,6 +242,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\StrUtil.cpp">
       <Filter>01.Utility\98.String_Util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Font_Manager.cpp">
+      <Filter>01.Utility\Font\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
