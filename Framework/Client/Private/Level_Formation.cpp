@@ -125,7 +125,7 @@ void CLevel_Formation::Tick(_float fTimeDelta)
 					
 					_vector vPos = m_vecFormationPos[i];
 					
-					vPos = XMVectorSetZ(vPos, 0.3);
+					vPos = XMVectorSetZ(vPos, 0.3f);
 	
 					m_vecStudent[i]->Set_Transform(vPos);
 				
