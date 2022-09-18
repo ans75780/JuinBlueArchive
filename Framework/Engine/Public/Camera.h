@@ -36,8 +36,7 @@ public:
 	virtual void Tick(_float fTimeDelta);
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
-public:
-	void			Calc_Ray();
+
 protected:
 	CAMERADESC						m_CameraDesc;
 

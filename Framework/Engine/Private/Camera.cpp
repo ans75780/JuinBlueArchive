@@ -45,10 +45,6 @@ HRESULT CCamera::Render()
 	return S_OK;
 }
 
-void CCamera::Calc_Ray()
-{
-}
-
 HRESULT CCamera::Bind_PipeLine()
 {
 	CPipeLine*			pPipeLine = GET_INSTANCE(CPipeLine);	
