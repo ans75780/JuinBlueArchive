@@ -433,6 +433,9 @@
     <Filter Include="02.GameObject\03. UI\03. UI_Text">
       <UniqueIdentifier>{b15bf238-2e5d-4183-89a0-9422f902af02}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObject\01. Camera\NewFilter1">
+      <UniqueIdentifier>{42a383c4-c89f-4547-a338-bdc7644637a0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">

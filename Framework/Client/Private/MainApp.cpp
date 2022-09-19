@@ -226,7 +226,6 @@ HRESULT CMainApp::Ready_Static_Models()
 	_float4x4 ScaleMatrix;
 	mat = XMMatrixIdentity();
 
-
 	/* For.Prototype_Component_Model_Serika*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Serika"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Serika_Original/", "Serika_Original.fbx", mat))))
@@ -235,6 +234,11 @@ HRESULT CMainApp::Ready_Static_Models()
 	/* For.Prototype_Component_Model_Serika*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Haruka"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Haruka_Original/", "Haruka_Original.fbx", mat))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_Serika*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Zunko"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Zunko_Original/", "Zunko_Original.fbx", mat))))
 		return E_FAIL;
 
 	return S_OK;

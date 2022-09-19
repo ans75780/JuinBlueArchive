@@ -93,7 +93,16 @@ HRESULT CCamera_Event::Render()
 	return S_OK;
 }
 
-CCamera_Event * CCamera_Event::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, class CModel* model, EVENT_TYPE eType)
+void CCamera_Event::Set_Event(CCamera * pReturnCamera, CAnimation * pAnimation, _float3 vOffset)
+{
+	m_pReturnToCam = pReturnCamera;
+	m_pAnimation = pAnimation;
+	m_vOffset = vOffset;
+
+}
+
+
+CCamera_Event * CCamera_Event::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
 	CCamera_Event*		pInstance = new CCamera_Event(pDevice, pContext);
 	if (FAILED(pInstance->Initialize_Prototype()))
@@ -103,6 +112,11 @@ CCamera_Event * CCamera_Event::Create(ID3D11Device* pDevice, ID3D11DeviceContext
 	}
 
 	return pInstance;
+}
+
+CCamera_Event * CCamera_Event::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
+{
+	return nullptr;
 }
 
 CGameObject * CCamera_Event::Clone(void * pArg)

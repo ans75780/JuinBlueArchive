@@ -38,11 +38,14 @@ public:
 	virtual HRESULT Render();
 
 protected:
-	CAMERADESC						m_CameraDesc;
+	static CCamera*	g_MainCam;
 
 protected:
-	HRESULT Bind_PipeLine();	
-	
+	CAMERADESC						m_CameraDesc;
+protected:
+	HRESULT Bind_PipeLine();
+	void	Set_MainCam() { CCamera::g_MainCam = this; }
+	_bool	IsMainCam();
 public:
 	virtual CGameObject* Clone(void* pArg) = 0;
 	virtual void Free() override;

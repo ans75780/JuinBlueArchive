@@ -1,6 +1,8 @@
 #include "..\Public\Camera.h"
 #include "GameInstance.h"
 
+CCamera*	CCamera::g_MainCam = nullptr;
+
 CCamera::CCamera(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject(pDevice, pContext)
 {
@@ -60,9 +62,12 @@ HRESULT CCamera::Bind_PipeLine()
 	return S_OK;
 }
 
+_bool CCamera::IsMainCam()
+{
+	return this ==CCamera::g_MainCam;
+}
+
 void CCamera::Free()
 {
 	__super::Free();
-
-
 }
