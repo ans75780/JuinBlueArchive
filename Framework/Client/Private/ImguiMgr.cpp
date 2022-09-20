@@ -54,7 +54,6 @@ HRESULT CImguiMgr::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pConte
 	ImGui_ImplWin32_Init(g_hWnd);
 	ImGui_ImplDX11_Init(m_pDevice, m_pContext);
 
-
 	return S_OK;
 }
 
@@ -477,21 +476,20 @@ void CImguiMgr::UITool_View(void)	//UI툴  새창을 띄움
 
 void CImguiMgr::UITool_SelectUI(void)
 {
-	static _uint ChangeLevelID = m_currentLevelID;
+	static	_uint	ChangeLevelID = m_currentLevelID;	//레벨바뀌면 셀렉된 UI nullptr 되게만듬
+	static	CUI*	ChancgeUI = nullptr;
+	static	_float	InputSize[3] = { 100.f, 100.f, 1.f };
+	static	_float	InputPos[3] = { 0.f, 0.f, 0.f };
+	static	char	InputName[MAX_PATH] = {};
 
-	if (KEY(RBUTTON, TAP))
+	if (KEY(RBUTTON, TAP))	//우클릭시 null
 		m_pSelectUI = nullptr;
-	if (ChangeLevelID != m_currentLevelID)
+
+	if (ChangeLevelID != m_currentLevelID)	//레벨바뀔시 Null
 	{
 		ChangeLevelID = m_currentLevelID;
 		m_pSelectUI = nullptr;
 	}
-
-	static CUI* ChancgeUI = nullptr;
-	static _float InputSize[3] = { 100.f, 100.f, 1.f };
-	static _float InputPos[3] = { 0.f, 0.f, 0.f };
-	static char InputName[MAX_PATH] = {};
-	static unsigned int MoveLevelSelNum = 5;	//LEVEL_END임
 
 	ImGui::Text("Select_UI_Desc");
 
@@ -519,7 +517,8 @@ void CImguiMgr::UITool_SelectUI(void)
 		InputPos[0] = tempPos.x;
 		InputPos[1] = tempPos.y;
 
-		MoveLevelSelNum = dynamic_cast<CUI_LevelMoveButton*>(m_pSelectUI)->GetMoveLevel() - 2; //스태틱,로딩레벨을 뺀 레벨
+		const char* LevelMoveComboSizeCheck[] = { SELECT_LEVEL , "LEVEL_END" };
+		m_uSelectUILevelMoveNum = IM_ARRAYSIZE(LevelMoveComboSizeCheck);
 	}
 
 	if (ImGui::InputText("Name##2", InputName, MAX_PATH))
@@ -544,27 +543,30 @@ void CImguiMgr::UITool_SelectUI(void)
 		m_pSelectUI->Set_Pos(_float3(InputPos[0], InputPos[1], InputPos[2]));
 	}
 	
-	
-	const char* MoveLevelList[] = { SELECT_LEVEL, "LEVEL_END" };
-	const char* MoveLevelValue = MoveLevelList[MoveLevelSelNum];
-	if (ImGui::BeginCombo("Btn Event MoveLevel", MoveLevelValue, 0))
-	{
-		for (int i = 0; i < IM_ARRAYSIZE(MoveLevelList); ++i)
-		{
-			const bool is_selected = (MoveLevelSelNum == i);
-			if (ImGui::Selectable(MoveLevelList[i], is_selected))
-			{
-				MoveLevelSelNum = i;
+	//클래스별 추가항목//
 
-				dynamic_cast<CUI_LevelMoveButton*>(m_pSelectUI)->SetMoveLevel(MoveLevelSelNum + 2);
-			}
-		}
-		ImGui::EndCombo();
+	char* tempClassName = CStrUtil::ConvertWCtoC(m_pSelectUI->Get_UIClassName());
+	if (!strcmp(tempClassName, "CUI_LevelMoveButton"))
+	{
+		m_uSelectUILevelMoveNum = dynamic_cast<CUI_LevelMoveButton*>(m_pSelectUI)->GetMoveLevel() - 2; //스태틱,로딩레벨을 뺀 레벨
+
+		SelectUI_LevelMoveButton();
 	}
+	else if (!strcmp(tempClassName, "CUI_Text"))
+	{
+		SelectUI_Text();
+	}
+
+	Safe_Delete_Array(tempClassName);
+
+	//클래스별 추가항목 END//
 
 
 	ImGui::Checkbox("MouseMove", &m_bSelectUIMove);
 	
+	if (KEY(M, TAP) && false == m_bSelectUIMove)
+		m_bSelectUIMove = true;
+
 	if (m_bSelectUIMove)
 	{
 		ImGuiIO& io = ImGui::GetIO();
@@ -583,6 +585,31 @@ void CImguiMgr::UITool_SelectUI(void)
 		m_pSelectUI->Dead();
 		m_pSelectUI = nullptr;
 	}
+}
+
+void CImguiMgr::SelectUI_LevelMoveButton(void)
+{
+	const char* MoveLevelList[] = { SELECT_LEVEL, "LEVEL_END" };
+	const char* MoveLevelValue = MoveLevelList[m_uSelectUILevelMoveNum];
+	if (ImGui::BeginCombo("MoveLevel", MoveLevelValue, 0))
+	{
+		for (int i = 0; i < IM_ARRAYSIZE(MoveLevelList); ++i)
+		{
+			const bool is_selected = (m_uSelectUILevelMoveNum == i);
+			if (ImGui::Selectable(MoveLevelList[i], is_selected))
+			{
+				m_uSelectUILevelMoveNum = i;
+
+				dynamic_cast<CUI_LevelMoveButton*>(m_pSelectUI)->SetMoveLevel(m_uSelectUILevelMoveNum + 2);
+			}
+		}
+		ImGui::EndCombo();
+	}
+}
+
+void CImguiMgr::SelectUI_Text(void)
+{
+	//텍스트변경해줘
 }
 
 void CImguiMgr::Define_LevelMoveButton(_uint _Level)	//LevelButton 을 정의하고 만들어줌 (Create는 밖으로 뻴것같음)

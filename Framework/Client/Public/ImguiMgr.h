@@ -39,7 +39,9 @@ private:
 	void		MapTool_View(void);
 	
 	void		UITool_View(void);
-	void			UITool_SelectUI(void);
+	void			UITool_SelectUI(void);	//선택한 UI의 설정바꾸기
+	void				SelectUI_LevelMoveButton(void);	
+	void				SelectUI_Text(void);
 	void			Define_LevelMoveButton(_uint _Level);
 	
 private:
@@ -65,9 +67,13 @@ private:
 	};
 	vector<t_ImageVec> m_ImageVec;
 	
-	CUI*	m_pSelectUI;
-	bool	m_bSelectUIMove = false;
-	bool	m_bSelectUILevelMoveMode = false;
+
+	_uint	m_uSelectUILevelMoveNum = 0;			//선택한 UI가 레벨무브버튼일때 쓰는 콤보박스용인덱스
+	bool	m_bSelectUILevelMoveMode = false;	//체크시 레벨이동이 가능해지는데...이거 릴리즈때..????
+	
+	CUI*	m_pSelectUI;						//선택한 UI 포인터보관용
+	bool	m_bSelectUIMove = false;			//선택한 UI마우스로 이동시키기
+
 
 public:
 	void	Set_SelectUI(CUI* _UI) { m_pSelectUI = _UI; }

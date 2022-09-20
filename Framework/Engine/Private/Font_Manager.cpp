@@ -21,13 +21,13 @@ HRESULT CFont_Manager::Add_Font(ID3D11Device * pDevice, ID3D11DeviceContext * pC
 	return S_OK;
 }
 
-HRESULT CFont_Manager::Render_Font(const _tchar * pFontTag, const _tchar * pString, const _float2 & vPosition, _fvector vColor)
+HRESULT CFont_Manager::Render_Font(const _tchar * pFontTag, const _tchar * pString, const _float2 & vPosition, _fvector vColor, _float fScale)
 {
 	CCustomFont*		pFont = Find_Font(pFontTag);
 	if (nullptr == pFont)
 		return E_FAIL;
 
-	return pFont->Render(pString, vPosition, vColor);
+	return pFont->Render(pString, vPosition, vColor, fScale);
 }
 
 CCustomFont * CFont_Manager::Find_Font(const _tchar * pFontTag)

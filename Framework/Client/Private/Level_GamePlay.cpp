@@ -40,8 +40,8 @@ HRESULT CLevel_GamePlay::Initialize()
 	//	return E_FAIL;
 
 
-	if (FAILED(Ready_Layer_Student(TEXT("Layer_Student"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_Student(TEXT("Layer_Student"))))
+	//	return E_FAIL;
 
 	if (FAILED(Ready_Light()))
 		return E_FAIL;

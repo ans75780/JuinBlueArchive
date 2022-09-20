@@ -19,24 +19,18 @@ CGameInstance::CGameInstance()
 
 	
 {	
-	Safe_AddRef(m_pLight_Manager);
-	Safe_AddRef(m_pFont_Manager);
-	Safe_AddRef(m_pUI_Manager);
-	Safe_AddRef(m_pKey_Manager);
-	Safe_AddRef(m_pPipeLine);
-	Safe_AddRef(m_pTimer_Manager);
-	Safe_AddRef(m_pComponent_Manager);
-	Safe_AddRef(m_pObject_Manager);
-	Safe_AddRef(m_pLevel_Manager);
-	Safe_AddRef(m_pInput_Device);
 	Safe_AddRef(m_pGraphic_Device);
+	Safe_AddRef(m_pInput_Device);
+	Safe_AddRef(m_pLevel_Manager);
+	Safe_AddRef(m_pObject_Manager);
+	Safe_AddRef(m_pComponent_Manager);
+	Safe_AddRef(m_pTimer_Manager);
+	Safe_AddRef(m_pPipeLine);
 	Safe_AddRef(m_pKey_Manager);
 	Safe_AddRef(m_pUI_Manager);
+	Safe_AddRef(m_pFont_Manager);
+	Safe_AddRef(m_pLight_Manager);
 	Safe_AddRef(m_pFrustum);
-
-
-
-	
 }
 
 HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, const GRAPHICDESC& GraphicDesc, ID3D11Device** ppDeviceOut, ID3D11DeviceContext** ppDeviceContextOut)
@@ -380,17 +374,16 @@ HRESULT CGameInstance::Add_Font(ID3D11Device * pDevice, ID3D11DeviceContext * pC
 	return m_pFont_Manager->Add_Font(pDevice, pContext, pFontTag, pFontFilePath);
 }
 
-HRESULT CGameInstance::Render_Font(const _tchar * pFontTag, const _tchar * pString, const _float2 & vPosition, _fvector vColor)
+HRESULT CGameInstance::Render_Font(const _tchar * pFontTag, const _tchar * pString, const _float2 & vPosition, _fvector vColor, _float fScale)
 {
 	if (nullptr == m_pFont_Manager)
 		return E_FAIL;
 
-	return m_pFont_Manager->Render_Font(pFontTag, pString, vPosition, vColor);
+	return m_pFont_Manager->Render_Font(pFontTag, pString, vPosition, vColor, fScale);
 }
 
 RAYDESC & CGameInstance::Get_Ray()
 {
-	// TODO: 여기에 반환 구문을 삽입합니다.
 	return m_pPipeLine->Get_Ray();
 }
 
@@ -428,8 +421,11 @@ void CGameInstance::Release_Engine()
 
 void CGameInstance::Free()
 {
+	Safe_Release(m_pFrustum);
 	Safe_Release(m_pLight_Manager);
 	Safe_Release(m_pFont_Manager);
+	Safe_Release(m_pUI_Manager);
+	Safe_Release(m_pKey_Manager);
 	Safe_Release(m_pPipeLine);
 	Safe_Release(m_pTimer_Manager);
 	Safe_Release(m_pComponent_Manager);
@@ -437,8 +433,4 @@ void CGameInstance::Free()
 	Safe_Release(m_pLevel_Manager);
 	Safe_Release(m_pInput_Device);
 	Safe_Release(m_pGraphic_Device);
-	Safe_Release(m_pKey_Manager);
-	Safe_Release(m_pUI_Manager);
-	Safe_Release(m_pFrustum);
-
 }

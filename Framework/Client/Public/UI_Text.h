@@ -34,15 +34,15 @@ public:
 
 public:
 	void	SetUIText(const _tchar* _text) { lstrcpy(m_szText, _text); }
-
+	void	SetUIScale(_float _Scale) { m_fScale = _Scale; }
 private:
 	HRESULT SetUp_Components();
 	HRESULT SetUp_ShaderResource();
 
 private:
-	_tchar	m_szText[MAX_PATH];
-	_bool	m_bUIButtonDown = false;
-	_float3	m_fOriginSize = { 0.f, 0.f, 0.f };
+	_tchar	m_szText[MAX_PATH]; //출력할텍스트
+	_float4	m_fColor;
+	_float	m_fScale;
 
 public:
 	static CUI_Text* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

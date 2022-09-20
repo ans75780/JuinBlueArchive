@@ -17,39 +17,22 @@ HRESULT CUI_Text::Initialize(void * pArg)
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
-	ZeroMemory(m_szText, MAX_PATH);
 	lstrcpy(m_szUIClass, TEXT("CUI_Text"));
+	ZeroMemory(m_szText, MAX_PATH);
+	m_fColor = _float4(1.f, 1.f, 1.f, 1.f);
+	m_fScale = 1.f;
 
 	return S_OK;
 }
 
 HRESULT CUI_Text::initialization()
 {
-	m_fOriginSize = m_fSize;
-
 	return S_OK;
 }
 
 void CUI_Text::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-
-	if (m_bUIButtonDown)
-	{
-		m_fSize.x = m_fOriginSize.x * 0.01f * 95.f;
-		m_fSize.y = m_fOriginSize.y * 0.01f * 95.f;
-
-		POINT ptTemp = GETMOUSEPOS;
-
-		if (nullptr == Get_MouseOveredUI(ptTemp))
-			m_bUIButtonDown = false;
-	}
-	else
-	{
-		m_fSize = m_fOriginSize;
-	}
-
-
 }
 
 void CUI_Text::LateTick(_float fTimeDelta)
@@ -61,23 +44,32 @@ void CUI_Text::LateTick(_float fTimeDelta)
 
 HRESULT CUI_Text::Render()
 {
-	if (nullptr == m_pShaderCom ||
-		nullptr == m_pVIBufferCom)
-		return E_FAIL;
+	//if (nullptr == m_pShaderCom ||
+	//	nullptr == m_pVIBufferCom)
+	//	return E_FAIL;
 
-	/* 셰이더 전역변수에 값을 던진다. */
-	if (FAILED(SetUp_ShaderResource()))
-		return E_FAIL;
+	///* 셰이더 전역변수에 값을 던진다. */
+	//if (FAILED(SetUp_ShaderResource()))
+	//	return E_FAIL;
 
-	m_pShaderCom->Begin(0);
-	m_pVIBufferCom->Render();
+	//m_pShaderCom->Begin(0);
+	//m_pVIBufferCom->Render();
 
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+	_float2 Pos;
+	Pos.x = m_fPos.x + (g_iWinCX * 0.5f);
+	Pos.y = m_fPos.y + (g_iWinCY * 0.5f);
+	
+	pGameInstance->Render_Font(TEXT("Font_Default"), m_szText, Pos, XMLoadFloat4(&m_fColor), m_fScale);
+	//m_pGameInstance->Render_Font(TEXT("Font_Default"), m_szFPS, _float2(0.f, 0.f), XMVectorSet(1.f, 1.f, 1.f, 1.f), 1.f);
+
+	RELEASE_INSTANCE(CGameInstance);
 	return S_OK;
 }
 
 void CUI_Text::OnLButtonDown()
 {
-	m_bUIButtonDown = true;
 }
 
 void CUI_Text::OnLButtonUp()

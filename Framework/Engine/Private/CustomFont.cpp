@@ -16,7 +16,7 @@ HRESULT CCustomFont::Initialize(const _tchar * pFontFilePath)
 	return S_OK;
 }
 
-HRESULT CCustomFont::Render(const _tchar* pString, const _float2& vPosition, _fvector vColor)
+HRESULT CCustomFont::Render(const _tchar * pString, const _float2 & vPosition, _fvector vColor, _float fScale)
 {
 	if (nullptr == m_pBatch ||
 		nullptr == m_pFont)
@@ -26,7 +26,37 @@ HRESULT CCustomFont::Render(const _tchar* pString, const _float2& vPosition, _fv
 
 	m_pBatch->Begin();
 
-	m_pFont->DrawString(m_pBatch, pString, vPosition, vColor);
+	SpriteEffects effects = SpriteEffects_None;
+
+	m_pFont->DrawString(
+		m_pBatch,
+		pString,
+		vPosition,
+		vColor,
+		0,
+		XMFLOAT2(0.f, 0.f),
+		fScale,
+		effects,
+		0
+	);
+
+	//m_pFont->DrawString(m_pBatch, pString, vPosition, vColor);
+
+
+
+	/*
+	void XM_CALLCONV DrawString(
+	_In_ SpriteBatch* spriteBatch,
+	_In_z_ wchar_t const* text,
+	XMFLOAT2 const& position,
+	FXMVECTOR color = Colors::White,
+	float rotation = 0,
+	XMFLOAT2 const& origin = Float2Zero,
+	float scale = 1,
+	SpriteEffects effects = SpriteEffects_None,
+	float layerDepth = 0
+	) const;
+	*/
 
 	m_pBatch->End();
 

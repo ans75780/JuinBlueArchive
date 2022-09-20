@@ -98,7 +98,7 @@ void CUI_LevelMoveButton::OnLButtonUp()
 				RELEASE_INSTANCE(CImguiMgr);
 				RELEASE_INSTANCE(CGameInstance);
 				m_bUIButtonDown = false;
-				return;
+				return;		//레벨이동 꺼져있으면 그냥여기서 나가짐
 			}
 			RELEASE_INSTANCE(CImguiMgr);
 #endif

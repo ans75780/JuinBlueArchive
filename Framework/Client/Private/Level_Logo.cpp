@@ -4,6 +4,7 @@
 #include "LEvel_Loading.h"
 
 #include "UI_LevelMoveButton.h"
+#include "UI_Text.h"
 
 //Json 사용
 #include "Json_Utility.h"
@@ -57,27 +58,22 @@ HRESULT CLevel_Logo::Ready_Layer_BackGround(const _tchar * pLayerTag)
 	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
 	Safe_AddRef(pGameInstance);
 
-	/*		릴리즈용 테스트입니다.
-	CUI * pUI = CUI_LevelMoveButton::Create(m_pDevice, m_pContext);
+	CUI * pUI = CUI_Text::Create(m_pDevice, m_pContext);
 
-	pUI->LoadUIImage(TEXT("Prototype_Component_Texture_AppIcon_Shiroko"));
-	pUI->Set_UIName(TEXT("Shiroko_Icon"));
-	pUI->Set_UIType((UI_TYPE)0);
-	pUI->Set_Size(_float3(100.f, 100.f, 1.f));
+	pUI->LoadUIImage(TEXT("Prototype_Component_Texture_UI_Default"));
+	pUI->Set_UIName(TEXT("TextUI_Cafe"));
+	pUI->Set_UIType(UI_TYPE::UI_BACKGROUND);
+	pUI->Set_Size(_float3(50.f, 50.f, 1.f));
 	pUI->Set_Pos(_float3(0.f, 0.f, 0.f));
 	pUI->Set_UILevel(LEVEL_LOGO);
-	dynamic_cast<CUI_LevelMoveButton*>(pUI)->SetMoveLevel(LEVEL_LOBBY);
+	dynamic_cast<CUI_Text*>(pUI)->SetUIScale(0.5f);
+	dynamic_cast<CUI_Text*>(pUI)->SetUIText(TEXT("카페"));
 	pUI->initialization();
 
 	if (FAILED(pGameInstance->Add_UI(LEVEL_LOGO, pUI)))	//받아온레벨에다 생성
 	{
 		MSG_BOX("UI생성실패");
 	}
-	*/
-
-	/* For.BackGround */
-	//if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOGO, pLayerTag, TEXT("Prototype_GameObject_BackGround"))))
-	//	return E_FAIL;
 	
 
 	Safe_Release(pGameInstance);
