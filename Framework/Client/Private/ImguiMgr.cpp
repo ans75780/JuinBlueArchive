@@ -200,8 +200,6 @@ void CImguiMgr::HelloJusin_Tap_Main(void)			//메인탭의 1번째 책갈피임
 	
 	if (ImGui::IsMousePosValid())
 		ImGui::Text("Mouse pos: (%g, %g)", io.MousePos.x, io.MousePos.y);
-
-
 }
 
 void CImguiMgr::HelloJusin_Tap_Object(void)	//Main탭의  OBJ리스트와, UI 리스트 나열
@@ -585,11 +583,9 @@ void CImguiMgr::UITool_SelectUI(void)
 		m_pSelectUI->Dead();
 		m_pSelectUI = nullptr;
 	}
-
 }
 
 void CImguiMgr::Define_LevelMoveButton(_uint _Level)	//LevelButton 을 정의하고 만들어줌 (Create는 밖으로 뻴것같음)
-
 {
 	static _float UI_Size[3] = { 100.f, 100.f, 1.f };
 	static _float UI_Pos[3] = { 0.f, 0.f, 0.f };
@@ -622,6 +618,9 @@ void CImguiMgr::Define_LevelMoveButton(_uint _Level)	//LevelButton 을 정의하고 �
 					Safe_Delete_Array(pUtil_name);
 				}
 			}
+			sort(m_ImageVec.begin(), m_ImageVec.end(),
+				[](t_ImageVec &s1, t_ImageVec &s2)
+			{ return s1.name[0] < s2.name[0]; });
 		}
 	}
 #pragma endregion 
@@ -681,7 +680,7 @@ void CImguiMgr::Define_LevelMoveButton(_uint _Level)	//LevelButton 을 정의하고 �
 	ImGui::InputFloat2("Set Size", UI_Size, "%.1f", 0);
 	ImGui::InputFloat2("Set Pos", UI_Pos, "%.1f", 0);
 
-	if (m_currentLevelID == LEVEL::LEVEL_LOADING || Render_Num == 5)
+	if (m_currentLevelID == LEVEL::LEVEL_LOADING || Render_Num == 5/*UI_NONE*/) //로딩이거나, UI그룹설정안했다면
 	{
 		ImGui::Text("RenderType is NONE");
 		return;

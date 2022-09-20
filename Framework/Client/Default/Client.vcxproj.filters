@@ -145,6 +145,9 @@
     <ClInclude Include="..\Public\Level_Lobby.h">
       <Filter>01.Level\02. Lobby</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\UI_Text.h">
+      <Filter>02.GameObject\03. UI\03. UI_Text</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -275,6 +278,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\State_Student_Callsign.cpp">
       <Filter>04. State\CallSign</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_Text.cpp">
+      <Filter>02.GameObject\03. UI\03. UI_Text</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

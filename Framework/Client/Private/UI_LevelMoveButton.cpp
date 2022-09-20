@@ -37,8 +37,8 @@ void CUI_LevelMoveButton::Tick(_float fTimeDelta)
 
 	if (m_bUIButtonDown)
 	{
-		m_fSize.x = m_fOriginSize.x * 0.01f * 80.f;
-		m_fSize.y = m_fOriginSize.y * 0.01f * 80.f;
+		m_fSize.x = m_fOriginSize.x * 0.01f * 90.f;
+		m_fSize.y = m_fOriginSize.y * 0.01f * 90.f;
 
 		POINT ptTemp = GETMOUSEPOS;
 
@@ -78,7 +78,8 @@ HRESULT CUI_LevelMoveButton::Render()
 
 void CUI_LevelMoveButton::OnLButtonDown()
 {
-	m_bUIButtonDown = true;
+	if (m_eUIType != UI_BACKGROUND)
+		m_bUIButtonDown = true;
 }
 
 void CUI_LevelMoveButton::OnLButtonUp()
@@ -142,7 +143,7 @@ CUI_LevelMoveButton * CUI_LevelMoveButton::Create(ID3D11Device * pDevice, ID3D11
 
 	if (FAILED(pInstance->Initialize(nullptr)))
 	{
-		MSG_BOX("Failed to Created : CBackGround");
+		MSG_BOX("Failed to Created : CUI_LevelMoveButton");
 		Safe_Release(pInstance);
 	}
 	return pInstance;

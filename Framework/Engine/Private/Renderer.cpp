@@ -1,6 +1,6 @@
 #include "..\Public\Renderer.h"
 #include "GameObject.h"
-
+#include "UI.h"
 
 CRenderer::CRenderer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CComponent(pDevice, pContext)
@@ -40,6 +40,13 @@ HRESULT CRenderer::Draw_RenderGroup()
 			{
 				return pSour->Get_CamDistance() > pDest->Get_CamDistance();
 			});			
+		}
+		else if (i == RENDER_UI)
+		{
+			m_RenderObjects[i].sort([](CGameObject* pSour, CGameObject* pDest)
+				{
+					return ((CUI*)pSour)->Get_Pos().z > ((CUI*)pDest)->Get_Pos().z;
+				});
 		}
 
 		for (auto& pGameObject : m_RenderObjects[i])

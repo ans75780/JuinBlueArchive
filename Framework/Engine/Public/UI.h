@@ -54,6 +54,7 @@ public:
 public:
 	virtual void	OnEvent(_uint iEventNum);
 	void			Dead() { m_bDead = true; }
+
 public:
 	virtual void	OnLButtonDown();
 	virtual void	OnLButtonUp();

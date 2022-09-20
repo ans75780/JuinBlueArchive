@@ -121,11 +121,13 @@ void CUI::Compute_Transform()
 {
 	if (nullptr == m_pTransformCom)
 		return;
-
+	_vector vPos;
 	m_pTransformCom->Set_Scaled(m_fSize);
-	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, 
-	XMVectorSet(m_fPos.x, m_fPos.y, ((_float)m_eUIType) / (_float)(UI_TYPE::UI_END), 1.f)
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION,
+		vPos = XMVectorSet(m_fPos.x, m_fPos.y, ((_float)m_eUIType) / (_float)(UI_TYPE::UI_END), 1.f)
 		);
+
+	XMStoreFloat3(&m_fPos, vPos);
 }
 
 void CUI::Add_Child(CUI * _pChild)
