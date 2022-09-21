@@ -448,7 +448,19 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="..\..\ShaderFiles\Shader_Cell.hlsl">
+      <Filter>03.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\ShaderFiles\Shader_Deferred.hlsl">
+      <Filter>03.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\ShaderFiles\Shader_VtxAnimModel.hlsl">
+      <Filter>03.ShaderFiles</Filter>
+    </FxCompile>
     <FxCompile Include="..\..\ShaderFiles\Shader_VtxCubeTex.hlsl">
+      <Filter>03.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\ShaderFiles\Shader_VtxInstance.hlsl">
       <Filter>03.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\..\ShaderFiles\Shader_VtxModel.hlsl">
@@ -457,10 +469,10 @@
     <FxCompile Include="..\..\ShaderFiles\Shader_VtxNorTex.hlsl">
       <Filter>03.ShaderFiles</Filter>
     </FxCompile>
-    <FxCompile Include="..\..\ShaderFiles\Shader_VtxTex.hlsl">
+    <FxCompile Include="..\..\ShaderFiles\Shader_VtxPointInstance.hlsl">
       <Filter>03.ShaderFiles</Filter>
     </FxCompile>
-    <FxCompile Include="..\..\ShaderFiles\Shader_VtxAnimModel.hlsl">
+    <FxCompile Include="..\..\ShaderFiles\Shader_VtxTex.hlsl">
       <Filter>03.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

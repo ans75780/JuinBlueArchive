@@ -45,8 +45,8 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(Ready_Static_Resource()))
 		return E_FAIL;
 
-	//if (FAILED(Ready_Static_Models()))
-	//	return E_FAIL;
+	if (FAILED(Ready_Static_Models()))
+		return E_FAIL;
 
 	CUserData::Get_Instance()->Initialize();
 

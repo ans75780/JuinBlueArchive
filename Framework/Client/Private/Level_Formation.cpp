@@ -89,16 +89,18 @@ void CLevel_Formation::Tick(_float fTimeDelta)
 	ray = pInst->Get_Ray();
 	if (KEY(LBUTTON, TAP) && m_bPicked == false)
 	{
-		for(_uint i = 0 ; i < m_vecStudent.size();i++)
-		if (m_vecStudent[i]->Collision_AABB(ray, distance))
+		for (_uint i = 0; i < m_vecStudent.size();i++)
 		{
-			m_iPickedIndex = i;
-			m_bPicked = true;
-			m_vecStudent[m_iPickedIndex]->Get_StateMachine()->Get_CurrentState()->CallExit();
-			break;
+			if (m_vecStudent[i]->Collision_AABB(ray, distance))
+			{
+				m_iPickedIndex = i;
+				m_bPicked = true;
+				m_vecStudent[m_iPickedIndex]->Get_StateMachine()->Get_CurrentState()->CallExit();
+				break;
+			}
 		}
+		
 	}
-
 	if (KEY(LBUTTON, HOLD))
 	{
 		if (m_bPicked)
@@ -132,7 +134,6 @@ void CLevel_Formation::Tick(_float fTimeDelta)
 					break;
 				}
 			}
-
 		}
 	}
 
@@ -163,7 +164,7 @@ void CLevel_Formation::Tick(_float fTimeDelta)
 				break;
 			}
 		}
-		if (!bChange)
+		if (!bChange && m_bPicked)
 		{
 			m_vecStudent[m_iPickedIndex]->Set_Transform(m_vecFormationPos[m_iPickedIndex]);
 			m_vecStudent[m_iPickedIndex]->Get_StateMachine()->Get_CurrentState()->CallExit();

@@ -274,10 +274,14 @@
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="..\..\ShaderFiles\Shader_Cell.hlsl" />
+    <FxCompile Include="..\..\ShaderFiles\Shader_Deferred.hlsl" />
     <FxCompile Include="..\..\ShaderFiles\Shader_VtxAnimModel.hlsl" />
     <FxCompile Include="..\..\ShaderFiles\Shader_VtxCubeTex.hlsl" />
+    <FxCompile Include="..\..\ShaderFiles\Shader_VtxInstance.hlsl" />
     <FxCompile Include="..\..\ShaderFiles\Shader_VtxModel.hlsl" />
     <FxCompile Include="..\..\ShaderFiles\Shader_VtxNorTex.hlsl" />
+    <FxCompile Include="..\..\ShaderFiles\Shader_VtxPointInstance.hlsl" />
     <FxCompile Include="..\..\ShaderFiles\Shader_VtxTex.hlsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

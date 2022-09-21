@@ -114,11 +114,6 @@ CCamera_Event * CCamera_Event::Create(ID3D11Device* pDevice, ID3D11DeviceContext
 	return pInstance;
 }
 
-CCamera_Event * CCamera_Event::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
-{
-	return nullptr;
-}
-
 CGameObject * CCamera_Event::Clone(void * pArg)
 {
 	CCamera_Event*		pInstance = new CCamera_Event(*this);

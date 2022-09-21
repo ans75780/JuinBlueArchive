@@ -67,6 +67,17 @@ void CStudent::Tick(_float fTimeDelta)
 void CStudent::LateTick(_float fTimeDelta)
 {
 	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+
+#ifdef _DEBUG
+	CGameInstance*	pInstance = GET_INSTANCE(CGameInstance);
+
+	if (pInstance->Get_CurrentLevelID() == LEVEL_FORMATION)
+	{
+		m_pRendererCom->Add_DebugRenderGroup(m_pAABBCom);
+	}
+#endif // _DEBUG
+
+
 }
 
 HRESULT CStudent::Render()
@@ -95,7 +106,7 @@ HRESULT CStudent::Render()
 	CGameInstance*	pInstance = GET_INSTANCE(CGameInstance);
 
 	if (pInstance->Get_CurrentLevelID() == LEVEL_FORMATION)
-		m_pAABBCom->Render();
+		//m_pAABBCom->Render();
 	//m_pOBBCom->Render();
 	//m_pSphereCom->Render();
 #endif // _DEBUG
@@ -191,29 +202,6 @@ HRESULT CStudent::SetUp_ShaderResource()
 		return E_FAIL;
 	if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", pGameInstance->Get_Transform_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4))))
 		return E_FAIL;
-
-
-	const LIGHTDESC* pLightDesc = pGameInstance->Get_LightDesc(0);
-
-	if (nullptr == pLightDesc)
-		return E_FAIL;
-
-	if (FAILED(m_pShaderCom->Set_RawValue("g_vCamPosition", &pGameInstance->Get_CamPosition(), sizeof(_float4))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_RawValue("g_vLightDir", &pLightDesc->vDirection, sizeof(_float4))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_RawValue("g_vLightPos", &pLightDesc->vPosition, sizeof(_float4))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_RawValue("g_fRange", &pLightDesc->fRange, sizeof(_float))))
-		return E_FAIL;
-
-	if (FAILED(m_pShaderCom->Set_RawValue("g_vLightDiffuse", &pLightDesc->vDiffuse, sizeof(_float4))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_RawValue("g_vLightAmbient", &pLightDesc->vAmbient, sizeof(_float4))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_RawValue("g_vLightSpecular", &pLightDesc->vSpecular, sizeof(_float4))))
-		return E_FAIL;
-
 
 	RELEASE_INSTANCE(CGameInstance);
 
