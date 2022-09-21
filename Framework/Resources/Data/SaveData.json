@@ -1,88 +1,18 @@
 {
   "UI": [
     {
-      "ClassName": "CUI_LevelMoveButton",
-      "Level": 3,
-      "MoveLevel": 7,
-      "Name": "momotalk",
-      "Pos_x": -439.0,
-      "Pos_y": 170.0,
-      "Pos_z": 0.0,
-      "Size_x": 119.0,
-      "Size_y": 159.0,
-      "Size_z": 1.0,
-      "TextureName": "Prototype_Component_Texture_Common_Icon_MoMoTalk_Common",
-      "Type": 3
-    },
-    {
-      "ClassName": "CUI_LevelMoveButton",
-      "Level": 3,
-      "MoveLevel": 7,
-      "Name": "CafeIcon",
-      "Pos_x": -517.0,
-      "Pos_y": -263.0,
-      "Pos_z": 0.0,
-      "Size_x": 114.0,
-      "Size_y": 100.0,
-      "Size_z": 1.0,
-      "TextureName": "Prototype_Component_Texture_Cafe_Icon_CafeRank_Common",
-      "Type": 3
-    },
-    {
-      "ClassName": "CUI_LevelMoveButton",
-      "Level": 3,
-      "MoveLevel": 7,
-      "Name": "Edit",
-      "Pos_x": -307.0,
-      "Pos_y": -260.0,
-      "Pos_z": 0.0,
-      "Size_x": 101.0,
-      "Size_y": 117.0,
-      "Size_z": 1.0,
-      "TextureName": "Prototype_Component_Texture_Common_Icon_Edit_Common",
-      "Type": 3
-    },
-    {
-      "ClassName": "CUI_LevelMoveButton",
-      "Level": 3,
-      "MoveLevel": 4,
-      "Name": "Lobby_Icon_Work",
-      "Pos_x": 449.0,
-      "Pos_y": -106.0,
-      "Pos_z": 0.0,
-      "Size_x": 280.0,
-      "Size_y": 234.0,
-      "Size_z": 1.0,
-      "TextureName": "Prototype_Component_Texture_Lobby_Icon_Work_Common",
-      "Type": 3
-    },
-    {
-      "ClassName": "CUI_LevelMoveButton",
-      "Level": 3,
-      "MoveLevel": 7,
-      "Name": "Lobby_Icon_Work",
+      "ClassName": "CUI_Text",
+      "Level": 2,
+      "Name": "TextUI_Cafe",
       "Pos_x": 0.0,
-      "Pos_y": -336.0,
-      "Pos_z": 0.0,
-      "Size_x": 1200.0,
-      "Size_y": 166.0,
+      "Pos_y": 0.0,
+      "Pos_z": 0.800000011920929,
+      "Size_x": 50.0,
+      "Size_y": 50.0,
       "Size_z": 1.0,
-      "TextureName": "Prototype_Component_Texture_Common_Top_Menu_Bg_Common",
-      "Type": 4
-    },
-    {
-      "ClassName": "CUI_LevelMoveButton",
-      "Level": 4,
-      "MoveLevel": 3,
-      "Name": "Lobby_Icon_Work",
-      "Pos_x": -95.0,
-      "Pos_y": -106.0,
-      "Pos_z": 0.0,
-      "Size_x": 51.19999694824219,
-      "Size_y": 51.19999694824219,
-      "Size_z": 1.0,
-      "TextureName": "Prototype_Component_Texture_School_Icon_Schedule_Check_Common",
-      "Type": 3
+      "TextureName": "Prototype_Component_Texture_UI_Default",
+      "Type": 4,
+      "UIText": "카페"
     }
   ]
 }

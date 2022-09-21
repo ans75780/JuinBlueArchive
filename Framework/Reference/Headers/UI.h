@@ -71,9 +71,9 @@ protected:
 	CVIBuffer_Rect*			m_pVIBufferCom = nullptr;
 
 protected:
-	_tchar			m_szUIName[MAX_PATH] = L"";
-	_tchar			m_szUITextureTag[MAX_PATH] = L"";
-	_tchar			m_szUIClass[MAX_PATH] = L"";
+	_tchar			m_szUIName[MAX_PATH] = L"";			//매니져에서 확인할 UI의 이름
+	_tchar			m_szUITextureTag[MAX_PATH] = L"";	//텍스쳐컴포넌트에서 꺼내올 이미지의 이름
+	_tchar			m_szUIClass[MAX_PATH] = L"";		//클래스의 이름
 
 	_float3			m_fPos;
 	_float3			m_fSize;

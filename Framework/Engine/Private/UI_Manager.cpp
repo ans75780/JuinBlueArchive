@@ -4,7 +4,7 @@
 #include "UI_Canvas.h"
 
 #include "../../Client/Public/UI_LevelMoveButton.h"
-
+#include "../../Client/Public/UI_Text.h"
 #include "StrUtil.h"
 
 IMPLEMENT_SINGLETON(CUI_Manager);
@@ -131,6 +131,12 @@ HRESULT CUI_Manager::Save_UIVec()
 				if (!strcmp(_ClassName, "CUI_LevelMoveButton"))
 				{
 					element["MoveLevel"] = dynamic_cast<CUI_LevelMoveButton*>(it)->GetMoveLevel();
+				}
+				else if (!strcmp(_ClassName, "CUI_Text"))
+				{
+					char* UIText = CStrUtil::ConvertWCtoUTF8(dynamic_cast<CUI_Text*>(it)->GetUIText());
+					element["UIText"] = UIText;
+					Safe_Delete_Array(UIText);
 				}
 
 				Safe_Delete_Array(_Name);

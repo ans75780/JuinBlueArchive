@@ -13,6 +13,7 @@
 #include "UI.h"
 #include "UI_Canvas.h"
 #include "UI_LevelMoveButton.h"
+#include "UI_Text.h"
 #include "BackGround.h"
 
 #include "Json_Utility.h"
@@ -49,10 +50,15 @@ HRESULT CImguiMgr::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pConte
 	// Setup Dear ImGui style
 	ImGui::StyleColorsDark();
 	//ImGui::StyleColorsClassic();
-
 	// Setup Platform/Renderer backends
+	
+	io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\malgun.ttf", 18.f, NULL, io.Fonts->GetGlyphRangesKorean());
+	
 	ImGui_ImplWin32_Init(g_hWnd);
 	ImGui_ImplDX11_Init(m_pDevice, m_pContext);
+
+	const char* LevelMoveComboSizeCheck[] = { SELECT_LEVEL , "LEVEL_END" };
+	m_uSelectUILevelMoveNum = IM_ARRAYSIZE(LevelMoveComboSizeCheck) - 1; //0포함되서 -1해줌
 
 	return S_OK;
 }
@@ -397,6 +403,40 @@ void CImguiMgr::UITool_View(void)	//UI툴  새창을 띄움
 {
 	ImGui::Begin("UITool", &UIToolCheckBox, 0);
 
+#pragma region 이미지받기
+	if (m_ImageVec.empty())
+	{
+		map<const _tchar*, class CComponent*> _ComMap = m_pGameInstance->Get_Prototype_Component_Map(LEVEL_STATIC);
+
+		if (!_ComMap.empty())
+		{
+			for (const auto& iter : _ComMap)
+			{
+				if (0 < wcscmp(iter.first, TEXT("Prototype_Component_Texture_")))
+				{
+					_tchar _name[MAX_PATH];
+
+					lstrcpy(_name, iter.first + lstrlenW(TEXT("Prototype_Component_Texture_")));
+
+					t_ImageVec _Imagevec;
+					ZeroMemory(&_Imagevec, sizeof(t_ImageVec));
+					char* pUtil_name = CStrUtil::ConvertWCtoC(_name);
+
+					strcpy_s(_Imagevec.name, MAX_PATH, pUtil_name);
+					_Imagevec.texture = (CTexture*)iter.second;
+
+					m_ImageVec.push_back(_Imagevec);
+
+					Safe_Delete_Array(pUtil_name);
+				}
+			}
+			sort(m_ImageVec.begin(), m_ImageVec.end(),
+				[](t_ImageVec &s1, t_ImageVec &s2)
+			{ return s1.name[0] < s2.name[0]; });
+		}
+	}
+#pragma endregion 
+
 	if (ImGui::Button("Save"))
 		m_pGameInstance->Save_UIVec();//세이브
 	
@@ -433,7 +473,7 @@ void CImguiMgr::UITool_View(void)	//UI툴  새창을 띄움
 	ImGui::Separator();
 	
 	ImGui::Text("Make UI");
-	const char* UI_Class_Type[] = { "None", "LevelMoveButton", "DialogButton" };	//UI 추가할때마다 생성해주기
+	const char* UI_Class_Type[] = { "None", "LevelMoveButton", "Text" };	//UI 추가할때마다 생성해주기
 	static int UI_Class_SelectNum = 0;
 	const char* UI_Class_Value = UI_Class_Type[UI_Class_SelectNum];
 	if (ImGui::BeginCombo("Class Type", UI_Class_Value, 0))
@@ -452,13 +492,15 @@ void CImguiMgr::UITool_View(void)	//UI툴  새창을 띄움
 	case 1:
 		ImGui::Separator();
 		if(UI_EditMode)		//에디트모드True 일때만 정해진 레벨에 생성 
-			Define_LevelMoveButton((_uint)UI_Set_LevelNum + 2);	//레벨스태틱과 로딩 이후의 레벨 +
+			Create_LevelMoveButton((_uint)UI_Set_LevelNum + 2);	//레벨스태틱과 로딩 이후의 레벨 +
 		else
-			Define_LevelMoveButton(m_currentLevelID);
+			Create_LevelMoveButton(m_currentLevelID);
 		break;
+
 	case 2:
 		ImGui::Separator();
 		break;
+
 	default:
 		break;
 	}
@@ -517,8 +559,18 @@ void CImguiMgr::UITool_SelectUI(void)
 		InputPos[0] = tempPos.x;
 		InputPos[1] = tempPos.y;
 
-		const char* LevelMoveComboSizeCheck[] = { SELECT_LEVEL , "LEVEL_END" };
-		m_uSelectUILevelMoveNum = IM_ARRAYSIZE(LevelMoveComboSizeCheck);
+		char* OnceClass = CStrUtil::ConvertWCtoC(m_pSelectUI->Get_UIClassName());
+
+		if (!strcmp(OnceClass, "CUI_LevelMoveButton"))
+		{
+			m_uSelectUILevelMoveNum = dynamic_cast<CUI_LevelMoveButton*>(m_pSelectUI)->GetMoveLevel() - 2; //스태틱,로딩레벨을 뺀 레벨
+		}
+		else if (!strcmp(OnceClass, "CUI_Text"))
+		{
+			//비워둠
+		}
+
+		Safe_Delete_Array(OnceClass);
 	}
 
 	if (ImGui::InputText("Name##2", InputName, MAX_PATH))
@@ -532,39 +584,29 @@ void CImguiMgr::UITool_SelectUI(void)
 	{
 		for (int i = 0; i < 2; i++)
 		{
-			if (0.f >= InputSize[i])
+			if (0.f >= InputSize[i])	//바꾸더라도 0보다 작아지지않게함
 				InputSize[i] = 1.f;
 		}
 		m_pSelectUI->Set_Size(_float3(InputSize[0], InputSize[1], InputSize[2]));
 	}
 
 	if (ImGui::InputFloat2("Set Pos##2", InputPos, "%.1f", 0))
-	{
 		m_pSelectUI->Set_Pos(_float3(InputPos[0], InputPos[1], InputPos[2]));
-	}
 	
-	//클래스별 추가항목//
-
+	//@@@@@@@@@@@@@@@@@@클래스별 추가항목@@@@@@@@@@@@@@@@@@//
 	char* tempClassName = CStrUtil::ConvertWCtoC(m_pSelectUI->Get_UIClassName());
-	if (!strcmp(tempClassName, "CUI_LevelMoveButton"))
-	{
-		m_uSelectUILevelMoveNum = dynamic_cast<CUI_LevelMoveButton*>(m_pSelectUI)->GetMoveLevel() - 2; //스태틱,로딩레벨을 뺀 레벨
 
+	if (!strcmp(tempClassName, "CUI_LevelMoveButton"))
 		SelectUI_LevelMoveButton();
-	}
 	else if (!strcmp(tempClassName, "CUI_Text"))
-	{
 		SelectUI_Text();
-	}
 
 	Safe_Delete_Array(tempClassName);
-
-	//클래스별 추가항목 END//
-
+	//@@@@@@@@@@@@@@@@@@클래스별 추가항목 END@@@@@@@@@@@@@@@@@@//
 
 	ImGui::Checkbox("MouseMove", &m_bSelectUIMove);
 	
-	if (KEY(M, TAP) && false == m_bSelectUIMove)
+	if (KEY(M, TAP) && false == m_bSelectUIMove)	//M버튼을눌러도 이동시킬수있게
 		m_bSelectUIMove = true;
 
 	if (m_bSelectUIMove)
@@ -573,7 +615,17 @@ void CImguiMgr::UITool_SelectUI(void)
 		_float Offset[2] = { g_iWinCX * 0.5f  , g_iWinCY * 0.5f };
 
 		InputPos[0] = io.MousePos.x - Offset[0];
-		InputPos[1] = Offset[1] - io.MousePos.y ;
+		
+
+		char* MoveTextUI = CStrUtil::ConvertWCtoC(m_pSelectUI->Get_UIClassName());
+
+		//if (!strcmp(MoveTextUI, "CUI_Text"))
+		//	InputPos[1] = io.MousePos.y - Offset[1];
+		//else
+			InputPos[1] = Offset[1] - io.MousePos.y;
+
+		Safe_Delete_Array(MoveTextUI);
+
 		m_pSelectUI->Set_Pos(_float3(InputPos[0], InputPos[1], InputPos[2]));
 		
 		if (KEY(LBUTTON, TAP))
@@ -609,48 +661,27 @@ void CImguiMgr::SelectUI_LevelMoveButton(void)
 
 void CImguiMgr::SelectUI_Text(void)
 {
-	//텍스트변경해줘
+	//매번 보내주는게 아닌 입력버튼을 눌러서 변경하는식으로 바꾸기
+	static char _Input[MAX_PATH] = {0,};
+
+	ImGui::InputText(u8"UI_텍스트", _Input, sizeof(_Input));
+	ImGui::SameLine();
+	if (ImGui::Button("Input"))
+	{
+		_tchar* pCharInput = CStrUtil::ConvertUTF8toWC(_Input);
+
+		dynamic_cast<CUI_Text*>(m_pSelectUI)->SetUIText(pCharInput);
+
+		Safe_Delete_Array(pCharInput);
+	}
+
 }
 
-void CImguiMgr::Define_LevelMoveButton(_uint _Level)	//LevelButton 을 정의하고 만들어줌 (Create는 밖으로 뻴것같음)
+void CImguiMgr::Create_LevelMoveButton(_uint _Level)	//LevelButton 을 정의하고 만들어줌 (Create는 밖으로 뻴것같음)
 {
 	static _float UI_Size[3] = { 100.f, 100.f, 1.f };
 	static _float UI_Pos[3] = { 0.f, 0.f, 0.f };
 	static char UI_Name[MAX_PATH] = {};
-
-#pragma region 이미지받기
-	if (m_ImageVec.empty())
-	{
-		map<const _tchar*, class CComponent*> _ComMap = m_pGameInstance->Get_Prototype_Component_Map(LEVEL_STATIC);
-
-		if (!_ComMap.empty())
-		{
-			for (const auto& iter : _ComMap)
-			{
-				if (0 < wcscmp(iter.first, TEXT("Prototype_Component_Texture_")))
-				{
-					_tchar _name[MAX_PATH];
-
-					lstrcpy(_name, iter.first + lstrlenW(TEXT("Prototype_Component_Texture_")));
-
-					t_ImageVec _Imagevec;
-					ZeroMemory(&_Imagevec, sizeof(t_ImageVec));
-					char* pUtil_name = CStrUtil::ConvertWCtoC(_name);
-
-					strcpy_s(_Imagevec.name, MAX_PATH, pUtil_name);
-					_Imagevec.texture = (CTexture*)iter.second;
-
-					m_ImageVec.push_back(_Imagevec);
-
-					Safe_Delete_Array(pUtil_name);
-				}
-			}
-			sort(m_ImageVec.begin(), m_ImageVec.end(),
-				[](t_ImageVec &s1, t_ImageVec &s2)
-			{ return s1.name[0] < s2.name[0]; });
-		}
-	}
-#pragma endregion 
 
 	static unsigned int Image_Num = 0;
 	if (!m_ImageVec.empty())

@@ -37,3 +37,29 @@ wchar_t * CStrUtil::ConvertCtoWC(const char * str)
 	return pStr;
 }
 
+wchar_t * CStrUtil::ConvertUTF8toWC(const char * str)
+{
+	wchar_t* pStr;
+
+	int nLen = MultiByteToWideChar(CP_UTF8, 0, str, -1, NULL, NULL);
+
+	pStr = new WCHAR[nLen];
+
+	MultiByteToWideChar(CP_UTF8, 0, str, (int)strlen(str) + 1, pStr, nLen);
+
+	return pStr;
+}
+
+char * CStrUtil::ConvertWCtoUTF8(const wchar_t * str)
+{
+	char* pStr;
+
+	int strSize = WideCharToMultiByte(CP_UTF8, 0, str, -1, NULL, 0, NULL, NULL);
+	
+	pStr = new char[strSize];
+	
+	WideCharToMultiByte(CP_UTF8, 0, str, -1, pStr, strSize, 0, 0);
+	
+	return pStr;
+}
+

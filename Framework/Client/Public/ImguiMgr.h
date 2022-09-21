@@ -35,14 +35,14 @@ private:
 
 	void	HelloJusin_Tap_Level(void);
 
-private:
+private:	//새창으로 구분
 	void		MapTool_View(void);
 	
 	void		UITool_View(void);
-	void			UITool_SelectUI(void);	//선택한 UI의 설정바꾸기
+	void			UITool_SelectUI(void);	//m_pSelectUI에 담긴UI 포인터의 정보를 보고 수정할수있음
 	void				SelectUI_LevelMoveButton(void);	
 	void				SelectUI_Text(void);
-	void			Define_LevelMoveButton(_uint _Level);
+	void			Create_LevelMoveButton(_uint _Level);
 	
 private:
 	void		Load_UIVec(void);
@@ -66,14 +66,12 @@ private:
 		char name[MAX_PATH];
 	};
 	vector<t_ImageVec> m_ImageVec;
-	
+
+	CUI*	m_pSelectUI;						//선택한 UI 포인터   각 UI의 클릭을 통해 주소를넘겨줌
+	bool	m_bSelectUIMove = false;			//선택한 UI마우스로 이동시키기
 
 	_uint	m_uSelectUILevelMoveNum = 0;			//선택한 UI가 레벨무브버튼일때 쓰는 콤보박스용인덱스
 	bool	m_bSelectUILevelMoveMode = false;	//체크시 레벨이동이 가능해지는데...이거 릴리즈때..????
-	
-	CUI*	m_pSelectUI;						//선택한 UI 포인터보관용
-	bool	m_bSelectUIMove = false;			//선택한 UI마우스로 이동시키기
-
 
 public:
 	void	Set_SelectUI(CUI* _UI) { m_pSelectUI = _UI; }

@@ -34,7 +34,10 @@ public:
 
 public:
 	void	SetUIText(const _tchar* _text) { lstrcpy(m_szText, _text); }
+	_tchar* GetUIText() { return m_szText; }
+
 	void	SetUIScale(_float _Scale) { m_fScale = _Scale; }
+
 private:
 	HRESULT SetUp_Components();
 	HRESULT SetUp_ShaderResource();
