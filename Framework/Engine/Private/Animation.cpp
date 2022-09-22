@@ -67,8 +67,10 @@ void CAnimation::Update(_float fTimeDelta)
 		Update_TransformationMatrices(fTimeDelta);
 		break;
 	case Engine::CAnimation::ANIM_STATE::ANIM_PAUSE:
+		Pause();
 		break;
 	case Engine::CAnimation::ANIM_STATE::ANIM_END:
+		Reset();
 		break;
 	default:
 		break;

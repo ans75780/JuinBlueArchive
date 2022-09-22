@@ -30,7 +30,9 @@ private:
 	HRESULT Open_Level(LEVEL eLevelID);
 	HRESULT Ready_Prototype_Component();
 	HRESULT Ready_Static_Resource();
-	HRESULT Ready_Static_Models();
+	HRESULT Ready_Static_AnimModels();
+	HRESULT Ready_Static_NonAnimModels();
+
 
 private:
 	HRESULT LoadUITexture(char* folderName, void* pGameInstance);

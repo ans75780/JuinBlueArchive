@@ -145,6 +145,12 @@
     <ClInclude Include="..\Public\Level_Lobby.h">
       <Filter>01.Level\02. Lobby</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Stage.h">
+      <Filter>02.GameObject\08. Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Student_Ex.h">
+      <Filter>04. State\EX</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -275,6 +281,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\State_Student_Callsign.cpp">
       <Filter>04. State\CallSign</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Stage.cpp">
+      <Filter>02.GameObject\08. Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Student_Ex.cpp">
+      <Filter>04. State\EX</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -409,9 +421,6 @@
     <Filter Include="06. User">
       <UniqueIdentifier>{452e91d5-a4d2-4a41-a5d4-a4a4c0cd6679}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObject\For.FormationLevel">
-      <UniqueIdentifier>{7bb8cc3e-d96c-4fb8-bebf-45bc18dd1502}</UniqueIdentifier>
-    </Filter>
     <Filter Include="04. State\DefaultState">
       <UniqueIdentifier>{d7694f8d-13d4-4c4e-a667-d40b81b8f466}</UniqueIdentifier>
     </Filter>
@@ -435,6 +444,12 @@
     </Filter>
     <Filter Include="02.GameObject\01. Camera\NewFilter1">
       <UniqueIdentifier>{42a383c4-c89f-4547-a338-bdc7644637a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\08. Stage">
+      <UniqueIdentifier>{ad82da2e-aec8-4c90-8bbd-eb71ccf6385a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. State\EX">
+      <UniqueIdentifier>{20fec20a-376d-451c-a7a8-9dbb1e00f982}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

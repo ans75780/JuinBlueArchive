@@ -64,7 +64,7 @@ HRESULT CCamera::Bind_PipeLine()
 
 _bool CCamera::IsMainCam()
 {
-	return this ==CCamera::g_MainCam;
+	return this == CCamera::g_MainCam;
 }
 
 void CCamera::Free()

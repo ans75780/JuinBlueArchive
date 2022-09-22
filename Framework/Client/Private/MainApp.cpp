@@ -45,7 +45,10 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(Ready_Static_Resource()))
 		return E_FAIL;
 
-	if (FAILED(Ready_Static_Models()))
+	if (FAILED(Ready_Static_AnimModels()))
+		return E_FAIL;
+
+	if (FAILED(Ready_Static_NonAnimModels()))
 		return E_FAIL;
 
 	CUserData::Get_Instance()->Initialize();
@@ -164,6 +167,13 @@ HRESULT CMainApp::Ready_Prototype_Component()
 	//Safe_AddRef(m_pRenderer);
 
 
+
+	/* For.Prototype_Component_Shader_VtxModel */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxModel"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../../ShaderFiles/Shader_VtxModel.hlsl"), VTXMODEL_DECLARATION::Element, VTXMODEL_DECLARATION::iNumElements))))
+		return E_FAIL;
+
+
 	/* For.Prototype_Component_Shader_VtxAnimModel */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxAnimModel"),
 		CShader::Create(m_pDevice, m_pContext, TEXT("../../ShaderFiles/Shader_VtxAnimModel.hlsl"), VTXANIM_DECLARATION::Element, VTXANIM_DECLARATION::iNumElements))))
@@ -220,7 +230,7 @@ HRESULT CMainApp::Ready_Static_Resource()
 	return S_OK;
 }
 
-HRESULT CMainApp::Ready_Static_Models()
+HRESULT CMainApp::Ready_Static_AnimModels()
 {
 	_matrix mat;
 	_float4x4 ScaleMatrix;
@@ -228,7 +238,7 @@ HRESULT CMainApp::Ready_Static_Models()
 
 	/* For.Prototype_Component_Model_Serika*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Serika"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Serika_Original/", "Serika_Original.fbx", mat))))
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Izuna_Original/", "Serika_Original.fbx", mat))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Model_Serika*/
@@ -240,9 +250,27 @@ HRESULT CMainApp::Ready_Static_Models()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Zunko"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Zunko_Original/", "Zunko_Original.fbx", mat))))
 		return E_FAIL;
-
 	return S_OK;
 }
+
+
+HRESULT CMainApp::Ready_Static_NonAnimModels()
+{
+	_matrix mat;
+	_float4x4 ScaleMatrix;
+	mat = XMMatrixIdentity();
+
+
+	/* For.Prototype_Component_Model_Stage_School*/
+	/*
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Stage_School"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Models/NonAnimModels/Stages/School/", "School.fbx", mat))))
+		return E_FAIL;
+	*/
+	return S_OK;
+}
+
+
 
 HRESULT CMainApp::LoadUITexture(char * folderName, void * pGameInstance)
 {

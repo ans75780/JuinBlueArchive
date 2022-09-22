@@ -16,7 +16,15 @@ BEGIN(Client)
 class CStudent final : public CGameObject
 {
 public:
-	CStudent(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _tchar*	pModelTag);
+	typedef struct tagStudent_Desc
+	{
+		_tchar					m_szStudentName[MAX_PATH];
+		Client::LEVEL			m_eLevel = LEVEL_END;
+
+	}STUDENTDESC;
+
+public:
+	CStudent(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CStudent(const CStudent& rhs);
 	virtual ~CStudent() = default;
 
@@ -28,7 +36,7 @@ public:
 	virtual HRESULT Render();
 	virtual HRESULT Render_MeshPart(CMeshContainer* pMesh);
 
-	const _tchar*	Get_Name() { return m_szStudentName; }
+	const _tchar*	Get_Name() { return m_StudentDesc.m_szStudentName; }
 	class CStateMachineBase*		Get_StateMachine() { return m_pStateMachine; }
 	void	Set_Transform(_vector vPos);
 
@@ -53,16 +61,19 @@ private:
 	CMeshContainer*			m_pFace = nullptr;
 	CMeshContainer*			m_pHead = nullptr;
 	CMeshContainer*			m_pWeapon = nullptr;
+
+
+private:
+	STUDENTDESC		m_StudentDesc;
+
 private:
 	_uint					m_iAnimIndex = 0;
-	_tchar					m_szStudentName[MAX_PATH];
 private:
 	HRESULT SetUp_Components();
 	HRESULT SetUp_ShaderResource();
-
-
+	HRESULT	SetUp_StateMachine(LEVEL iLevel);
 public:
-	static CStudent* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _tchar*	pModelTag);
+	static CStudent* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
 };

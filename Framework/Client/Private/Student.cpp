@@ -7,19 +7,18 @@
 #include "State_Student_Idle.h"
 #include "State_Student_Run.h"
 #include "Collider.h"
+#include "State_Student_Formation_Idle.h"
 
-
-CStudent::CStudent(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, _tchar*	pStudentTag)
+CStudent::CStudent(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObject(pDevice, pContext)
 {
-	lstrcpy(m_szStudentName, pStudentTag);
 }
 
 
 CStudent::CStudent(const CStudent & rhs)
 	: CGameObject(rhs)
 {
-	lstrcpy(m_szStudentName, rhs.m_szStudentName);
+
 }
 
 HRESULT CStudent::Initialize_Prototype()
@@ -33,21 +32,19 @@ HRESULT CStudent::Initialize(void * pArg)
 	TransformDesc.fSpeedPerSec = 5.f;
 	TransformDesc.fRotationPerSec = XMConvertToRadians(90.0f);
 
+	memcpy(&m_StudentDesc, pArg, sizeof(STUDENTDESC));
+
 	if (FAILED(__super::Initialize(&TransformDesc)))
 		return E_FAIL;
 
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
+	if (FAILED(SetUp_StateMachine(m_StudentDesc.m_eLevel)))
+		return E_FAIL;
+
 	m_pTransformCom->Set_Scaled(_float3(1.00f, 1.00f, 1.00f));
-	//m_pTransformCom->Set_Scaled(_float3(0.01f, 0.01f, 0.01f));
 
-	m_pStateMachine = CStateMachineBase::Create(this);
-
-	CState_Student_Idle* state = CState_Student_Idle::Create(this);
-
-	m_pStateMachine->Setup_StateMachine(state);
-	//m_pModelCom->Set_CurrentAnimation(3);
 	return S_OK;
 }
 
@@ -59,8 +56,6 @@ void CStudent::Tick(_float fTimeDelta)
 	m_pSphereCom->Update(m_pTransformCom->Get_WorldMatrix());
 	m_pAABBCom->Update(m_pTransformCom->Get_WorldMatrix());
 	m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
-
-	//m_pModelCom->Play_Animation(fTimeDelta);
 
 }
 
@@ -148,7 +143,7 @@ HRESULT CStudent::SetUp_Components()
 
 	_tchar szModelTag[MAX_PATH] = L"Prototype_Component_Model_";
 
-	lstrcat(szModelTag, m_szStudentName);
+	lstrcat(szModelTag, m_StudentDesc.m_szStudentName);
 
 	/* For.Com_Model */
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, szModelTag, TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
@@ -208,9 +203,38 @@ HRESULT CStudent::SetUp_ShaderResource()
 	return S_OK;
 }
 
-CStudent * CStudent::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, _tchar *pStudentTag)
+HRESULT CStudent::SetUp_StateMachine(LEVEL iLevel)
 {
-	CStudent*		pInstance = new CStudent(pDevice, pContext, pStudentTag);
+	//학생정보에서 레벨을 받아와서 맞는 기초상태로 세팅한다.
+
+	m_pStateMachine = CStateMachineBase::Create(this);
+	CStateBase* state = nullptr;
+	switch (iLevel)
+	{
+	case Client::LEVEL_GAMEPLAY:
+		state = CState_Student_Idle::Create(this);
+		break;
+	case Client::LEVEL_FORMATION:
+		state = CState_Student_Formation_Idle::Create(this);
+		break;
+	case Client::LEVEL_MAPTOOL:
+		break;
+	case Client::LEVEL_END:
+		break;
+	default:
+		break;
+	}
+	if (nullptr == state)
+		return E_FAIL;
+
+	m_pStateMachine->Setup_StateMachine(state);
+
+	return S_OK;
+}
+
+CStudent * CStudent::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
+{
+	CStudent*		pInstance = new CStudent(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{

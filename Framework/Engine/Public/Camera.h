@@ -37,6 +37,8 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
+public:
+	static void	Set_MainCam(CCamera*	pCamera) { CCamera::g_MainCam = pCamera; }
 protected:
 	static CCamera*	g_MainCam;
 
@@ -44,7 +46,7 @@ protected:
 	CAMERADESC						m_CameraDesc;
 protected:
 	HRESULT Bind_PipeLine();
-	void	Set_MainCam() { CCamera::g_MainCam = this; }
+	
 	_bool	IsMainCam();
 public:
 	virtual CGameObject* Clone(void* pArg) = 0;

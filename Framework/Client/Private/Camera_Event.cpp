@@ -42,45 +42,30 @@ void CCamera_Event::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
-	Safe_AddRef(pGameInstance);
 
-	if (pGameInstance->Get_DIKeyState(DIK_W) & 0x80)
+	switch (m_eEventType)
 	{
-		m_pTransformCom->Go_Straight(fTimeDelta);
+	case Client::CCamera_Event::EVENT_TYPE::EVENT_STAGE_START:
+		Event_Stage_Start();
+		break;
+	case Client::CCamera_Event::EVENT_TYPE::EVENT_EX:
+		break;
+	case Client::CCamera_Event::EVENT_TYPE::EVENT_BOSS_APPEAR:
+		break;
+	case Client::CCamera_Event::EVENT_TYPE::EVENT_STAGE_VICTORY:
+		break;
+	case Client::CCamera_Event::EVENT_TYPE::EVENT_END:
+		break;
+	default:
+		break;
 	}
 
-	if (pGameInstance->Get_DIKeyState(DIK_S) & 0x80)
+	if (IsMainCam())
 	{
-		m_pTransformCom->Go_Backward(fTimeDelta);
+		if (FAILED(Bind_PipeLine()))
+			return;
 	}
-
-	if (pGameInstance->Get_DIKeyState(DIK_A) & 0x80)
-	{
-		m_pTransformCom->Go_Left(fTimeDelta);
-	}
-
-	if (pGameInstance->Get_DIKeyState(DIK_D) & 0x80)
-	{
-		m_pTransformCom->Go_Right(fTimeDelta);
-	}
-
-	_long		MouseMove = 0;
-
-	if (MouseMove = pGameInstance->Get_DIMouseMoveState(MMS_X))
-	{
-		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * MouseMove * 0.1f);
-	}
-
-	if (MouseMove = pGameInstance->Get_DIMouseMoveState(MMS_Y))
-	{
-		m_pTransformCom->Turn(m_pTransformCom->Get_State(CTransform::STATE_RIGHT), fTimeDelta * MouseMove * 0.1f);
-	}
-
-	Safe_Release(pGameInstance);
-
-	if (FAILED(Bind_PipeLine()))
-		return;
+	
 }
 
 void CCamera_Event::LateTick(_float fTimeDelta)
@@ -93,14 +78,44 @@ HRESULT CCamera_Event::Render()
 	return S_OK;
 }
 
-void CCamera_Event::Set_Event(CCamera * pReturnCamera, CAnimation * pAnimation, _float3 vOffset)
+void CCamera_Event::Ready_Event_Stage_Start(CCamera * pReturnCamera, CGameObject * pTarget, CAnimation * pAnimation, _float3 vOffset)
 {
 	m_pReturnToCam = pReturnCamera;
 	m_pAnimation = pAnimation;
 	m_vOffset = vOffset;
 
+	m_pTarget = pTarget;
+	m_eEventType = EVENT_TYPE::EVENT_STAGE_START;
+
+	_vector		vCamPos = pTarget->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION);
+
+	vCamPos += XMLoadFloat3(&vOffset);
+
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vCamPos);
+
+	CCamera::Set_MainCam(this);
 }
 
+void CCamera_Event::Ready_Event_Ex(CCamera * pReturnCamera, CGameObject * pTarget, CAnimation * pAnimation, CBoneNode * pBoneTransform, CBoneNode * CBoneTarget)
+{
+
+}
+
+void CCamera_Event::Event_Stage_Start()
+{
+	if (m_pAnimation->IsFinished() == true)
+	{
+		CCamera::Set_MainCam(m_pReturnToCam);
+	}
+	m_pTransformCom->LookAt(m_pTarget->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION));
+
+	_vector		vCamPos = m_pTarget->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION);
+
+	vCamPos += XMLoadFloat3(&m_vOffset);
+
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vCamPos);
+
+}
 
 CCamera_Event * CCamera_Event::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {

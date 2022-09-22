@@ -237,29 +237,23 @@ HRESULT CLevel_Formation::Ready_Layer_Student(const _tchar * pLayerTag)
 	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
 	Safe_AddRef(pGameInstance);
 
-	CGameObject::OBJ_DESC tempDesc;
-
-
 	CGameObject* pStudent = nullptr;
 
-	_tchar	szStudentPath[MAX_PATH] = L"Prototype_Student_";
-	_tchar	szStudentPullName[MAX_PATH] = L"";
+	_tchar	szStudentPath[MAX_PATH] = L"Prototype_Student";
+
+	//각 클론된 스튜던트에 정보를 넣어줌.
+	CStudent::STUDENTDESC	studentDesc;
+
+	studentDesc.m_eLevel = LEVEL_FORMATION;
 
 	vector<wstring> m_formationStr = CUserData::Get_Instance()->Get_Formation();
 	for (_uint i = 0; i < m_formationStr.size(); i++)
 	{
-		
-		lstrcpy(szStudentPullName, szStudentPath);
-		lstrcat(szStudentPullName, m_formationStr[i].c_str());
-		if (FAILED(pGameInstance->Add_GameObject(LEVEL_FORMATION, pLayerTag, szStudentPullName, (void*)&tempDesc, &pStudent)))
+		lstrcpy(studentDesc.m_szStudentName, m_formationStr[i].c_str());
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_FORMATION, pLayerTag, szStudentPath,(void*)&studentDesc, &pStudent)))
 			return E_FAIL;
-		((CStudent*)pStudent)->Get_StateMachine()->Setup_StateMachine(CState_Student_Formation_Idle::Create((CStudent*)pStudent));
-		
 		((CStudent*)pStudent)->Set_Transform(m_vecFormationPos[i]);
 		m_vecStudent.push_back((CStudent*)pStudent);
-		
-
-
 	}
 	Safe_Release(pGameInstance);
 	return S_OK;

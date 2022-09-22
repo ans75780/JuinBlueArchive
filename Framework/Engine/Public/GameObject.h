@@ -67,7 +67,6 @@ protected:
 
 protected:
 	HRESULT Add_Component(_uint iLevelIndex, const _tchar* pPrototypeTag, const _tchar* pComponentTag, class CComponent** ppOut, void* pArg = nullptr);
-
 private:
 	class CComponent* Find_Components(const _tchar* pComponentTag);
 
