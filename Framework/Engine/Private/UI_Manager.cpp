@@ -130,13 +130,23 @@ HRESULT CUI_Manager::Save_UIVec()
 				
 				if (!strcmp(_ClassName, "CUI_LevelMoveButton"))
 				{
-					element["MoveLevel"] = dynamic_cast<CUI_LevelMoveButton*>(it)->GetMoveLevel();
+					element["MoveLevel"] = static_cast<CUI_LevelMoveButton*>(it)->GetMoveLevel();
 				}
 				else if (!strcmp(_ClassName, "CUI_Text"))
 				{
-					char* UIText = CStrUtil::ConvertWCtoUTF8(dynamic_cast<CUI_Text*>(it)->GetUIText());
+					CUI_Text* _pUIText = static_cast<CUI_Text*>(it);
+
+					char* UIText = CStrUtil::ConvertWCtoUTF8(_pUIText->GetUIText());
 					element["UIText"] = UIText;
 					Safe_Delete_Array(UIText);
+
+					element["UITextScale"] = _pUIText->GetUIScale();
+
+					element["UITextColor_x"] = _pUIText->GetUITextColor().x;
+					element["UITextColor_y"] = _pUIText->GetUITextColor().y;
+					element["UITextColor_z"] = _pUIText->GetUITextColor().z;
+					element["UITextColor_w"] = _pUIText->GetUITextColor().w;
+
 				}
 
 				Safe_Delete_Array(_Name);

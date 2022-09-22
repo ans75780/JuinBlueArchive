@@ -37,6 +37,10 @@ public:
 	_tchar* GetUIText() { return m_szText; }
 
 	void	SetUIScale(_float _Scale) { m_fScale = _Scale; }
+	_float	GetUIScale() { return m_fScale; }
+
+	void	SetUITextColor(_float4 _color) { m_fColor = _color; }
+	_float4	GetUITextColor() { return m_fColor; }
 
 private:
 	HRESULT SetUp_Components();

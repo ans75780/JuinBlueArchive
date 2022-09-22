@@ -187,8 +187,8 @@ void CImguiMgr::HelloJusin_Tap_Main(void)			//메인탭의 1번째 책갈피임
 
 	static float f = 0.0f;
 	static int counter = 0;
-	static float backBuffer_Color[4] = { 0.f, 0.f, 1.f, 1.f };
-
+	static float backBuffer_Color[4] = { 0.274f, 0.49f, 1.f, 1.f };
+	//70 125 255
 	ImGui::Text("BLUE ARCHIVE");               // Display some text (you can use a format strings too)
 	ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
 
@@ -438,11 +438,11 @@ void CImguiMgr::UITool_View(void)	//UI툴  새창을 띄움
 #pragma endregion 
 
 	if (ImGui::Button("Save"))
-		m_pGameInstance->Save_UIVec();//세이브
+		m_pGameInstance->Save_UIVec();//세이브 저장
 	
 	ImGui::SameLine();
 	
-	if (ImGui::Button("Load"))//로드
+	if (ImGui::Button("Load"))//로드 불러오기
 		Load_UIVec();
 	
 	ImGui::Separator();
@@ -559,16 +559,22 @@ void CImguiMgr::UITool_SelectUI(void)
 		InputPos[0] = tempPos.x;
 		InputPos[1] = tempPos.y;
 
-		char* OnceClass = CStrUtil::ConvertWCtoC(m_pSelectUI->Get_UIClassName());
+		char* OnceClass = CStrUtil::ConvertWCtoC(m_pSelectUI->Get_UIClassName());	//각클래스별 한번만실행하는코드
 
 		if (!strcmp(OnceClass, "CUI_LevelMoveButton"))
 		{
-			m_uSelectUILevelMoveNum = dynamic_cast<CUI_LevelMoveButton*>(m_pSelectUI)->GetMoveLevel() - 2; //스태틱,로딩레벨을 뺀 레벨
+			m_uSelectUILevelMoveNum = static_cast<CUI_LevelMoveButton*>(m_pSelectUI)->GetMoveLevel() - 2; //스태틱,로딩레벨을 뺀 레벨
 		}
 		else if (!strcmp(OnceClass, "CUI_Text"))
 		{
-			//비워둠
-		}
+			m_fSelectUITextScale = static_cast<CUI_Text*>(m_pSelectUI)->GetUIScale();
+			
+			_float4 _SelColor = static_cast<CUI_Text*>(m_pSelectUI)->GetUITextColor();
+			m_fSelectUIColor[0] = _SelColor.x;
+			m_fSelectUIColor[1] = _SelColor.y;
+			m_fSelectUIColor[2] = _SelColor.z;
+			m_fSelectUIColor[3] = _SelColor.w;
+	}
 
 		Safe_Delete_Array(OnceClass);
 	}
@@ -606,7 +612,7 @@ void CImguiMgr::UITool_SelectUI(void)
 
 	ImGui::Checkbox("MouseMove", &m_bSelectUIMove);
 	
-	if (KEY(M, TAP) && false == m_bSelectUIMove)	//M버튼을눌러도 이동시킬수있게
+	if (KEY(F3, TAP) && false == m_bSelectUIMove)	//M버튼을눌러도 이동시킬수있게
 		m_bSelectUIMove = true;
 
 	if (m_bSelectUIMove)
@@ -615,16 +621,8 @@ void CImguiMgr::UITool_SelectUI(void)
 		_float Offset[2] = { g_iWinCX * 0.5f  , g_iWinCY * 0.5f };
 
 		InputPos[0] = io.MousePos.x - Offset[0];
-		
+		InputPos[1] = Offset[1] - io.MousePos.y;
 
-		char* MoveTextUI = CStrUtil::ConvertWCtoC(m_pSelectUI->Get_UIClassName());
-
-		//if (!strcmp(MoveTextUI, "CUI_Text"))
-		//	InputPos[1] = io.MousePos.y - Offset[1];
-		//else
-			InputPos[1] = Offset[1] - io.MousePos.y;
-
-		Safe_Delete_Array(MoveTextUI);
 
 		m_pSelectUI->Set_Pos(_float3(InputPos[0], InputPos[1], InputPos[2]));
 		
@@ -652,7 +650,7 @@ void CImguiMgr::SelectUI_LevelMoveButton(void)
 			{
 				m_uSelectUILevelMoveNum = i;
 
-				dynamic_cast<CUI_LevelMoveButton*>(m_pSelectUI)->SetMoveLevel(m_uSelectUILevelMoveNum + 2);
+				static_cast<CUI_LevelMoveButton*>(m_pSelectUI)->SetMoveLevel(m_uSelectUILevelMoveNum + 2);
 			}
 		}
 		ImGui::EndCombo();
@@ -663,18 +661,33 @@ void CImguiMgr::SelectUI_Text(void)
 {
 	//매번 보내주는게 아닌 입력버튼을 눌러서 변경하는식으로 바꾸기
 	static char _Input[MAX_PATH] = {0,};
-
 	ImGui::InputText(u8"UI_텍스트", _Input, sizeof(_Input));
 	ImGui::SameLine();
 	if (ImGui::Button("Input"))
 	{
 		_tchar* pCharInput = CStrUtil::ConvertUTF8toWC(_Input);
 
-		dynamic_cast<CUI_Text*>(m_pSelectUI)->SetUIText(pCharInput);
+		static_cast<CUI_Text*>(m_pSelectUI)->SetUIText(pCharInput);
 
 		Safe_Delete_Array(pCharInput);
 	}
-
+	if (ImGui::InputFloat("Scale", &m_fSelectUITextScale))
+	{
+		if (0.f >= m_fSelectUITextScale)
+			m_fSelectUITextScale = 0.01f;
+		static_cast<CUI_Text*>(m_pSelectUI)->SetUIScale(m_fSelectUITextScale);
+	}
+	
+	if (ImGui::ColorEdit3("Color", m_fSelectUIColor))
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			if (0.f >= m_fSelectUIColor[i])
+				m_fSelectUIColor[i] = 0.f;
+		}
+		_float4 _InputColor = { m_fSelectUIColor[0], m_fSelectUIColor[1], m_fSelectUIColor[2], m_fSelectUIColor[3] };
+		static_cast<CUI_Text*>(m_pSelectUI)->SetUITextColor(_InputColor);
+	}
 }
 
 void CImguiMgr::Create_LevelMoveButton(_uint _Level)	//LevelButton 을 정의하고 만들어줌 (Create는 밖으로 뻴것같음)
@@ -769,7 +782,7 @@ void CImguiMgr::Create_LevelMoveButton(_uint _Level)	//LevelButton 을 정의하고 �
 	}
 }
 
-void CImguiMgr::Load_UIVec(void)
+void CImguiMgr::Load_UIVec(void)	//불러오기
 {
 	m_pGameInstance->Clear_UIVec();
 
@@ -815,8 +828,29 @@ void CImguiMgr::Load_UIVec(void)
 		else if (!strcmp(_ClassName.c_str(), "CUI_LevelMoveButton"))
 		{
 			pUI = CUI_LevelMoveButton::Create(m_pDevice, m_pContext);
+
 			_uint	_MoveLevel = (*it)["MoveLevel"];
-			dynamic_cast<CUI_LevelMoveButton*>(pUI)->SetMoveLevel(_MoveLevel);
+			static_cast<CUI_LevelMoveButton*>(pUI)->SetMoveLevel(_MoveLevel);
+		}
+		else if (!strcmp(_ClassName.c_str(), "CUI_Text"))
+		{
+			pUI = CUI_Text::Create(m_pDevice, m_pContext);
+
+			string _UITextTemp = (*it)["UIText"];
+			_tchar* _UIText = CStrUtil::ConvertUTF8toWC(_UITextTemp.c_str());
+			static_cast<CUI_Text*>(pUI)->SetUIText(_UIText);
+			Safe_Delete_Array(_UIText);
+
+			static_cast<CUI_Text*>(pUI)->SetUIScale( ((*it)["UITextScale"]) );
+
+			_float4 _UITextColor;
+			_UITextColor.x = (*it)["UITextColor_x"];
+			_UITextColor.y = (*it)["UITextColor_y"];
+			_UITextColor.z = (*it)["UITextColor_z"];
+			_UITextColor.w = (*it)["UITextColor_w"];
+
+			static_cast<CUI_Text*>(pUI)->SetUITextColor(_UITextColor);
+
 		}
 
 		if (nullptr == pUI)

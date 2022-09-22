@@ -139,7 +139,7 @@ void CUI::Add_Child(CUI * _pChild)
 CUI * CUI::Get_MouseOveredUI(const POINT & pt)
 {
 	RECT rect;
-	POINT Offset = CKey_Manager::Get_Instance()->Get_MouseOffset();
+	POINT Offset = CKey_Manager::Get_Instance()->Get_MouseOffset();	//640,360
 	rect.left =		Offset.x + (LONG)(m_fPos.x - (m_fSize.x  * 0.5f));
 	rect.top =		Offset.y - (LONG)(m_fPos.y + (m_fSize.y  * 0.5f));
 	rect.right =	Offset.x + (LONG)(m_fPos.x + (m_fSize.x  * 0.5f));

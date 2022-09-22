@@ -57,9 +57,9 @@ HRESULT CUI_Text::Render()
 
 	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
-	_float2 Pos;
-	Pos.x = m_fPos.x + (g_iWinCX * 0.5f);
-	Pos.y = m_fPos.y + (g_iWinCY * 0.5f);
+	_float2 Pos = { (float)(g_iWinCX * 0.5f), (float)(g_iWinCY * 0.5f) };
+	Pos.x += m_fPos.x;
+	Pos.y -= m_fPos.y;
 	
 	pGameInstance->Render_Font(TEXT("Font_Default"), m_szText, Pos, XMLoadFloat4(&m_fColor), m_fScale);
 	//m_pGameInstance->Render_Font(TEXT("Font_Default"), m_szFPS, _float2(0.f, 0.f), XMVectorSet(1.f, 1.f, 1.f, 1.f), 1.f);

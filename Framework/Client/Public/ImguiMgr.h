@@ -73,6 +73,9 @@ private:
 	_uint	m_uSelectUILevelMoveNum = 0;			//선택한 UI가 레벨무브버튼일때 쓰는 콤보박스용인덱스
 	bool	m_bSelectUILevelMoveMode = false;	//체크시 레벨이동이 가능해지는데...이거 릴리즈때..????
 
+	_float	m_fSelectUITextScale = 1.f;		//클릭한 UITextScale 확인용
+	float	m_fSelectUIColor[4] = { 1.f, };	
+
 public:
 	void	Set_SelectUI(CUI* _UI) { m_pSelectUI = _UI; }
 	bool	Get_LevelMoveMode() { return m_bSelectUILevelMoveMode; }

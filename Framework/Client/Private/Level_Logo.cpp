@@ -62,12 +62,12 @@ HRESULT CLevel_Logo::Ready_Layer_BackGround(const _tchar * pLayerTag)
 
 	pUI->LoadUIImage(TEXT("Prototype_Component_Texture_UI_Default"));
 	pUI->Set_UIName(TEXT("TextUI_Cafe"));
-	pUI->Set_UIType(UI_TYPE::UI_BACKGROUND);
+	pUI->Set_UIType(UI_TYPE::UI_POST);
 	pUI->Set_Size(_float3(50.f, 50.f, 1.f));
 	pUI->Set_Pos(_float3(0.f, 0.f, 0.f));
 	pUI->Set_UILevel(LEVEL_LOGO);
-	dynamic_cast<CUI_Text*>(pUI)->SetUIScale(0.5f);
-	dynamic_cast<CUI_Text*>(pUI)->SetUIText(TEXT("카페"));
+	static_cast<CUI_Text*>(pUI)->SetUIScale(0.5f);
+	static_cast<CUI_Text*>(pUI)->SetUIText(TEXT("카페"));
 	pUI->initialization();
 
 	if (FAILED(pGameInstance->Add_UI(LEVEL_LOGO, pUI)))	//받아온레벨에다 생성

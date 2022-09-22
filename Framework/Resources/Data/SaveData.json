@@ -4,15 +4,20 @@
       "ClassName": "CUI_Text",
       "Level": 2,
       "Name": "TextUI_Cafe",
-      "Pos_x": 0.0,
-      "Pos_y": 0.0,
-      "Pos_z": 0.800000011920929,
+      "Pos_x": -338.0,
+      "Pos_y": -142.0,
+      "Pos_z": 0.0,
       "Size_x": 50.0,
       "Size_y": 50.0,
       "Size_z": 1.0,
       "TextureName": "Prototype_Component_Texture_UI_Default",
-      "Type": 4,
-      "UIText": "카페"
+      "Type": 0,
+      "UIText": "카페",
+      "UITextColor_w": 1.0,
+      "UITextColor_x": 1.0,
+      "UITextColor_y": 0.2549019753932953,
+      "UITextColor_z": 1.0,
+      "UITextScale": 0.5
     }
   ]
 }
