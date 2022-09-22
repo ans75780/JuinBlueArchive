@@ -44,6 +44,8 @@ _bool CState_Student_Run::Loop(_float fTimeDelta)
 	{
 		return true;
 	}
+	m_pTransform->Go_Backward(fTimeDelta);
+
 	return false;
 }
 

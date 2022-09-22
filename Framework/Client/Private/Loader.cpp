@@ -29,7 +29,7 @@
 //#include "Player.h"
 //#include "Effect.h"
 #include "Sky.h"
-
+#include "Camera_Stage.h"
 #include "Stage.h"
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -184,8 +184,8 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Camera_Free*/
-	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Camera_Free"),
-		CCamera_Free::Create(m_pDevice, m_pContext))))
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Camera_Stage"),
+		CCamera_Stage::Create(m_pDevice, m_pContext))))
 		return E_FAIL;		//왠진모르겠지만 얘지우면 레퍼런스카운트 잘받아짐
 
 	/* For.Prototype_GameObject_Camera_Event*/

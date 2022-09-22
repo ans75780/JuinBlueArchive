@@ -6,7 +6,8 @@
 #include "Model.h"
 #include "Student.h"
 #include "..\Public\Camera_Event.h"
-
+#include "StateMachineBase.h"
+#include "BoneNode.h"
 
 CCamera_Event::CCamera_Event(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CCamera(pDevice, pContext)
@@ -42,6 +43,8 @@ void CCamera_Event::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
+	if (!IsMainCam())
+		return;
 
 	switch (m_eEventType)
 	{
@@ -49,6 +52,7 @@ void CCamera_Event::Tick(_float fTimeDelta)
 		Event_Stage_Start();
 		break;
 	case Client::CCamera_Event::EVENT_TYPE::EVENT_EX:
+		Event_Ex(fTimeDelta);
 		break;
 	case Client::CCamera_Event::EVENT_TYPE::EVENT_BOSS_APPEAR:
 		break;
@@ -96,8 +100,27 @@ void CCamera_Event::Ready_Event_Stage_Start(CCamera * pReturnCamera, CGameObject
 	CCamera::Set_MainCam(this);
 }
 
-void CCamera_Event::Ready_Event_Ex(CCamera * pReturnCamera, CGameObject * pTarget, CAnimation * pAnimation, CBoneNode * pBoneTransform, CBoneNode * CBoneTarget)
+void CCamera_Event::Ready_Event_Ex(CCamera * pReturnCamera, CGameObject * pTarget)
 {
+	m_pReturnToCam = pReturnCamera;
+
+	m_pTarget = pTarget;
+
+	char pAnimaitonStr[MAX_PATH];
+
+	WideCharToMultiByte(CP_ACP, 0, ((CStudent*)m_pTarget)->Get_Name(), MAX_PATH, pAnimaitonStr, MAX_PATH, NULL, NULL);
+
+	//28
+	strcat_s(pAnimaitonStr, "_Original_Exs_Cutin_Cam");
+
+	m_pAnimation = ((CStudent*)m_pTarget)->Get_Animation(pAnimaitonStr);
+
+	m_pAnimation->Play();
+	m_eEventType = EVENT_TYPE::EVENT_EX;
+
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, m_pTarget->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION));
+
+	CCamera::Set_MainCam(this);
 
 }
 
@@ -107,6 +130,7 @@ void CCamera_Event::Event_Stage_Start()
 	{
 		CCamera::Set_MainCam(m_pReturnToCam);
 	}
+	
 	m_pTransformCom->LookAt(m_pTarget->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION));
 
 	_vector		vCamPos = m_pTarget->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION);
@@ -114,6 +138,32 @@ void CCamera_Event::Event_Stage_Start()
 	vCamPos += XMLoadFloat3(&m_vOffset);
 
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vCamPos);
+
+}
+
+void CCamera_Event::Event_Ex(_float fTimeDelta)
+{
+	if (m_pAnimation->IsFinished())
+	{
+		m_CameraDesc.fFovy = XMConvertToRadians(65.0f);
+
+		CCamera::Set_MainCam(m_pReturnToCam);
+	}
+	m_pAnimation->Update(fTimeDelta);
+
+	m_CameraDesc.fFovy = XMConvertToRadians(15.0f);
+	_matrix vMatrix = ((CModel*)m_pTarget->Get_Component(L"Com_Model"))->Find_Bone("Camera001")->Get_CombinedMatrix();
+	_matrix vTargetMatrix = ((CModel*)m_pTarget->Get_Component(L"Com_Model"))->Find_Bone("Camera001.Target")->Get_CombinedMatrix();
+
+
+	m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vMatrix.r[0]);
+	m_pTransformCom->Set_State(CTransform::STATE_UP, vMatrix.r[1]);
+	m_pTransformCom->Set_State(CTransform::STATE_LOOK, vMatrix.r[2]);
+
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vMatrix.r[3]);
+
+
+	m_pTransformCom->LookAt(vTargetMatrix.r[3]);
 
 }
 

@@ -74,6 +74,14 @@ void CCamera_Free::Tick(_float fTimeDelta)
 		m_pTransformCom->Turn(m_pTransformCom->Get_State(CTransform::STATE_RIGHT), fTimeDelta * MouseMove * 0.1f);
 	}
 
+
+	if(KEY(SPACE, TAP))
+	{
+		_vector vecPos = m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION);
+		
+		int a = 10;
+	}
+
 	Safe_Release(pGameInstance);
 
 	if (FAILED(Bind_PipeLine()))

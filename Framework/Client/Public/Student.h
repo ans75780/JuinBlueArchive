@@ -9,6 +9,7 @@ class CRenderer;
 class CModel;
 class CMeshContainer;
 class CCollider;
+class CAnimation;
 END
 
 BEGIN(Client)
@@ -39,7 +40,7 @@ public:
 	const _tchar*	Get_Name() { return m_StudentDesc.m_szStudentName; }
 	class CStateMachineBase*		Get_StateMachine() { return m_pStateMachine; }
 	void	Set_Transform(_vector vPos);
-
+	class CAnimation*	Get_Animation(const char* pAnimationName);
 
 	_bool	Collision_AABB(RAYDESC& ray, _float& distance);
 

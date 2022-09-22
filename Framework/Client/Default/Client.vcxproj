@@ -172,6 +172,7 @@
     <ClInclude Include="..\Public\Camera_Event.h" />
     <ClInclude Include="..\Public\Camera_Formation.h" />
     <ClInclude Include="..\Public\Camera_Free.h" />
+    <ClInclude Include="..\Public\Camera_Stage.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\Formation.h" />
     <ClInclude Include="..\Public\imconfig.h" />
@@ -223,6 +224,7 @@
     <ClCompile Include="..\Private\Camera_Event.cpp" />
     <ClCompile Include="..\Private\Camera_Formation.cpp" />
     <ClCompile Include="..\Private\Camera_Free.cpp" />
+    <ClCompile Include="..\Private\Camera_Stage.cpp" />
     <ClCompile Include="..\Private\Formation.cpp" />
     <ClCompile Include="..\Private\imgui.cpp" />
     <ClCompile Include="..\Private\ImguiMgr.cpp" />

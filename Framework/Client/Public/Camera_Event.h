@@ -23,11 +23,13 @@ public:
 public:
 	void	Ready_Event_Stage_Start(class CCamera* pReturnCamera, class CGameObject* pTarget, class CAnimation* pAnimation, _float3 vOffset);
 
-	void	Ready_Event_Ex(class CCamera* pReturnCamera, class CGameObject* pTarget, class CAnimation* pAnimation, class CBoneNode* pBoneTransform, class CBoneNode* CBoneTarget);
+	void	Ready_Event_Ex(class CCamera* pReturnCamera, class CGameObject* pTarget);
 
 
 public:
 	void	Event_Stage_Start();
+	void	Event_Ex(_float fTimeDelta);
+
 
 public:
 	static CCamera_Event* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

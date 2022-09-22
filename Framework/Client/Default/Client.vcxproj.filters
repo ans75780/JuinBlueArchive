@@ -70,9 +70,6 @@
     <ClInclude Include="..\Public\Terrain.h">
       <Filter>02.GameObject\02. Terrain</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Camera_Free.h">
-      <Filter>02.GameObject\01. Camera</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\UI_TestDialog.h">
       <Filter>02.GameObject\03. UI\01. Dialog</Filter>
     </ClInclude>
@@ -151,6 +148,12 @@
     <ClInclude Include="..\Public\State_Student_Ex.h">
       <Filter>04. State\EX</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Camera_Free.h">
+      <Filter>02.GameObject\01. Camera\Camera_Free</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Camera_Stage.h">
+      <Filter>02.GameObject\01. Camera\Camera_Stage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -209,9 +212,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\Terrain.cpp">
       <Filter>02.GameObject\02. Terrain</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Camera_Free.cpp">
-      <Filter>02.GameObject\01. Camera</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\UI_TestDialog.cpp">
       <Filter>02.GameObject\03. UI\01. Dialog</Filter>
@@ -287,6 +287,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\State_Student_Ex.cpp">
       <Filter>04. State\EX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera_Free.cpp">
+      <Filter>02.GameObject\01. Camera\Camera_Free</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera_Stage.cpp">
+      <Filter>02.GameObject\01. Camera\Camera_Stage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -442,14 +448,17 @@
     <Filter Include="02.GameObject\03. UI\03. UI_Text">
       <UniqueIdentifier>{b15bf238-2e5d-4183-89a0-9422f902af02}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObject\01. Camera\NewFilter1">
-      <UniqueIdentifier>{42a383c4-c89f-4547-a338-bdc7644637a0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObject\08. Stage">
       <UniqueIdentifier>{ad82da2e-aec8-4c90-8bbd-eb71ccf6385a}</UniqueIdentifier>
     </Filter>
     <Filter Include="04. State\EX">
       <UniqueIdentifier>{20fec20a-376d-451c-a7a8-9dbb1e00f982}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\01. Camera\Camera_Free">
+      <UniqueIdentifier>{42a383c4-c89f-4547-a338-bdc7644637a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\01. Camera\Camera_Stage">
+      <UniqueIdentifier>{d91fc141-06e6-4108-800f-f97009fb44b8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

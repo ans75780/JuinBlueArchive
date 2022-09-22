@@ -70,7 +70,7 @@ void CLevel_Formation::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	if (GetKeyState(VK_SPACE) & 0x8000)
+	if (KEY(SPACE, TAP))
 	{
 		CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
 	

@@ -8,7 +8,7 @@
 #include "State_Student_Run.h"
 #include "Collider.h"
 #include "State_Student_Formation_Idle.h"
-
+#include "Animation.h"
 CStudent::CStudent(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObject(pDevice, pContext)
 {
@@ -124,6 +124,16 @@ HRESULT CStudent::Render_MeshPart(CMeshContainer * pMesh)
 void CStudent::Set_Transform(_vector vPos)
 {
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vPos);
+}
+
+CAnimation * CStudent::Get_Animation(const char * pAnimationName)
+{
+
+	CAnimation*	m_pAnimation = nullptr;
+
+	m_pAnimation = m_pModelCom->Get_AnimationFromName(pAnimationName);
+
+	return m_pAnimation;
 }
 
 _bool CStudent::Collision_AABB(RAYDESC & ray, _float & distance)

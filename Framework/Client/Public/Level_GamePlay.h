@@ -36,7 +36,7 @@ private:
 	vector<class CStudent*> m_vecStudent;
 	vector<_vector>			m_vecFormationPos;
 
-	class CCamera*			m_pFormationCam = nullptr;
+	class CCamera_Stage*	m_pStageCam = nullptr;
 	class CCamera_Event*	m_pEventCam= nullptr;
 
 
