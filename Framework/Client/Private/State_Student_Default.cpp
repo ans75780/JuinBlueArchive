@@ -7,13 +7,16 @@
 #include "Engine_Defines.h"
 #include "GameInstance.h"
 #include "Key_Manager.h"
-CState_Student_Default::CState_Student_Default(CStudent * pStudent, _tchar* AnimationName)
+#include "Actor.h"
+
+
+CState_Student_Default::CState_Student_Default(CActor * pStudent, _tchar* AnimationName)
 	:CStateBase(pStudent)
 {
 	_tchar pTAnimaitonStr[MAX_PATH];
 	char	szAnimationStr[MAX_PATH];
 
-	lstrcpy(pTAnimaitonStr, m_pStudent->Get_Name());
+	lstrcpy(pTAnimaitonStr, m_pOwner->Get_Name());
 	lstrcat(pTAnimaitonStr, AnimationName);
 	
 	WideCharToMultiByte(CP_ACP, 0, pTAnimaitonStr, MAX_PATH, szAnimationStr, MAX_PATH, NULL, NULL);
@@ -27,7 +30,7 @@ HRESULT CState_Student_Default::Initialize()
 		return E_FAIL;
 
 	m_pAnimation->Play();
-	m_pTransform = m_pStudent->Get_Transform();
+	m_pTransform = m_pOwner->Get_Transform();
 	return S_OK;
 }
 
@@ -52,7 +55,7 @@ CStateBase * CState_Student_Default::Exit()
 	return nullptr;
 }
 
-CState_Student_Default * CState_Student_Default::Create(CStudent * pStudent, _tchar* AnimationName)
+CState_Student_Default * CState_Student_Default::Create(CActor * pStudent, _tchar* AnimationName)
 {
 	CState_Student_Default*	pInstance = new CState_Student_Default(pStudent, AnimationName);
 

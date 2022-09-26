@@ -38,6 +38,8 @@ private:
 
 	class CCamera_Stage*	m_pStageCam = nullptr;
 	class CCamera_Event*	m_pEventCam= nullptr;
+	class CCamera_Free*		m_pFreeCam= nullptr;
+
 
 
 public:

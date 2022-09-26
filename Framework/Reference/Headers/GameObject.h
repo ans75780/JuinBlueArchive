@@ -11,6 +11,11 @@ public:
 	typedef struct GameObjcetDesc		
 	{
 		_tchar		sz_Name[MAX_PATH];
+		_float		m_fDamage = 1.f;
+		_float		m_fRange = 5.f;
+		_float		m_fMaxHp = 10.f;
+		_float		m_fHp = 10.f;
+		UNIT_CLASS	m_eClass = UNIT_CLASS_END;
 	}OBJ_DESC;
 
 protected:
@@ -30,13 +35,20 @@ public:
 	class CTransform*	Get_Transform() { return m_pTransformCom; }
 
 public:
+	virtual HRESULT	Start_Level() { return S_OK; }
+
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* pArg);
 	virtual void	Tick(_float fTimeDelta);
 	virtual void	LateTick(_float fTimeDelta);
 
-
 	virtual HRESULT Render(); 
+	virtual const _tchar*	Get_Name();
+	
+	GameObjcetDesc&		Get_Desc()
+	{
+		return m_desc;
+	}
 
 	//Enable,DIsable
 public:

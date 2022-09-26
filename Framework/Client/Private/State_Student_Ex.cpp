@@ -6,7 +6,8 @@
 #include "Animation.h"
 #include "State_Student_Run.h"
 #include "GameInstance.h"
-CState_Student_Ex::CState_Student_Ex(CStudent * pStudent)
+#include "Actor.h"
+CState_Student_Ex::CState_Student_Ex(CActor * pStudent)
 	:CStateBase(pStudent)
 {
 }
@@ -15,7 +16,7 @@ HRESULT CState_Student_Ex::Initialize()
 {
 	char pAnimaitonStr[MAX_PATH];
 
-	WideCharToMultiByte(CP_ACP, 0, m_pStudent->Get_Name(), MAX_PATH, pAnimaitonStr, MAX_PATH, NULL, NULL);
+	WideCharToMultiByte(CP_ACP, 0, m_pOwner->Get_Name(), MAX_PATH, pAnimaitonStr, MAX_PATH, NULL, NULL);
 
 	strcat_s(pAnimaitonStr, "_Original_Exs_Cutin");
 
@@ -49,7 +50,7 @@ CStateBase * CState_Student_Ex::Exit()
 	return nullptr;
 }
 
-CState_Student_Ex * CState_Student_Ex::Create(CStudent * pStudent)
+CState_Student_Ex * CState_Student_Ex::Create(CActor * pStudent)
 {
 	CState_Student_Ex*	pInstance = new CState_Student_Ex(pStudent);
 

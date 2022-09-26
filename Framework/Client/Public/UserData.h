@@ -2,11 +2,12 @@
 #include "Client_Defines.h"
 #include "Engine_Defines.h"
 #include "Base.h"
-
+#include "GameObject.h"
 
 namespace Engine
 {
 	class CBase;
+	class CGameObject;
 }
 
 BEGIN(Client)
@@ -25,13 +26,25 @@ private:
 public:
 	HRESULT Initialize();
 	
-	vector<wstring>& Get_Formation() { return m_vecFormation; }
-	const vector<wstring>& Get_HavedStudent() { return m_vecHavedStudent; }
+	const vector<CGameObject::OBJ_DESC>& Get_Formation() { return m_vecFormation; }
+	void	Clear_Formation() { m_vecFormation.clear(); }
+	void	Add_Formation(CGameObject::OBJ_DESC desc) { m_vecFormation.push_back(desc); }
+
+
+	map<const _tchar*, CGameObject::OBJ_DESC>& Get_HavedStudent() { return m_HavedStudents; }
+
+
+public:
+	const CGameObject::OBJ_DESC*		Find_Student(const _tchar*	pStudentName);
+
 
 private:
-	vector<wstring> m_vecFormation;
-	vector<wstring> m_vecHavedStudent;
+	vector<CGameObject::OBJ_DESC> m_vecFormation;
+	map<const _tchar*, CGameObject::OBJ_DESC> m_HavedStudents;
 
+
+private:
+	void		Add_Student(const _tchar* pStudentName, UNIT_CLASS eClass, _float fDmg, _float fRange, _float fHp);
 
 public:
 	virtual void Free() override;	

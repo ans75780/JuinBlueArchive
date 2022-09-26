@@ -21,9 +21,9 @@ public:
 	virtual HRESULT Render() override;
 
 public:
-	void	Ready_Event_Stage_Start(class CCamera* pReturnCamera, class CGameObject* pTarget, class CAnimation* pAnimation, _float3 vOffset);
+	void	Ready_Event_Stage_Start(class CCamera* pReturnCamera, class CActor* pTarget, class CAnimation* pAnimation, _float3 vOffset);
 
-	void	Ready_Event_Ex(class CCamera* pReturnCamera, class CGameObject* pTarget);
+	void	Ready_Event_Ex(class CCamera* pReturnCamera, class CActor* pTarget);
 
 
 public:
@@ -36,17 +36,23 @@ public:
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
 
+
 private:
-	class CAnimation*	m_pAnimation;
-	_float3			m_vOffset;
-	class CCamera*	m_pReturnToCam = nullptr;
-	class CGameObject* m_pTarget = nullptr;
+
 	EVENT_TYPE	m_eEventType = EVENT_TYPE::EVENT_END;
+	class CCamera*	m_pReturnToCam = nullptr;
+	class CActor* m_pTarget = nullptr;
+
+private:
+	_float3			m_vOffset;
+
+
+
 
 	//for ExCam Variable
 private:
-	class CBoneNode*	m_pBoneTransform = nullptr;
-	class CBoneNode*	m_pBoneTarget = nullptr;
+	class CAnimation*	m_pAnimation;
+	_float4		m_fTargetOriginPos;
 
 
 };

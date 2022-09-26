@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Student.h"
-
+#include "Actor.h"
 #include "GameInstance.h"
 #include "MeshContainer.h"
 #include "StateMachineBase.h"
@@ -10,13 +10,13 @@
 #include "State_Student_Formation_Idle.h"
 #include "Animation.h"
 CStudent::CStudent(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
-	: CGameObject(pDevice, pContext)
+	: CActor(pDevice, pContext)
 {
 }
 
 
 CStudent::CStudent(const CStudent & rhs)
-	: CGameObject(rhs)
+	: CActor(rhs)
 {
 
 }
@@ -32,15 +32,13 @@ HRESULT CStudent::Initialize(void * pArg)
 	TransformDesc.fSpeedPerSec = 5.f;
 	TransformDesc.fRotationPerSec = XMConvertToRadians(90.0f);
 
-	memcpy(&m_StudentDesc, pArg, sizeof(STUDENTDESC));
-
+	//GameObject 에서 디스크립션 초기화해서 먼저 이거 해줘야함.
 	if (FAILED(__super::Initialize(&TransformDesc)))
 		return E_FAIL;
 
-	if (FAILED(SetUp_Components()))
-		return E_FAIL;
+	memcpy(&m_desc, pArg, sizeof(OBJ_DESC));
 
-	if (FAILED(SetUp_StateMachine(m_StudentDesc.m_eLevel)))
+	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
 	m_pTransformCom->Set_Scaled(_float3(1.00f, 1.00f, 1.00f));
@@ -121,25 +119,34 @@ HRESULT CStudent::Render_MeshPart(CMeshContainer * pMesh)
 	return S_OK;
 }
 
-void CStudent::Set_Transform(_vector vPos)
+HRESULT CStudent::Ready_For_CurrentLevel(LEVEL eCurrentLevel)
 {
-	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vPos);
+	//학생정보에서 레벨을 받아와서 맞는 기초상태로 세팅한다.
+
+	m_pStateMachine = CStateMachineBase::Create(this);
+	CStateBase* state = nullptr;
+	switch (eCurrentLevel)
+	{
+	case Client::LEVEL_GAMEPLAY:
+		state = CState_Student_Idle::Create(this);
+		break;
+	case Client::LEVEL_FORMATION:
+		state = CState_Student_Formation_Idle::Create(this);
+		break;
+	case Client::LEVEL_MAPTOOL:
+		break;
+	case Client::LEVEL_END:
+		break;
+	default:
+		break;
+	}
+	if (nullptr == state)
+		return E_FAIL;
+
+	m_pStateMachine->Setup_StateMachine(state);
+	return S_OK;
 }
 
-CAnimation * CStudent::Get_Animation(const char * pAnimationName)
-{
-
-	CAnimation*	m_pAnimation = nullptr;
-
-	m_pAnimation = m_pModelCom->Get_AnimationFromName(pAnimationName);
-
-	return m_pAnimation;
-}
-
-_bool CStudent::Collision_AABB(RAYDESC & ray, _float & distance)
-{
-	return m_pAABBCom->Collision_AABB(ray, distance);
-}
 
 HRESULT CStudent::SetUp_Components()
 {
@@ -153,7 +160,7 @@ HRESULT CStudent::SetUp_Components()
 
 	_tchar szModelTag[MAX_PATH] = L"Prototype_Component_Model_";
 
-	lstrcat(szModelTag, m_StudentDesc.m_szStudentName);
+	lstrcat(szModelTag, m_desc.sz_Name);
 
 	/* For.Com_Model */
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, szModelTag, TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
@@ -213,34 +220,7 @@ HRESULT CStudent::SetUp_ShaderResource()
 	return S_OK;
 }
 
-HRESULT CStudent::SetUp_StateMachine(LEVEL iLevel)
-{
-	//학생정보에서 레벨을 받아와서 맞는 기초상태로 세팅한다.
 
-	m_pStateMachine = CStateMachineBase::Create(this);
-	CStateBase* state = nullptr;
-	switch (iLevel)
-	{
-	case Client::LEVEL_GAMEPLAY:
-		state = CState_Student_Idle::Create(this);
-		break;
-	case Client::LEVEL_FORMATION:
-		state = CState_Student_Formation_Idle::Create(this);
-		break;
-	case Client::LEVEL_MAPTOOL:
-		break;
-	case Client::LEVEL_END:
-		break;
-	default:
-		break;
-	}
-	if (nullptr == state)
-		return E_FAIL;
-
-	m_pStateMachine->Setup_StateMachine(state);
-
-	return S_OK;
-}
 
 CStudent * CStudent::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {

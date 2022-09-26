@@ -13,7 +13,7 @@ BEGIN(Client)
 class CStateBase : public CBase
 {
 protected:
-		CStateBase(class CStudent* pStudent);
+		CStateBase(class CActor* pOwner);
 virtual	~CStateBase() = default;
 
 public:
@@ -28,7 +28,7 @@ public:
 protected:
 	class CAnimation*	m_pAnimation = nullptr;
 	class CModel*		m_pModel = nullptr;
-	class CStudent*		m_pStudent = nullptr;
+	class CActor*	m_pOwner = nullptr;
 
 protected:
 	_bool				m_bCalledExit;

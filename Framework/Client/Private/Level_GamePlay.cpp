@@ -16,6 +16,7 @@
 #include "StateBase.h"
 #include "State_Student_Ex.h"
 #include "Animation.h"
+#include "Camera.h"
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -66,6 +67,19 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);		
 
 	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
+
+	if (KEY(T, TAP))
+	{
+		if (m_pFreeCam->IsMainCam())
+		{
+			m_pStageCam->Set_MainCam(m_pStageCam);
+		}
+		else
+		{
+			m_pFreeCam->Set_MainCam(m_pFreeCam);
+		}
+	}
+
 	if (KEY(SPACE, TAP))
 	{
 		if (FAILED(pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_FORMATION))))
@@ -143,6 +157,11 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _tchar * pLayerTag)
 	)))
 		return E_FAIL;
 
+
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Prototype_GameObject_Camera_Free"), &CameraDesc,
+		((CGameObject**)&m_pFreeCam)
+	)))
+
 	Safe_Release(pGameInstance);
 	return S_OK;
 }
@@ -152,7 +171,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const _tchar * pLayerTag)
 
 	CGameInstance*	pGameInstance = GET_INSTANCE(CGameInstance);
 
-	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Prototype_GameObject_Stage_School"), L"Prototype_Component_Model_Stage_School")))
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Prototype_GameObject_Stage_School"), L"Prototype_Component_Model_Stage_School_1")))
 		return E_FAIL;
 
 	RELEASE_INSTANCE(CGameInstance);
@@ -204,17 +223,16 @@ HRESULT CLevel_GamePlay::Ready_Layer_Student(const _tchar * pLayerTag)
 	_tchar	szStudentPath[MAX_PATH] = L"Prototype_Student";
 
 	//각 클론된 스튜던트에 정보를 넣어줌.
-	CStudent::STUDENTDESC	studentDesc;
+	CGameObject::OBJ_DESC	desc;
 
-	studentDesc.m_eLevel = LEVEL_GAMEPLAY;
 
-	vector<wstring> m_formationStr = CUserData::Get_Instance()->Get_Formation();
-	for (_uint i = 0; i < m_formationStr.size(); i++)
+	vector<CGameObject::OBJ_DESC> m_formationDesc = CUserData::Get_Instance()->Get_Formation();
+	for (_uint i = 0; i < m_formationDesc.size(); i++)
 	{
-		lstrcpy(studentDesc.m_szStudentName, m_formationStr[i].c_str());
-		if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, szStudentPath, (void*)&studentDesc, &pStudent)))
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, szStudentPath, (void*)&m_formationDesc[i], &pStudent)))
 			return E_FAIL;
 		((CStudent*)pStudent)->Set_Transform(m_vecFormationPos[i]);
+		((CStudent*)pStudent)->Ready_For_CurrentLevel(LEVEL_GAMEPLAY);
 		m_vecStudent.push_back((CStudent*)pStudent);
 	}
 	Safe_Release(pGameInstance);

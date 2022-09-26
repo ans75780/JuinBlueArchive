@@ -32,6 +32,8 @@ public:
 	void Tick(_float fTimeDelta);
 	void LateTick(_float fTimeDelta);
 
+	HRESULT	Start_Level(_uint iLevelIndex);
+
 public:
 	void Clear(_uint iLevelIndex);
 

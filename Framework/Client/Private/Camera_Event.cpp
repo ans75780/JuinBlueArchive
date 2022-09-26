@@ -8,6 +8,8 @@
 #include "..\Public\Camera_Event.h"
 #include "StateMachineBase.h"
 #include "BoneNode.h"
+#include "Actor.h"
+
 
 CCamera_Event::CCamera_Event(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CCamera(pDevice, pContext)
@@ -82,7 +84,7 @@ HRESULT CCamera_Event::Render()
 	return S_OK;
 }
 
-void CCamera_Event::Ready_Event_Stage_Start(CCamera * pReturnCamera, CGameObject * pTarget, CAnimation * pAnimation, _float3 vOffset)
+void CCamera_Event::Ready_Event_Stage_Start(CCamera * pReturnCamera, CActor * pTarget, CAnimation * pAnimation, _float3 vOffset)
 {
 	m_pReturnToCam = pReturnCamera;
 	m_pAnimation = pAnimation;
@@ -100,7 +102,7 @@ void CCamera_Event::Ready_Event_Stage_Start(CCamera * pReturnCamera, CGameObject
 	CCamera::Set_MainCam(this);
 }
 
-void CCamera_Event::Ready_Event_Ex(CCamera * pReturnCamera, CGameObject * pTarget)
+void CCamera_Event::Ready_Event_Ex(CCamera * pReturnCamera, CActor * pTarget)
 {
 	m_pReturnToCam = pReturnCamera;
 
@@ -118,8 +120,13 @@ void CCamera_Event::Ready_Event_Ex(CCamera * pReturnCamera, CGameObject * pTarge
 	m_pAnimation->Play();
 	m_eEventType = EVENT_TYPE::EVENT_EX;
 
-	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, m_pTarget->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION));
 
+	_vector	vTargetPos = m_pTarget->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION);
+
+	XMStoreFloat4(&m_fTargetOriginPos,vTargetPos);
+
+	//EX때는 캐릭터를 원점으로 돌려놓음(왜? 노드에 카메라가 원점을 기준으로 되어잇음)
+	m_pTarget->Get_Transform()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(0.f,0.f,0.f,1.f));
 	CCamera::Set_MainCam(this);
 
 }
@@ -139,6 +146,8 @@ void CCamera_Event::Event_Stage_Start()
 
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vCamPos);
 
+
+
 }
 
 void CCamera_Event::Event_Ex(_float fTimeDelta)
@@ -148,12 +157,16 @@ void CCamera_Event::Event_Ex(_float fTimeDelta)
 		m_CameraDesc.fFovy = XMConvertToRadians(65.0f);
 
 		CCamera::Set_MainCam(m_pReturnToCam);
+		m_pTarget->Get_Transform()->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&m_fTargetOriginPos));
+		return;
 	}
 	m_pAnimation->Update(fTimeDelta);
 
 	m_CameraDesc.fFovy = XMConvertToRadians(15.0f);
-	_matrix vMatrix = ((CModel*)m_pTarget->Get_Component(L"Com_Model"))->Find_Bone("Camera001")->Get_CombinedMatrix();
-	_matrix vTargetMatrix = ((CModel*)m_pTarget->Get_Component(L"Com_Model"))->Find_Bone("Camera001.Target")->Get_CombinedMatrix();
+	_matrix vMatrix = m_pTarget->Get_ModelCom()->Find_Bone("Camera001")->Get_CombinedMatrix();
+	_matrix vTargetViewMatrix = m_pTarget->Get_ModelCom()->Find_Bone("Camera001.Target")->Get_CombinedMatrix();
+	_vector	vTargetPos = m_pTarget->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION);
+
 
 
 	m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vMatrix.r[0]);
@@ -163,7 +176,7 @@ void CCamera_Event::Event_Ex(_float fTimeDelta)
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vMatrix.r[3]);
 
 
-	m_pTransformCom->LookAt(vTargetMatrix.r[3]);
+	m_pTransformCom->LookAt(vTargetViewMatrix.r[3]);
 
 }
 

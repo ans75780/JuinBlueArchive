@@ -54,7 +54,7 @@ public: /* For.Object_Manager */
 	HRESULT Add_GameObject(_uint iLevelIndex, const _tchar* pLayerTag, const _tchar* pPrototypeTag, void* pArg = nullptr,  CGameObject** pObject = nullptr);
 	class CComponent* Get_Component(_uint iLevelIndex, const _tchar* pLayerTag, const _tchar* pComponentTag, _uint iIndex = 0);
 	list<class CGameObject*> Get_GameObjects(_uint iLevelIndex, const _tchar * pLayerTag);
-
+	HRESULT	Start_Level(_uint iLevelIndex);
 
 
 	map<const _tchar*, class CLayer*> Get_Layer(_uint iLevelIndex);

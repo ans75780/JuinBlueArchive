@@ -39,6 +39,7 @@ public:
 
 public:
 	static void	Set_MainCam(CCamera*	pCamera) { CCamera::g_MainCam = pCamera; }
+	_bool	IsMainCam();
 protected:
 	static CCamera*	g_MainCam;
 
@@ -46,8 +47,6 @@ protected:
 	CAMERADESC						m_CameraDesc;
 protected:
 	HRESULT Bind_PipeLine();
-	
-	_bool	IsMainCam();
 public:
 	virtual CGameObject* Clone(void* pArg) = 0;
 	virtual void Free() override;

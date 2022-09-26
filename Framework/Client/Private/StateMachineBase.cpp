@@ -5,7 +5,9 @@
 #include "Engine_Defines.h"
 #include "Student.h"
 
-CStateMachineBase::CStateMachineBase(CStudent * pStudent)
+#include "Actor.h"
+
+CStateMachineBase::CStateMachineBase(CActor * pStudent)
 	:m_pStudent(pStudent)
 {
 	Safe_AddRef(m_pStudent);
@@ -56,8 +58,10 @@ HRESULT CStateMachineBase::Add_State(CStateBase * pState)
 	if (nullptr == pState)
 		return E_FAIL;
 
+	m_States.top()->Get_Animation()->Stop();
 	m_States.push(pState);
 
+	m_States.top()->Get_Animation()->Play();
 	return S_OK;
 }
 
@@ -75,9 +79,9 @@ CStateBase * const CStateMachineBase::Get_CurrentState()
 	return m_States.top();
 }
 
-CStateMachineBase * CStateMachineBase::Create(CStudent * pStudent)
+CStateMachineBase * CStateMachineBase::Create(CActor * pOwner)
 {
-	CStateMachineBase*		pInstance = new CStateMachineBase(pStudent);
+	CStateMachineBase*		pInstance = new CStateMachineBase(pOwner);
 
 	if (FAILED(pInstance->Initialize()))
 	{
@@ -85,7 +89,6 @@ CStateMachineBase * CStateMachineBase::Create(CStudent * pStudent)
 		//Safe_Delete(pInstance);
 		return nullptr;
 	}
-
 	return pInstance;
 }
 

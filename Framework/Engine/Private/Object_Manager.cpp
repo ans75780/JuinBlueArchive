@@ -115,6 +115,19 @@ void CObject_Manager::LateTick(_float fTimeDelta)
 	}
 }
 
+HRESULT CObject_Manager::Start_Level(_uint iLevelIndex)
+{
+	for (auto& Pair : m_pLayers[iLevelIndex])
+	{
+		if (nullptr != Pair.second)
+		{
+			if (FAILED(Pair.second->Start_Level()))
+				return E_FAIL;
+		}
+	}
+	return S_OK;
+}
+
 void CObject_Manager::Clear(_uint iLevelIndex)
 {
 	if (iLevelIndex >= m_iNumLevels)

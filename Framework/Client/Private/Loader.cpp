@@ -193,6 +193,12 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 		CCamera_Event::Create(m_pDevice, m_pContext))))
 		return E_FAIL;		//왠진모르겠지만 얘지우면 레퍼런스카운트 잘받아짐
 
+
+		/* For.Prototype_GameObject_Camera_Event*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Camera_Free"),
+		CCamera_Free::Create(m_pDevice, m_pContext))))
+		return E_FAIL;	
+
 	
 	/* For.Prototype_GameObject_Sky */
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Sky"),

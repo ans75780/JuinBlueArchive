@@ -13,7 +13,7 @@ BEGIN(Client)
 class CStateMachineBase : public CBase
 {
 private:
-	CStateMachineBase(class CStudent* pStudent);
+	CStateMachineBase(class CActor* pOwner);
 	virtual ~CStateMachineBase() = default;
 
 public:
@@ -31,12 +31,12 @@ public:
 public:
 	class CStateBase* const	Get_CurrentState();
 private:
-	class CStudent*				m_pStudent = nullptr;
+	class CActor*				m_pStudent = nullptr;
 	stack<class CStateBase*>	m_States;
 
 
 public:
-	static CStateMachineBase*		Create(class CStudent* pStudent);
+	static CStateMachineBase*		Create(class CActor* pOwner);
 	void							Free();
 };
 
