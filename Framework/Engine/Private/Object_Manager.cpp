@@ -81,6 +81,7 @@ HRESULT CObject_Manager::Add_GameObject(_uint iLevelIndex, const _tchar * pLayer
 	else
 		pLayer->Add_GameObject(pCloneObject);	
 
+
 	if (nullptr != pObject)
 		(*pObject) = pCloneObject;
 

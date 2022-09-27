@@ -29,12 +29,11 @@ public:
 	virtual HRESULT Render();
 	virtual HRESULT Render_MeshPart(CMeshContainer* pMesh);
 
-public:
-	HRESULT Ready_For_CurrentLevel(LEVEL eCurrentLevel);
-
 private:
 	virtual HRESULT SetUp_Components() override;
 	virtual HRESULT SetUp_ShaderResource() override;
+	virtual HRESULT SetUp_StateMachine() override;
+
 public:
 	static CStudent* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;

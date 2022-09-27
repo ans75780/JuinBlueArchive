@@ -41,6 +41,9 @@ HRESULT CStudent::Initialize(void * pArg)
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
+	if (FAILED(SetUp_StateMachine()))
+		return E_FAIL;
+
 	m_pTransformCom->Set_Scaled(_float3(1.00f, 1.00f, 1.00f));
 
 	return S_OK;
@@ -119,35 +122,6 @@ HRESULT CStudent::Render_MeshPart(CMeshContainer * pMesh)
 	return S_OK;
 }
 
-HRESULT CStudent::Ready_For_CurrentLevel(LEVEL eCurrentLevel)
-{
-	//학생정보에서 레벨을 받아와서 맞는 기초상태로 세팅한다.
-
-	m_pStateMachine = CStateMachineBase::Create(this);
-	CStateBase* state = nullptr;
-	switch (eCurrentLevel)
-	{
-	case Client::LEVEL_GAMEPLAY:
-		state = CState_Student_Idle::Create(this);
-		break;
-	case Client::LEVEL_FORMATION:
-		state = CState_Student_Formation_Idle::Create(this);
-		break;
-	case Client::LEVEL_MAPTOOL:
-		break;
-	case Client::LEVEL_END:
-		break;
-	default:
-		break;
-	}
-	if (nullptr == state)
-		return E_FAIL;
-
-	m_pStateMachine->Setup_StateMachine(state);
-	return S_OK;
-}
-
-
 HRESULT CStudent::SetUp_Components()
 {
 	/* For.Com_Shader */
@@ -217,6 +191,34 @@ HRESULT CStudent::SetUp_ShaderResource()
 
 	RELEASE_INSTANCE(CGameInstance);
 
+	return S_OK;
+}
+
+HRESULT CStudent::SetUp_StateMachine()
+{
+	//학생정보에서 레벨을 받아와서 맞는 기초상태로 세팅한다.
+
+	m_pStateMachine = CStateMachineBase::Create(this);
+	CStateBase* state = nullptr;
+	switch (m_iClonedLevel)
+	{
+	case Client::LEVEL_GAMEPLAY:
+		state = CState_Student_Idle::Create(this);
+		break;
+	case Client::LEVEL_FORMATION:
+		state = CState_Student_Formation_Idle::Create(this);
+		break;
+	case Client::LEVEL_MAPTOOL:
+		break;
+	case Client::LEVEL_END:
+		break;
+	default:
+		break;
+	}
+	if (nullptr == state)
+		return E_FAIL;
+
+	m_pStateMachine->Setup_StateMachine(state);
 	return S_OK;
 }
 

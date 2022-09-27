@@ -65,6 +65,11 @@ HRESULT CTarget_Manager::Begin_MRT(ID3D11DeviceContext* pContext, const _tchar *
 	if (pMRTList->size() >= 8)
 		return E_FAIL;
 
+	//况醋 贸府
+	ID3D11ShaderResourceView*		SRVs[8] = { nullptr };
+	pContext->PSGetShaderResources(8, 0, SRVs);
+	//况醋贸府场
+
 	ID3D11RenderTargetView*		RTVs[8] = { nullptr };
 
 	_uint		iNumRTVs = 0;

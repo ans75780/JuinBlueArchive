@@ -270,10 +270,6 @@ HRESULT CLevel_Formation::Ready_Layer_Student(const _tchar * pLayerTag)
 			m_vecStudent.push_back((CStudent*)pStudent);
 		}
 	}
-	for (_uint i = 0; i < m_vecStudent.size(); i++)
-	{
-		m_vecStudent[i]->Ready_For_CurrentLevel(LEVEL_FORMATION);
-	}
 
 	return S_OK;
 }

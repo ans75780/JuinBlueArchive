@@ -50,6 +50,8 @@ public:
 		return m_desc;
 	}
 
+	_uint			Get_ClonedLevel() { return m_iClonedLevel; }
+
 	//Enable,DIsable
 public:
 	_bool	Get_Enable() { return m_bEnable; }
@@ -66,6 +68,11 @@ protected:
 	_bool						m_bEnable = true;
 
 
+//For ObjectManager
+
+	friend class CObject_Manager;
+private:
+	void	Set_ClonedLevel(_uint _iClonedLevel) ;
 
 protected:
 	map<const _tchar*, class CComponent*>			m_Components;
@@ -75,7 +82,7 @@ protected:
 
 protected:
 	OBJ_DESC	m_desc;
-
+	_uint		m_iClonedLevel = 0;
 
 protected:
 	HRESULT Add_Component(_uint iLevelIndex, const _tchar* pPrototypeTag, const _tchar* pComponentTag, class CComponent** ppOut, void* pArg = nullptr);

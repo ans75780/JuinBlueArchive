@@ -232,7 +232,6 @@ HRESULT CLevel_GamePlay::Ready_Layer_Student(const _tchar * pLayerTag)
 		if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, szStudentPath, (void*)&m_formationDesc[i], &pStudent)))
 			return E_FAIL;
 		((CStudent*)pStudent)->Set_Transform(m_vecFormationPos[i]);
-		((CStudent*)pStudent)->Ready_For_CurrentLevel(LEVEL_GAMEPLAY);
 		m_vecStudent.push_back((CStudent*)pStudent);
 	}
 	Safe_Release(pGameInstance);
