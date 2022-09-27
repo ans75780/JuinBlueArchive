@@ -25,7 +25,7 @@ IMPLEMENT_SINGLETON(CImguiMgr)
 CImguiMgr::CImguiMgr()
 	: m_pGameInstance(CGameInstance::Get_Instance())
 	, show_demo_window(false), show_mainBar(true)
-	, MapToolCheckBox(false), m_currentLevelID(0)
+	, MapToolCheckBox(false), m_currentLevelID(2)
 	, UIToolCheckBox(true), m_pSelectUI(nullptr)
 {
 	Safe_AddRef(m_pGameInstance);
@@ -430,9 +430,19 @@ void CImguiMgr::UITool_View(void)	//UI툴  새창을 띄움
 					Safe_Delete_Array(pUtil_name);
 				}
 			}
+
 			sort(m_ImageVec.begin(), m_ImageVec.end(),
 				[](t_ImageVec &s1, t_ImageVec &s2)
-			{ return s1.name[0] < s2.name[0]; });
+			{
+				if (s1.name[0] == s2.name[0])
+				{
+					if (s1.name[1] == s2.name[1])
+						return s1.name[2] < s2.name[2];
+
+					return s1.name[1] < s2.name[1];
+				}
+				return s1.name[0] < s2.name[0];
+			});
 		}
 	}
 #pragma endregion 
@@ -499,6 +509,11 @@ void CImguiMgr::UITool_View(void)	//UI툴  새창을 띄움
 
 	case 2:
 		ImGui::Separator();
+		if (UI_EditMode)		
+			Create_UIText((_uint)UI_Set_LevelNum + 2);
+		else
+			Create_UIText(m_currentLevelID);
+		break;
 		break;
 
 	default:
@@ -782,6 +797,59 @@ void CImguiMgr::Create_LevelMoveButton(_uint _Level)	//LevelButton 을 정의하고 �
 	}
 }
 
+void CImguiMgr::Create_UIText(_uint _Level)
+{
+	static _float UI_Size[3] = { 100.f, 100.f, 1.f };
+	static _float UI_Pos[3] = { 0.f, 0.f, 0.f };
+	static char UI_Name[MAX_PATH] = {};
+
+	const char* Render_Type[] = { "UI_POST", "UI_DIALOG_BUTTON", "UI_DIALOG", "UI_BUTTTON", "UI_BACKGROUND", "NONE" };
+	static unsigned int Render_Num = 5;
+	const char* Render_Value = Render_Type[Render_Num];
+	if (ImGui::BeginCombo("Render Type", Render_Value, 0))
+	{
+		for (int i = 0; i < IM_ARRAYSIZE(Render_Type); ++i)
+		{
+			const bool is_selected = (Render_Num == i);
+			if (ImGui::Selectable(Render_Type[i], is_selected))
+				Render_Num = i;
+		}
+		ImGui::EndCombo();
+	}
+
+	ImGui::InputText("Name", UI_Name, MAX_PATH);
+	ImGui::InputFloat2("Set Size", UI_Size, "%.1f", 0);
+	ImGui::InputFloat2("Set Pos", UI_Pos, "%.1f", 0);
+
+	if (m_currentLevelID == LEVEL::LEVEL_LOADING || Render_Num == 5/*UI_NONE*/) //로딩이거나, UI그룹설정안했다면
+	{
+		ImGui::Text("RenderType is NONE");
+		return;
+	}
+
+	if (ImGui::Button("Create_UI"))
+	{
+
+		CUI * pUI = CUI_Text::Create(m_pDevice, m_pContext);
+
+		pUI->Set_UIName(CStrUtil::ConvertCtoWC(UI_Name));
+		pUI->Set_UIType((UI_TYPE)Render_Num);
+		pUI->Set_Size(_float3(UI_Size[0], UI_Size[1], UI_Size[2]));
+		pUI->Set_Pos(_float3(UI_Pos[0], UI_Pos[1], UI_Pos[2]));
+		pUI->Set_UILevel(_Level);
+		pUI->initialization();
+
+		if (FAILED(m_pGameInstance->Add_UI(_Level, pUI)))	//받아온레벨에다 생성
+		{
+			MSG_BOX("UI생성실패");
+		}
+
+
+		ImGui::Text("Create");
+	}
+
+}
+
 void CImguiMgr::Load_UIVec(void)	//불러오기
 {
 	m_pGameInstance->Clear_UIVec();
@@ -876,8 +944,8 @@ void CImguiMgr::Load_UIVec(void)	//불러오기
 			MSG_BOX("UI정보 불러오기 실패");
 		}
 
-		Safe_Delete_Array(pUtil_ImageTag);
 		Safe_Delete_Array(pUtil_Name);
+		Safe_Delete_Array(pUtil_ImageTag);
 	}
 
 	MSG_BOX("로드성공");
@@ -906,17 +974,43 @@ void CImguiMgr::GetLevelString(char * str, _uint len, _uint _LEVEL) //@@@@@@@@@@
 	case LEVEL_LOBBY:
 		strcpy_s(str, len, "LEVEL_LOBBY");
 		break;
-	case LEVEL_GAMEPLAY:
-		strcpy_s(str, len, "LEVEL_GAMEPLAY");
+	case LEVEL_CAFE:
+		strcpy_s(str, len, "LEVEL_CAFE");
+		break;
+	case LEVEL_SCHEDULE:
+		strcpy_s(str, len, "LEVEL_SCHEDULE");
+		break;
+	case LEVEL_STUDENTS:
+		strcpy_s(str, len, "LEVEL_STUDENTS");
 		break;
 	case LEVEL_FORMATION:
 		strcpy_s(str, len, "LEVEL_FORMATION");
+		break;
+	case LEVEL_CIRCLE:
+		strcpy_s(str, len, "LEVEL_CIRCLE");
+		break;
+	case LEVEL_MANUFACTURE:
+		strcpy_s(str, len, "LEVEL_MANUFACTURE");
+		break;
+	case LEVEL_SHOP:
+		strcpy_s(str, len, "LEVEL_SHOP");
+		break;
+	case LEVEL_GACHA:
+		strcpy_s(str, len, "LEVEL_GACHA");
+		break;
+	case LEVEL_WORK:
+		strcpy_s(str, len, "LEVEL_WORK");
+		break;
+	case LEVEL_GAMEPLAY:
+		strcpy_s(str, len, "LEVEL_GAMEPLAY");
 		break;
 	case LEVEL_MAPTOOL:
 		strcpy_s(str, len, "LEVEL_MAPTOOL");
 		break;
 	case LEVEL_END:
 		strcpy_s(str, len, "ERROR");
+		break;
+	default:
 		break;
 	}
 	return;

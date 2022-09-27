@@ -34,9 +34,19 @@ public:
 	HRESULT Initialize(LEVEL eNextLevel);
 	HRESULT Loading_ForLogoLevel();
 	HRESULT Loading_ForLobbyLevel();
+	HRESULT Loading_ForCafeLevel();
+	HRESULT Loading_ForScheduleLevel();
+	HRESULT Loading_ForStudentsLevel();
+	HRESULT Loading_ForFormationLevel();
+	HRESULT Loading_ForCircleLevel();
+	HRESULT Loading_ForManufactureLevel();
+	HRESULT Loading_ForShopLevel();
+	HRESULT Loading_ForRecruitLevel();
+	HRESULT Loading_ForWorkLevel();
+
+
 	HRESULT Loading_ForGamePlayLevel();
 	HRESULT Loading_ForMapToolLevel();
-	HRESULT Loading_ForFormationLevel();
 
 
 

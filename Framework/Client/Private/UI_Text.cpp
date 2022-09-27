@@ -17,10 +17,13 @@ HRESULT CUI_Text::Initialize(void * pArg)
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
+
 	lstrcpy(m_szUIClass, TEXT("CUI_Text"));
 	ZeroMemory(m_szText, MAX_PATH);
-	m_fColor = _float4(1.f, 1.f, 1.f, 1.f);
-	m_fScale = 1.f;
+	lstrcpy(m_szText, TEXT("µðÆúÆ®"));
+
+	m_fColor = _float4(0.2f, 0.27f, 0.36f, 1.f);
+	m_fScale = 0.6f;
 
 	return S_OK;
 }
@@ -33,6 +36,7 @@ HRESULT CUI_Text::initialization()
 void CUI_Text::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
 }
 
 void CUI_Text::LateTick(_float fTimeDelta)

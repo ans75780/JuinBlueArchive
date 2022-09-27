@@ -42,6 +42,8 @@ public:
 	void	SetUITextColor(_float4 _color) { m_fColor = _color; }
 	_float4	GetUITextColor() { return m_fColor; }
 
+	virtual	void	Set_Size(_float3 _fSize) { m_fSize = _fSize; }
+
 private:
 	HRESULT SetUp_Components();
 	HRESULT SetUp_ShaderResource();

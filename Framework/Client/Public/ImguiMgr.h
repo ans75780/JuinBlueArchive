@@ -12,8 +12,13 @@ BEGIN(Client)
 
 class CImguiMgr : public CBase
 {
-#define SELECT_LEVEL "LEVEL_LOGO", "LEVEL_LOBBY", "LEVEL_GAMEPLAY", "LEVEL_FORMATION", "LEVEL_MAPTOOL"	//레벨추가시 변경
+#define SELECT_LEVEL	"LEVEL_LOGO", "LEVEL_LOBBY", "LEVEL_CAFE",				\
+						"LEVEL_SCHEDULE", "LEVEL_STUDENTS", "LEVEL_FORMATION",	\
+						"LEVEL_CIRCLE", "LEVEL_MANUFACTURE", "LEVEL_SHOP",		\
+						"LEVEL_GACHA", "LEVEL_WORK",							\
+						"LEVEL_GAMEPLAY", "LEVEL_MAPTOOL" 	//레벨추가시 변경
 
+	
 	DECLARE_SINGLETON(CImguiMgr)
 
 private:
@@ -43,7 +48,8 @@ private:	//새창으로 구분
 	void				SelectUI_LevelMoveButton(void);	
 	void				SelectUI_Text(void);
 	void			Create_LevelMoveButton(_uint _Level);
-	
+	void			Create_UIText(_uint _Level);
+
 private:
 	void		Load_UIVec(void);
 	void		GetLevelString(char * str, _uint len, _uint _LEVEL = 0);

@@ -50,7 +50,5 @@ void CLevel_Lobby::Free()
 {
 	__super::Free();
 
-
-
 }
 

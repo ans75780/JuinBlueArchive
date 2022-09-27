@@ -5,8 +5,8 @@
 #include "Renderer.h"
 #include "Transform.h"
 #include <math.h>
-_float4x4	CUI::g_UIMatProj;
 
+_float4x4	CUI::g_UIMatProj;
 
 CUI::CUI(ID3D11Device * pDevice, ID3D11DeviceContext * pDeviceContext)
 	:CGameObject(pDevice, pDeviceContext),m_bMouseClicked(false), m_bMouseOver(false),m_bDead(false)
@@ -153,6 +153,8 @@ CUI * CUI::Get_MouseOveredUI(const POINT & pt)
 HRESULT CUI::LoadUIImage(const _tchar * TextureTag, _uint iLevel)
 {
 	lstrcpy(m_szUITextureTag, TextureTag);
+	if ('\0' == m_szUITextureTag[0])	//텍스트는 NULL로 들어와서 예외
+		return S_OK;
 
 	if (FAILED(__super::Add_Component(iLevel, m_szUITextureTag, TEXT("Com_Texture"), (CComponent**)&m_pTextureCom)))
 		return E_FAIL;

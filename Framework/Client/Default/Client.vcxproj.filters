@@ -20,7 +20,7 @@
       <Filter>99.Defines</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Level_GamePlay.h">
-      <Filter>01.Level\GamePlay</Filter>
+      <Filter>01.Level\98. GamePlay</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Level_Loading.h">
       <Filter>01.Level\00. Loading</Filter>
@@ -80,7 +80,7 @@
       <Filter>02.GameObject\03. UI\01. Dialog\DialogButton</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Level_MapTool.h">
-      <Filter>01.Level\MapTool</Filter>
+      <Filter>01.Level\99. MapTool</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\TestObject_Model_Haruka.h">
       <Filter>02.GameObject\99. TestObject\Model\Haruka</Filter>
@@ -110,7 +110,7 @@
       <Filter>02.GameObject\01. Camera\Camera_Event</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Level_Formation.h">
-      <Filter>01.Level\Formation</Filter>
+      <Filter>01.Level\06. Formation</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Camera_Formation.h">
       <Filter>02.GameObject\01. Camera\Camera_Formation</Filter>
@@ -148,6 +148,30 @@
     <ClInclude Include="..\Public\UI_Text.h">
       <Filter>02.GameObject\03. UI\03. UI_Text</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Level_Cafe.h">
+      <Filter>01.Level\03. Cafe</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Schedule.h">
+      <Filter>01.Level\04. Schedule</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Students.h">
+      <Filter>01.Level\05. Students</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Circle.h">
+      <Filter>01.Level\07. Circle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Manufacture.h">
+      <Filter>01.Level\08. Manufacture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Shop.h">
+      <Filter>01.Level\09. Shop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Work.h">
+      <Filter>01.Level\11. Work</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Gacha.h">
+      <Filter>01.Level\10. Gacha</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -160,7 +184,7 @@
       <Filter>00.MainApp</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Level_GamePlay.cpp">
-      <Filter>01.Level\GamePlay</Filter>
+      <Filter>01.Level\98. GamePlay</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Level_Loading.cpp">
       <Filter>01.Level\00. Loading</Filter>
@@ -217,7 +241,7 @@
       <Filter>02.GameObject\03. UI\01. Dialog\DialogButton</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Level_MapTool.cpp">
-      <Filter>01.Level\MapTool</Filter>
+      <Filter>01.Level\99. MapTool</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\TestObject_Model_Haruka.cpp">
       <Filter>02.GameObject\99. TestObject\Model\Haruka</Filter>
@@ -250,7 +274,7 @@
       <Filter>04. State\Formation</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Level_Formation.cpp">
-      <Filter>01.Level\Formation</Filter>
+      <Filter>01.Level\06. Formation</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Camera_Formation.cpp">
       <Filter>02.GameObject\01. Camera\Camera_Formation</Filter>
@@ -282,6 +306,30 @@
     <ClCompile Include="..\Private\UI_Text.cpp">
       <Filter>02.GameObject\03. UI\03. UI_Text</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Level_Cafe.cpp">
+      <Filter>01.Level\03. Cafe</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Schedule.cpp">
+      <Filter>01.Level\04. Schedule</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Students.cpp">
+      <Filter>01.Level\05. Students</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Circle.cpp">
+      <Filter>01.Level\07. Circle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Manufacture.cpp">
+      <Filter>01.Level\08. Manufacture</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Shop.cpp">
+      <Filter>01.Level\09. Shop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Work.cpp">
+      <Filter>01.Level\11. Work</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Gacha.cpp">
+      <Filter>01.Level\10. Gacha</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -304,9 +352,6 @@
     <Filter Include="01.Level">
       <UniqueIdentifier>{21371941-8fc0-43d9-b47a-6f347c9fae61}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Level\GamePlay">
-      <UniqueIdentifier>{2c0cd078-e1ec-4276-a003-e7ec4d0edcf0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObject">
       <UniqueIdentifier>{57f74c26-08d1-4431-861b-7a6105d37c3f}</UniqueIdentifier>
     </Filter>
@@ -327,9 +372,6 @@
     </Filter>
     <Filter Include="96.Imgui\ImguiMgr">
       <UniqueIdentifier>{4f667c70-39ac-465b-972c-383f789b3b76}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Level\MapTool">
-      <UniqueIdentifier>{a67c9f66-02ae-4f1b-9476-9f476b9bfa9f}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObject\00. BackGround">
       <UniqueIdentifier>{c829d861-a14a-4627-a9ce-aa73e649e01e}</UniqueIdentifier>
@@ -378,9 +420,6 @@
     </Filter>
     <Filter Include="02.GameObject\01. Camera\Camera_Event">
       <UniqueIdentifier>{301e37c4-57ad-4f28-b739-944eff4800de}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Level\Formation">
-      <UniqueIdentifier>{fcf1538e-17e9-4145-8d55-3d703fe54e30}</UniqueIdentifier>
     </Filter>
     <Filter Include="04. State\Formation">
       <UniqueIdentifier>{68ed6730-4b2b-4804-8881-e85dcb6d0a74}</UniqueIdentifier>
@@ -438,6 +477,39 @@
     </Filter>
     <Filter Include="02.GameObject\03. UI\03. UI_Text">
       <UniqueIdentifier>{b15bf238-2e5d-4183-89a0-9422f902af02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Level\06. Formation">
+      <UniqueIdentifier>{fcf1538e-17e9-4145-8d55-3d703fe54e30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Level\99. MapTool">
+      <UniqueIdentifier>{a67c9f66-02ae-4f1b-9476-9f476b9bfa9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Level\98. GamePlay">
+      <UniqueIdentifier>{2c0cd078-e1ec-4276-a003-e7ec4d0edcf0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Level\03. Cafe">
+      <UniqueIdentifier>{7bd57da4-ea52-437a-8cdd-f4a36c89abe5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Level\04. Schedule">
+      <UniqueIdentifier>{4b78b086-667c-4da2-b003-9fdeb3c2e522}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Level\05. Students">
+      <UniqueIdentifier>{644a30cf-77da-46e3-866e-a5d788a0128b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Level\07. Circle">
+      <UniqueIdentifier>{2a8ba99a-d065-43ec-a740-346ff415444f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Level\08. Manufacture">
+      <UniqueIdentifier>{7255ccde-a391-474c-bd1e-84f58738e6da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Level\09. Shop">
+      <UniqueIdentifier>{acc4c1b8-bdfd-4907-a715-6c87cc878731}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Level\11. Work">
+      <UniqueIdentifier>{6e4d3c8e-5003-46a3-871d-c2cd4c35ddad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Level\10. Gacha">
+      <UniqueIdentifier>{7b269222-f733-4c50-b657-6a7340654e47}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

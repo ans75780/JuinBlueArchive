@@ -124,6 +124,12 @@ void CUI_LevelMoveButton::OnLButtonClicked()
 #endif
 }
 
+void CUI_LevelMoveButton::Set_Size(_float3 _fSize)
+{
+	m_fOriginSize = _fSize;
+	m_fSize = _fSize;
+}
+
 HRESULT CUI_LevelMoveButton::SetUp_Components()
 {
 	return S_OK;

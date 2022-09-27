@@ -27,7 +27,7 @@ public:
 	void			Set_Pos(_float3	_fPos) { m_fPos = _fPos; }
 
 	_float3			Get_Size() { return m_fSize; }
-	void			Set_Size(_float3 _fSize) { m_fSize = _fSize; }
+	virtual	void	Set_Size(_float3 _fSize) { m_fSize = _fSize; }
 
 public:
 	UI_TYPE			Get_UIType() { return m_eUIType; }

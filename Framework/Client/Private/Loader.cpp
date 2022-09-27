@@ -29,6 +29,7 @@
 //#include "Player.h"
 //#include "Effect.h"
 #include "Sky.h"
+
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice(pDevice)
 	, m_pContext(pContext)
@@ -55,16 +56,40 @@ unsigned int APIENTRY LoadingMain(void* pArg)
 	case LEVEL_LOBBY:
 		hr = pLoader->Loading_ForLobbyLevel();
 		break;
-	case LEVEL_GAMEPLAY:
-		hr = pLoader->Loading_ForGamePlayLevel();
+	case LEVEL_CAFE:
+		hr = pLoader->Loading_ForCafeLevel();
+		break;
+	case LEVEL_SCHEDULE:
+		hr = pLoader->Loading_ForScheduleLevel();
+		break;
+	case LEVEL_STUDENTS:
+		hr = pLoader->Loading_ForStudentsLevel();
 		break;
 	case LEVEL_FORMATION:
 		hr = pLoader->Loading_ForFormationLevel();
 		break;
+	case LEVEL_CIRCLE:
+		hr = pLoader->Loading_ForCircleLevel();
+		break;
+	case LEVEL_MANUFACTURE:
+		hr = pLoader->Loading_ForManufactureLevel();
+		break;
+	case LEVEL_SHOP:
+		hr = pLoader->Loading_ForShopLevel();
+		break;
+	case LEVEL_GACHA:
+		hr = pLoader->Loading_ForRecruitLevel();
+		break;
+	case LEVEL_WORK:
+		hr = pLoader->Loading_ForWorkLevel();
+		break;
+	case LEVEL_GAMEPLAY:
+		hr = pLoader->Loading_ForGamePlayLevel();
+		break;
 	case LEVEL_MAPTOOL:
 		hr = pLoader->Loading_ForMapToolLevel();
 		break;
-	}	
+	}
 
 	if (FAILED(hr))
 		MSG_BOX("Failed to Loading");
@@ -127,6 +152,66 @@ HRESULT CLoader::Loading_ForLobbyLevel()
 	return S_OK;
 }
 
+HRESULT CLoader::Loading_ForCafeLevel()
+{
+	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
+	Safe_AddRef(pGameInstance);
+
+	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
+
+	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중이비낟. "));
+
+	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중이비낟. "));
+
+	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));
+
+	m_isFinished = true;
+
+	Safe_Release(pGameInstance);
+
+	return S_OK;
+}
+
+HRESULT CLoader::Loading_ForScheduleLevel()
+{
+	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
+	Safe_AddRef(pGameInstance);
+
+	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
+
+	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중이비낟. "));
+
+	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중이비낟. "));
+
+	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));
+
+	m_isFinished = true;
+
+	Safe_Release(pGameInstance);
+
+	return S_OK;
+}
+
+HRESULT CLoader::Loading_ForStudentsLevel()
+{
+	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
+	Safe_AddRef(pGameInstance);
+
+	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
+
+	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중이비낟. "));
+
+	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중이비낟. "));
+
+	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));
+
+	m_isFinished = true;
+
+	Safe_Release(pGameInstance);
+
+	return S_OK;
+}
+
 HRESULT CLoader::Loading_ForFormationLevel()
 {
 	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
@@ -170,6 +255,106 @@ HRESULT CLoader::Loading_ForFormationLevel()
 
 
 	Safe_Release(pGameInstance);
+	return S_OK;
+}
+
+HRESULT CLoader::Loading_ForCircleLevel()
+{
+	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
+	Safe_AddRef(pGameInstance);
+
+	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
+
+	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중이비낟. "));
+
+	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중이비낟. "));
+
+	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));
+
+	m_isFinished = true;
+
+	Safe_Release(pGameInstance);
+
+	return S_OK;
+}
+
+HRESULT CLoader::Loading_ForManufactureLevel()
+{
+	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
+	Safe_AddRef(pGameInstance);
+
+	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
+
+	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중이비낟. "));
+
+	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중이비낟. "));
+
+	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));
+
+	m_isFinished = true;
+
+	Safe_Release(pGameInstance);
+
+	return S_OK;
+}
+
+HRESULT CLoader::Loading_ForShopLevel()
+{
+	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
+	Safe_AddRef(pGameInstance);
+
+	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
+
+	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중이비낟. "));
+
+	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중이비낟. "));
+
+	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));
+
+	m_isFinished = true;
+
+	Safe_Release(pGameInstance);
+
+	return S_OK;
+}
+
+HRESULT CLoader::Loading_ForRecruitLevel()
+{
+	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
+	Safe_AddRef(pGameInstance);
+
+	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
+
+	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중이비낟. "));
+
+	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중이비낟. "));
+
+	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));
+
+	m_isFinished = true;
+
+	Safe_Release(pGameInstance);
+
+	return S_OK;
+}
+
+HRESULT CLoader::Loading_ForWorkLevel()
+{
+	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
+	Safe_AddRef(pGameInstance);
+
+	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
+
+	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중이비낟. "));
+
+	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중이비낟. "));
+
+	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));
+
+	m_isFinished = true;
+
+	Safe_Release(pGameInstance);
+
 	return S_OK;
 }
 

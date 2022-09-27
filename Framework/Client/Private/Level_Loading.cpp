@@ -4,9 +4,18 @@
 
 #include "Level_Logo.h"
 #include "Level_Lobby.h"
+#include "Level_Cafe.h"
+#include "Level_Schedule.h"
+#include "Level_Students.h"
+#include "Level_Formation.h"
+#include "Level_Circle.h"
+#include "Level_Manufacture.h"
+#include "Level_Shop.h"
+#include "Level_Gacha.h"
+
+#include "Level_Work.h"
 #include "Level_GamePlay.h"
 #include "Level_MapTool.h"
-#include "Level_Formation.h"
 #include "GameInstance.h"
 
 CLevel_Loading::CLevel_Loading(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -47,16 +56,45 @@ void CLevel_Loading::Tick(_float fTimeDelta)
 			case LEVEL_LOBBY:
 				pLevel = CLevel_Lobby::Create(m_pDevice, m_pContext);
 				break;
-			case LEVEL_GAMEPLAY:
-				pLevel = CLevel_GamePlay::Create(m_pDevice, m_pContext);
+			case LEVEL_CAFE:
+				pLevel = CLevel_Cafe::Create(m_pDevice, m_pContext);
+				break;
+			case LEVEL_SCHEDULE:
+				pLevel = CLevel_Schedule::Create(m_pDevice, m_pContext);
+				break;
+			case LEVEL_STUDENTS:
+				pLevel = CLevel_Students::Create(m_pDevice, m_pContext);
 				break;
 			case LEVEL_FORMATION:
 				pLevel = CLevel_Formation::Create(m_pDevice, m_pContext);
 				break;
+			case LEVEL_CIRCLE:
+				pLevel = CLevel_Circle::Create(m_pDevice, m_pContext);
+				break;
+			case LEVEL_MANUFACTURE:
+				pLevel = CLevel_Manufacture::Create(m_pDevice, m_pContext);
+				break;
+			case LEVEL_SHOP:
+				pLevel = CLevel_Shop::Create(m_pDevice, m_pContext);
+				break;
+			case LEVEL_GACHA:
+				pLevel = CLevel_Gacha::Create(m_pDevice, m_pContext);
+				break;
+			case LEVEL_WORK:
+				pLevel = CLevel_Work::Create(m_pDevice, m_pContext);
+				break;
+			case LEVEL_GAMEPLAY:
+				pLevel = CLevel_GamePlay::Create(m_pDevice, m_pContext);
+				break;
 			case LEVEL_MAPTOOL:
 				pLevel = CLevel_MapTool::Create(m_pDevice, m_pContext);
 				break;
+			case LEVEL_END:
+				break;
+			default:
+				break;
 			}
+
 
 			if (nullptr == pLevel)
 				return;

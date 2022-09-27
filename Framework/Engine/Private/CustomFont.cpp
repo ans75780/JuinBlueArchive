@@ -29,34 +29,16 @@ HRESULT CCustomFont::Render(const _tchar * pString, const _float2 & vPosition, _
 	SpriteEffects effects = SpriteEffects_None;
 
 	m_pFont->DrawString(
-		m_pBatch,
-		pString,
-		vPosition,
-		vColor,
-		0,
-		XMFLOAT2(0.f, 0.f),
-		fScale,
-		effects,
-		0
+		m_pBatch,			//1. 배치
+		pString,			//2. 문자열
+		vPosition,			//3. 위치
+		vColor,				//4. 색
+		0,					//5. 회전
+		XMFLOAT2(0.f, 0.f),	//6. Origin ?? 몰겟음
+		fScale,				//7. 크기 (기본1.f)
+		effects,			//8. 이펙트 SpriteEffect에 정의되어있음 문자 좌우상하 반전 있음
+		0					//9. layerdepth 라는데 모르겠음
 	);
-
-	//m_pFont->DrawString(m_pBatch, pString, vPosition, vColor);
-
-
-
-	/*
-	void XM_CALLCONV DrawString(
-	_In_ SpriteBatch* spriteBatch,
-	_In_z_ wchar_t const* text,
-	XMFLOAT2 const& position,
-	FXMVECTOR color = Colors::White,
-	float rotation = 0,
-	XMFLOAT2 const& origin = Float2Zero,
-	float scale = 1,
-	SpriteEffects effects = SpriteEffects_None,
-	float layerDepth = 0
-	) const;
-	*/
 
 	m_pBatch->End();
 

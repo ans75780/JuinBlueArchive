@@ -216,6 +216,10 @@ HRESULT CMainApp::Ready_Static_Resource()
 	//LoadUITexture("Emoji", m_pGameInstance);
 	//LoadUITexture("Floater", m_pGameInstance);
 
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Common_Bottom_Menu_Bg"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/Common_Bottom_Menu_Bg%d.png"), 1))))
+		return E_FAIL;
+
 	return S_OK;
 }
 
