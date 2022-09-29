@@ -3,10 +3,15 @@
 #include "Client_Defines.h"
 #include "Level.h"
 
+
+namespace Engine
+{
+	class CGameObject;
+	class CCamera;
+
+}
+
 BEGIN(Client)
-
-
-
 
 class CLevel_GamePlay final : public CLevel
 {
@@ -30,6 +35,12 @@ public:
 private:
 	vector<class CStudent*> m_vecStudent;
 	vector<_vector>			m_vecFormationPos;
+
+	class CCamera_Stage*	m_pStageCam = nullptr;
+	class CCamera_Event*	m_pEventCam= nullptr;
+	class CCamera_Free*		m_pFreeCam= nullptr;
+
+
 
 public:
 	static CLevel_GamePlay* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

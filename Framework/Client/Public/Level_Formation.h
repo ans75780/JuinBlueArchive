@@ -35,6 +35,7 @@ public:
 
 
 private:
+	_uint					m_iFormationSize;
 	vector<class CStudent*> m_vecStudent;
 	vector<_vector>			m_vecFormationPos;
 	BoundingBox*			m_pRayBoard = nullptr;

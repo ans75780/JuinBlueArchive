@@ -46,6 +46,19 @@ void CLayer::LateTick(_float fTimeDelta)
 	}
 }
 
+HRESULT CLayer::Start_Level()
+{
+	for (auto& pGameObject : m_GameObjects)
+	{
+		if (nullptr != pGameObject)
+		{
+			if (FAILED(pGameObject->Start_Level()))
+				return E_FAIL;
+		}
+	}
+	return S_OK;
+}
+
 CLayer * CLayer::Create()
 {
 	CLayer*		pInstance = new CLayer();

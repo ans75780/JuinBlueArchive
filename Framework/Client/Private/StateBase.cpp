@@ -4,12 +4,14 @@
 #include "Engine_Defines.h"
 #include "Student.h"
 #include "Model.h"
+#include "Actor.h"
 
-CStateBase::CStateBase(CStudent * pStudent)
-	: m_pStudent(pStudent)
+
+CStateBase::CStateBase(CActor * pOwner)
+	: m_pOwner(pOwner)
 {
-	Safe_AddRef(m_pStudent);
-	m_pModel = (CModel*)m_pStudent->Get_Component(L"Com_Model");
+	Safe_AddRef(m_pOwner);
+	m_pModel = (CModel*)m_pOwner->Get_Component(L"Com_Model");
 	m_bCalledExit = false;
 }
 
@@ -26,6 +28,6 @@ CStateBase* CStateBase::Exit()
 
 void CStateBase::Free()
 {
-	Safe_Release(m_pStudent);
+	Safe_Release(m_pOwner);
 }
 

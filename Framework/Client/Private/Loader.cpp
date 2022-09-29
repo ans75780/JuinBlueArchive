@@ -10,7 +10,7 @@
 #include "UI_TestDialogButton.h"
 #include "TestObject_Model_Haruka.h"
 #include "Student.h"
-
+#include "Camera_Event.h"
 #include "UI_LevelMoveButton.h"
 
 #pragma endregion
@@ -29,6 +29,8 @@
 //#include "Player.h"
 //#include "Effect.h"
 #include "Sky.h"
+#include "Camera_Stage.h"
+#include "Stage.h"
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice(pDevice)
@@ -226,16 +228,8 @@ HRESULT CLoader::Loading_ForFormationLevel()
 		CCamera_Formation::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_Student_Serika"),
-		CStudent::Create(m_pDevice, m_pContext, TEXT("Serika")))))
-		return E_FAIL;
-
-	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_Student_Haruka"),
-		CStudent::Create(m_pDevice, m_pContext, TEXT("Haruka")))))
-		return E_FAIL;
-
-	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_Student_Zunko"),
-		CStudent::Create(m_pDevice, m_pContext, TEXT("Zunko")))))
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_Student"),
+		CStudent::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 
@@ -374,27 +368,30 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Camera_Free*/
-	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Camera_Free"),
-		CCamera_Free::Create(m_pDevice, m_pContext))))
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Camera_Stage"),
+		CCamera_Stage::Create(m_pDevice, m_pContext))))
+		return E_FAIL;		//왠진모르겠지만 얘지우면 레퍼런스카운트 잘받아짐
+
+	/* For.Prototype_GameObject_Camera_Event*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Camera_Event"),
+		CCamera_Event::Create(m_pDevice, m_pContext))))
 		return E_FAIL;		//왠진모르겠지만 얘지우면 레퍼런스카운트 잘받아짐
 
 
-	///* For.Prototype_Student_Serika */
-	//if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_Student_Serika"),
-	//	CStudent::Create(m_pDevice, m_pContext, TEXT("Serika")))))
-	//	return E_FAIL;
+		/* For.Prototype_GameObject_Camera_Event*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Camera_Free"),
+		CCamera_Free::Create(m_pDevice, m_pContext))))
+		return E_FAIL;	
 
-	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_Student_Haruka"),
-		CStudent::Create(m_pDevice, m_pContext, TEXT("Haruka")))))
-		return E_FAIL;
-
-	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_Student_Zunko"),
-		CStudent::Create(m_pDevice, m_pContext, TEXT("Zunko")))))
-		return E_FAIL;
-
+	
 	/* For.Prototype_GameObject_Sky */
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Sky"),
 		CSky::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Stage_School"),
+		CStage::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	///* For.Prototype_GameObject_Monster */

@@ -55,13 +55,7 @@ struct PS_IN
 struct PS_OUT
 {	
 	vector		vColor : SV_TARGET0;	
-	/*vector		vColor : SV_TARGET1;
-	vector		vColor : SV_TARGET2;
-	vector		vColor : SV_TARGET3;
-	vector		vColor : SV_TARGET4;
-	vector		vColor : SV_TARGET5;
-	vector		vColor : SV_TARGET6;
-	vector		vColor : SV_TARGET7;*/
+	
 };
 
 PS_OUT PS_MAIN_SKY(PS_IN In)
@@ -70,7 +64,9 @@ PS_OUT PS_MAIN_SKY(PS_IN In)
 
 	Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
-	Out.vColor.a = 0.5f;
+	//Out.vColor.a = 0.5f;
+
+	// Out.vColor = vector(0.f, 0.f, 0.f, 1.f);
 
 	return Out;	
 }

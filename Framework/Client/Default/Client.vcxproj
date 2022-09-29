@@ -41,7 +41,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -168,10 +168,12 @@
     <ClInclude Include="..\..\ShaderFiles\Client_Shader_Defines.hpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\Public\Actor.h" />
     <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\Public\Camera_Event.h" />
     <ClInclude Include="..\Public\Camera_Formation.h" />
     <ClInclude Include="..\Public\Camera_Free.h" />
+    <ClInclude Include="..\Public\Camera_Stage.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\Formation.h" />
     <ClInclude Include="..\Public\imconfig.h" />
@@ -202,10 +204,11 @@
     <ClInclude Include="..\Public\MainApp.h" />
     <ClInclude Include="..\Public\MapProp.h" />
     <ClInclude Include="..\Public\Sky.h" />
+    <ClInclude Include="..\Public\Stage.h" />
     <ClInclude Include="..\Public\StateBase.h" />
     <ClInclude Include="..\Public\StateMachineBase.h" />
-    <ClInclude Include="..\Public\State_Student_Callsign.h" />
     <ClInclude Include="..\Public\State_Student_Default.h" />
+    <ClInclude Include="..\Public\State_Student_Ex.h" />
     <ClInclude Include="..\Public\State_Student_Formation_Idle.h" />
     <ClInclude Include="..\Public\State_Student_Formation_Pickup.h" />
     <ClInclude Include="..\Public\State_Student_Idle.h" />
@@ -226,10 +229,12 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Private\Actor.cpp" />
     <ClCompile Include="..\private\BackGround.cpp" />
     <ClCompile Include="..\Private\Camera_Event.cpp" />
     <ClCompile Include="..\Private\Camera_Formation.cpp" />
     <ClCompile Include="..\Private\Camera_Free.cpp" />
+    <ClCompile Include="..\Private\Camera_Stage.cpp" />
     <ClCompile Include="..\Private\Formation.cpp" />
     <ClCompile Include="..\Private\imgui.cpp" />
     <ClCompile Include="..\Private\ImguiMgr.cpp" />
@@ -258,10 +263,11 @@
     <ClCompile Include="..\Private\MainApp.cpp" />
     <ClCompile Include="..\Private\MapProp.cpp" />
     <ClCompile Include="..\Private\Sky.cpp" />
+    <ClCompile Include="..\Private\Stage.cpp" />
     <ClCompile Include="..\Private\StateBase.cpp" />
     <ClCompile Include="..\Private\StateMachineBase.cpp" />
-    <ClCompile Include="..\Private\State_Student_Callsign.cpp" />
     <ClCompile Include="..\Private\State_Student_Default.cpp" />
+    <ClCompile Include="..\Private\State_Student_Ex.cpp" />
     <ClCompile Include="..\Private\State_Student_Formation_Idle.cpp" />
     <ClCompile Include="..\Private\State_Student_Formation_Pickup.cpp" />
     <ClCompile Include="..\Private\State_Student_Idle.cpp" />
@@ -292,10 +298,14 @@
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="..\..\ShaderFiles\Shader_Cell.hlsl" />
+    <FxCompile Include="..\..\ShaderFiles\Shader_Deferred.hlsl" />
     <FxCompile Include="..\..\ShaderFiles\Shader_VtxAnimModel.hlsl" />
     <FxCompile Include="..\..\ShaderFiles\Shader_VtxCubeTex.hlsl" />
+    <FxCompile Include="..\..\ShaderFiles\Shader_VtxInstance.hlsl" />
     <FxCompile Include="..\..\ShaderFiles\Shader_VtxModel.hlsl" />
     <FxCompile Include="..\..\ShaderFiles\Shader_VtxNorTex.hlsl" />
+    <FxCompile Include="..\..\ShaderFiles\Shader_VtxPointInstance.hlsl" />
     <FxCompile Include="..\..\ShaderFiles\Shader_VtxTex.hlsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

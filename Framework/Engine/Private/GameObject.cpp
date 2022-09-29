@@ -18,7 +18,6 @@ CGameObject::CGameObject(const CGameObject & Prototype)
 	: m_pDevice(Prototype.m_pDevice)
 	, m_pContext(Prototype.m_pContext)	
 	, m_pTransformCom((CTransform*)Prototype.m_pTransformCom->Clone())
-
 {
 	Safe_AddRef(m_pDevice); 
 	Safe_AddRef(m_pContext);
@@ -64,6 +63,17 @@ HRESULT CGameObject::Render()
 	return S_OK;
 }
 
+const _tchar * CGameObject::Get_Name()
+{
+	return m_desc.sz_Name;
+}
+
+
+HRESULT CGameObject::StartLevel(_uint iLevel)
+{
+	
+	return S_OK;
+}
 
 HRESULT CGameObject::Add_Component(_uint iLevelIndex, const _tchar * pPrototypeTag, const _tchar * pComponentTag, CComponent** ppOut, void * pArg)
 {

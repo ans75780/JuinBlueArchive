@@ -27,6 +27,7 @@ public:
 	}
 
 	_matrix Get_OffsetMatrix() { return XMLoadFloat4x4(&m_OffsetMatrix); }
+	_matrix Get_TransformationMatrix() { return XMLoadFloat4x4(&m_TransformationMatrix); }
 
 	_matrix Get_CombinedMatrix() { return XMLoadFloat4x4(&m_CombinedTransformationMatrix); }
 

@@ -185,7 +185,16 @@ HRESULT CGameInstance::Open_Level(_uint iLevelID, CLevel * pLevel)
 	if (nullptr == m_pLevel_Manager)
 		return E_FAIL;
 
-	return m_pLevel_Manager->Open_Level(iLevelID, pLevel);
+	CGameInstance* pInstance = CGameInstance::Get_Instance();
+
+
+	if (FAILED(m_pLevel_Manager->Open_Level(iLevelID, pLevel)))
+		return E_FAIL;
+
+	if(FAILED(pInstance->Start_Level(iLevelID)))
+		return E_FAIL;
+
+	return S_OK;
 }
 
 _uint CGameInstance::Get_CurrentLevelID(void)
@@ -225,6 +234,11 @@ list<class CGameObject*> CGameInstance::Get_GameObjects(_uint iLevelIndex, const
 	return m_pObject_Manager->Get_GameObjects(iLevelIndex, pLayerTag);
 }
 
+HRESULT CGameInstance::Start_Level(_uint iLevelIndex)
+{
+	return m_pObject_Manager->Start_Level(iLevelIndex);
+}
+
 map<const _tchar*, class CLayer*> CGameInstance::Get_Layer(_uint iLevelIndex)
 {
 	return m_pObject_Manager->Get_Layer(iLevelIndex);
@@ -238,6 +252,7 @@ HRESULT CGameInstance::Add_Prototype(_uint iLevelIndex, const _tchar * pPrototyp
 	return m_pComponent_Manager->Add_Prototype(iLevelIndex, pPrototypeTag, pPrototype);
 	
 }
+
 
 CComponent * CGameInstance::Clone_Component(_uint iLevelIndex, const _tchar * pPrototypeTag, void * pArg)
 {

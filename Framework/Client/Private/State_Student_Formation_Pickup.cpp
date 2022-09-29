@@ -7,7 +7,9 @@
 #include "Engine_Defines.h"
 #include "GameInstance.h"
 #include "Key_Manager.h"
-CState_Student_Formation_Pickup::CState_Student_Formation_Pickup(CStudent * pStudent)
+#include "Actor.h"
+
+CState_Student_Formation_Pickup::CState_Student_Formation_Pickup(CActor * pStudent)
 	:CStateBase(pStudent)
 {
 
@@ -17,7 +19,7 @@ HRESULT CState_Student_Formation_Pickup::Initialize()
 {
 	char pAnimaitonStr[MAX_PATH];
 
-	WideCharToMultiByte(CP_ACP, 0, m_pStudent->Get_Name(), MAX_PATH, pAnimaitonStr, MAX_PATH, NULL, NULL);
+	WideCharToMultiByte(CP_ACP, 0, m_pOwner->Get_Name(), MAX_PATH, pAnimaitonStr, MAX_PATH, NULL, NULL);
 
 	strcat_s(pAnimaitonStr, "_Original_Formation_Pickup");
 
@@ -27,7 +29,7 @@ HRESULT CState_Student_Formation_Pickup::Initialize()
 		return E_FAIL;
 
 	m_pAnimation->Play();
-	m_pTransform = m_pStudent->Get_Transform();
+	m_pTransform = m_pOwner->Get_Transform();
 
 
 	return S_OK;
@@ -54,9 +56,9 @@ CStateBase * CState_Student_Formation_Pickup::Exit()
 	return nullptr;
 }
 
-CState_Student_Formation_Pickup * CState_Student_Formation_Pickup::Create(CStudent * pStudent)
+CState_Student_Formation_Pickup * CState_Student_Formation_Pickup::Create(CActor * pOwner)
 {
-	CState_Student_Formation_Pickup*	pInstance = new CState_Student_Formation_Pickup(pStudent);
+	CState_Student_Formation_Pickup*	pInstance = new CState_Student_Formation_Pickup(pOwner);
 
 	if (FAILED(pInstance->Initialize()))
 	{

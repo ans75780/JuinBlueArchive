@@ -101,10 +101,8 @@ void CLevel_Loading::Tick(_float fTimeDelta)
 
 			CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
 			Safe_AddRef(pGameInstance);
-
 			if (FAILED(pGameInstance->Open_Level(m_eNextLevel, pLevel)))
 				return;
-
 			Safe_Release(pGameInstance);
 		}
 	}

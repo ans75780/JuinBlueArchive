@@ -36,6 +36,9 @@ void CCamera_Free::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
+	if (!IsMainCam())
+		return;
+
 	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
 	Safe_AddRef(pGameInstance);		
 
@@ -69,6 +72,14 @@ void CCamera_Free::Tick(_float fTimeDelta)
 	if (MouseMove = pGameInstance->Get_DIMouseMoveState(MMS_Y))
 	{
 		m_pTransformCom->Turn(m_pTransformCom->Get_State(CTransform::STATE_RIGHT), fTimeDelta * MouseMove * 0.1f);
+	}
+
+
+	if(KEY(SPACE, TAP))
+	{
+		_vector vecPos = m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION);
+		
+		int a = 10;
 	}
 
 	Safe_Release(pGameInstance);

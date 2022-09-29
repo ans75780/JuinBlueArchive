@@ -26,7 +26,7 @@ HRESULT CLevel_Formation::Initialize()
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 
-
+	m_iFormationSize = 3;
 	m_vecFormationPos.push_back(XMVectorSet(-2.f, -1.f, 0.f, 1.f));
 	m_vecFormationPos.push_back(XMVectorSet(0.f, -1.f, 0.f, 1.f));
 	m_vecFormationPos.push_back(XMVectorSet(2.f, -1.f, 0.f, 1.f));
@@ -70,16 +70,16 @@ void CLevel_Formation::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	if (GetKeyState(VK_SPACE) & 0x8000)
+	if (KEY(SPACE, TAP))
 	{
 		CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
-	
-		vector<wstring>& m_vecUserData_Formation = CUserData::Get_Instance()->Get_Formation();
-		m_vecUserData_Formation.clear();
+		CUserData*			pUserData = CUserData::Get_Instance();
+
+
+		//만약, 새롭게 들어가는 포메이션이 존재한다면
+		pUserData->Clear_Formation();
 		for (_uint i = 0; i < m_vecStudent.size(); i++)
-		{
-			m_vecUserData_Formation.push_back(m_vecStudent[i]->Get_Name());
-		}
+			pUserData->Add_Formation(m_vecStudent[i]->Get_Desc());
 		if (FAILED(pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_GAMEPLAY))))
 			return;
 	}
@@ -89,16 +89,18 @@ void CLevel_Formation::Tick(_float fTimeDelta)
 	ray = pInst->Get_Ray();
 	if (KEY(LBUTTON, TAP) && m_bPicked == false)
 	{
-		for(_uint i = 0 ; i < m_vecStudent.size();i++)
-		if (m_vecStudent[i]->Collision_AABB(ray, distance))
+		for (_uint i = 0; i < m_vecStudent.size();i++)
 		{
-			m_iPickedIndex = i;
-			m_bPicked = true;
-			m_vecStudent[m_iPickedIndex]->Get_StateMachine()->Get_CurrentState()->CallExit();
-			break;
+			if (m_vecStudent[i]->Collision_AABB(ray, distance))
+			{
+				m_iPickedIndex = i;
+				m_bPicked = true;
+				m_vecStudent[m_iPickedIndex]->Get_StateMachine()->Get_CurrentState()->CallExit();
+				break;
+			}
 		}
+		
 	}
-
 	if (KEY(LBUTTON, HOLD))
 	{
 		if (m_bPicked)
@@ -132,7 +134,6 @@ void CLevel_Formation::Tick(_float fTimeDelta)
 					break;
 				}
 			}
-
 		}
 	}
 
@@ -163,7 +164,7 @@ void CLevel_Formation::Tick(_float fTimeDelta)
 				break;
 			}
 		}
-		if (!bChange)
+		if (!bChange && m_bPicked)
 		{
 			m_vecStudent[m_iPickedIndex]->Set_Transform(m_vecFormationPos[m_iPickedIndex]);
 			m_vecStudent[m_iPickedIndex]->Get_StateMachine()->Get_CurrentState()->CallExit();
@@ -234,33 +235,42 @@ HRESULT CLevel_Formation::Ready_Layer_Effect(const _tchar * pLayerTag)
 HRESULT CLevel_Formation::Ready_Layer_Student(const _tchar * pLayerTag)
 {
 	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
-	Safe_AddRef(pGameInstance);
-
-	CGameObject::OBJ_DESC tempDesc;
+	CUserData*			pUserData = CUserData::Get_Instance();
 
 
 	CGameObject* pStudent = nullptr;
+	_tchar	szStudentPath[MAX_PATH] = L"Prototype_Student";
 
-	_tchar	szStudentPath[MAX_PATH] = L"Prototype_Student_";
-	_tchar	szStudentPullName[MAX_PATH] = L"";
 
-	vector<wstring> m_formationStr = CUserData::Get_Instance()->Get_Formation();
-	for (_uint i = 0; i < m_formationStr.size(); i++)
+	//만약 전에 편성된 포메이션이 존재한다면 포메이션을 가져옴
+	vector<CGameObject::OBJ_DESC> vecStudentDesc = pUserData->Get_Formation();
+	if (vecStudentDesc.size() == m_iFormationSize)
 	{
-		
-		lstrcpy(szStudentPullName, szStudentPath);
-		lstrcat(szStudentPullName, m_formationStr[i].c_str());
-		if (FAILED(pGameInstance->Add_GameObject(LEVEL_FORMATION, pLayerTag, szStudentPullName, (void*)&tempDesc, &pStudent)))
-			return E_FAIL;
-		((CStudent*)pStudent)->Get_StateMachine()->Setup_StateMachine(CState_Student_Formation_Idle::Create((CStudent*)pStudent));
-		
-		((CStudent*)pStudent)->Set_Transform(m_vecFormationPos[i]);
-		m_vecStudent.push_back((CStudent*)pStudent);
-		
-
-
+		for (_uint i = 0; i < m_iFormationSize; i++)
+		{
+			if (FAILED(pGameInstance->Add_GameObject(LEVEL_FORMATION, pLayerTag, szStudentPath, (void*)&(vecStudentDesc[i]), &pStudent)))
+				return E_FAIL;
+			((CStudent*)pStudent)->Set_Transform(m_vecFormationPos[i]);
+			m_vecStudent.push_back((CStudent*)pStudent);
+		}
 	}
-	Safe_Release(pGameInstance);
+	else
+	{
+		//아니라면 새로 가져온 포메이션으로 
+		map<const _tchar*, CGameObject::OBJ_DESC> StudentDesc = pUserData->Get_HavedStudent();
+		_uint iIndex = 0;
+		for (auto& pair : StudentDesc)
+		{
+			if (m_iFormationSize <= iIndex)
+				break;
+			if (FAILED(pGameInstance->Add_GameObject(LEVEL_FORMATION, pLayerTag, szStudentPath, (void*)&(pair.second), &pStudent)))
+				return E_FAIL;
+			((CStudent*)pStudent)->Set_Transform(m_vecFormationPos[iIndex]);
+			iIndex++;
+			m_vecStudent.push_back((CStudent*)pStudent);
+		}
+	}
+
 	return S_OK;
 }
 

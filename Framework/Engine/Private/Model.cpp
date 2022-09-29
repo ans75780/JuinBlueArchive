@@ -45,6 +45,11 @@ HRESULT CModel::Initialize_Prototype(MODELTYPE eType,
 	else
 		m_pAIScene = m_Importer.ReadFile(szFullPath, aiProcess_ConvertToLeftHanded | aiProcess_GenNormals | aiProcess_CalcTangentSpace);
 
+	if (nullptr == m_pAIScene)
+	{	
+		MSG_BOX("어심프 로드 에러");
+		return E_FAIL;
+	}
 	if (FAILED(Create_Materials(pModelFilePath)))
 		return E_FAIL;
 

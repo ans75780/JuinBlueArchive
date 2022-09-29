@@ -6,6 +6,9 @@
 #include "Model.h"
 #include "Student.h"
 #include "..\Public\Camera_Event.h"
+#include "StateMachineBase.h"
+#include "BoneNode.h"
+#include "Actor.h"
 
 
 CCamera_Event::CCamera_Event(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -42,45 +45,33 @@ void CCamera_Event::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
-	Safe_AddRef(pGameInstance);
-
-	if (pGameInstance->Get_DIKeyState(DIK_W) & 0x80)
-	{
-		m_pTransformCom->Go_Straight(fTimeDelta);
-	}
-
-	if (pGameInstance->Get_DIKeyState(DIK_S) & 0x80)
-	{
-		m_pTransformCom->Go_Backward(fTimeDelta);
-	}
-
-	if (pGameInstance->Get_DIKeyState(DIK_A) & 0x80)
-	{
-		m_pTransformCom->Go_Left(fTimeDelta);
-	}
-
-	if (pGameInstance->Get_DIKeyState(DIK_D) & 0x80)
-	{
-		m_pTransformCom->Go_Right(fTimeDelta);
-	}
-
-	_long		MouseMove = 0;
-
-	if (MouseMove = pGameInstance->Get_DIMouseMoveState(MMS_X))
-	{
-		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * MouseMove * 0.1f);
-	}
-
-	if (MouseMove = pGameInstance->Get_DIMouseMoveState(MMS_Y))
-	{
-		m_pTransformCom->Turn(m_pTransformCom->Get_State(CTransform::STATE_RIGHT), fTimeDelta * MouseMove * 0.1f);
-	}
-
-	Safe_Release(pGameInstance);
-
-	if (FAILED(Bind_PipeLine()))
+	if (!IsMainCam())
 		return;
+
+	switch (m_eEventType)
+	{
+	case Client::CCamera_Event::EVENT_TYPE::EVENT_STAGE_START:
+		Event_Stage_Start();
+		break;
+	case Client::CCamera_Event::EVENT_TYPE::EVENT_EX:
+		Event_Ex(fTimeDelta);
+		break;
+	case Client::CCamera_Event::EVENT_TYPE::EVENT_BOSS_APPEAR:
+		break;
+	case Client::CCamera_Event::EVENT_TYPE::EVENT_STAGE_VICTORY:
+		break;
+	case Client::CCamera_Event::EVENT_TYPE::EVENT_END:
+		break;
+	default:
+		break;
+	}
+
+	if (IsMainCam())
+	{
+		if (FAILED(Bind_PipeLine()))
+			return;
+	}
+	
 }
 
 void CCamera_Event::LateTick(_float fTimeDelta)
@@ -93,7 +84,103 @@ HRESULT CCamera_Event::Render()
 	return S_OK;
 }
 
-CCamera_Event * CCamera_Event::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, class CModel* model, EVENT_TYPE eType)
+void CCamera_Event::Ready_Event_Stage_Start(CCamera * pReturnCamera, CActor * pTarget, CAnimation * pAnimation, _float3 vOffset)
+{
+	m_pReturnToCam = pReturnCamera;
+	m_pAnimation = pAnimation;
+	m_vOffset = vOffset;
+
+	m_pTarget = pTarget;
+	m_eEventType = EVENT_TYPE::EVENT_STAGE_START;
+
+	_vector		vCamPos = pTarget->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION);
+
+	vCamPos += XMLoadFloat3(&vOffset);
+
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vCamPos);
+
+	CCamera::Set_MainCam(this);
+}
+
+void CCamera_Event::Ready_Event_Ex(CCamera * pReturnCamera, CActor * pTarget)
+{
+	m_pReturnToCam = pReturnCamera;
+
+	m_pTarget = pTarget;
+
+	char pAnimaitonStr[MAX_PATH];
+
+	WideCharToMultiByte(CP_ACP, 0, ((CStudent*)m_pTarget)->Get_Name(), MAX_PATH, pAnimaitonStr, MAX_PATH, NULL, NULL);
+
+	//28
+	strcat_s(pAnimaitonStr, "_Original_Exs_Cutin_Cam");
+
+	m_pAnimation = ((CStudent*)m_pTarget)->Get_Animation(pAnimaitonStr);
+
+	m_pAnimation->Play();
+	m_eEventType = EVENT_TYPE::EVENT_EX;
+
+
+	_vector	vTargetPos = m_pTarget->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION);
+
+	XMStoreFloat4(&m_fTargetOriginPos,vTargetPos);
+
+	//EX때는 캐릭터를 원점으로 돌려놓음(왜? 노드에 카메라가 원점을 기준으로 되어잇음)
+	m_pTarget->Get_Transform()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(0.f,0.f,0.f,1.f));
+	CCamera::Set_MainCam(this);
+
+}
+
+void CCamera_Event::Event_Stage_Start()
+{
+	if (m_pAnimation->IsFinished() == true)
+	{
+		CCamera::Set_MainCam(m_pReturnToCam);
+	}
+	
+	m_pTransformCom->LookAt(m_pTarget->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION));
+
+	_vector		vCamPos = m_pTarget->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION);
+
+	vCamPos += XMLoadFloat3(&m_vOffset);
+
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vCamPos);
+
+
+
+}
+
+void CCamera_Event::Event_Ex(_float fTimeDelta)
+{
+	if (m_pAnimation->IsFinished())
+	{
+		m_CameraDesc.fFovy = XMConvertToRadians(65.0f);
+
+		CCamera::Set_MainCam(m_pReturnToCam);
+		m_pTarget->Get_Transform()->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&m_fTargetOriginPos));
+		return;
+	}
+	m_pAnimation->Update(fTimeDelta);
+
+	m_CameraDesc.fFovy = XMConvertToRadians(15.0f);
+	_matrix vMatrix = m_pTarget->Get_ModelCom()->Find_Bone("Camera001")->Get_CombinedMatrix();
+	_matrix vTargetViewMatrix = m_pTarget->Get_ModelCom()->Find_Bone("Camera001.Target")->Get_CombinedMatrix();
+	_vector	vTargetPos = m_pTarget->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION);
+
+
+
+	m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vMatrix.r[0]);
+	m_pTransformCom->Set_State(CTransform::STATE_UP, vMatrix.r[1]);
+	m_pTransformCom->Set_State(CTransform::STATE_LOOK, vMatrix.r[2]);
+
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vMatrix.r[3]);
+
+
+	m_pTransformCom->LookAt(vTargetViewMatrix.r[3]);
+
+}
+
+CCamera_Event * CCamera_Event::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
 	CCamera_Event*		pInstance = new CCamera_Event(pDevice, pContext);
 	if (FAILED(pInstance->Initialize_Prototype()))

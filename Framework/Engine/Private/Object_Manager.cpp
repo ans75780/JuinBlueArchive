@@ -69,6 +69,12 @@ HRESULT CObject_Manager::Add_GameObject(_uint iLevelIndex, const _tchar * pLayer
 	if (nullptr == pCloneObject)
 		return E_FAIL;
 
+	if (FAILED(pCloneObject->StartLevel(iLevelIndex)))
+	{
+		Safe_Release(pCloneObject);
+		return E_FAIL;
+	}
+
 	CLayer*		pLayer = Find_Layer(iLevelIndex, pLayerTag);
 
 	if (nullptr == pLayer)
@@ -80,6 +86,7 @@ HRESULT CObject_Manager::Add_GameObject(_uint iLevelIndex, const _tchar * pLayer
 	}
 	else
 		pLayer->Add_GameObject(pCloneObject);	
+
 
 	if (nullptr != pObject)
 		(*pObject) = pCloneObject;
@@ -113,6 +120,19 @@ void CObject_Manager::LateTick(_float fTimeDelta)
 				Pair.second->LateTick(fTimeDelta);
 		}
 	}
+}
+
+HRESULT CObject_Manager::Start_Level(_uint iLevelIndex)
+{
+	for (auto& Pair : m_pLayers[iLevelIndex])
+	{
+		if (nullptr != Pair.second)
+		{
+			if (FAILED(Pair.second->Start_Level()))
+				return E_FAIL;
+		}
+	}
+	return S_OK;
 }
 
 void CObject_Manager::Clear(_uint iLevelIndex)

@@ -2,7 +2,7 @@
 #include "..\Public\Level_GamePlay.h"
 #include "GameInstance.h"
 #include "GameObject.h"
-
+#include "Camera_Stage.h"
 #include "Camera_Free.h"
 #include "Light.h"
 #include "UserData.h"
@@ -11,7 +11,12 @@
 #include "StateMachineBase.h"
 #include "Level_Loading.h"
 #include "State_Student_Default.h"
-
+#include "Camera_Event.h"
+#include "Camera.h"
+#include "StateBase.h"
+#include "State_Student_Ex.h"
+#include "Animation.h"
+#include "Camera.h"
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -29,24 +34,30 @@ HRESULT CLevel_GamePlay::Initialize()
 	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
 		return E_FAIL;
 
-	m_vecFormationPos.push_back(XMVectorSet(-1.f, 0.f, 0.f, 1.f));
-	m_vecFormationPos.push_back(XMVectorSet(0.f, 0.f, 0.5f, 1.f));
-	m_vecFormationPos.push_back(XMVectorSet(1.f, 0.f, 0.f, 1.f));
+	m_vecFormationPos.push_back(XMVectorSet(-0.5f, 0.f, 0.f, 1.f));
+	m_vecFormationPos.push_back(XMVectorSet(0.f, 0.f, -0.5f, 1.f));
+	m_vecFormationPos.push_back(XMVectorSet(0.5f, 0.f, 0.f, 1.f));
 
-	//if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"))))
-	//	return E_FAIL;
-
-	//if (FAILED(Ready_Light()))
-	//	return E_FAIL;
-
+	
+	if (FAILED(Ready_Light()))
+		return E_FAIL;
 
 	//if (FAILED(Ready_Layer_Student(TEXT("Layer_Student"))))
 	//	return E_FAIL;
 
 	if (FAILED(Ready_Light()))
 		return E_FAIL;
+	m_vecStudent[1]->Get_StateMachine()->Add_State
+	(
+		CState_Student_Default::Create(m_vecStudent[1], L"_Original_Normal_Callsign")
+	);
+	_float3	vOffset = { -1.5f,1.f,-1.5f };
 
+	m_pEventCam->Ready_Event_Stage_Start(m_pStageCam, m_vecStudent[1],
+		m_vecStudent[1]->Get_StateMachine()->Get_CurrentState()->Get_Animation(),
+		vOffset);
 
+	m_pStageCam->Set_Target(m_vecStudent[1]);
 
 	return S_OK;
 }
@@ -56,6 +67,19 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);		
 
 	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
+
+	if (KEY(T, TAP))
+	{
+		if (m_pFreeCam->IsMainCam())
+		{
+			m_pStageCam->Set_MainCam(m_pStageCam);
+		}
+		else
+		{
+			m_pFreeCam->Set_MainCam(m_pFreeCam);
+		}
+	}
+
 	if (KEY(SPACE, TAP))
 	{
 		if (FAILED(pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_FORMATION))))
@@ -67,6 +91,28 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 		(
 			CState_Student_Default::Create(m_vecStudent[1], L"_Original_Normal_Callsign")
 		);
+	}
+	if (KEY(NUM1, TAP))
+	{
+		m_vecStudent[0]->Get_StateMachine()->Add_State
+		(
+			CState_Student_Ex::Create(m_vecStudent[0])
+		);
+	}
+	if (KEY(NUM2, TAP))
+	{
+		m_vecStudent[1]->Get_StateMachine()->Add_State
+		(
+			CState_Student_Ex::Create(m_vecStudent[1])
+		);
+	}
+	if (KEY(NUM3, TAP))
+	{
+		m_vecStudent[2]->Get_StateMachine()->Add_State
+		(
+			CState_Student_Ex::Create(m_vecStudent[2])
+		);
+		m_pEventCam->Ready_Event_Ex(m_pStageCam, m_vecStudent[2]);
 	}
 }
 
@@ -101,15 +147,35 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _tchar * pLayerTag)
 	CameraDesc.fNear = 0.2f;
 	CameraDesc.fFar = 300.f;
 
-	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Prototype_GameObject_Camera_Free"), &CameraDesc)))
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Prototype_GameObject_Camera_Stage"), &CameraDesc, 
+		((CGameObject**)&m_pStageCam)
+		)))
 		return E_FAIL;
-	Safe_Release(pGameInstance);
 
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Prototype_GameObject_Camera_Event"), &CameraDesc,
+		((CGameObject**)&m_pEventCam)
+	)))
+		return E_FAIL;
+
+
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Prototype_GameObject_Camera_Free"), &CameraDesc,
+		((CGameObject**)&m_pFreeCam)
+	)))
+
+	Safe_Release(pGameInstance);
 	return S_OK;
 }
 
 HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const _tchar * pLayerTag)
 {
+
+	CGameInstance*	pGameInstance = GET_INSTANCE(CGameInstance);
+
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Prototype_GameObject_Stage_School"), L"Prototype_Component_Model_Stage_School_1")))
+		return E_FAIL;
+
+	RELEASE_INSTANCE(CGameInstance);
+
 	return S_OK;
 }
 
@@ -152,30 +218,22 @@ HRESULT CLevel_GamePlay::Ready_Layer_Student(const _tchar * pLayerTag)
 	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
 	Safe_AddRef(pGameInstance);
 
-	CGameObject::OBJ_DESC tempDesc;
-
 	CGameObject* pStudent = nullptr;
 
-	_tchar	szStudentPath[MAX_PATH] = L"Prototype_Student_";
-	_tchar	szStudentPullName[MAX_PATH] = L"";
+	_tchar	szStudentPath[MAX_PATH] = L"Prototype_Student";
 
-	vector<wstring> m_formationStr = CUserData::Get_Instance()->Get_Formation();
-	for (_uint i = 0; i < m_formationStr.size(); i++)
+	//각 클론된 스튜던트에 정보를 넣어줌.
+	CGameObject::OBJ_DESC	desc;
+
+
+	vector<CGameObject::OBJ_DESC> m_formationDesc = CUserData::Get_Instance()->Get_Formation();
+	for (_uint i = 0; i < m_formationDesc.size(); i++)
 	{
-
-		lstrcpy(szStudentPullName, szStudentPath);
-		lstrcat(szStudentPullName, m_formationStr[i].c_str());
-		if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, szStudentPullName, (void*)&tempDesc, &pStudent)))
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, szStudentPath, (void*)&m_formationDesc[i], &pStudent)))
 			return E_FAIL;
-		((CStudent*)pStudent)->Get_StateMachine()->Setup_StateMachine(CState_Student_Idle::Create((CStudent*)pStudent));
-
 		((CStudent*)pStudent)->Set_Transform(m_vecFormationPos[i]);
 		m_vecStudent.push_back((CStudent*)pStudent);
-
-
-
 	}
-
 	Safe_Release(pGameInstance);
 
 	return S_OK;
@@ -190,24 +248,12 @@ HRESULT CLevel_GamePlay::Ready_Light()
 
 	LightDesc.eType = tagLightDesc::TYPE_DIRECTIONAL;
 	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.0f, 1.f);
 	LightDesc.vAmbient = _float4(0.4f, 0.4f, 0.4f, 1.f);
 	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
 
 	if (FAILED(pGameInstance->Add_Light(m_pDevice, m_pContext, LightDesc)))
 		return E_FAIL;
-
-	/*ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
-
-	LightDesc.eType = tagLightDesc::TYPE_POINT;
-	LightDesc.vPosition = _float4(10.f, 5.f, 10.f, 0.f);
-	LightDesc.fRange = 10.f;
-	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.vAmbient = _float4(0.4f, 0.4f, 0.4f, 1.f);
-	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
-
-	if (FAILED(pGameInstance->Add_Light(m_pDevice, m_pContext, LightDesc)))
-	return E_FAIL;*/
 
 	Safe_Release(pGameInstance);
 

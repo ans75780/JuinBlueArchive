@@ -1,25 +1,24 @@
 #include "stdafx.h"
 #include "Student.h"
-
+#include "Actor.h"
 #include "GameInstance.h"
 #include "MeshContainer.h"
 #include "StateMachineBase.h"
 #include "State_Student_Idle.h"
 #include "State_Student_Run.h"
 #include "Collider.h"
-
-
-CStudent::CStudent(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, _tchar*	pStudentTag)
-	: CGameObject(pDevice, pContext)
+#include "State_Student_Formation_Idle.h"
+#include "Animation.h"
+CStudent::CStudent(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
+	: CActor(pDevice, pContext)
 {
-	lstrcpy(m_szStudentName, pStudentTag);
 }
 
 
 CStudent::CStudent(const CStudent & rhs)
-	: CGameObject(rhs)
+	: CActor(rhs)
 {
-	lstrcpy(m_szStudentName, rhs.m_szStudentName);
+
 }
 
 HRESULT CStudent::Initialize_Prototype()
@@ -33,21 +32,25 @@ HRESULT CStudent::Initialize(void * pArg)
 	TransformDesc.fSpeedPerSec = 5.f;
 	TransformDesc.fRotationPerSec = XMConvertToRadians(90.0f);
 
+	//GameObject 에서 디스크립션 초기화해서 먼저 이거 해줘야함.
 	if (FAILED(__super::Initialize(&TransformDesc)))
 		return E_FAIL;
+
+	memcpy(&m_desc, pArg, sizeof(OBJ_DESC));
 
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
 	m_pTransformCom->Set_Scaled(_float3(1.00f, 1.00f, 1.00f));
-	//m_pTransformCom->Set_Scaled(_float3(0.01f, 0.01f, 0.01f));
 
-	m_pStateMachine = CStateMachineBase::Create(this);
+	return S_OK;
+}
 
-	CState_Student_Idle* state = CState_Student_Idle::Create(this);
+HRESULT CStudent::StartLevel(_uint iLevel)
+{
+	if (FAILED(SetUp_StateMachine(iLevel)))
+		return E_FAIL;
 
-	m_pStateMachine->Setup_StateMachine(state);
-	//m_pModelCom->Set_CurrentAnimation(3);
 	return S_OK;
 }
 
@@ -60,13 +63,22 @@ void CStudent::Tick(_float fTimeDelta)
 	m_pAABBCom->Update(m_pTransformCom->Get_WorldMatrix());
 	m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
 
-	//m_pModelCom->Play_Animation(fTimeDelta);
-
 }
 
 void CStudent::LateTick(_float fTimeDelta)
 {
 	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+
+#ifdef _DEBUG
+	CGameInstance*	pInstance = GET_INSTANCE(CGameInstance);
+
+	if (pInstance->Get_CurrentLevelID() == LEVEL_FORMATION)
+	{
+		m_pRendererCom->Add_DebugRenderGroup(m_pAABBCom);
+	}
+#endif // _DEBUG
+
+
 }
 
 HRESULT CStudent::Render()
@@ -95,7 +107,7 @@ HRESULT CStudent::Render()
 	CGameInstance*	pInstance = GET_INSTANCE(CGameInstance);
 
 	if (pInstance->Get_CurrentLevelID() == LEVEL_FORMATION)
-		m_pAABBCom->Render();
+		//m_pAABBCom->Render();
 	//m_pOBBCom->Render();
 	//m_pSphereCom->Render();
 #endif // _DEBUG
@@ -115,16 +127,6 @@ HRESULT CStudent::Render_MeshPart(CMeshContainer * pMesh)
 	return S_OK;
 }
 
-void CStudent::Set_Transform(_vector vPos)
-{
-	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vPos);
-}
-
-_bool CStudent::Collision_AABB(RAYDESC & ray, _float & distance)
-{
-	return m_pAABBCom->Collision_AABB(ray, distance);
-}
-
 HRESULT CStudent::SetUp_Components()
 {
 	/* For.Com_Shader */
@@ -137,7 +139,7 @@ HRESULT CStudent::SetUp_Components()
 
 	_tchar szModelTag[MAX_PATH] = L"Prototype_Component_Model_";
 
-	lstrcat(szModelTag, m_szStudentName);
+	lstrcat(szModelTag, m_desc.sz_Name);
 
 	/* For.Com_Model */
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, szModelTag, TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
@@ -192,37 +194,46 @@ HRESULT CStudent::SetUp_ShaderResource()
 	if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", pGameInstance->Get_Transform_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4))))
 		return E_FAIL;
 
-
-	const LIGHTDESC* pLightDesc = pGameInstance->Get_LightDesc(0);
-
-	if (nullptr == pLightDesc)
-		return E_FAIL;
-
-	if (FAILED(m_pShaderCom->Set_RawValue("g_vCamPosition", &pGameInstance->Get_CamPosition(), sizeof(_float4))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_RawValue("g_vLightDir", &pLightDesc->vDirection, sizeof(_float4))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_RawValue("g_vLightPos", &pLightDesc->vPosition, sizeof(_float4))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_RawValue("g_fRange", &pLightDesc->fRange, sizeof(_float))))
-		return E_FAIL;
-
-	if (FAILED(m_pShaderCom->Set_RawValue("g_vLightDiffuse", &pLightDesc->vDiffuse, sizeof(_float4))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_RawValue("g_vLightAmbient", &pLightDesc->vAmbient, sizeof(_float4))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_RawValue("g_vLightSpecular", &pLightDesc->vSpecular, sizeof(_float4))))
-		return E_FAIL;
-
-
 	RELEASE_INSTANCE(CGameInstance);
 
 	return S_OK;
 }
 
-CStudent * CStudent::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, _tchar *pStudentTag)
+HRESULT CStudent::SetUp_StateMachine(_uint iClonedLevel)
 {
-	CStudent*		pInstance = new CStudent(pDevice, pContext, pStudentTag);
+	//학생정보에서 레벨을 받아와서 맞는 기초상태로 세팅한다.
+
+	m_pStateMachine = CStateMachineBase::Create(this);
+	CStateBase* state = nullptr;
+	switch (iClonedLevel)
+	{
+	case Client::LEVEL_GAMEPLAY:
+		state = CState_Student_Idle::Create(this);
+		break;
+	case Client::LEVEL_FORMATION:
+		state = CState_Student_Formation_Idle::Create(this);
+		break;
+	case Client::LEVEL_MAPTOOL:
+		break;
+	case Client::LEVEL_END:
+		break;
+	default:
+		break;
+	}
+	if (nullptr == state)
+		return E_FAIL;
+
+	m_pStateMachine->Setup_StateMachine(state);
+	return S_OK;
+}
+
+
+
+
+
+CStudent * CStudent::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
+{
+	CStudent*		pInstance = new CStudent(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{

@@ -37,12 +37,16 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
+public:
+	static void	Set_MainCam(CCamera*	pCamera) { CCamera::g_MainCam = pCamera; }
+	_bool	IsMainCam();
 protected:
-	CAMERADESC						m_CameraDesc;
+	static CCamera*	g_MainCam;
 
 protected:
-	HRESULT Bind_PipeLine();	
-	
+	CAMERADESC						m_CameraDesc;
+protected:
+	HRESULT Bind_PipeLine();
 public:
 	virtual CGameObject* Clone(void* pArg) = 0;
 	virtual void Free() override;
