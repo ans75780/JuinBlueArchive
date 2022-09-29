@@ -55,10 +55,11 @@ HRESULT CLevel_GamePlay::Initialize()
 
 	m_pEventCam->Ready_Event_Stage_Start(m_pStageCam, m_vecStudent[1],
 		m_vecStudent[1]->Get_StateMachine()->Get_CurrentState()->Get_Animation(),
-		vOffset);
+		vOffset, &m_vecStudent);
 
 	m_pStageCam->Set_Target(m_vecStudent[1]);
 
+	
 	return S_OK;
 }
 

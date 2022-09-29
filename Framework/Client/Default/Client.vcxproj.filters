@@ -154,6 +154,7 @@
     <ClInclude Include="..\Public\Actor.h">
       <Filter>02.GameObject\05.Actor</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Baricade.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -294,6 +295,7 @@
     <ClCompile Include="..\Private\Actor.cpp">
       <Filter>02.GameObject\05.Actor</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Baricade.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -462,6 +464,9 @@
     </Filter>
     <Filter Include="02.GameObject\05.Actor\Student">
       <UniqueIdentifier>{a5477715-8bc1-4140-a022-797e60da67ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Baricade">
+      <UniqueIdentifier>{8ba48e91-f70a-442e-b6d4-5e8eea9c7cd9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
