@@ -17,6 +17,8 @@ public:
 	virtual CStateBase * Exit() override;
 	static  CState_Student_Ex * Create(class CActor * pStudent);
 
+private:
+	
 };
 
 END

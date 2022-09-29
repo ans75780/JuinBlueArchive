@@ -84,7 +84,8 @@ HRESULT CCamera_Event::Render()
 	return S_OK;
 }
 
-void CCamera_Event::Ready_Event_Stage_Start(CCamera * pReturnCamera, CActor * pTarget, CAnimation * pAnimation, _float3 vOffset)
+
+void CCamera_Event::Ready_Event_Stage_Start(CCamera * pReturnCamera, CActor * pTarget, CAnimation * pAnimation, _float3 vOffset, vector<CStudent*>* pVecStudents)
 {
 	m_pReturnToCam = pReturnCamera;
 	m_pAnimation = pAnimation;
@@ -99,7 +100,12 @@ void CCamera_Event::Ready_Event_Stage_Start(CCamera * pReturnCamera, CActor * pT
 
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vCamPos);
 
+	m_pVecStduent = pVecStudents;
+
 	CCamera::Set_MainCam(this);
+
+
+
 }
 
 void CCamera_Event::Ready_Event_Ex(CCamera * pReturnCamera, CActor * pTarget)
@@ -109,14 +115,29 @@ void CCamera_Event::Ready_Event_Ex(CCamera * pReturnCamera, CActor * pTarget)
 	m_pTarget = pTarget;
 
 	char pAnimaitonStr[MAX_PATH];
-
+	char pAnimationPullName[MAX_PATH];
 	WideCharToMultiByte(CP_ACP, 0, ((CStudent*)m_pTarget)->Get_Name(), MAX_PATH, pAnimaitonStr, MAX_PATH, NULL, NULL);
 
 	//28
-	strcat_s(pAnimaitonStr, "_Original_Exs_Cutin_Cam");
 
-	m_pAnimation = ((CStudent*)m_pTarget)->Get_Animation(pAnimaitonStr);
+	strcpy_s(pAnimationPullName, pAnimaitonStr);
 
+	strcat_s(pAnimationPullName, "_Original_Exs_Cutin_Cam");
+
+	m_pAnimation = ((CStudent*)m_pTarget)->Get_Animation(pAnimationPullName);
+	
+	if (m_pAnimation == nullptr)
+	{
+		strcpy_s(pAnimationPullName, pAnimaitonStr);
+
+		strcat_s(pAnimationPullName, "_Original_Exs_Cam");
+
+		m_pAnimation = ((CStudent*)m_pTarget)->Get_Animation(pAnimationPullName);
+		if (nullptr == m_pAnimation)
+		{
+			MSG_BOX("Load Failed : Ex Cam");
+		}
+	}
 	m_pAnimation->Play();
 	m_eEventType = EVENT_TYPE::EVENT_EX;
 
@@ -136,6 +157,7 @@ void CCamera_Event::Event_Stage_Start()
 	if (m_pAnimation->IsFinished() == true)
 	{
 		CCamera::Set_MainCam(m_pReturnToCam);
+
 	}
 	
 	m_pTransformCom->LookAt(m_pTarget->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION));

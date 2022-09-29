@@ -332,6 +332,7 @@
     <ClCompile Include="..\Private\Camera_Stage.cpp" />
     <ClCompile Include="..\Private\Stage.cpp" />
     <ClCompile Include="..\Private\State_Student_Ex.cpp" />
+    <ClCompile Include="..\Private\Baricade.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -512,6 +513,9 @@
     </Filter>
     <Filter Include="02.GameObject\07. Formation">
       <UniqueIdentifier>{21a7108e-7177-40a3-9e95-1ab62c7ee622}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Baricade">
+      <UniqueIdentifier>{8ba48e91-f70a-442e-b6d4-5e8eea9c7cd9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

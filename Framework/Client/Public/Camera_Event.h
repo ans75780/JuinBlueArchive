@@ -21,7 +21,7 @@ public:
 	virtual HRESULT Render() override;
 
 public:
-	void	Ready_Event_Stage_Start(class CCamera* pReturnCamera, class CActor* pTarget, class CAnimation* pAnimation, _float3 vOffset);
+	void	Ready_Event_Stage_Start(class CCamera* pReturnCamera, class CActor* pTarget, class CAnimation* pAnimation, _float3 vOffset, vector<CStudent*>* pVecStudents);
 
 	void	Ready_Event_Ex(class CCamera* pReturnCamera, class CActor* pTarget);
 
@@ -46,6 +46,10 @@ private:
 private:
 	_float3			m_vOffset;
 
+
+//for Stage_Start Variable
+private:
+	vector<CStudent*>*	m_pVecStduent = nullptr;
 
 
 
