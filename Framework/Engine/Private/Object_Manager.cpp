@@ -69,6 +69,12 @@ HRESULT CObject_Manager::Add_GameObject(_uint iLevelIndex, const _tchar * pLayer
 	if (nullptr == pCloneObject)
 		return E_FAIL;
 
+	if (FAILED(pCloneObject->StartLevel(iLevelIndex)))
+	{
+		Safe_Release(pCloneObject);
+		return E_FAIL;
+	}
+
 	CLayer*		pLayer = Find_Layer(iLevelIndex, pLayerTag);
 
 	if (nullptr == pLayer)

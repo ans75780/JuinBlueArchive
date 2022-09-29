@@ -54,7 +54,7 @@ protected:
 protected:
 	virtual HRESULT SetUp_Components();
 	virtual HRESULT SetUp_ShaderResource();
-	virtual HRESULT	SetUp_StateMachine();
+	virtual HRESULT	SetUp_StateMachine(_uint iLevel);
 
 public:
 	virtual CGameObject* Clone(void* pArg) override;

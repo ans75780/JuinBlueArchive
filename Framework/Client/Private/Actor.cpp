@@ -130,10 +130,9 @@ HRESULT CActor::SetUp_ShaderResource()
 	return S_OK;
 }
 
-HRESULT CActor::SetUp_StateMachine()
+HRESULT CActor::SetUp_StateMachine(_uint iLevel)
 {
-	
-	return S_OK;
+	return E_NOTIMPL;
 }
 
 CGameObject * CActor::Clone(void * pArg)

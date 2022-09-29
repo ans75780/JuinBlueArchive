@@ -68,9 +68,11 @@ const _tchar * CGameObject::Get_Name()
 	return m_desc.sz_Name;
 }
 
-void CGameObject::Set_ClonedLevel(_uint _iClonedLevel)
+
+HRESULT CGameObject::StartLevel(_uint iLevel)
 {
-	m_iClonedLevel = _iClonedLevel;
+	
+	return S_OK;
 }
 
 HRESULT CGameObject::Add_Component(_uint iLevelIndex, const _tchar * pPrototypeTag, const _tchar * pComponentTag, CComponent** ppOut, void * pArg)

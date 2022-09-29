@@ -41,10 +41,15 @@ HRESULT CStudent::Initialize(void * pArg)
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
-	if (FAILED(SetUp_StateMachine()))
-		return E_FAIL;
-
 	m_pTransformCom->Set_Scaled(_float3(1.00f, 1.00f, 1.00f));
+
+	return S_OK;
+}
+
+HRESULT CStudent::StartLevel(_uint iLevel)
+{
+	if (FAILED(SetUp_StateMachine(iLevel)))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -194,13 +199,13 @@ HRESULT CStudent::SetUp_ShaderResource()
 	return S_OK;
 }
 
-HRESULT CStudent::SetUp_StateMachine()
+HRESULT CStudent::SetUp_StateMachine(_uint iClonedLevel)
 {
 	//학생정보에서 레벨을 받아와서 맞는 기초상태로 세팅한다.
 
 	m_pStateMachine = CStateMachineBase::Create(this);
 	CStateBase* state = nullptr;
-	switch (m_iClonedLevel)
+	switch (iClonedLevel)
 	{
 	case Client::LEVEL_GAMEPLAY:
 		state = CState_Student_Idle::Create(this);
@@ -221,6 +226,8 @@ HRESULT CStudent::SetUp_StateMachine()
 	m_pStateMachine->Setup_StateMachine(state);
 	return S_OK;
 }
+
+
 
 
 
