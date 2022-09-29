@@ -75,12 +75,13 @@ void CCamera_Stage::Tick(_float fTimeDelta)
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vCamPos);
 	if (FAILED(Bind_PipeLine()))
 		return;
-
+	/*
 	for (_uint i = 0; i < m_pVecStudents->size(); i++)
 	{
 		if (!pGameInstance->IsIn_Frustum_InWorldSpace((*m_pVecStudents)[i]->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION), 1.f))
 		{
 			m_bInCam = false;
+			(*m_pVecStudents)[i]->Get_Transform()->Set_Speed(15.f);
 			break;
 		}
 	}
@@ -94,8 +95,13 @@ void CCamera_Stage::Tick(_float fTimeDelta)
 
 		if (m_vOriginOffset.y >= m_vOffset.y)
 			m_vOffset.y = m_vOriginOffset.y;
-	}
 
+		for (_uint i = 0; i < m_pVecStudents->size(); i++)
+		{
+			(*m_pVecStudents)[i]->Get_Transform()->Set_Speed(3.f);
+		}
+	}
+	*/
 
 }
 

@@ -44,6 +44,8 @@ public:
 	void Set_Scaled(_float3 vScale);
 	_float3 Get_Scaled();
 
+	void	Set_Speed(_float fSpeed) { m_TransformDesc.fSpeedPerSec = fSpeed; }
+
 public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;

@@ -13,6 +13,8 @@ class ENGINE_DLL CCollider final : public CComponent
 public:
 	enum TYPE { TYPE_SPHERE, TYPE_AABB, TYPE_OBB, TYPE_END };
 
+	enum COLLISION_TYPE { COLLISION_BODY, COLLISION_ATTACK_RANGE, COLLISION_ATTACK, COLLISION_BARICADE, COLLISION_END };
+
 	typedef struct tagOBBDesc
 	{
 		_float3		vCenter;
