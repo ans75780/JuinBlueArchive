@@ -2,11 +2,3 @@
 #include "..\Public\Formation.h"
 
 
-CFormation::CFormation()
-{
-}
-
-
-CFormation::~CFormation()
-{
-}

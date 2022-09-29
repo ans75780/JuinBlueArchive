@@ -49,6 +49,7 @@ public:
 
 	BoundingBox*	Get_AABB() { return m_pAABB; }
 
+	void			Set_Color(_float4 vColor) { m_vColor = vColor; }
 
 #ifdef _DEBUG
 public:
@@ -68,6 +69,7 @@ private:
 	
 
 	_bool						m_isColl = false;
+	_float4						m_vColor = { 0.f, 1.f, 0.f, 1.f };
 
 #ifdef _DEBUG
 private:

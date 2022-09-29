@@ -5,10 +5,11 @@
 #include "UserData.h"
 #include "ImguiMgr.h"
 #include "Collider.h"
-
+#include "Student.h"
+#include "Enemy.h"
 #include "StrUtil.h"
 #include "Json_Utility.h"
-
+#include "Baricade.h"
 CMainApp::CMainApp()
 	: m_pGameInstance(CGameInstance::Get_Instance())
 {
@@ -49,6 +50,9 @@ HRESULT CMainApp::Initialize()
 		return E_FAIL;
 
 	if (FAILED(Ready_Static_NonAnimModels()))
+		return E_FAIL;
+
+	if (FAILED(Ready_Prototype_Objects()))
 		return E_FAIL;
 
 	CUserData::Get_Instance()->Initialize();
@@ -205,7 +209,7 @@ HRESULT CMainApp::Ready_Prototype_Component()
 		return E_FAIL;
 
 
-
+	
 	return S_OK;
 }
 
@@ -238,21 +242,34 @@ HRESULT CMainApp::Ready_Static_AnimModels()
 	_matrix mat;
 	_float4x4 ScaleMatrix;
 	mat = XMMatrixIdentity();
+	
+	//mat = XMMatrixRotationAxis(XMVectorSet(0, 1.f, 0.f,1.f), 180.f);
+
 
 	/* For.Prototype_Component_Model_Serika*/
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Aru"),
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Aru_Original"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Aru_Original/", "Aru_Original.fbx", mat))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Model_Serika*/
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Haruka"),
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Haruka_Original"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Haruka_Original/", "Haruka_Original.fbx", mat))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Model_Serika*/
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Zunko"),
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Zunko_Original"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Zunko_Original/", "Zunko_Original.fbx", mat))))
 		return E_FAIL;
+
+	//Enemies
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Soldier_Kaiserpmc_HG"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Enemies/Soldier_Kaiserpmc_HG/", "Soldier_Kaiserpmc_HG.fbx", mat))))
+		return E_FAIL;
+
+
+
+
+
 	return S_OK;
 }
 
@@ -270,6 +287,33 @@ HRESULT CMainApp::Ready_Static_NonAnimModels()
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Models/NonAnimModels/Stages/School/", "School_1.fbx", mat))))
 		return E_FAIL;
 	
+
+	mat = XMMatrixRotationAxis(XMVectorSet(0, 1.f, 0.f, 1.f), XMConvertToRadians(90.f));
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_School_Baricade"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Models/NonAnimModels/Obstacles/School_Baricade/", "School_Baricade.fbx", mat))))
+		return E_FAIL;
+
+
+	return S_OK;
+}
+
+HRESULT CMainApp::Ready_Prototype_Objects()
+{
+	if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_Student"),
+		CStudent::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_Enemy"),
+		CEnemy::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+
+
+	if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_Baricade"),
+		CBaricade::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	return S_OK;
 }
 

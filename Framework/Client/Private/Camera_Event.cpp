@@ -122,7 +122,7 @@ void CCamera_Event::Ready_Event_Ex(CCamera * pReturnCamera, CActor * pTarget)
 
 	strcpy_s(pAnimationPullName, pAnimaitonStr);
 
-	strcat_s(pAnimationPullName, "_Original_Exs_Cutin_Cam");
+	strcat_s(pAnimationPullName, "_Exs_Cutin_Cam");
 
 	m_pAnimation = ((CStudent*)m_pTarget)->Get_Animation(pAnimationPullName);
 	
@@ -130,7 +130,7 @@ void CCamera_Event::Ready_Event_Ex(CCamera * pReturnCamera, CActor * pTarget)
 	{
 		strcpy_s(pAnimationPullName, pAnimaitonStr);
 
-		strcat_s(pAnimationPullName, "_Original_Exs_Cam");
+		strcat_s(pAnimationPullName, "_Exs_Cam");
 
 		m_pAnimation = ((CStudent*)m_pTarget)->Get_Animation(pAnimationPullName);
 		if (nullptr == m_pAnimation)
@@ -156,6 +156,11 @@ void CCamera_Event::Event_Stage_Start()
 {
 	if (m_pAnimation->IsFinished() == true)
 	{
+		(*m_pVecStduent)[0]->Set_Transform(XMVectorSet(-1.f, 0.f, 0.f, 1.f));
+		(*m_pVecStduent)[1]->Set_Transform(XMVectorSet(0.f, 0.f, 0.f, 1.f));
+		(*m_pVecStduent)[2]->Set_Transform(XMVectorSet(1.f, 0.f, 0.f, 1.f));
+
+
 		CCamera::Set_MainCam(m_pReturnToCam);
 
 	}
@@ -168,8 +173,6 @@ void CCamera_Event::Event_Stage_Start()
 
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vCamPos);
 
-
-
 }
 
 void CCamera_Event::Event_Ex(_float fTimeDelta)
@@ -179,6 +182,8 @@ void CCamera_Event::Event_Ex(_float fTimeDelta)
 		m_CameraDesc.fFovy = XMConvertToRadians(65.0f);
 
 		CCamera::Set_MainCam(m_pReturnToCam);
+		m_pAnimation->Reset();
+
 		m_pTarget->Get_Transform()->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&m_fTargetOriginPos));
 		return;
 	}

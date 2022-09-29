@@ -31,6 +31,9 @@
 #include "Sky.h"
 #include "Camera_Stage.h"
 #include "Stage.h"
+#include "Enemy.h"
+
+
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice(pDevice)
@@ -226,10 +229,6 @@ HRESULT CLoader::Loading_ForFormationLevel()
 	/* For.Prototype_GameObject_Camera_Free*/
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Camera_Formation"),
 		CCamera_Formation::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-
-	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_Student"),
-		CStudent::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 

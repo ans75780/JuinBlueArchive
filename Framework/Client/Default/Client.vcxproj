@@ -41,13 +41,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -176,6 +176,7 @@
     <ClInclude Include="..\Public\Camera_Free.h" />
     <ClInclude Include="..\Public\Camera_Stage.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
+    <ClInclude Include="..\Public\Enemy.h" />
     <ClInclude Include="..\Public\Formation.h" />
     <ClInclude Include="..\Public\imconfig.h" />
     <ClInclude Include="..\Public\imgui.h" />
@@ -212,8 +213,8 @@
     <ClInclude Include="..\Public\State_Student_Ex.h" />
     <ClInclude Include="..\Public\State_Student_Formation_Idle.h" />
     <ClInclude Include="..\Public\State_Student_Formation_Pickup.h" />
-    <ClInclude Include="..\Public\State_Student_Idle.h" />
-    <ClInclude Include="..\Public\State_Student_Run.h" />
+    <ClInclude Include="..\Public\State_Idle.h" />
+    <ClInclude Include="..\Public\State_Run.h" />
     <ClInclude Include="..\Public\Student.h" />
     <ClInclude Include="..\Public\TestObject_Model_Haruka.h" />
     <ClInclude Include="..\Public\TestObject_Test.h" />
@@ -237,6 +238,7 @@
     <ClCompile Include="..\Private\Camera_Formation.cpp" />
     <ClCompile Include="..\Private\Camera_Free.cpp" />
     <ClCompile Include="..\Private\Camera_Stage.cpp" />
+    <ClCompile Include="..\Private\Enemy.cpp" />
     <ClCompile Include="..\Private\Formation.cpp" />
     <ClCompile Include="..\Private\imgui.cpp" />
     <ClCompile Include="..\Private\ImguiMgr.cpp" />
@@ -272,8 +274,8 @@
     <ClCompile Include="..\Private\State_Student_Ex.cpp" />
     <ClCompile Include="..\Private\State_Student_Formation_Idle.cpp" />
     <ClCompile Include="..\Private\State_Student_Formation_Pickup.cpp" />
-    <ClCompile Include="..\Private\State_Student_Idle.cpp" />
-    <ClCompile Include="..\Private\State_Student_Run.cpp" />
+    <ClCompile Include="..\Private\State_Idle.cpp" />
+    <ClCompile Include="..\Private\State_Run.cpp" />
     <ClCompile Include="..\Private\Student.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp" />
     <ClCompile Include="..\Private\TestObject_Model_Haruka.cpp" />

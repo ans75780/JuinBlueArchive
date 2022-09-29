@@ -243,20 +243,20 @@ HRESULT CCollider::Render()
 
 	m_pEffect->Apply(m_pContext);
 
-	_vector		vColor = m_isColl == true ? XMVectorSet(1.f, 0.f, 0.f, 1.f) : XMVectorSet(0.f, 1.f, 0.f, 1.f);
+	//_vector		vColor = m_isColl == true ? XMVectorSet(1.f, 0.f, 0.f, 1.f) : XMVectorSet(0.f, 1.f, 0.f, 1.f);
 
 	m_pBatch->Begin();
 
 	switch (m_eType)
 	{
 	case TYPE_AABB:
-		DX::Draw(m_pBatch, *m_pAABB, vColor);
+		DX::Draw(m_pBatch, *m_pAABB, XMLoadFloat4(&m_vColor));
 		break;
 	case TYPE_OBB:
-		DX::Draw(m_pBatch, *m_pOBB, vColor);
+		DX::Draw(m_pBatch, *m_pOBB, XMLoadFloat4(&m_vColor));
 		break;
 	case TYPE_SPHERE:
-		DX::Draw(m_pBatch, *m_pSphere, vColor);
+		DX::Draw(m_pBatch, *m_pSphere, XMLoadFloat4(&m_vColor));
 		break;
 	}
 

@@ -8,7 +8,6 @@ namespace Engine
 	enum UNIT_CLASS{ UNIT_CLASS_FRONT, UNIT_CLASS_MIDDLE, UNIT_CLASS_BACK, UNIT_CLASS_END};
 	enum UNIT_TYPE { UNIT_TYPE_STUDENT, UNIT_TYPE_ENEMY, UNIT_TYPE_BOSS, UNIT_TYPE_END };
 
-
 	typedef struct tagRayDesc
 	{
 		_vector	vRayOrigin;

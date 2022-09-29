@@ -49,7 +49,7 @@ HRESULT CStateMachineBase::Setup_StateMachine(CStateBase * pState)
 	Clear();
 
 	m_States.push(pState);
-
+	pState->Enter();
 	return S_OK;
 }
 
@@ -58,10 +58,8 @@ HRESULT CStateMachineBase::Add_State(CStateBase * pState)
 	if (nullptr == pState)
 		return E_FAIL;
 
-	m_States.top()->Get_Animation()->Stop();
 	m_States.push(pState);
-
-	m_States.top()->Get_Animation()->Play();
+	pState->Enter();
 	return S_OK;
 }
 

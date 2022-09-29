@@ -7,7 +7,7 @@
 #include "Light.h"
 #include "UserData.h"
 #include "Student.h"
-#include "State_Student_Idle.h"
+#include "State_Idle.h"
 #include "StateMachineBase.h"
 #include "Level_Loading.h"
 #include "State_Student_Default.h"
@@ -17,6 +17,7 @@
 #include "State_Student_Ex.h"
 #include "Animation.h"
 #include "Camera.h"
+#include "Enemy.h"
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -44,12 +45,16 @@ HRESULT CLevel_GamePlay::Initialize()
 
 	if (FAILED(Ready_Layer_Student(TEXT("Layer_Student"))))
 		return E_FAIL;
+	if (FAILED(Ready_Layer_Enemy(TEXT("Layer_Enemy"))))
+		return E_FAIL;
 
+	if (FAILED(Ready_Layer_Baricade(TEXT("Layer_Baricade"))))
+		return E_FAIL;
 	if (FAILED(Ready_Light()))
 		return E_FAIL;
 	m_vecStudent[1]->Get_StateMachine()->Add_State
 	(
-		CState_Student_Default::Create(m_vecStudent[1], L"_Original_Normal_Callsign")
+		CState_Student_Default::Create(m_vecStudent[1], L"_Normal_Callsign")
 	);
 	_float3	vOffset = { -1.5f,1.f,-1.5f };
 
@@ -57,7 +62,7 @@ HRESULT CLevel_GamePlay::Initialize()
 		m_vecStudent[1]->Get_StateMachine()->Get_CurrentState()->Get_Animation(),
 		vOffset, &m_vecStudent);
 
-	m_pStageCam->Set_Target(m_vecStudent[1]);
+	m_pStageCam->Set_Formation(&m_vecStudent);
 
 	
 	return S_OK;
@@ -90,7 +95,7 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 	{
 		m_vecStudent[1]->Get_StateMachine()->Add_State
 		(
-			CState_Student_Default::Create(m_vecStudent[1], L"_Original_Normal_Callsign")
+			CState_Student_Default::Create(m_vecStudent[1], L"_Normal_Callsign")
 		);
 	}
 	if (KEY(NUM1, TAP))
@@ -99,6 +104,8 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 		(
 			CState_Student_Ex::Create(m_vecStudent[0])
 		);
+		m_pEventCam->Ready_Event_Ex(m_pStageCam, m_vecStudent[0]);
+
 	}
 	if (KEY(NUM2, TAP))
 	{
@@ -106,6 +113,8 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 		(
 			CState_Student_Ex::Create(m_vecStudent[1])
 		);
+		m_pEventCam->Ready_Event_Ex(m_pStageCam, m_vecStudent[1]);
+
 	}
 	if (KEY(NUM3, TAP))
 	{
@@ -180,22 +189,25 @@ HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const _tchar * pLayerTag)
 	return S_OK;
 }
 
-HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _tchar * pLayerTag)
+HRESULT CLevel_GamePlay::Ready_Layer_Enemy(const _tchar * pLayerTag)
 {
 	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
-	Safe_AddRef(pGameInstance);
 
-	for (_uint i = 0; i < 20; ++i)
+
+	_tchar	szPath[MAX_PATH] = L"Prototype_Enemy";
+	CGameObject*			pObj;
+
+	const map<const _tchar*, CGameObject::OBJ_DESC>* EnemyData  = CUserData::Get_Instance()->Get_Actors(UNIT_TYPE::UNIT_TYPE_ENEMY);
+	for (auto& pair : *EnemyData)
 	{
-		/* For.Monster */
-		if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Prototype_GameObject_Monster"))))
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, szPath, (void*)&pair.second, &pObj)))
 			return E_FAIL;
+		m_pEnemy = (CEnemy*)pObj;
+		m_pEnemy->Set_Transform(XMVectorSet(0, 0, -15.f, 1.f));
 	}
-
-	Safe_Release(pGameInstance);
-
 	return S_OK;
 }
+
 
 HRESULT CLevel_GamePlay::Ready_Layer_Effect(const _tchar * pLayerTag)
 {
@@ -236,6 +248,32 @@ HRESULT CLevel_GamePlay::Ready_Layer_Student(const _tchar * pLayerTag)
 		m_vecStudent.push_back((CStudent*)pStudent);
 	}
 	Safe_Release(pGameInstance);
+
+	return S_OK;
+}
+
+HRESULT CLevel_GamePlay::Ready_Layer_Baricade(const _tchar * pLayerTag)
+{
+	CGameInstance*	pGameInstance = GET_INSTANCE(CGameInstance);
+
+	CGameObject*	pObj;
+	
+	for (_uint i = 1; i <= 10; i++)
+	{
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Prototype_Baricade"), L"Prototype_Component_Model_School_Baricade", &pObj)))
+			return E_FAIL;
+		pObj->Get_Transform()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(-1.f, 0.f, i * -8.f, 1.f));
+
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Prototype_Baricade"), L"Prototype_Component_Model_School_Baricade", &pObj)))
+			return E_FAIL;
+		pObj->Get_Transform()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(0.f, 0.f, i * -8.f, 1.f));
+
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Prototype_Baricade"), L"Prototype_Component_Model_School_Baricade", &pObj)))
+			return E_FAIL;
+		pObj->Get_Transform()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(1.f, 0.f, i * -8.f, 1.f));
+	}
+
+	RELEASE_INSTANCE(CGameInstance);
 
 	return S_OK;
 }

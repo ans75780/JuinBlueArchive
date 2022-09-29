@@ -32,7 +32,7 @@ private:
 	HRESULT Ready_Static_Resource();
 	HRESULT Ready_Static_AnimModels();
 	HRESULT Ready_Static_NonAnimModels();
-
+	HRESULT Ready_Prototype_Objects();
 
 private:
 	HRESULT LoadUITexture(char* folderName, void* pGameInstance);

@@ -22,17 +22,22 @@ public:
 public:
 	static CCamera_Stage* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
-	void	Set_Target(class CStudent*	pTarget);
+	void	Set_Formation(vector<class CStudent*>* pVecSturdents);
 
 	virtual void Free() override;
 
 private:
+	_float3			m_vOriginOffset;
+
 	_float3			m_vOffset;
 
 	_float3			m_vTargetPos;
 	_float			m_fSpeed;
 
-	class CStudent*	m_pTarget = nullptr;
+	_float			m_fOriginFov;
+
+	vector<class CStudent*>* m_pVecStudents;
+	_bool			m_bInCam;
 
 };
 

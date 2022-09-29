@@ -11,11 +11,12 @@ public:
 	typedef struct GameObjcetDesc		
 	{
 		_tchar		sz_Name[MAX_PATH];
-		_float		m_fDamage = 1.f;
-		_float		m_fRange = 5.f;
-		_float		m_fMaxHp = 10.f;
-		_float		m_fHp = 10.f;
-		UNIT_CLASS	m_eClass = UNIT_CLASS_END;
+		_float		fDamage = 1.f;
+		_float		fRange = 5.f;
+		_float		fMaxHp = 10.f;
+		_float		fHp = 10.f;
+		UNIT_TYPE	eType = UNIT_TYPE_END;
+		UNIT_CLASS	eClass = UNIT_CLASS_END;
 	}OBJ_DESC;
 
 protected:

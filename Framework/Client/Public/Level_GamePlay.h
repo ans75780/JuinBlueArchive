@@ -27,9 +27,10 @@ public:
 public:
 	HRESULT Ready_Layer_Camera(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_BackGround(const _tchar* pLayerTag);
-	HRESULT Ready_Layer_Monster(const _tchar* pLayerTag);
+	HRESULT Ready_Layer_Enemy(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_Effect(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_Student(const _tchar* pLayerTag);
+	HRESULT Ready_Layer_Baricade(const _tchar* pLayerTag);
 	HRESULT Ready_Light();
 
 private:
@@ -40,7 +41,7 @@ private:
 	class CCamera_Event*	m_pEventCam= nullptr;
 	class CCamera_Free*		m_pFreeCam= nullptr;
 
-
+	class CEnemy*			m_pEnemy = nullptr;
 
 public:
 	static CLevel_GamePlay* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
