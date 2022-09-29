@@ -25,7 +25,6 @@ public:
 
 	void	Ready_Event_Ex(class CCamera* pReturnCamera, class CActor* pTarget);
 
-
 public:
 	void	Event_Stage_Start();
 	void	Event_Ex(_float fTimeDelta);

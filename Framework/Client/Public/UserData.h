@@ -18,7 +18,7 @@ BEGIN(Client)
 
 class CUserData final : public CBase 
 {
-	DECLARE_SINGLETON(CUserData);
+	DECLARE_SINGLETON(CUserData)
 private:
 	CUserData() {};
 	virtual ~CUserData() = default;

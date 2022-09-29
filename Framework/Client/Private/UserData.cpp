@@ -8,7 +8,7 @@ HRESULT CUserData::Initialize()
 {
 	Add_Student(L"Aru", UNIT_CLASS::UNIT_CLASS_BACK, 30.f, 15.f, 100.f);
 	Add_Student(L"Haruka", UNIT_CLASS::UNIT_CLASS_FRONT, 10.f, 3.f, 200.f);
-	Add_Student(L"Zunko", UNIT_CLASS::UNIT_CLASS_BACK, 20.f, 5.f, 100.f);
+	Add_Student(L"Zunko", UNIT_CLASS::UNIT_CLASS_MIDDLE, 20.f, 5.f, 100.f);
 
 	return S_OK;
 }
