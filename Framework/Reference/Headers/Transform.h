@@ -36,6 +36,8 @@ public:
 		memcpy(&m_WorldMatrix.m[eState], &vData, sizeof(_float4));		
 	}
 
+	TRANSFORMDESC	Get_Desc() { return m_TransformDesc; }
+
 public:
 	void Set_TransformDesc(const TRANSFORMDESC* pTransformDesc) {
 		m_TransformDesc = *pTransformDesc;

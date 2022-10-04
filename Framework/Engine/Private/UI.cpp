@@ -34,17 +34,8 @@ HRESULT CUI::Initialize(void * arg)
 		if (FAILED(__super::Initialize((&TransformDesc))))
 			return E_FAIL;
 	}
-	//UI들은 기본적으로 렌더러를 달고 생성된다.	
-	/* For.Com_Renderer */
-	if (FAILED(__super::Add_Component(0, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
-		return E_FAIL;
-
-	/* For.Com_Shader */
-	if (FAILED(__super::Add_Component(0, TEXT("Prototype_Component_Shader_VtxTex"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
-		return E_FAIL;
-
-	/* For.Com_VIBuffer */
-	if (FAILED(__super::Add_Component(0, TEXT("Prototype_Component_VIBuffer_Rect"), TEXT("Com_VIBuffer"), (CComponent**)&m_pVIBufferCom)))
+	
+	if (FAILED(SetUp_Component()))
 		return E_FAIL;
 
 	return S_OK;
@@ -134,6 +125,25 @@ void CUI::Add_Child(CUI * _pChild)
 {
 	_pChild->m_pParent = this;
 	m_vecChild.push_back(_pChild);
+}
+
+HRESULT CUI::SetUp_Component()
+{
+	//UI들은 기본적으로 렌더러를 달고 생성된다.	
+	/* For.Com_Renderer */
+	if (FAILED(__super::Add_Component(0, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
+		return E_FAIL;
+
+	/* For.Com_Shader */
+	if (FAILED(__super::Add_Component(0, TEXT("Prototype_Component_Shader_VtxTex"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
+		return E_FAIL;
+
+	/* For.Com_VIBuffer */
+	if (FAILED(__super::Add_Component(0, TEXT("Prototype_Component_VIBuffer_Rect"), TEXT("Com_VIBuffer"), (CComponent**)&m_pVIBufferCom)))
+		return E_FAIL;
+
+
+	return S_OK;
 }
 
 CUI * CUI::Get_MouseOveredUI(const POINT & pt)

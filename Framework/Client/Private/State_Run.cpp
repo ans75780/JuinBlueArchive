@@ -9,7 +9,6 @@
 #include "Key_Manager.h"
 #include "Actor.h"
 
-
 CState_Run::CState_Run(CActor * pStudent)
 	:CStateBase(pStudent)
 {
@@ -35,7 +34,9 @@ HRESULT CState_Run::Initialize()
 
 void CState_Run::Enter()
 {
-	m_pAnimation->Play();
+	__super::Enter();
+
+
 }
 
 _bool CState_Run::Loop(_float fTimeDelta)

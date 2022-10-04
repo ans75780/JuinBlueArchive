@@ -150,6 +150,16 @@ void CCamera_Event::Ready_Event_Ex(CCamera * pReturnCamera, CActor * pTarget)
 	m_pTarget->Get_Transform()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(0.f,0.f,0.f,1.f));
 	CCamera::Set_MainCam(this);
 
+	//이벤트 시작될동안 이벤트 오브젝트에 들어가있는 애들 빼고는 틱 멈춤
+	CGameInstance*	pInstance = GET_INSTANCE(CGameInstance);
+	pInstance->Start_Event();
+
+
+	pInstance->Add_EventObject(this);
+	pInstance->Add_EventObject(m_pTarget);
+
+
+	RELEASE_INSTANCE(CGameInstance);
 }
 
 void CCamera_Event::Event_Stage_Start()
@@ -162,7 +172,7 @@ void CCamera_Event::Event_Stage_Start()
 
 
 		CCamera::Set_MainCam(m_pReturnToCam);
-
+		
 	}
 	
 	m_pTransformCom->LookAt(m_pTarget->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION));
@@ -185,6 +195,14 @@ void CCamera_Event::Event_Ex(_float fTimeDelta)
 		m_pAnimation->Reset();
 
 		m_pTarget->Get_Transform()->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&m_fTargetOriginPos));
+
+		CGameInstance*	pInstance = GET_INSTANCE(CGameInstance);
+	
+		pInstance->Clear_Event();
+
+
+		RELEASE_INSTANCE(CGameInstance);
+
 		return;
 	}
 	m_pAnimation->Update(fTimeDelta);

@@ -10,6 +10,7 @@
 #include "StrUtil.h"
 #include "Json_Utility.h"
 #include "Baricade.h"
+#include "VIBuffer_Point.h"
 CMainApp::CMainApp()
 	: m_pGameInstance(CGameInstance::Get_Instance())
 {
@@ -187,6 +188,9 @@ HRESULT CMainApp::Ready_Prototype_Component()
 		CShader::Create(m_pDevice, m_pContext, TEXT("../../ShaderFiles/Shader_VtxCubeTex.hlsl"), VTXCUBETEX_DECLARATION::Element, VTXCUBETEX_DECLARATION::iNumElements))))
 		return E_FAIL;
 
+
+	
+
 	///* For.Prototype_Component_VIBuffer_Cube*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"),
 		CVIBuffer_Cube::Create(m_pDevice, m_pContext))))
@@ -208,6 +212,16 @@ HRESULT CMainApp::Ready_Prototype_Component()
 		CCollider::Create(m_pDevice, m_pContext, CCollider::TYPE_SPHERE))))
 		return E_FAIL;
 
+
+
+	/* For.Prototype_Component_Shader_ProgressToPoint*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_PointToProgress"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../../ShaderFiles/Shader_PointToProgress.hlsl"), VTXPOS_DECLARATION::Element, VTXPOS_DECLARATION::iNumElements))))
+		return E_FAIL;
+	/* For.Prototype_Component_VIBuffer_Rect*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Point"),
+		CVIBuffer_Point::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	
 	return S_OK;

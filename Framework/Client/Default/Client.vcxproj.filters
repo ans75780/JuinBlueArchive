@@ -187,6 +187,15 @@
     <ClInclude Include="..\Public\Baricade.h">
       <Filter>02.GameObject\Baricade</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\UI_Progress.h">
+      <Filter>02.GameObject\03. UI\04.Progress</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Student_Run.h">
+      <Filter>04. State\Student\Run</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Student_Jump.h">
+      <Filter>04. State\Student\Jump</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -359,6 +368,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\Baricade.cpp">
       <Filter>02.GameObject\Baricade</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_Progress.cpp">
+      <Filter>02.GameObject\03. UI\04.Progress</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Student_Run.cpp">
+      <Filter>04. State\Student\Run</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Student_Jump.cpp">
+      <Filter>04. State\Student\Jump</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -553,6 +571,15 @@
     <Filter Include="04. State\Idle">
       <UniqueIdentifier>{7604fe63-d291-4b4a-8da4-9e6621296a6f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObject\03. UI\04.Progress">
+      <UniqueIdentifier>{b63d5817-442b-4656-823c-5a73df864c37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. State\Student\Run">
+      <UniqueIdentifier>{73ac411a-4a54-42b5-91db-ebcbc61a91e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. State\Student\Jump">
+      <UniqueIdentifier>{0e9a2e6e-ff83-4808-9cc1-9b4a128b3869}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -590,6 +617,9 @@
       <Filter>03.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\..\ShaderFiles\Shader_VtxPointInstance.hlsl">
+      <Filter>03.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\ShaderFiles\Shader_PointToProgress.hlsl">
       <Filter>03.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

@@ -38,6 +38,8 @@ HRESULT CStateMachineBase::Update(_float fTimeDelta)
 			pState->Enter();
 			m_States.push(pState);
 		}
+		else
+			m_States.top()->Enter();
 	}
 	return S_OK;
 }

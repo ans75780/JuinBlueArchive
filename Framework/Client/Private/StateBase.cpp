@@ -15,6 +15,11 @@ CStateBase::CStateBase(CActor * pOwner)
 	m_bCalledExit = false;
 }
 
+void CStateBase::Enter()
+{
+	m_pAnimation->Play();
+}
+
 _bool CStateBase::Loop(_float fTimeDelta)
 {
 	return true;

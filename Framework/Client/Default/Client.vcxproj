@@ -205,6 +205,9 @@
     <ClInclude Include="..\Public\Loader.h" />
     <ClInclude Include="..\Public\MainApp.h" />
     <ClInclude Include="..\Public\MapProp.h" />
+    <ClInclude Include="..\Public\State_Student_Jump.h" />
+    <ClInclude Include="..\Public\State_Student_Run.h" />
+    <ClInclude Include="..\Public\UI_Progress.h" />
     <ClInclude Include="..\Public\Sky.h" />
     <ClInclude Include="..\Public\Stage.h" />
     <ClInclude Include="..\Public\StateBase.h" />
@@ -266,6 +269,9 @@
     <ClCompile Include="..\Private\Loader.cpp" />
     <ClCompile Include="..\Private\MainApp.cpp" />
     <ClCompile Include="..\Private\MapProp.cpp" />
+    <ClCompile Include="..\Private\State_Student_Jump.cpp" />
+    <ClCompile Include="..\Private\State_Student_Run.cpp" />
+    <ClCompile Include="..\Private\UI_Progress.cpp" />
     <ClCompile Include="..\Private\Sky.cpp" />
     <ClCompile Include="..\Private\Stage.cpp" />
     <ClCompile Include="..\Private\StateBase.cpp" />
@@ -304,6 +310,16 @@
   <ItemGroup>
     <FxCompile Include="..\..\ShaderFiles\Shader_Cell.hlsl" />
     <FxCompile Include="..\..\ShaderFiles\Shader_Deferred.hlsl" />
+    <FxCompile Include="..\..\ShaderFiles\Shader_PointToProgress.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Compute</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Compute</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
     <FxCompile Include="..\..\ShaderFiles\Shader_VtxAnimModel.hlsl" />
     <FxCompile Include="..\..\ShaderFiles\Shader_VtxCubeTex.hlsl" />
     <FxCompile Include="..\..\ShaderFiles\Shader_VtxInstance.hlsl" />

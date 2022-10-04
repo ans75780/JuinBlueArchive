@@ -31,6 +31,10 @@ private:
 	CRenderer*				m_pRendererCom = nullptr;
 	CModel*					m_pModelCom = nullptr;
 	CCollider*				m_pSphereCom = nullptr;
+
+
+
+
 private:
 	HRESULT SetUp_Components(void* pArg);
 	HRESULT SetUp_ShaderResource();

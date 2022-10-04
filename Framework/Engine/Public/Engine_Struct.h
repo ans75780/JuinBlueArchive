@@ -6,7 +6,7 @@ namespace Engine
 	enum MOUSEMOVE { MMS_X, MMS_Y, MMS_WHEEL, MMS_END };
 
 	enum UNIT_CLASS{ UNIT_CLASS_FRONT, UNIT_CLASS_MIDDLE, UNIT_CLASS_BACK, UNIT_CLASS_END};
-	enum UNIT_TYPE { UNIT_TYPE_STUDENT, UNIT_TYPE_ENEMY, UNIT_TYPE_BOSS, UNIT_TYPE_END };
+	enum UNIT_TYPE { UNIT_TYPE_STUDENT, UNIT_TYPE_ENEMY, UNIT_TYPE_BOSS, UNIT_TYPE_PROP, UNIT_TYPE_END };
 
 	typedef struct tagRayDesc
 	{
@@ -96,7 +96,49 @@ namespace Engine
 	} VTXNORTEX_DECLARATION;
 
 
+	typedef struct tagVertex_Position
+	{
+		XMFLOAT3		vPosition;
+	}VTXPOS;
+
+	typedef struct ENGINE_DLL tagVertex_Position_Declaration
+	{
+		static const unsigned int		iNumElements = 1;
+		static const D3D11_INPUT_ELEMENT_DESC	Element[iNumElements];
+	} VTXPOS_DECLARATION;
+
 	
+
+	typedef struct tagVertex_Instance
+	{
+		XMFLOAT4			vRight;
+		XMFLOAT4			vUp;
+		XMFLOAT4			vLook;
+		XMFLOAT4			vTranslation;
+	}VTXINSTANCE;
+
+	typedef struct ENGINE_DLL tagVertex_Texture_Instance_Declaration
+	{
+		static const unsigned int		iNumElements = 6;
+		static const D3D11_INPUT_ELEMENT_DESC	Element[iNumElements];
+	} VTXTEX_INSTANCE_DECLARATION;
+
+
+	typedef struct tagVertex_Point
+	{
+		XMFLOAT3		vPosition;
+		XMFLOAT2		vPSize;
+	}VTXPOINT;
+
+	typedef struct ENGINE_DLL tagVertex_Point_Instance_Declaration
+	{
+		static const unsigned int		iNumElements = 6;
+		static const D3D11_INPUT_ELEMENT_DESC	Element[iNumElements];
+	}VTXPOINT_INSTANCE_DECLARATION;
+
+
+
+
 	typedef struct tagVertex_AnimModel	//8.10 Ãß°¡
 	{
 		XMFLOAT3		vPosition;

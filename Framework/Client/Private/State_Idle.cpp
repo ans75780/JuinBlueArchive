@@ -4,7 +4,7 @@
 #include "StateBase.h"
 #include "Model.h"
 #include "Animation.h"
-#include "State_Run.h"
+#include "State_Student_Run.h"
 #include "GameInstance.h"
 #include "Actor.h"
 
@@ -55,7 +55,7 @@ _bool CState_Idle::Loop(_float fTimeDelta)
 
 CStateBase * CState_Idle::Exit()
 {
-	return CState_Run::Create(m_pOwner);
+	return CState_Student_Run::Create(m_pOwner);
 }
 
 CState_Idle * CState_Idle::Create(CActor * pStudent)
