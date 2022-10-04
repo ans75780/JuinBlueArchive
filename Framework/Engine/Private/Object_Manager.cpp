@@ -98,28 +98,50 @@ HRESULT CObject_Manager::Add_GameObject(_uint iLevelIndex, const _tchar * pLayer
 
 void CObject_Manager::Tick(_float fTimeDelta)
 {
-	for (_uint i = 0; i < m_iNumLevels; ++i)
+	if (m_bEvent == true)
 	{
-		for (auto& Pair : m_pLayers[i])
+		for (auto& Iter : m_vecEventObjs)
 		{
-			if (nullptr != Pair.second)
+			Iter->Tick(fTimeDelta);
+		}
+	}
+	else
+	{
+		for (_uint i = 0; i < m_iNumLevels; ++i)
+		{
+			for (auto& Pair : m_pLayers[i])
 			{
-				Pair.second->Tick(fTimeDelta);				
+				if (nullptr != Pair.second)
+				{
+					Pair.second->Tick(fTimeDelta);
+				}
 			}
 		}
 	}
+	
 }
 
 void CObject_Manager::LateTick(_float fTimeDelta)
 {
-	for (_uint i = 0; i < m_iNumLevels; ++i)
+	if (m_bEvent == true)
 	{
-		for (auto& Pair : m_pLayers[i])
+		for (auto& Iter : m_vecEventObjs)
 		{
-			if (nullptr != Pair.second)
-				Pair.second->LateTick(fTimeDelta);
+			Iter->LateTick(fTimeDelta);
 		}
 	}
+	else
+	{
+		for (_uint i = 0; i < m_iNumLevels; ++i)
+		{
+			for (auto& Pair : m_pLayers[i])
+			{
+				if (nullptr != Pair.second)
+					Pair.second->LateTick(fTimeDelta);
+			}
+		}
+	}
+	
 }
 
 HRESULT CObject_Manager::Start_Level(_uint iLevelIndex)
@@ -133,6 +155,17 @@ HRESULT CObject_Manager::Start_Level(_uint iLevelIndex)
 		}
 	}
 	return S_OK;
+}
+
+void CObject_Manager::Add_EventObject(CGameObject * pGameObject)
+{
+	m_vecEventObjs.push_back(pGameObject);
+}
+
+void CObject_Manager::Clear_Event()
+{
+	m_bEvent = false;
+	m_vecEventObjs.clear();
 }
 
 void CObject_Manager::Clear(_uint iLevelIndex)

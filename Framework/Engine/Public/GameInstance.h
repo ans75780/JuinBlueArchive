@@ -56,10 +56,11 @@ public: /* For.Object_Manager */
 	list<class CGameObject*> Get_GameObjects(_uint iLevelIndex, const _tchar * pLayerTag);
 	HRESULT	Start_Level(_uint iLevelIndex);
 
-
 	map<const _tchar*, class CLayer*> Get_Layer(_uint iLevelIndex);
 
-
+	void	Start_Event();
+	void	Add_EventObject(class CGameObject*	pGameObject);
+	void	Clear_Event();
 
 public: /* For.Component_Mananger */
 	HRESULT Add_Prototype(_uint iLevelIndex, const _tchar* pPrototypeTag, class CComponent* pPrototype);	
@@ -123,9 +124,18 @@ public:
 	inline	_float4	Get_BackBufferColor() { return m_BackBuffer_Color; }
 	inline	void	Set_BackBufferColor(_float4 _color) { m_BackBuffer_Color = _color; }
 
+
+public:
+	void	Set_TimeMagnifiaction(_float fMag) { m_fMagnification = fMag; }
+	void	Reset_TimeMagnifiaction() { m_fMagnification = 1.f; }
+
+
 private:
 	_float4 m_BackBuffer_Color = { 0.f, 0.f, 1.f, 1.f};
 	CPipeLine*						m_pPipeLine = nullptr;
+
+private:
+	_float		m_fMagnification = 1.f;
 
 public:
 	static void Release_Engine();

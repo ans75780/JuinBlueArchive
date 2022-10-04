@@ -68,6 +68,9 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, cons
 	if (FAILED(m_pFrustum->Initialize()))
 		return E_FAIL;
 
+
+	m_fMagnification = 1.f;
+
 	return S_OK;	
 }
 
@@ -81,21 +84,22 @@ HRESULT CGameInstance::Tick_Engine(_float fTimeDelta)
 		nullptr == m_pUI_Manager)
 		return E_FAIL;
 
+
 	m_pInput_Device->SetUp_DeviceState();
 
-	m_pLevel_Manager->Tick(fTimeDelta);	
+	m_pLevel_Manager->Tick(fTimeDelta * m_fMagnification);	
 
 	m_pKey_Manager->Tick();//UI보다 먼저돌아야함.
 
-	m_pObject_Manager->Tick(fTimeDelta);
+	m_pObject_Manager->Tick(fTimeDelta * m_fMagnification);
 
-	m_pUI_Manager->Tick(fTimeDelta);
+	m_pUI_Manager->Tick(fTimeDelta * m_fMagnification);
 
 	m_pPipeLine->Tick();
 
 	m_pFrustum->Tick();
 
-	m_pObject_Manager->LateTick(fTimeDelta);
+	m_pObject_Manager->LateTick(fTimeDelta * m_fMagnification);
 
 	m_pUI_Manager->LateTick(fTimeDelta);
 	return S_OK;
@@ -242,6 +246,21 @@ HRESULT CGameInstance::Start_Level(_uint iLevelIndex)
 map<const _tchar*, class CLayer*> CGameInstance::Get_Layer(_uint iLevelIndex)
 {
 	return m_pObject_Manager->Get_Layer(iLevelIndex);
+}
+
+void CGameInstance::Start_Event()
+{
+	m_pObject_Manager->Start_Event();
+}
+
+void CGameInstance::Add_EventObject(CGameObject * pGameObject)
+{
+	m_pObject_Manager->Add_EventObject(pGameObject);
+}
+
+void CGameInstance::Clear_Event()
+{
+	m_pObject_Manager->Clear_Event();
 }
 
 HRESULT CGameInstance::Add_Prototype(_uint iLevelIndex, const _tchar * pPrototypeTag, CComponent * pPrototype)

@@ -35,6 +35,11 @@ public:
 
 	HRESULT	Start_Level(_uint iLevelIndex);
 
+
+public:
+	void	Start_Event() { m_bEvent = true; }
+	void	Add_EventObject(class CGameObject*	pGameObject);
+	void	Clear_Event();
 public:
 	void Clear(_uint iLevelIndex);
 
@@ -48,6 +53,10 @@ private:
 	typedef map<const _tchar*, class CLayer*>		LAYERS;
 
 	_uint					m_iNumLevels = 0;
+
+private:
+	_bool										m_bEvent = false;
+	vector<class CGameObject*>					m_vecEventObjs;
 
 
 private:

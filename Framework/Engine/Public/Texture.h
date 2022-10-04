@@ -24,7 +24,7 @@ private:
 	typedef vector<ID3D11ShaderResourceView*>	SRVS;
 
 public:
-	static CTexture* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pTextureFilePath, _uint iNumTextures = 1);
+	static CTexture* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pTextureFilePath, _uint iNumTextures = 1, _bool ShowErrorBox = true);
 	virtual CComponent* Clone(void* pArg = nullptr);
 	virtual void Free() override;
 };

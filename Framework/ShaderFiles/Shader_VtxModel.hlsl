@@ -4,6 +4,7 @@
 matrix	g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 
 texture2D	g_DiffuseTexture;
+texture2D	g_NormalTexture;
 
 sampler DefaultSampler = sampler_state
 {
@@ -79,6 +80,79 @@ PS_OUT PS_MAIN(PS_IN In)
 	return Out;
 }
 
+
+
+struct VS_OUT_NORMAL
+{
+	float4		vPosition : SV_POSITION;
+	float3		vNormal : NORMAL;
+	float2		vTexUV : TEXCOORD0;
+	float4		vWorldPos : TEXCOORD1;
+	float4		vProjPos : TEXCOORD2;
+	float3		vTangent : TANGENT;
+	float3		vBinormal : BINORMAL;
+};
+
+VS_OUT_NORMAL VS_MAIN_NORMAL(VS_IN In)
+{
+	VS_OUT_NORMAL		Out = (VS_OUT_NORMAL)0;
+
+	matrix			matWV, matWVP;
+
+	matWV = mul(g_WorldMatrix, g_ViewMatrix);
+	matWVP = mul(matWV, g_ProjMatrix);
+
+	Out.vPosition = mul(vector(In.vPosition, 1.f), matWVP);
+	Out.vNormal = normalize(mul(vector(In.vNormal, 0.f), g_WorldMatrix)).xyz;
+	Out.vWorldPos = mul(vector(In.vPosition, 1.f), g_WorldMatrix);
+	Out.vTexUV = In.vTexUV;
+	Out.vProjPos = Out.vPosition;
+	Out.vTangent = normalize(mul(vector(In.vTangent, 0.f), g_WorldMatrix)).xyz;
+	Out.vBinormal = normalize(cross(Out.vNormal, Out.vTangent));
+
+	return Out;
+}
+
+
+
+struct PS_IN_NORMAL
+{
+	float4		vPosition : SV_POSITION;
+	float3		vNormal : NORMAL;
+	float2		vTexUV : TEXCOORD0;
+	float4		vWorldPos : TEXCOORD1;
+	float4		vProjPos : TEXCOORD2;
+	float3		vTangent : TANGENT;
+	float3		vBinormal : BINORMAL;
+
+};
+
+
+PS_OUT PS_MAIN_NORMAL(PS_IN_NORMAL In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+
+	Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+
+	/* 0 ~ 1 */
+	float3		vPixelNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV).xyz;
+
+	/* -1 ~ 1 */
+	vPixelNormal = vPixelNormal * 2.f - 1.f;
+
+	float3x3	WorldMatrix = float3x3(In.vTangent, In.vBinormal, In.vNormal);
+
+	vPixelNormal = mul(vPixelNormal, WorldMatrix);
+
+	Out.vNormal = vector(vPixelNormal * 0.5f + 0.5f, 0.f);
+	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
+
+	if (Out.vDiffuse.a < 0.1f)
+		discard;
+
+	return Out;
+}
+
 technique11 DefaultTechnique
 {
 	pass Default
@@ -90,5 +164,16 @@ technique11 DefaultTechnique
 		VertexShader = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN();
+	}
+
+	pass NormalMapping
+	{
+		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+		SetRasterizerState(RS_Default);
+
+		VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_MAIN_NORMAL();
 	}
 }

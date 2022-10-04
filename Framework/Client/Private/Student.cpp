@@ -99,9 +99,9 @@ HRESULT CStudent::Render()
 	{
 		if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
 			continue;
-		/*if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
-		return E_FAIL;*/
-		m_pShaderCom->Begin(0);
+		if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+	
+		m_pShaderCom->Begin(1);
 		m_pModelCom->Render(i, m_pShaderCom, "g_Bones");
 	}
 
