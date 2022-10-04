@@ -2,6 +2,8 @@
 #include "..\Public\MainApp.h"
 #include "GameInstance.h"
 #include "Level_Loading.h"
+#include "Level_Loading_Start.h"
+
 #include "UserData.h"
 #include "ImguiMgr.h"
 #include "Collider.h"
@@ -57,7 +59,7 @@ HRESULT CMainApp::Initialize()
 
 	CUserData::Get_Instance()->Initialize();
 
-	if (FAILED(Open_Level(LEVEL_LOGO)))
+	if (FAILED(Open_Level_Start(LEVEL_LOGO)))
 		return E_FAIL;
 
 	return S_OK;
@@ -128,6 +130,21 @@ HRESULT CMainApp::Open_Level(LEVEL eLevelID)
 	return S_OK;
 }
 
+HRESULT CMainApp::Open_Level_Start(LEVEL eLevelID)
+{
+	if (nullptr == m_pGameInstance)
+		return E_FAIL;
+
+	CLevel_Loading_Start*	pLevel_Loading = CLevel_Loading_Start::Create(m_pDevice, m_pContext, eLevelID);
+	if (nullptr == pLevel_Loading)
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Open_Level(LEVEL_LOADING_START, pLevel_Loading)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 HRESULT CMainApp::Ready_Prototype_Component()
 {
 	if (nullptr == m_pGameInstance)
@@ -152,25 +169,6 @@ HRESULT CMainApp::Ready_Prototype_Component()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxTex"),
 		CShader::Create(m_pDevice, m_pContext, TEXT("../../ShaderFiles/Shader_VtxTex.hlsl"), VTXTEX_DECLARATION::Element, VTXTEX_DECLARATION::iNumElements))))
 		return E_FAIL;
-
-	/* For.Prototype_Component_Texture_Default */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_UI_Default"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/Default%d.jpg"), 2))))
-		return E_FAIL;
-
-	/* For.Prototype_Component_Texture_Default */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_UI_Background"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/AppIcon_Shiroko%d.png"), 1))))
-		return E_FAIL;
-
-	//Safe_AddRef(m_pRenderer);
-
-	/* For.Prototype_Component_Texture_Default */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_UI_TestDialogButton"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/DefaultButton.png"), 1))))
-		return E_FAIL;
-	//Safe_AddRef(m_pRenderer);
-
 
 
 	/* For.Prototype_Component_Shader_VtxModel */
@@ -210,153 +208,14 @@ HRESULT CMainApp::Ready_Prototype_Component()
 		CCollider::Create(m_pDevice, m_pContext, CCollider::TYPE_SPHERE))))
 		return E_FAIL;
 
-
-
 	return S_OK;
 }
 
 HRESULT CMainApp::Ready_Static_Resource()
 {
-	/* For.Prototype_Component_Texture_Default */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Default"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/Default%d.jpg"), 2))))
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Startillust"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/Start/Start_%d.png"), 16))))
 		return E_FAIL;
-
-	/* For.Prototype_Component_Texture_AppIcon_Front */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_AppIcon_Shiroko"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/AppIcon_Shiroko%d.png"), 1))))
-		return E_FAIL;
-
-	//LoadUITexture("Combat", m_pGameInstance);
-	LoadUITexture("Common", m_pGameInstance);
-	//LoadUITexture("Emoji", m_pGameInstance);
-	//LoadUITexture("Floater", m_pGameInstance);
-
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Common_Bottom_Menu_Bg"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/Common_Bottom_Menu_Bg%d.png"), 1))))
-		return E_FAIL;
-
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Common_Top_Menu_Bg"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/Common_Top_Menu_Bg%d.png"), 1))))
-		return E_FAIL;
-
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Memorial_Haruka_Start"),
-	//	CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Memorial/Haruka/Start/Haruka_home_D_35_%d.png"), 515))))
-	//	return E_FAIL;
-
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Memorial_Haruka_Idle"),
-	//	CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Memorial/Haruka/Idle/Haruka_home_I_35_%d.png"), 286))))
-	//	return E_FAIL;
-
-	///* For.Prototype_GameObject_Memorial_Haruka */
-	//if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Memorial_Haruka_Start"),
-	//	CMemorial_Haruka_Start::Create(m_pDevice, m_pContext))))
-	//	return E_FAIL;
-	///* For.Prototype_GameObject_Memorial_Haruka */
-	//if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Memorial_Haruka_Idle"),
-	//	CMemorial_Haruka_Idle::Create(m_pDevice, m_pContext))))
-	//	return E_FAIL;
-
-	return S_OK;
-}
-
-HRESULT CMainApp::Ready_Static_AnimModels()
-{
-	_matrix mat;
-	_float4x4 ScaleMatrix;
-	mat = XMMatrixIdentity();
-
-	/* For.Prototype_Component_Model_Serika*/
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Aru"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Aru_Original/", "Aru_Original.fbx", mat))))
-		return E_FAIL;
-
-	/* For.Prototype_Component_Model_Serika*/
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Haruka"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Haruka_Original/", "Haruka_Original.fbx", mat))))
-		return E_FAIL;
-
-	/* For.Prototype_Component_Model_Serika*/
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Zunko"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Zunko_Original/", "Zunko_Original.fbx", mat))))
-		return E_FAIL;
-	return S_OK;
-}
-
-
-HRESULT CMainApp::Ready_Static_NonAnimModels()
-{
-	_matrix mat;
-	_float4x4 ScaleMatrix;
-	mat = XMMatrixIdentity();
-
-
-	/* For.Prototype_Component_Model_Stage_School*/
-	
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Stage_School_1"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Models/NonAnimModels/Stages/School/", "School_1.fbx", mat))))
-		return E_FAIL;
-	
-	return S_OK;
-}
-
-
-
-HRESULT CMainApp::LoadUITexture(char * folderName, void * pGameInstance)
-{
-	string jsonPath = "../../Resources/UI/UI_original/json/";
-	jsonPath += folderName;
-	jsonPath += ".json";
-
-	json	JsonUI;
-	wchar_t* pUtil_jsonPath = CStrUtil::ConvertCtoWC(jsonPath.c_str());
-	if (FAILED(CJson_Utility::Load_Json(pUtil_jsonPath, &JsonUI)))
-	{
-		string jsonFail = "제이슨";
-		jsonFail += folderName;
-		jsonFail += "로드 실패";
-		wchar_t* pUtil_Fail = CStrUtil::ConvertCtoWC(jsonFail.c_str());
-
-		MessageBox(0, pUtil_Fail, TEXT("System Error"), MB_OK);
-		Safe_Delete_Array(pUtil_Fail);
-		return E_FAIL;
-	}
-	Safe_Delete_Array(pUtil_jsonPath);
-
-	auto UI_json_mSprite = JsonUI["mSprites"];
-	for (auto it = UI_json_mSprite.begin(); it != UI_json_mSprite.end(); ++it)
-	{
-		string _name = (*it)["name"];
-
-		string TextureName = "Prototype_Component_Texture_";
-		TextureName += _name;
-		TextureName += "_";
-		TextureName += folderName;
-
-		string _ImagePath = "../../Resources/UI/UI_extract/image/";
-		_ImagePath += folderName;
-		_ImagePath += "/";
-		_ImagePath += _name;
-		_ImagePath += ".png";
-
-		CGameInstance* pGamePointer = (CGameInstance*)pGameInstance;
-
-		if (FAILED(pGamePointer->Add_Prototype(LEVEL_STATIC
-			, CStrUtil::ConvertCtoWC(TextureName.c_str())
-			, CTexture::Create(m_pDevice, m_pContext
-				, CStrUtil::ConvertCtoWC(_ImagePath.c_str())))))
-		{
-			string jsonFail = "제이슨을 통한 경로 이미지";
-			jsonFail += folderName;
-			jsonFail += "로드 실패";
-			wchar_t* pUtil_JsonFail = CStrUtil::ConvertCtoWC(jsonFail.c_str());
-
-			MessageBox(0, pUtil_JsonFail, TEXT("System Error"), MB_OK);
-			Safe_Delete_Array(pUtil_JsonFail);
-			return E_FAIL;
-		}
-
-	}
 
 	return S_OK;
 }

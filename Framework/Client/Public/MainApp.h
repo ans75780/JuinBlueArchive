@@ -28,15 +28,9 @@ private:
 
 private:
 	HRESULT Open_Level(LEVEL eLevelID);
+	HRESULT	Open_Level_Start(LEVEL eLevelID);
 	HRESULT Ready_Prototype_Component();
 	HRESULT Ready_Static_Resource();
-	HRESULT Ready_Static_AnimModels();
-	HRESULT Ready_Static_NonAnimModels();
-
-
-private:
-	HRESULT LoadUITexture(char* folderName, void* pGameInstance);
-
 
 private:
 	_uint					m_iNumRender = 0;

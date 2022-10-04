@@ -22,9 +22,6 @@
     <ClInclude Include="..\Public\Level_GamePlay.h">
       <Filter>01.Level\98. GamePlay</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Level_Loading.h">
-      <Filter>01.Level\00. Loading</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Level_Logo.h">
       <Filter>01.Level\01. Logo</Filter>
     </ClInclude>
@@ -179,6 +176,15 @@
     </ClInclude>
     <ClInclude Include="..\Public\Memorial_Haruka_Idle.h">
       <Filter>02.GameObject\08. MemorialLobby\01. Haruka</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Loading.h">
+      <Filter>01.Level\00. Loading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Loading_Start.h">
+      <Filter>01.Level\00. Loading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Loader_Start.h">
+      <Filter>01.Level\00. Loading\Loader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -345,6 +351,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Memorial_Haruka_Idle.cpp">
       <Filter>02.GameObject\08. MemorialLobby\01. Haruka</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Loading_Start.cpp">
+      <Filter>01.Level\00. Loading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Loader_Start.cpp">
+      <Filter>01.Level\00. Loading\Loader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -535,6 +547,9 @@
     </Filter>
     <Filter Include="02.GameObject\08. MemorialLobby\01. Haruka">
       <UniqueIdentifier>{8d9256f0-ac6f-482c-9ed7-bd5b86aa1daa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\09. Start_illust">
+      <UniqueIdentifier>{96513a60-8552-46f7-961f-69de45569c92}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

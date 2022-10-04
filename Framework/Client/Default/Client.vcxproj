@@ -177,6 +177,8 @@
     <ClInclude Include="..\Public\Camera_Stage.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\Formation.h" />
+    <ClInclude Include="..\Public\Level_Loading_Start.h" />
+    <ClInclude Include="..\Public\Loader_Start.h" />
     <ClInclude Include="..\Public\Memorial_Haruka_Idle.h" />
     <ClInclude Include="..\Public\Memorial_Haruka_Start.h" />
     <ClInclude Include="..\Public\imconfig.h" />
@@ -240,6 +242,8 @@
     <ClCompile Include="..\Private\Camera_Free.cpp" />
     <ClCompile Include="..\Private\Camera_Stage.cpp" />
     <ClCompile Include="..\Private\Formation.cpp" />
+    <ClCompile Include="..\Private\Level_Loading_Start.cpp" />
+    <ClCompile Include="..\Private\Loader_Start.cpp" />
     <ClCompile Include="..\Private\Memorial_Haruka_Idle.cpp" />
     <ClCompile Include="..\Private\Memorial_Haruka_Start.cpp" />
     <ClCompile Include="..\Private\imgui.cpp" />

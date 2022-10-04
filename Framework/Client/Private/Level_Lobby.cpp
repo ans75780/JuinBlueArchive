@@ -15,8 +15,8 @@ HRESULT CLevel_Lobby::Initialize()
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 
-	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
-	
+	//CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+	//
 	//pGameInstance->Set_DisableUI(true);
 	//if (pGameInstance->Get_LobbyMemorialOnce())
 	//{
@@ -30,7 +30,7 @@ HRESULT CLevel_Lobby::Initialize()
 	//		return E_FAIL;
 	//}
 
-	RELEASE_INSTANCE(CGameInstance);
+	//RELEASE_INSTANCE(CGameInstance);
 
 	return S_OK;
 }

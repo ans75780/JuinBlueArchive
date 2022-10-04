@@ -367,7 +367,7 @@ void CImguiMgr::HelloJusin_Tap_Level(void)	//레벨탭으로 레벨이동할수있게 해두었�
 		{
 			char buf[32];
 
-			if (i == LEVEL_STATIC || i == LEVEL_LOADING || i == LEVEL_END)
+			if (i == LEVEL_STATIC || i == LEVEL_LOADING || i == LEVEL_LOADING_START ||  i == LEVEL_END)
 				continue;
 
 			GetLevelString(buf, 32, i);
@@ -504,8 +504,8 @@ void CImguiMgr::UITool_View(void)	//UI툴  새창을 띄움
 	const char* UI_Set_Level_Value = UI_Set_Level[UI_Set_LevelNum];
 	static bool	UI_EditMode = false;
 	
-	if (false == UI_EditMode && (m_currentLevelID != LEVEL_STATIC && m_currentLevelID != LEVEL_LOADING)) //에디트모드 꺼져있을땐 항상 현재스테이지로 생성하도록
-		UI_Set_LevelNum = m_currentLevelID - 2;
+	if (false == UI_EditMode && (m_currentLevelID != LEVEL_STATIC && m_currentLevelID != LEVEL_LOADING && m_currentLevelID != LEVEL_LOADING_START)) //에디트모드 꺼져있을땐 항상 현재스테이지로 생성하도록
+		UI_Set_LevelNum = m_currentLevelID - 2;	//SELECT_LEVEL 갯수차이 스태틱, 로딩 포함하면 + 2라서;
 
 	m_pGameInstance->Set_LevelEditMode(UI_EditMode);
 	
@@ -1070,6 +1070,9 @@ void CImguiMgr::GetLevelString(char * str, _uint len, _uint _LEVEL) //@@@@@@@@@@
 		break;
 	case LEVEL_MAPTOOL:
 		strcpy_s(str, len, "LEVEL_MAPTOOL");
+		break;
+	case LEVEL_LOADING_START:
+		strcpy_s(str, len, "LEVEL_LOADING_START");
 		break;
 	case LEVEL_END:
 		strcpy_s(str, len, "ERROR");
