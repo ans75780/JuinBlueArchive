@@ -30,6 +30,13 @@ public:
 	void Tick(float fTimeDelta);
 	HRESULT Render();
 
+public:
+	struct t_ImageVec
+	{
+		CTexture* texture;
+		char name[MAX_PATH];
+	};
+
 private:
 	void	HelloJusin_View(void);
 	void		HelloJusin_Tap_Main(void);
@@ -66,11 +73,6 @@ private:
 	bool	MapToolCheckBox;
 	bool	UIToolCheckBox;
 
-	struct t_ImageVec
-	{
-		CTexture* texture;
-		char name[MAX_PATH];
-	};
 	vector<t_ImageVec> m_ImageVec;
 
 	CUI*	m_pSelectUI;						//선택한 UI 포인터   각 UI의 클릭을 통해 주소를넘겨줌

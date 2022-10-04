@@ -397,7 +397,7 @@ HRESULT CGameInstance::Render_Font(const _tchar * pFontTag, const _tchar * pStri
 	return m_pFont_Manager->Render_Font(pFontTag, pString, vPosition, vColor, fScale);
 }
 
-RAYDESC & CGameInstance::Get_Ray()
+RAYDESC  CGameInstance::Get_Ray()
 {
 	return m_pPipeLine->Get_Ray();
 }

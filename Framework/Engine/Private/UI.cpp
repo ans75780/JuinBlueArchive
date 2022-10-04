@@ -1,5 +1,4 @@
 #include "..\Public\UI.h"
-#include "Transform.h"
 #include "GameInstance.h"
 #include "Texture.h"
 #include "Renderer.h"
@@ -52,11 +51,70 @@ HRESULT CUI::Initialize(void * arg)
 
 HRESULT CUI::initialization()
 {
+	if (m_bThrowing)
+		return S_OK;
+
+	m_fOriginPos = m_fPos;
+
+	if (fabsf(m_fThrowPos.x) > 0.f || fabsf(m_fThrowPos.y) > 0.f)//날아갈 값이 있다면 날라가게
+	{
+		m_fPos.x += m_fThrowPos.x;
+		m_fPos.y += m_fThrowPos.y;
+
+		m_bThrowing = true;
+	}
+	else
+		m_bThrowing = false;
+
 	return S_OK;
 }
 
 void CUI::Tick(_float fTimeDelta)
 {
+	if (fabsf(m_fThrowPos.x))
+	{
+		int a = 0;
+	}
+
+	if (m_bThrowing)	//날라가기
+	{
+		m_fPos.x -= (m_fThrowPos.x * (fTimeDelta * 2));
+		m_fPos.y -= (m_fThrowPos.y * (fTimeDelta * 2));
+
+		if (0.f < m_fThrowPos.x)
+		{
+			if (m_fPos.x < m_fOriginPos.x)
+			{
+				m_fPos.x = m_fOriginPos.x;
+				m_bThrowing = false;
+			}
+		}
+		else
+		{
+			if (m_fPos.x > m_fOriginPos.x)
+			{
+				m_fPos.x = m_fOriginPos.x;
+				m_bThrowing = false;
+			}
+		}
+
+		if (0.f < m_fThrowPos.y)
+		{
+			if (m_fPos.y < m_fOriginPos.y)
+			{
+				m_fPos.y = m_fOriginPos.y;
+				m_bThrowing = false;
+			}
+		}
+		else
+		{
+			if (m_fPos.y > m_fOriginPos.y)
+			{
+				m_fPos.y = m_fOriginPos.y;
+				m_bThrowing = false;
+			}
+		}
+	}
 }
 
 void CUI::LateTick(_float fTimeDelta)

@@ -84,7 +84,9 @@ public: /*For. UI_Manager*/
 	vector<class CUI_Canvas*> Get_Canvases();
 	void	Set_LevelEditMode(_bool _check) { m_pUI_Manager->Set_LevelEditMode(_check); }
 	void	Set_EditLevel(_uint _Level) { m_pUI_Manager->Set_EditLevel(_Level); }
+	void	Set_DisableUI(_bool _Set) { m_pUI_Manager->Set_DisableUI(_Set); }
 	void	Clear_UIVec() { m_pUI_Manager->Clear_UIVec(); }
+	void	AllUI_Initialization() { m_pUI_Manager->AllUI_Initialization(); }
 
 public: /* For.PipeLine */
 	void Set_Transform(CPipeLine::TRANSFORMSTATE eState, _fmatrix TransformState);
@@ -93,7 +95,7 @@ public: /* For.PipeLine */
 	const _float4x4* Get_Transform_TP(CPipeLine::TRANSFORMSTATE eState);
 	_float4 Get_CamPosition();
 
-	RAYDESC&	Get_Ray();
+	RAYDESC	Get_Ray();
 public: /* For.Font_Manager */
 	HRESULT Add_Font(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pFontTag, const _tchar* pFontFilePath);
 	HRESULT Render_Font(const _tchar* pFontTag, const _tchar* pString, const _float2& vPosition, _fvector vColor, _float fScale = 1.f);
@@ -113,19 +115,24 @@ private:
 	CLevel_Manager*					m_pLevel_Manager = nullptr;
 	CObject_Manager*				m_pObject_Manager = nullptr;
 	CComponent_Manager*				m_pComponent_Manager = nullptr;
+	CTimer_Manager*					m_pTimer_Manager = nullptr;
+	CPipeLine*						m_pPipeLine = nullptr;
 	CKey_Manager*					m_pKey_Manager = nullptr;
 	CUI_Manager*					m_pUI_Manager = nullptr;
-	CTimer_Manager*					m_pTimer_Manager = nullptr;
 	CFont_Manager*					m_pFont_Manager = nullptr;
 	CLight_Manager*					m_pLight_Manager = nullptr;
 	CFrustum*						m_pFrustum = nullptr;
+
 public:
 	inline	_float4	Get_BackBufferColor() { return m_BackBuffer_Color; }
 	inline	void	Set_BackBufferColor(_float4 _color) { m_BackBuffer_Color = _color; }
 
+	inline	_bool	Get_LobbyMemorialOnce() { return m_bLobbyMemorialOnce; }
+	inline	void	Set_LobbyMemorialOnce(_bool _Set) { m_bLobbyMemorialOnce = _Set; }
+
 private:
 	_float4 m_BackBuffer_Color = { 0.f, 0.f, 1.f, 1.f};
-	CPipeLine*						m_pPipeLine = nullptr;
+	_bool	m_bLobbyMemorialOnce = true;
 
 public:
 	static void Release_Engine();

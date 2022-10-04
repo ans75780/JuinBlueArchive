@@ -29,6 +29,10 @@ HRESULT CLevel_Manager::Open_Level(_uint iLevelID, CLevel * pLevel)
 
 	m_iCurrentLevelID = iLevelID;
 
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+	pGameInstance->AllUI_Initialization();
+	RELEASE_INSTANCE(CGameInstance);
+
 	return S_OK;
 }
 

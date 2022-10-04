@@ -25,7 +25,7 @@ public:
 	vector<class CUI*>*		Get_UIVec() { return m_vecUI; }
 
 	void					Clear_UIVec();
-
+	void					AllUICanvas_Initialization();
 private:
 	void					Check_UI(CUI*	pUI);
 

@@ -9,6 +9,10 @@
 #include "StrUtil.h"
 #include "Json_Utility.h"
 
+#include "Memorial_Haruka_Start.h"
+#include "Memorial_Haruka_Idle.h"
+
+
 CMainApp::CMainApp()
 	: m_pGameInstance(CGameInstance::Get_Instance())
 {
@@ -45,11 +49,11 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(Ready_Static_Resource()))
 		return E_FAIL;
 
-	if (FAILED(Ready_Static_AnimModels()))
-		return E_FAIL;
+	//if (FAILED(Ready_Static_AnimModels()))
+	//	return E_FAIL;
 
-	if (FAILED(Ready_Static_NonAnimModels()))
-		return E_FAIL;
+	//if (FAILED(Ready_Static_NonAnimModels()))
+	//	return E_FAIL;
 
 	CUserData::Get_Instance()->Initialize();
 
@@ -71,6 +75,8 @@ void CMainApp::Tick(float fTimeDelta)
 #if _DEBUG
 	CImguiMgr::Get_Instance()->Tick(fTimeDelta);
 #endif	//IMGUI Ãß°¡
+
+	CUserData::Get_Instance()->Tick();
 
 }
 
@@ -230,6 +236,27 @@ HRESULT CMainApp::Ready_Static_Resource()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/Common_Bottom_Menu_Bg%d.png"), 1))))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Common_Top_Menu_Bg"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/Common_Top_Menu_Bg%d.png"), 1))))
+		return E_FAIL;
+
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Memorial_Haruka_Start"),
+	//	CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Memorial/Haruka/Start/Haruka_home_D_35_%d.png"), 515))))
+	//	return E_FAIL;
+
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Memorial_Haruka_Idle"),
+	//	CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Memorial/Haruka/Idle/Haruka_home_I_35_%d.png"), 286))))
+	//	return E_FAIL;
+
+	///* For.Prototype_GameObject_Memorial_Haruka */
+	//if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Memorial_Haruka_Start"),
+	//	CMemorial_Haruka_Start::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
+	///* For.Prototype_GameObject_Memorial_Haruka */
+	//if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Memorial_Haruka_Idle"),
+	//	CMemorial_Haruka_Idle::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
+
 	return S_OK;
 }
 
@@ -349,15 +376,14 @@ CMainApp * CMainApp::Create()
 
 void CMainApp::Free()
 {
-
 #if _DEBUG
 	CImguiMgr::Get_Instance()->Destroy_Instance();
 #endif
 
-	//Safe_Release(m_pRenderer);
+	CUserData::Get_Instance()->Destroy_Instance();
+	Safe_Release(m_pRenderer);
 	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);
 	Safe_Release(m_pGameInstance);
-	CUserData::Get_Instance()->Release();
 	CGameInstance::Release_Engine();	
 }

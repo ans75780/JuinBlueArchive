@@ -33,7 +33,15 @@ void CLayer::Tick(_float fTimeDelta)
 	for (auto& pGameObject : m_GameObjects)
 	{
 		if (nullptr != pGameObject)
+		{
+			if (pGameObject->Get_Delete())
+			{
+				pGameObject->Free();
+				m_GameObjects.remove(pGameObject);
+				break;
+			}
 			pGameObject->Tick(fTimeDelta);
+		}
 	}
 }
 

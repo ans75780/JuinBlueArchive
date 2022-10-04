@@ -42,6 +42,9 @@ HRESULT CUI_Manager::Add_UI(_uint iLevelIndex, CUI * pUI,void * pArg)
 
 void CUI_Manager::Tick(_float fTimeDelta)
 {
+	if (m_bDisableUI)
+		return;
+
 	CGameInstance* instance = GET_INSTANCE(CGameInstance);
 
 #if _DEBUG
@@ -63,6 +66,9 @@ void CUI_Manager::Tick(_float fTimeDelta)
 
 void CUI_Manager::LateTick(_float fTimeDelta)
 {
+	if (m_bDisableUI)
+		return;
+
 	CGameInstance* instance = GET_INSTANCE(CGameInstance);
 
 #if _DEBUG
@@ -128,6 +134,9 @@ HRESULT CUI_Manager::Save_UIVec()
 				element["Pos_y"] = it->Get_Pos().y;
 				element["Pos_z"] = it->Get_Pos().z;
 				
+				element["ThrowPos_x"] = it->Get_ThrowPos().x;
+				element["ThrowPos_y"] = it->Get_ThrowPos().y;
+				
 				if (!strcmp(_ClassName, "CUI_LevelMoveButton"))
 				{
 					element["MoveLevel"] = static_cast<CUI_LevelMoveButton*>(it)->GetMoveLevel();
@@ -177,6 +186,14 @@ void CUI_Manager::Clear_UIVec()
 {
 	for (auto& pCanvas : m_vecCanvas)
 		pCanvas->Clear_UIVec();
+}
+
+void CUI_Manager::AllUI_Initialization()
+{
+	for (auto& pCanvas : m_vecCanvas)
+	{
+		pCanvas->AllUICanvas_Initialization();
+	}
 }
 
 void CUI_Manager::Free()

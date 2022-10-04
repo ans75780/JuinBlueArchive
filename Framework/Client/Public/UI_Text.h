@@ -52,10 +52,14 @@ private:
 	_tchar	m_szText[MAX_PATH]; //출력할텍스트
 	_float4	m_fColor;
 	_float	m_fScale;
+	
+	static _bool	m_bCheckDiamond;
 
 public:
 	static CUI_Text* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual void Free() override;
 };
 
+
 END
+

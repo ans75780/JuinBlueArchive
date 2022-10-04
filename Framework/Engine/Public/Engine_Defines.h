@@ -33,7 +33,6 @@
 #include <opencv2\imgcodecs.hpp>
 #include <opencv2\imgproc.hpp>
 
-
 using namespace DirectX;
 using namespace cv;
 

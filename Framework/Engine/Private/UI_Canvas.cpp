@@ -58,6 +58,17 @@ void CUI_Canvas::Clear_UIVec()
 	}
 }
 
+void CUI_Canvas::AllUICanvas_Initialization()
+{
+	for (auto& vecUI : m_vecUI)
+	{
+		for (auto& UI : vecUI)
+		{
+			UI->initialization();
+		}
+	}
+}
+
 HRESULT CUI_Canvas::Initialize()
 {
 	m_bOnDialog = false;

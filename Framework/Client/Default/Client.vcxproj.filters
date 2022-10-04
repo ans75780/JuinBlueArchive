@@ -173,6 +173,13 @@
     <ClInclude Include="..\Public\Camera_Stage.h" />
     <ClInclude Include="..\Public\Stage.h" />
     <ClInclude Include="..\Public\State_Student_Ex.h" />
+    <ClInclude Include="..\Public\Baricade.h" />
+    <ClInclude Include="..\Public\Memorial_Haruka_Start.h">
+      <Filter>02.GameObject\08. MemorialLobby\01. Haruka</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Memorial_Haruka_Idle.h">
+      <Filter>02.GameObject\08. MemorialLobby\01. Haruka</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -333,6 +340,12 @@
     <ClCompile Include="..\Private\Stage.cpp" />
     <ClCompile Include="..\Private\State_Student_Ex.cpp" />
     <ClCompile Include="..\Private\Baricade.cpp" />
+    <ClCompile Include="..\Private\Memorial_Haruka_Start.cpp">
+      <Filter>02.GameObject\08. MemorialLobby\01. Haruka</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Memorial_Haruka_Idle.cpp">
+      <Filter>02.GameObject\08. MemorialLobby\01. Haruka</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -517,6 +530,12 @@
     <Filter Include="02.GameObject\Baricade">
       <UniqueIdentifier>{8ba48e91-f70a-442e-b6d4-5e8eea9c7cd9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObject\08. MemorialLobby">
+      <UniqueIdentifier>{5080211f-8791-4c31-be55-de81e11ed3d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\08. MemorialLobby\01. Haruka">
+      <UniqueIdentifier>{8d9256f0-ac6f-482c-9ed7-bd5b86aa1daa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -544,9 +563,17 @@
     <FxCompile Include="..\..\ShaderFiles\Shader_VtxAnimModel.hlsl">
       <Filter>03.ShaderFiles</Filter>
     </FxCompile>
-    <FxCompile Include="..\..\ShaderFiles\Shader_Cell.hlsl" />
-    <FxCompile Include="..\..\ShaderFiles\Shader_Deferred.hlsl" />
-    <FxCompile Include="..\..\ShaderFiles\Shader_VtxInstance.hlsl" />
-    <FxCompile Include="..\..\ShaderFiles\Shader_VtxPointInstance.hlsl" />
+    <FxCompile Include="..\..\ShaderFiles\Shader_VtxPointInstance.hlsl">
+      <Filter>03.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\ShaderFiles\Shader_Cell.hlsl">
+      <Filter>03.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\ShaderFiles\Shader_Deferred.hlsl">
+      <Filter>03.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\ShaderFiles\Shader_VtxInstance.hlsl">
+      <Filter>03.ShaderFiles</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

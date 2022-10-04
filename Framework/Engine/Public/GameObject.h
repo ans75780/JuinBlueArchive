@@ -57,6 +57,10 @@ public:
 	_bool	Get_Enable() { return m_bEnable; }
 	void	Set_Enable(_bool _bEnable) { m_bEnable = _bEnable; }
 
+public:
+	_bool	Get_Delete() { return m_bDelete; }
+	void	Set_Delete(_bool _bDelete) { m_bDelete = _bDelete; }
+
 
 protected:
 	ID3D11Device*				m_pDevice = nullptr;
@@ -66,7 +70,7 @@ protected:
 
 	_float						m_fCamDistance = 0.f;
 	_bool						m_bEnable = true;
-
+	_bool						m_bDelete = false;
 
 //For ObjectManager
 
@@ -90,7 +94,7 @@ private:
 	class CComponent* Find_Components(const _tchar* pComponentTag);
 
 public:
-	virtual CGameObject* Clone(void* pArg) { return nullptr; };
+	virtual CGameObject* Clone(void* pArg) = 0;
 	virtual void Free() override;
 };
 

@@ -26,6 +26,8 @@ HRESULT CUI_LevelMoveButton::Initialize(void * pArg)
 
 HRESULT CUI_LevelMoveButton::initialization()
 {
+	__super::initialization();
+
 	m_fOriginSize = m_fSize;
 
 	return S_OK;
@@ -46,11 +48,7 @@ void CUI_LevelMoveButton::Tick(_float fTimeDelta)
 			m_bUIButtonDown = false;
 	}
 	else
-	{
 		m_fSize = m_fOriginSize;
-	}
-
-
 }
 
 void CUI_LevelMoveButton::LateTick(_float fTimeDelta)

@@ -6,6 +6,7 @@
 
 namespace Engine
 {
+	class CUI;
 	class CBase;
 	class CGameObject;
 }
@@ -25,7 +26,8 @@ private:
 
 public:
 	HRESULT Initialize();
-	
+	void	Tick();
+
 	const vector<CGameObject::OBJ_DESC>& Get_Formation() { return m_vecFormation; }
 	void	Clear_Formation() { m_vecFormation.clear(); }
 	void	Add_Formation(CGameObject::OBJ_DESC desc) { m_vecFormation.push_back(desc); }
@@ -46,6 +48,21 @@ private:
 private:
 	void		Add_Student(const _tchar* pStudentName, UNIT_CLASS eClass, _float fDmg, _float fRange, _float fHp);
 
+
+private:
+	struct USER_DESC
+	{
+		_uint	uDiamond;	//√ª»÷ºÆ
+		CUI*	pDiamondText;
+
+	};
+
+	USER_DESC m_tUserDesc;
+
+public:
+	USER_DESC*	Get_UserDesc() { return &m_tUserDesc; }
+
+	
 public:
 	virtual void Free() override;	
 

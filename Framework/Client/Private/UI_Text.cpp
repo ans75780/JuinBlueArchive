@@ -1,8 +1,11 @@
 #include "stdafx.h"
 #include "..\Public\UI_Text.h"
 #include "Level_Loading.h"
+#include "UserData.h"
 
 #include "ImguiMgr.h"
+
+_bool CUI_Text::m_bCheckDiamond = false;
 
 CUI_Text::CUI_Text(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CUI(pDevice, pContext)
@@ -30,6 +33,8 @@ HRESULT CUI_Text::Initialize(void * pArg)
 
 HRESULT CUI_Text::initialization()
 {
+	__super::initialization();
+
 	return S_OK;
 }
 
@@ -37,6 +42,21 @@ void CUI_Text::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
+	if (!m_bCheckDiamond)
+	{
+		CUserData* pUserData = GET_INSTANCE(CUserData)
+
+			if (nullptr == pUserData->Get_UserDesc()->pDiamondText)
+			{
+				if (0 == lstrcmp(m_szUIName, TEXT("Diamond_Text")))
+				{
+					pUserData->Get_UserDesc()->pDiamondText = this;
+					m_bCheckDiamond = true;
+				}
+			}
+
+		RELEASE_INSTANCE(CUserData);
+	}
 }
 
 void CUI_Text::LateTick(_float fTimeDelta)

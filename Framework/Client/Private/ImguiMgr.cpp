@@ -430,19 +430,61 @@ void CImguiMgr::UITool_View(void)	//UI툴  새창을 띄움
 					Safe_Delete_Array(pUtil_name);
 				}
 			}
-
-			sort(m_ImageVec.begin(), m_ImageVec.end(),
-				[](t_ImageVec &s1, t_ImageVec &s2)
 			{
-				if (s1.name[0] == s2.name[0])
+				sort(m_ImageVec.begin(), m_ImageVec.end(),
+					[](t_ImageVec &s1, t_ImageVec &s2)
 				{
-					if (s1.name[1] == s2.name[1])
-						return s1.name[2] < s2.name[2];
-
-					return s1.name[1] < s2.name[1];
-				}
-				return s1.name[0] < s2.name[0];
-			});
+					if (s1.name[0] == s2.name[0])
+					{
+						if (s1.name[1] == s2.name[1])
+						{
+							if (s1.name[2] == s2.name[2])
+							{
+								if (s1.name[3] == s2.name[3])
+								{
+									if (s1.name[4] == s2.name[4])
+									{
+										if (s1.name[5] == s2.name[5])
+										{
+											if (s1.name[6] == s2.name[6])
+											{
+												if (s1.name[7] == s2.name[7])
+												{
+													if (s1.name[8] == s2.name[8])
+													{
+														if (s1.name[9] == s2.name[9])
+														{
+															if (s1.name[10] == s2.name[10])
+															{
+																if (s1.name[11] == s2.name[11])
+																{
+																	return s1.name[12] < s2.name[12];
+																}
+																return s1.name[11] < s2.name[11];
+															}
+															return s1.name[10] < s2.name[10];
+														}
+														return s1.name[9] < s2.name[9];
+													}
+													return s1.name[8] < s2.name[8];
+												}
+												return s1.name[7] < s2.name[7];
+											}
+											return s1.name[6] < s2.name[6];
+										}
+										return s1.name[5] < s2.name[5];
+									}
+									return s1.name[4] < s2.name[4];
+								}
+								return s1.name[3] < s2.name[3];
+							}
+							return s1.name[2] < s2.name[2];
+						}
+						return s1.name[1] < s2.name[1];
+					}
+					return s1.name[0] < s2.name[0];
+				});
+			}
 		}
 	}
 #pragma endregion 
@@ -537,6 +579,7 @@ void CImguiMgr::UITool_SelectUI(void)
 	static	CUI*	ChancgeUI = nullptr;
 	static	_float	InputSize[3] = { 100.f, 100.f, 1.f };
 	static	_float	InputPos[3] = { 0.f, 0.f, 0.f };
+	static	_float	InputThrowPos[2] = { 0.f, 0.f };
 	static	char	InputName[MAX_PATH] = {};
 
 	if (KEY(RBUTTON, TAP))	//우클릭시 null
@@ -573,6 +616,11 @@ void CImguiMgr::UITool_SelectUI(void)
 		
 		InputPos[0] = tempPos.x;
 		InputPos[1] = tempPos.y;
+
+		_float2 tempThrowPos = m_pSelectUI->Get_ThrowPos();
+
+		InputThrowPos[0] = tempThrowPos.x;
+		InputThrowPos[1] = tempThrowPos.y;
 
 		char* OnceClass = CStrUtil::ConvertWCtoC(m_pSelectUI->Get_UIClassName());	//각클래스별 한번만실행하는코드
 
@@ -614,6 +662,10 @@ void CImguiMgr::UITool_SelectUI(void)
 	if (ImGui::InputFloat2("Set Pos##2", InputPos, "%.1f", 0))
 		m_pSelectUI->Set_Pos(_float3(InputPos[0], InputPos[1], InputPos[2]));
 	
+	if (ImGui::InputFloat2("Set ThrowPos", InputThrowPos, "%.1f", 0))
+		m_pSelectUI->Set_ThrowPos(_float2(InputThrowPos[0], InputThrowPos[1]));
+
+
 	//@@@@@@@@@@@@@@@@@@클래스별 추가항목@@@@@@@@@@@@@@@@@@//
 	char* tempClassName = CStrUtil::ConvertWCtoC(m_pSelectUI->Get_UIClassName());
 
@@ -709,6 +761,7 @@ void CImguiMgr::Create_LevelMoveButton(_uint _Level)	//LevelButton 을 정의하고 �
 {
 	static _float UI_Size[3] = { 100.f, 100.f, 1.f };
 	static _float UI_Pos[3] = { 0.f, 0.f, 0.f };
+	static _float UI_ThrowPos[2]{ 0.f, 0.f };
 	static char UI_Name[MAX_PATH] = {};
 
 	static unsigned int Image_Num = 0;
@@ -765,6 +818,8 @@ void CImguiMgr::Create_LevelMoveButton(_uint _Level)	//LevelButton 을 정의하고 �
 	ImGui::InputText("Name", UI_Name, MAX_PATH);
 	ImGui::InputFloat2("Set Size", UI_Size, "%.1f", 0);
 	ImGui::InputFloat2("Set Pos", UI_Pos, "%.1f", 0);
+	ImGui::InputFloat2("Set ThrowPos", UI_ThrowPos, "%.1f", 0);
+
 
 	if (m_currentLevelID == LEVEL::LEVEL_LOADING || Render_Num == 5/*UI_NONE*/) //로딩이거나, UI그룹설정안했다면
 	{
@@ -783,7 +838,8 @@ void CImguiMgr::Create_LevelMoveButton(_uint _Level)	//LevelButton 을 정의하고 �
 		pUI->Set_UIName(CStrUtil::ConvertCtoWC(UI_Name));
 		pUI->Set_UIType((UI_TYPE)Render_Num);
 		pUI->Set_Size(_float3(UI_Size[0], UI_Size[1], UI_Size[2]));
-		pUI->Set_Pos(_float3(UI_Pos[0], UI_Pos[1], UI_Pos[2]));
+		pUI->Set_ThrowPos(_float2(UI_ThrowPos[0], UI_ThrowPos[1]));
+
 		pUI->Set_UILevel(_Level);
 		pUI->initialization();
 
@@ -801,6 +857,7 @@ void CImguiMgr::Create_UIText(_uint _Level)
 {
 	static _float UI_Size[3] = { 100.f, 100.f, 1.f };
 	static _float UI_Pos[3] = { 0.f, 0.f, 0.f };
+	static _float UI_ThrowPos[2] = { 0.f, 0.f };
 	static char UI_Name[MAX_PATH] = {};
 
 	const char* Render_Type[] = { "UI_POST", "UI_DIALOG_BUTTON", "UI_DIALOG", "UI_BUTTTON", "UI_BACKGROUND", "NONE" };
@@ -820,6 +877,7 @@ void CImguiMgr::Create_UIText(_uint _Level)
 	ImGui::InputText("Name", UI_Name, MAX_PATH);
 	ImGui::InputFloat2("Set Size", UI_Size, "%.1f", 0);
 	ImGui::InputFloat2("Set Pos", UI_Pos, "%.1f", 0);
+	ImGui::InputFloat2("Set ThrowPos", UI_ThrowPos, "%.1f", 0);
 
 	if (m_currentLevelID == LEVEL::LEVEL_LOADING || Render_Num == 5/*UI_NONE*/) //로딩이거나, UI그룹설정안했다면
 	{
@@ -836,6 +894,7 @@ void CImguiMgr::Create_UIText(_uint _Level)
 		pUI->Set_UIType((UI_TYPE)Render_Num);
 		pUI->Set_Size(_float3(UI_Size[0], UI_Size[1], UI_Size[2]));
 		pUI->Set_Pos(_float3(UI_Pos[0], UI_Pos[1], UI_Pos[2]));
+		pUI->Set_ThrowPos(_float2(UI_ThrowPos[0], UI_ThrowPos[0]));
 		pUI->Set_UILevel(_Level);
 		pUI->initialization();
 
@@ -852,6 +911,7 @@ void CImguiMgr::Create_UIText(_uint _Level)
 
 void CImguiMgr::Load_UIVec(void)	//불러오기
 {
+	m_pSelectUI = nullptr;
 	m_pGameInstance->Clear_UIVec();
 
 	json loadJson;
@@ -889,6 +949,10 @@ void CImguiMgr::Load_UIVec(void)	//불러오기
 		_Size.y = (*it)["Size_y"];
 		_Size.z = (*it)["Size_z"];
 		
+		_float2 _ThrowPos;
+		_ThrowPos.x = (*it)["ThrowPos_x"];
+		_ThrowPos.y = (*it)["ThrowPos_y"];
+
 		CUI* pUI = nullptr;
 
 		if (!strcmp(_ClassName.c_str(), "CBackGround"))
@@ -936,7 +1000,7 @@ void CImguiMgr::Load_UIVec(void)	//불러오기
 		pUI->Set_Pos(_float3(_Pos.x, _Pos.y, _Pos.z));
 		pUI->Set_UIName(pUtil_Name);
 		pUI->Set_UILevel(_Level);
-
+		pUI->Set_ThrowPos(_ThrowPos);
 		pUI->initialization();
 
 		if (FAILED(m_pGameInstance->Add_UI(_Level, pUI)))
@@ -948,7 +1012,7 @@ void CImguiMgr::Load_UIVec(void)	//불러오기
 		Safe_Delete_Array(pUtil_ImageTag);
 	}
 
-	MSG_BOX("로드성공");
+	//MSG_BOX("로드성공");
 
 	return;
 }
