@@ -1,29 +1,25 @@
-#include "StateBase.h"
-
-
-namespace Engine
-{
-	class CTransform;
-}
+#pragma once
+#include "State_Run.h"
 
 
 BEGIN(Client)
 
-class CState_Student_Run : public CStateBase
+class CState_Student_Run : public CState_Run
 {
-private:
-	CState_Student_Run(class CActor* pStudent);
+protected:
+	CState_Student_Run(class CActor* pActor);
 	virtual ~CState_Student_Run() = default;
 public:
 	// CStateBase을(를) 통해 상속됨
-	virtual HRESULT	Initialize() override;
-	virtual void Enter() override;
-	virtual _bool Loop(_float fTimeDelta) override;
-	virtual CStateBase * Exit() override;
-	static  CState_Student_Run * Create(class CActor * pStudent);
-
+	virtual HRESULT	Initialize() ;
+	virtual void Enter() ;
+	virtual _bool Loop(_float fTimeDelta) ;
+	virtual CStateBase * Exit() ;
+	static  CStateBase * Create(class CActor * pStudent);
+	
 private:
-	class CTransform*	m_pTransform = nullptr;
+	class CCollider*	m_pBodyCollider = nullptr;
 };
 
 END
+

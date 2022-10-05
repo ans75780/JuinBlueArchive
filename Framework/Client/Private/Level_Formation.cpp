@@ -257,9 +257,9 @@ HRESULT CLevel_Formation::Ready_Layer_Student(const _tchar * pLayerTag)
 	else
 	{
 		//아니라면 새로 가져온 포메이션으로 
-		map<const _tchar*, CGameObject::OBJ_DESC> StudentDesc = pUserData->Get_HavedStudent();
+		const map<const _tchar*, CGameObject::OBJ_DESC>* StudentDesc = pUserData->Get_Actors(UNIT_TYPE::UNIT_TYPE_STUDENT);
 		_uint iIndex = 0;
-		for (auto& pair : StudentDesc)
+		for (auto& pair : *StudentDesc)
 		{
 			if (m_iFormationSize <= iIndex)
 				break;

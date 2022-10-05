@@ -13,6 +13,8 @@ class ENGINE_DLL CCollider final : public CComponent
 public:
 	enum TYPE { TYPE_SPHERE, TYPE_AABB, TYPE_OBB, TYPE_END };
 
+	enum COLLISION_TYPE { COLLISION_BODY, COLLISION_ATTACK_RANGE, COLLISION_ATTACK, COLLISION_BARICADE, COLLISION_END };
+
 	typedef struct tagOBBDesc
 	{
 		_float3		vCenter;
@@ -49,6 +51,7 @@ public:
 
 	BoundingBox*	Get_AABB() { return m_pAABB; }
 
+	void			Set_Color(_float4 vColor) { m_vColor = vColor; }
 
 #ifdef _DEBUG
 public:
@@ -68,6 +71,7 @@ private:
 	
 
 	_bool						m_isColl = false;
+	_float4						m_vColor = { 0.f, 1.f, 0.f, 1.f };
 
 #ifdef _DEBUG
 private:

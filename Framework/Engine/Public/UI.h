@@ -21,6 +21,8 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 	virtual void	Free() override;
+
+
 //추후 IMGUI써서 UI좌표 바꿔야하니까 이니셜라이즈에서 받는것보다는 게터 세터 만드는 것이 좋음.
 
 public:
@@ -46,6 +48,9 @@ public:
 public:
 	_uint			Get_UILevel() { return m_iLevel; }
 	void			Set_UILevel(_uint _level) { m_iLevel = _level; }
+
+public:
+	virtual	HRESULT	SetUp_Component();
 
 public:
 	void			Set_ThrowPos(_float2 _Pos) { m_fThrowPos = _Pos; }

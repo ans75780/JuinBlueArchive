@@ -148,6 +148,9 @@
     <ClInclude Include="..\Public\Light.h">
       <Filter>07. Lights</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_Point.h">
+      <Filter>01.Utility\03.Component\00.VIBuffer\Point</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -281,6 +284,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Target_Manager.cpp">
       <Filter>01.Utility\Target_Manager\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_Point.cpp">
+      <Filter>01.Utility\03.Component\00.VIBuffer\Point</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -427,6 +433,15 @@
     </Filter>
     <Filter Include="01.Utility\03.Component\00.Renderer\Shader">
       <UniqueIdentifier>{77d30977-6c3c-4db0-a962-06f8ac497d44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Component\00.VIBuffer\Point">
+      <UniqueIdentifier>{fb127a2b-cbc1-4394-8e9a-4857159fefd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Component\00.VIBuffer\Instance">
+      <UniqueIdentifier>{83654b1a-5827-474f-aa89-601d44a8aac8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Component\00.VIBuffer\Instance\Point">
+      <UniqueIdentifier>{c70f7b8d-ba52-4c3e-a476-b12c29223a59}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

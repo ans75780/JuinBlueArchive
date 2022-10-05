@@ -21,7 +21,7 @@ HRESULT CState_Student_Formation_Pickup::Initialize()
 
 	WideCharToMultiByte(CP_ACP, 0, m_pOwner->Get_Name(), MAX_PATH, pAnimaitonStr, MAX_PATH, NULL, NULL);
 
-	strcat_s(pAnimaitonStr, "_Original_Formation_Pickup");
+	strcat_s(pAnimaitonStr, "_Formation_Pickup");
 
 	m_pAnimation = m_pModel->Get_AnimationFromName(pAnimaitonStr);
 

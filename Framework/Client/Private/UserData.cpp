@@ -9,9 +9,15 @@ IMPLEMENT_SINGLETON(CUserData);
 
 HRESULT CUserData::Initialize()
 {
-	Add_Student(L"Aru", UNIT_CLASS::UNIT_CLASS_BACK, 30.f, 15.f, 100.f);
-	Add_Student(L"Haruka", UNIT_CLASS::UNIT_CLASS_FRONT, 10.f, 3.f, 200.f);
-	Add_Student(L"Zunko", UNIT_CLASS::UNIT_CLASS_MIDDLE, 20.f, 5.f, 100.f);
+	Add_Actor(L"Aru_Original",   UNIT_TYPE::UNIT_TYPE_STUDENT,   UNIT_CLASS::UNIT_CLASS_BACK, 20.f, 6.f, 100.f);
+	Add_Actor(L"Haruka_Original",UNIT_TYPE::UNIT_TYPE_STUDENT,   UNIT_CLASS::UNIT_CLASS_FRONT, 5.f, 2.f, 200.f);
+	Add_Actor(L"Zunko_Original", UNIT_TYPE::UNIT_TYPE_STUDENT,   UNIT_CLASS::UNIT_CLASS_MIDDLE, 10.f, 4.f, 100.f);
+
+
+	Add_Actor(L"Soldier_Kaiserpmc_HG", UNIT_TYPE::UNIT_TYPE_ENEMY, UNIT_CLASS::UNIT_CLASS_FRONT, 20.f, 2.f, 100.f);
+
+
+
 
 
 	ZeroMemory(&m_tUserDesc, sizeof(USER_DESC));
@@ -21,6 +27,7 @@ HRESULT CUserData::Initialize()
 	return S_OK;
 }
 
+const map<const _tchar*, CGameObject::OBJ_DESC>* CUserData::Get_Actors(UNIT_TYPE eType)
 void CUserData::Tick()
 {
 	if (m_tUserDesc.pDiamondText)
@@ -35,32 +42,81 @@ void CUserData::Tick()
 
 const CGameObject::OBJ_DESC* CUserData::Find_Student(const _tchar * pStudentName)
 {
-
-	auto	iter = find_if(m_HavedStudents.begin(), m_HavedStudents.end(), CTag_Finder(pStudentName));
-
-	if (iter == m_HavedStudents.end())
-		return nullptr;
-
-	return &(iter->second);
-
+	switch (eType)
+	{
+	case Engine::UNIT_TYPE_STUDENT:
+		return &m_HavedStudents;
+		break;
+	case Engine::UNIT_TYPE_ENEMY:
+		return &m_EnemyData;
+		break;
+	case Engine::UNIT_TYPE_BOSS:
+		break;
+	case Engine::UNIT_TYPE_END:
+		break;
+	default:
+		break;
+	}
+	return nullptr;
 }
 
-void CUserData::Add_Student(const _tchar * pStudentName, UNIT_CLASS eClass, _float fDmg, _float fRange, _float fHp)
+
+
+const CGameObject::OBJ_DESC * CUserData::Find_Actors(UNIT_TYPE eType, const _tchar * pActorName)
+{
+	if (eType == UNIT_TYPE::UNIT_TYPE_STUDENT)
+	{
+		auto	iter = find_if(m_HavedStudents.begin(), m_HavedStudents.end(), CTag_Finder(pActorName));
+
+		if (iter == m_HavedStudents.end())
+			return nullptr;
+		return &(iter->second);
+	}
+	else if (eType == UNIT_TYPE::UNIT_TYPE_ENEMY || UNIT_TYPE::UNIT_TYPE_BOSS)
+	{
+		auto	iter = find_if(m_EnemyData.begin(), m_EnemyData.end(), CTag_Finder(pActorName));
+
+		if (iter == m_EnemyData.end())
+			return nullptr;
+		return &(iter->second);
+	}
+}
+
+void CUserData::Add_Actor(const _tchar * pActorName, UNIT_TYPE eType, UNIT_CLASS eClass, _float fDmg, _float fRange, _float fHp)
 {
 	CGameObject::OBJ_DESC	desc;
 
-	lstrcpy(desc.sz_Name, pStudentName);
-	desc.m_fDamage = fDmg;
-	desc.m_eClass = eClass;
-	desc.m_fMaxHp = fHp;
-	desc.m_fHp = fHp;
-	desc.m_fRange = fRange;
+	lstrcpy(desc.sz_Name, pActorName);
+	desc.fDamage = fDmg;
+	desc.eClass = eClass;
+	desc.fMaxHp = fHp;
+	desc.fHp = fHp;
+	desc.eType = eType;
+	desc.fRange = fRange;
 
-	m_HavedStudents.emplace(pStudentName, desc);
+	switch (eType)
+	{
+	case Engine::UNIT_TYPE_STUDENT:
+		m_HavedStudents.emplace(pActorName, desc);
+		break;
+	case Engine::UNIT_TYPE_ENEMY:
+		m_EnemyData.emplace(pActorName, desc);
+		break;
+	case Engine::UNIT_TYPE_BOSS:
+		break;
+	case Engine::UNIT_TYPE_END:
+		break;
+	default:
+		break;
+	}
+
+
+
 }
 
 void CUserData::Free()
 {
 	m_vecFormation.clear();
 	m_HavedStudents.clear();
+	m_EnemyData.clear();
 }

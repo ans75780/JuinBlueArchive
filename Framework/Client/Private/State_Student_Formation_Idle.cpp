@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "State_Student_Idle.h"
+#include "State_Idle.h"
 #include "Student.h"
 #include "StateBase.h"
 #include "Model.h"
@@ -20,7 +20,7 @@ HRESULT CState_Student_Formation_Idle::Initialize()
 
 	WideCharToMultiByte(CP_ACP, 0, m_pOwner->Get_Name(), MAX_PATH, pAnimaitonStr, MAX_PATH, NULL, NULL);
 
-	strcat_s(pAnimaitonStr, "_Original_Formation_Idle");
+	strcat_s(pAnimaitonStr, "_Formation_Idle");
 
 	m_pAnimation = m_pModel->Get_AnimationFromName(pAnimaitonStr);
 

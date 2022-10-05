@@ -4,6 +4,7 @@
 /* 원형객체를 찾아서 복제하여 씬(레벨)별로 모아서 관린하다.*/
 
 #include "Base.h"
+#include "Collider.h"
 
 BEGIN(Engine)
 
@@ -34,6 +35,11 @@ public:
 
 	HRESULT	Start_Level(_uint iLevelIndex);
 
+
+public:
+	void	Start_Event() { m_bEvent = true; }
+	void	Add_EventObject(class CGameObject*	pGameObject);
+	void	Clear_Event();
 public:
 	void Clear(_uint iLevelIndex);
 
@@ -48,6 +54,13 @@ private:
 
 	_uint					m_iNumLevels = 0;
 
+private:
+	_bool										m_bEvent = false;
+	vector<class CGameObject*>					m_vecEventObjs;
+
+
+private:
+	vector< CCollider*>		m_ColliderList[CCollider::COLLISION_END];
 
 private:
 	class CGameObject* Find_Prototype(const _tchar* pPrototypeTag);

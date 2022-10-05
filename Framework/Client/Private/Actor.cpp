@@ -3,8 +3,8 @@
 #include "GameInstance.h"
 #include "MeshContainer.h"
 #include "StateMachineBase.h"
-#include "State_Student_Idle.h"
-#include "State_Student_Run.h"
+#include "State_Idle.h"
+#include "State_Run.h"
 #include "Collider.h"
 #include "State_Student_Formation_Idle.h"
 #include "Animation.h"
@@ -45,6 +45,10 @@ void CActor::Tick(_float fTimeDelta)
 	m_pAABBCom->Update(m_pTransformCom->Get_WorldMatrix());
 	m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
 
+	m_pAttackRangeCollider->Update(m_pTransformCom->Get_WorldMatrix());
+	m_pBodyCollider->Update(m_pTransformCom->Get_WorldMatrix());
+
+
 }
 
 void CActor::LateTick(_float fTimeDelta)
@@ -54,12 +58,14 @@ void CActor::LateTick(_float fTimeDelta)
 #ifdef _DEBUG
 	CGameInstance*	pInstance = GET_INSTANCE(CGameInstance);
 
-	if (pInstance->Get_CurrentLevelID() == LEVEL_FORMATION)
+	if (pInstance->Get_CurrentLevelID() == LEVEL_GAMEPLAY)
 	{
-		m_pRendererCom->Add_DebugRenderGroup(m_pAABBCom);
-	}
-#endif // _DEBUG
+		m_pRendererCom->Add_DebugRenderGroup(m_pAttackRangeCollider);
+		m_pRendererCom->Add_DebugRenderGroup(m_pBodyCollider);
 
+	}
+	RELEASE_INSTANCE(CGameInstance);
+#endif // _DEBUG
 
 }
 
@@ -78,24 +84,19 @@ HRESULT CActor::Render()
 	{
 		if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
 			continue;
-		/*if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
-		return E_FAIL;*/
 		m_pShaderCom->Begin(0);
 		m_pModelCom->Render(i, m_pShaderCom, "g_Bones");
 	}
+	return S_OK;
+}
 
-#ifdef _DEBUG
+HRESULT CActor::Render_MeshPart(CMeshContainer * pMesh)
+{
+	if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", pMesh, aiTextureType_DIFFUSE)))
+		return E_FAIL;
+	m_pShaderCom->Begin(0);
+	m_pModelCom->Render(pMesh, m_pShaderCom, "g_Bones");
 
-	CGameInstance*	pInstance = GET_INSTANCE(CGameInstance);
-
-	if (pInstance->Get_CurrentLevelID() == LEVEL_FORMATION)
-		//m_pAABBCom->Render();
-	//m_pOBBCom->Render();
-	//m_pSphereCom->Render();
-#endif // _DEBUG
-
-
-		RELEASE_INSTANCE(CGameInstance);
 	return S_OK;
 }
 
@@ -122,30 +123,102 @@ _bool CActor::Collision_AABB(RAYDESC & ray, _float & distance)
 
 HRESULT CActor::SetUp_Components()
 {
+	/* For.Com_Shader */
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxAnimModel"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
+		return E_FAIL;
+
+	/* For.Com_Renderer */
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
+		return E_FAIL;
+
+	_tchar szModelTag[MAX_PATH] = L"Prototype_Component_Model_";
+
+	lstrcat(szModelTag, m_desc.sz_Name);
+
+	/* For.Com_Model */
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, szModelTag, TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
+		return E_FAIL;
+
+
+	/* For.Com_AABB */
+	CCollider::COLLIDERDESC			ColliderDesc;
+	ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
+
+	ColliderDesc.vScale = _float3(0.5f, 1.f, 0.5f);
+	ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
+	ColliderDesc.vTranslation = _float3(0.f, ColliderDesc.vScale.y * 0.5f, 0.f);
+
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"), TEXT("Com_AABB"), (CComponent**)&m_pAABBCom, &ColliderDesc)))
+		return E_FAIL;
+
+	/* For.Com_OBB */
+	ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
+
+	ColliderDesc.vScale = _float3(1.2f, 1.2f, 1.2f);
+	ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
+	ColliderDesc.vTranslation = _float3(0.f, ColliderDesc.vScale.y * 0.5f, 0.f);
+
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
+		return E_FAIL;
+
+	/* For.Com_SPHERE */
+	ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
+
+	ColliderDesc.vScale = _float3(1.f, 1.f, 1.f);
+	ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
+	ColliderDesc.vTranslation = _float3(0.f, ColliderDesc.vScale.y * 0.5f, 0.f);
+
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_SPHERE"), TEXT("Com_SPHERE"), (CComponent**)&m_pSphereCom, &ColliderDesc)))
+		return E_FAIL;
+
+
+
+	ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
+
+	ColliderDesc.vScale = _float3(m_desc.fRange, m_desc.fRange, m_desc.fRange);
+	ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
+	ColliderDesc.vTranslation = _float3(0.f, 0.f, 0.f);
+
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_SPHERE"), TEXT("Com_AttackRangeCollider"), (CComponent**)&m_pAttackRangeCollider, &ColliderDesc)))
+		return E_FAIL;
+
+	ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
+
+	ColliderDesc.vScale = _float3(1.f, 1.f, 1.f);
+	ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
+	ColliderDesc.vTranslation = _float3(0.f, 0.5f, 0.f);
+
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_SPHERE"), TEXT("Com_BodyCollider"), (CComponent**)&m_pBodyCollider, &ColliderDesc)))
+		return E_FAIL;
+
+	m_pBodyCollider->Set_Color(_float4(0.f, 0.f, 1.f, 1.f));
+	m_pAttackRangeCollider->Set_Color(_float4(1.f, 0.f, 1.f, 1.f));
+
 	return S_OK;
 }
 
 HRESULT CActor::SetUp_ShaderResource()
 {
+	if (nullptr == m_pShaderCom)
+		return E_FAIL;
+
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+	if (FAILED(m_pTransformCom->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", pGameInstance->Get_Transform_TP(CPipeLine::D3DTS_VIEW), sizeof(_float4x4))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", pGameInstance->Get_Transform_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4))))
+		return E_FAIL;
+
+	RELEASE_INSTANCE(CGameInstance);
+
 	return S_OK;
 }
 
 HRESULT CActor::SetUp_StateMachine(_uint iLevel)
 {
-	return E_NOTIMPL;
-}
-
-CGameObject * CActor::Clone(void * pArg)
-{
-	CActor*		pInstance = new CActor(*this);
-
-	if (FAILED(pInstance->Initialize(pArg)))
-	{
-		MSG_BOX("Failed to Cloned : CActor");
-		Safe_Release(pInstance);
-	}
-
-	return pInstance;
+	return S_OK;
 }
 
 void CActor::Free()

@@ -27,6 +27,8 @@ public:
 	virtual void Tick(_float fTimeDelta);
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
+	virtual HRESULT Render_MeshPart(CMeshContainer* pMesh);
+
 
 	class CStateMachineBase*		Get_StateMachine() { return m_pStateMachine; }
 	void	Set_Transform(_vector vPos);
@@ -45,7 +47,10 @@ protected:
 	CCollider*				m_pOBBCom = nullptr;
 	CCollider*				m_pSphereCom = nullptr;
 
-protected:
+
+
+	CCollider*				m_pAttackRangeCollider = nullptr;
+	CCollider*				m_pBodyCollider = nullptr;
 
 
 protected:
@@ -54,10 +59,10 @@ protected:
 protected:
 	virtual HRESULT SetUp_Components();
 	virtual HRESULT SetUp_ShaderResource();
-	virtual HRESULT	SetUp_StateMachine(_uint iLevel);
+	virtual HRESULT	SetUp_StateMachine(_uint iLevel) = 0;
 
 public:
-	virtual CGameObject* Clone(void* pArg) override;
+	virtual CGameObject* Clone(void* pArg) = 0;
 	virtual void Free() override;
 };
 

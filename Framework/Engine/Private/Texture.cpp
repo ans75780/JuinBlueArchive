@@ -71,16 +71,16 @@ ID3D11ShaderResourceView * CTexture::Get_ResourceView(void)
 	return m_SRVs.front();
 }
 
-CTexture * CTexture::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, const _tchar * pTextureFilePath, _uint iNumTextures)
+CTexture * CTexture::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, const _tchar * pTextureFilePath, _uint iNumTextures, _bool bShowErrorBox)
 {
 	CTexture*		pInstance = new CTexture(pDevice, pContext);
-	
+
 	if (FAILED(pInstance->Initialize_Prototype(pTextureFilePath, iNumTextures)))
 	{
-		MSG_BOX("Failed to Created : CTexture");
+		if (bShowErrorBox)
+			MSG_BOX("Failed to Created : CTexture");
 		Safe_Release(pInstance);
 	}
-
 	return pInstance;
 }
 

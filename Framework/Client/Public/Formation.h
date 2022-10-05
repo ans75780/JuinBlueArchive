@@ -1,8 +1,13 @@
 #pragma once
+
+#include "GameInstance.h"
+
+BEGIN(Client)
+
 class CFormation
 {
-public:
-	CFormation();
-	~CFormation();
+
 };
+
+END
 

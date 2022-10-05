@@ -36,6 +36,8 @@ public:
 		memcpy(&m_WorldMatrix.m[eState], &vData, sizeof(_float4));		
 	}
 
+	TRANSFORMDESC	Get_Desc() { return m_TransformDesc; }
+
 public:
 	void Set_TransformDesc(const TRANSFORMDESC* pTransformDesc) {
 		m_TransformDesc = *pTransformDesc;
@@ -43,6 +45,8 @@ public:
 
 	void Set_Scaled(_float3 vScale);
 	_float3 Get_Scaled();
+
+	void	Set_Speed(_float fSpeed) { m_TransformDesc.fSpeedPerSec = fSpeed; }
 
 public:
 	virtual HRESULT Initialize_Prototype() override;

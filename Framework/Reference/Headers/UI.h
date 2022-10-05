@@ -21,8 +21,9 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 	virtual void	Free() override;
-//추후 IMGUI써서 UI좌표 바꿔야하니까 이니셜라이즈에서 받는것보다는 게터 세터 만드는 것이 좋음.
 
+
+//추후 IMGUI써서 UI좌표 바꿔야하니까 이니셜라이즈에서 받는것보다는 게터 세터 만드는 것이 좋음.
 public:
 	_float3			Get_Pos() { return m_fPos; }
 	void			Set_Pos(_float3	_fPos) { m_fPos = _fPos; }
@@ -48,12 +49,10 @@ public:
 	void			Set_UILevel(_uint _level) { m_iLevel = _level; }
 
 public:
-	void			Set_ThrowPos(_float2 _Pos) { m_fThrowPos = _Pos; }
-	_float2			Get_ThrowPos() { return m_fThrowPos; }
+	virtual	HRESULT	SetUp_Component();
 
 public:
 	virtual CUI*	Get_MouseOveredUI(const POINT& pt);
-
 public:
 	virtual HRESULT	LoadUIImage(const _tchar* TextureTag, _uint iLevel = 0);
 
@@ -89,11 +88,6 @@ protected:
 	_uint			m_iLevel = 0;
 	
 	_bool			m_bDead = false;
-
-	_float3			m_fOriginPos = { 0.f, 0.f, 0.f };
-	_float2			m_fThrowPos = { 0.f, 0.f };		//던질위치 (가지고있는 포지션에서 Pos만큼 뺀곳에 생성된뒤, 원점에 도달할때까지 감소)
-	_bool			m_bThrowing = false;
-	_float			m_fThrowBreak = 2.f;
 
 protected:
 	/*

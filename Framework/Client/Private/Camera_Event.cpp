@@ -122,7 +122,7 @@ void CCamera_Event::Ready_Event_Ex(CCamera * pReturnCamera, CActor * pTarget)
 
 	strcpy_s(pAnimationPullName, pAnimaitonStr);
 
-	strcat_s(pAnimationPullName, "_Original_Exs_Cutin_Cam");
+	strcat_s(pAnimationPullName, "_Exs_Cutin_Cam");
 
 	m_pAnimation = ((CStudent*)m_pTarget)->Get_Animation(pAnimationPullName);
 	
@@ -130,7 +130,7 @@ void CCamera_Event::Ready_Event_Ex(CCamera * pReturnCamera, CActor * pTarget)
 	{
 		strcpy_s(pAnimationPullName, pAnimaitonStr);
 
-		strcat_s(pAnimationPullName, "_Original_Exs_Cam");
+		strcat_s(pAnimationPullName, "_Exs_Cam");
 
 		m_pAnimation = ((CStudent*)m_pTarget)->Get_Animation(pAnimationPullName);
 		if (nullptr == m_pAnimation)
@@ -150,14 +150,29 @@ void CCamera_Event::Ready_Event_Ex(CCamera * pReturnCamera, CActor * pTarget)
 	m_pTarget->Get_Transform()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(0.f,0.f,0.f,1.f));
 	CCamera::Set_MainCam(this);
 
+	//이벤트 시작될동안 이벤트 오브젝트에 들어가있는 애들 빼고는 틱 멈춤
+	CGameInstance*	pInstance = GET_INSTANCE(CGameInstance);
+	pInstance->Start_Event();
+
+
+	pInstance->Add_EventObject(this);
+	pInstance->Add_EventObject(m_pTarget);
+
+
+	RELEASE_INSTANCE(CGameInstance);
 }
 
 void CCamera_Event::Event_Stage_Start()
 {
 	if (m_pAnimation->IsFinished() == true)
 	{
-		CCamera::Set_MainCam(m_pReturnToCam);
+		(*m_pVecStduent)[0]->Set_Transform(XMVectorSet(-1.f, 0.f, 0.f, 1.f));
+		(*m_pVecStduent)[1]->Set_Transform(XMVectorSet(0.f, 0.f, 0.f, 1.f));
+		(*m_pVecStduent)[2]->Set_Transform(XMVectorSet(1.f, 0.f, 0.f, 1.f));
 
+
+		CCamera::Set_MainCam(m_pReturnToCam);
+		
 	}
 	
 	m_pTransformCom->LookAt(m_pTarget->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION));
@@ -168,8 +183,6 @@ void CCamera_Event::Event_Stage_Start()
 
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vCamPos);
 
-
-
 }
 
 void CCamera_Event::Event_Ex(_float fTimeDelta)
@@ -179,7 +192,17 @@ void CCamera_Event::Event_Ex(_float fTimeDelta)
 		m_CameraDesc.fFovy = XMConvertToRadians(65.0f);
 
 		CCamera::Set_MainCam(m_pReturnToCam);
+		m_pAnimation->Reset();
+
 		m_pTarget->Get_Transform()->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&m_fTargetOriginPos));
+
+		CGameInstance*	pInstance = GET_INSTANCE(CGameInstance);
+	
+		pInstance->Clear_Event();
+
+
+		RELEASE_INSTANCE(CGameInstance);
+
 		return;
 	}
 	m_pAnimation->Update(fTimeDelta);

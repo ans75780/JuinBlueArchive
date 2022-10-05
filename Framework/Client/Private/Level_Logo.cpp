@@ -2,7 +2,7 @@
 #include "..\Public\Level_Logo.h"
 #include "GameInstance.h"
 #include "LEvel_Loading.h"
-
+#include "UI_Progress.h"
 #include "UI_LevelMoveButton.h"
 #include "UI_Text.h"
 
@@ -58,6 +58,12 @@ HRESULT CLevel_Logo::Ready_Layer_BackGround(const _tchar * pLayerTag)
 	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
 	Safe_AddRef(pGameInstance);
 	
+	CUI_Progress*	pHpBar= CUI_Progress::Create(m_pDevice, m_pContext);
+
+	if (FAILED(pGameInstance->Add_UI(LEVEL_LOGO, pHpBar)))
+	{
+		MSG_BOX("UI생성실패");
+	}
 
 	Safe_Release(pGameInstance);
 

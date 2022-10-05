@@ -286,7 +286,7 @@ HRESULT CModel::Create_Materials(const char * pModelFilePath)
 		for (_uint j = 0; j < AI_TEXTURE_TYPE_MAX;j++)
 		{
 			//텍스쳐가 받을 수 있는 모든 타입을 받음.
-			char      szFullPath[MAX_PATH] = "";
+			char      szDiffuseFullPath[MAX_PATH] = "";
 
 			aiString   strPath;
 
@@ -305,17 +305,31 @@ HRESULT CModel::Create_Materials(const char * pModelFilePath)
 
 			_splitpath_s(strPath.data, nullptr, 0, nullptr, 0, szFileName, MAX_PATH, szExt, MAX_PATH);
 
-			strcpy_s(szFullPath, pModelFilePath);
-			strcat_s(szFullPath, szFileName);
-			strcat_s(szFullPath, szExt);
+			strcpy_s(szDiffuseFullPath, pModelFilePath);
+			strcat_s(szDiffuseFullPath, szFileName);
+			strcat_s(szDiffuseFullPath, szExt);
 
-			_tchar      szTextureFilePath[MAX_PATH] = TEXT("");
+			_tchar      szDiffuseTextureFilePath[MAX_PATH] = TEXT("");
 			
-			MultiByteToWideChar(CP_ACP, 0, szFullPath, (int)strlen(szFullPath), szTextureFilePath, MAX_PATH);
+			MultiByteToWideChar(CP_ACP, 0, szDiffuseFullPath, (int)strlen(szDiffuseFullPath), szDiffuseTextureFilePath, MAX_PATH);
 
-			Material.pTextures[j] = CTexture::Create(m_pDevice, m_pContext, szTextureFilePath);
+			Material.pTextures[j] = CTexture::Create(m_pDevice, m_pContext, szDiffuseTextureFilePath);
 			if (nullptr == Material.pTextures[j])
 				return E_FAIL;
+			/*
+			Diffuse만들었으면 NormalTexture도 검색함.
+			*/
+			char      szNormalFullPath[MAX_PATH] = "";
+			_tchar      szNormalTextureFilePath[MAX_PATH] = TEXT("");
+			
+			strcpy_s(szNormalFullPath, pModelFilePath);
+			strcat_s(szNormalFullPath, szFileName);
+			strcat_s(szNormalFullPath, "_Mask");
+			strcat_s(szNormalFullPath, szExt);
+
+			MultiByteToWideChar(CP_ACP, 0, szNormalFullPath, (int)strlen(szNormalFullPath), szNormalTextureFilePath, MAX_PATH);
+			Material.pTextures[aiTextureType_NORMALS] = CTexture::Create(m_pDevice, m_pContext, szNormalTextureFilePath,1,false);
+
 		}
 		m_Materials.push_back(Material);
 
