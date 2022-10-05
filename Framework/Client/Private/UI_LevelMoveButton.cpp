@@ -14,9 +14,6 @@ HRESULT CUI_LevelMoveButton::Initialize(void * pArg)
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 
-	if (FAILED(SetUp_Components()))
-		return E_FAIL;
-
 	m_eUIType = UI_BUTTTON;
 	lstrcpy(m_szUIClass, TEXT("CUI_LevelMoveButton"));
 
@@ -128,10 +125,6 @@ void CUI_LevelMoveButton::Set_Size(_float3 _fSize)
 	m_fSize = _fSize;
 }
 
-HRESULT CUI_LevelMoveButton::SetUp_Components()
-{
-	return S_OK;
-}
 
 HRESULT CUI_LevelMoveButton::SetUp_ShaderResource()
 {

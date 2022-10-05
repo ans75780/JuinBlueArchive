@@ -29,6 +29,24 @@ HRESULT CUserData::Initialize()
 
 const map<const _tchar*, CGameObject::OBJ_DESC>* CUserData::Get_Actors(UNIT_TYPE eType)
 {
+	switch (eType)
+	{
+	case Engine::UNIT_TYPE_STUDENT:
+		return &m_HavedStudents;
+		break;
+	case Engine::UNIT_TYPE_ENEMY:
+		return &m_EnemyData;
+		break;
+	case Engine::UNIT_TYPE_BOSS:
+		break;
+	case Engine::UNIT_TYPE_PROP:
+		break;
+	case Engine::UNIT_TYPE_END:
+		break;
+	default:
+		break;
+	}
+
 	return nullptr;
 }
 

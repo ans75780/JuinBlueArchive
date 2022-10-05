@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "..\Public\UI_Progress.h"
 #include "Level_Loading.h"
-#include "VIBuffer_PointToRect.h"
+#include "VIBuffer_Point.h"
 #include "Key_Manager.h"
 #include "ImguiMgr.h"
 #include "Engine_Defines.h"

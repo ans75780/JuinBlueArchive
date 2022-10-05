@@ -39,7 +39,6 @@ public:
 	virtual	void	Set_Size(_float3 _fSize);
 
 private:
-	HRESULT SetUp_Components();
 	HRESULT SetUp_ShaderResource();
 
 private:

@@ -1,7 +1,9 @@
 #include "stdafx.h"
 #include "..\Public\Loader_Start.h"
 #include "GameInstance.h"
-
+#include "Student.h"
+#include "Actor.h"
+#include "Enemy.h"
 #include "StrUtil.h"
 #include "Json_Utility.h"
 
@@ -122,6 +124,14 @@ HRESULT CLoader_Start::Loading_ForLogoLevel()
 	//	return E_FAIL;
 
 
+	lstrcpy(m_szLoadingText, TEXT("오브젝트를 로딩중입니다. "));
+
+	if (FAILED(pGameInstance->Add_Prototype(L"Prototype_Student", CStudent::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_Prototype(L"Prototype_Enemy", CEnemy::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 
 	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중이비낟. "));
 
@@ -129,17 +139,17 @@ HRESULT CLoader_Start::Loading_ForLogoLevel()
 	mat = XMMatrixIdentity();
 
 	/* For.Prototype_Component_Model_Serika*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Aru"),
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Aru_Original"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Aru_Original/", "Aru_Original.fbx", mat))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Model_Serika*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Haruka"),
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Haruka_Original"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Haruka_Original/", "Haruka_Original.fbx", mat))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Model_Serika*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Zunko"),
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Zunko_Original"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Zunko_Original/", "Zunko_Original.fbx", mat))))
 		return E_FAIL;
 
