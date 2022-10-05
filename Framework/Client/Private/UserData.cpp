@@ -2,9 +2,6 @@
 #include "..\Public\UserData.h"
 #include "GameObject.h"
 
-#include "UI.h"
-#include "UI_Text.h"
-
 IMPLEMENT_SINGLETON(CUserData);
 
 HRESULT CUserData::Initialize()
@@ -48,17 +45,6 @@ const map<const _tchar*, CGameObject::OBJ_DESC>* CUserData::Get_Actors(UNIT_TYPE
 	}
 
 	return nullptr;
-}
-
-void CUserData::Tick()
-{
-	if (m_tUserDesc.pDiamondText)
-	{
-		_tchar temp[10] = {};
-		_itow_s(m_tUserDesc.uDiamond, temp, 10, 10);
-
-		static_cast<CUI_Text*>(m_tUserDesc.pDiamondText)->SetUIText(temp);
-	}
 }
 
 const CGameObject::OBJ_DESC * CUserData::Find_Actors(UNIT_TYPE eType, const _tchar * pActorName)

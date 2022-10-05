@@ -27,6 +27,14 @@ public:
 private:
 	HRESULT SetUp_Components();
 	HRESULT SetUp_ShaderResource();
+private:
+	void	FrameCheck(_float& _Delta);
+	void	Move_Right(_float& _Delta);
+	void	Move_Left(_float& _Delta);
+	void	Move_Down(_float& _Delta);
+	void	Move_ZoomIn(_float& _Delta);
+	void	Move_ZoomOut(_float& _Delta);
+	
 
 private:
 	CShader*				m_pShaderCom = nullptr;

@@ -21,6 +21,9 @@ public:
 	virtual HRESULT Render();
 
 private:
+	HRESULT Ready_Layer_Start_illust();
+
+private:
 	LEVEL			m_eNextLevel = LEVEL_END;
 	class CLoader_Start*	m_pLoader = nullptr;
 

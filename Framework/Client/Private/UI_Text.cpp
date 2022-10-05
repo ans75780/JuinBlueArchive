@@ -1,11 +1,10 @@
 #include "stdafx.h"
 #include "..\Public\UI_Text.h"
 #include "Level_Loading.h"
-#include "UserData.h"
 
 #include "ImguiMgr.h"
 
-_bool CUI_Text::m_bCheckDiamond = false;
+#include "UserData.h"
 
 CUI_Text::CUI_Text(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CUI(pDevice, pContext)
@@ -16,10 +15,6 @@ HRESULT CUI_Text::Initialize(void * pArg)
 {
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
-
-	if (FAILED(SetUp_Components()))
-		return E_FAIL;
-
 
 	lstrcpy(m_szUIClass, TEXT("CUI_Text"));
 	ZeroMemory(m_szText, MAX_PATH);
@@ -35,28 +30,21 @@ HRESULT CUI_Text::initialization()
 {
 	__super::initialization();
 
+	if (0 == lstrcmp(m_szUIName, TEXT("Diamond_Text")))
+	{
+		_tchar temp[10] = {};
+
+		_itow_s(CUserData::Get_Instance()->Get_UserDesc().uDiamond, temp, 10);
+
+		lstrcpy(m_szText, temp);
+	}
+
 	return S_OK;
 }
 
 void CUI_Text::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-
-	if (!m_bCheckDiamond)
-	{
-		CUserData* pUserData = GET_INSTANCE(CUserData)
-
-			if (nullptr == pUserData->Get_UserDesc()->pDiamondText)
-			{
-				if (0 == lstrcmp(m_szUIName, TEXT("Diamond_Text")))
-				{
-					pUserData->Get_UserDesc()->pDiamondText = this;
-					m_bCheckDiamond = true;
-				}
-			}
-
-		RELEASE_INSTANCE(CUserData);
-	}
 }
 
 void CUI_Text::LateTick(_float fTimeDelta)
@@ -110,11 +98,6 @@ void CUI_Text::OnLButtonClicked()
 
 	RELEASE_INSTANCE(CImguiMgr);
 #endif
-}
-
-HRESULT CUI_Text::SetUp_Components()
-{
-	return S_OK;
 }
 
 HRESULT CUI_Text::SetUp_ShaderResource()

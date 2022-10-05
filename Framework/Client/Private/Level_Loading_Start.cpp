@@ -5,9 +5,6 @@
 
 #include "Level_Logo.h"
 
-#include "Level_Work.h"
-#include "Level_GamePlay.h"
-#include "Level_MapTool.h"
 #include "GameInstance.h"
 
 CLevel_Loading_Start::CLevel_Loading_Start(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -25,6 +22,9 @@ HRESULT CLevel_Loading_Start::Initialize(LEVEL eNextLevel)
 
 	m_pLoader = CLoader_Start::Create(m_pDevice, m_pContext, eNextLevel);
 	if (nullptr == m_pLoader)
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Start_illust()))
 		return E_FAIL;
 
 	return S_OK;
@@ -68,6 +68,17 @@ HRESULT CLevel_Loading_Start::Render()
 
 	SetWindowText(g_hWnd, m_pLoader->Get_LoadingText());	
 
+	return S_OK;
+}
+
+HRESULT CLevel_Loading_Start::Ready_Layer_Start_illust()
+{
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOADING_START, TEXT("Layer_Loading_Start_illust"), TEXT("Prototype_GameObject_Start_illust"))))
+		return E_FAIL;
+
+	RELEASE_INSTANCE(CGameInstance);
 	return S_OK;
 }
 

@@ -15,6 +15,8 @@
 #include "Baricade.h"
 #include "VIBuffer_Point.h"
 
+#include "Start_illust.h"
+
 CMainApp::CMainApp()
 	: m_pGameInstance(CGameInstance::Get_Instance())
 {
@@ -44,7 +46,6 @@ HRESULT CMainApp::Initialize()
 		return E_FAIL;
 #endif	//IMGUI 추가
 
-
 	if (FAILED(Ready_Prototype_Component()))
 		return E_FAIL;
 
@@ -71,8 +72,6 @@ void CMainApp::Tick(float fTimeDelta)
 #if _DEBUG
 	CImguiMgr::Get_Instance()->Tick(fTimeDelta);
 #endif	//IMGUI 추가
-
-	CUserData::Get_Instance()->Tick();
 
 }
 
@@ -221,8 +220,11 @@ HRESULT CMainApp::Ready_Prototype_Component()
 
 HRESULT CMainApp::Ready_Static_Resource()
 {
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Startillust"),
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOADING_START, TEXT("Prototype_Component_Texture_Startillust"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/Start/Start_%d.png"), 16))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Start_illust"), CStart_illust::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	return S_OK;

@@ -45,15 +45,12 @@ public:
 	virtual	void	Set_Size(_float3 _fSize) { m_fSize = _fSize; }
 
 private:
-	HRESULT SetUp_Components();
 	HRESULT SetUp_ShaderResource();
 
 private:
 	_tchar	m_szText[MAX_PATH]; //출력할텍스트
 	_float4	m_fColor;
 	_float	m_fScale;
-	
-	static _bool	m_bCheckDiamond;
 
 public:
 	static CUI_Text* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
