@@ -29,7 +29,6 @@ public:
 	virtual HRESULT Render();
 	virtual HRESULT Render_MeshPart(CMeshContainer* pMesh);
 
-
 	class CStateMachineBase*		Get_StateMachine() { return m_pStateMachine; }
 	void	Set_Transform(_vector vPos);
 	class CAnimation*	Get_Animation(const char* pAnimationName);
@@ -37,6 +36,7 @@ public:
 	CCollider*		Get_AABB() { return m_pAABBCom; }
 	CModel*			Get_ModelCom(){ return m_pModelCom; }
 
+	
 
 protected:
 	class CStateMachineBase* m_pStateMachine = nullptr;

@@ -6,6 +6,9 @@
 #include "Enemy.h"
 #include "StrUtil.h"
 #include "Json_Utility.h"
+#include "Baricade.h"
+
+
 
 #include "Memorial_Haruka_Start.h"
 #include "Memorial_Haruka_Idle.h"
@@ -132,6 +135,9 @@ HRESULT CLoader_Start::Loading_ForLogoLevel()
 	if (FAILED(pGameInstance->Add_Prototype(L"Prototype_Enemy", CEnemy::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	if (FAILED(pGameInstance->Add_Prototype(L"Prototype_Baricade", CBaricade::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 
 	lstrcpy(m_szLoadingText, TEXT("¸ðµ¨À» ·ÎµùÁßÀÌºñ³®. "));
 
@@ -153,11 +159,26 @@ HRESULT CLoader_Start::Loading_ForLogoLevel()
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Zunko_Original/", "Zunko_Original.fbx", mat))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Model_Soldier_Kaiserpmc_HG*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Soldier_Kaiserpmc_HG"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Enemies/Soldier_Kaiserpmc_HG/", "Soldier_Kaiserpmc_HG.fbx",
+			XMMatrixRotationAxis(XMVectorSet(0.f, 1.f, 0.f, 1.f), XMConvertToRadians(180.f))))))
+		return E_FAIL;
+
+
+	/* For.Prototype_Component_Model_Stage_School*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_School_Baricade"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Models/NonAnimModels/Obstacles/School_Baricade/", "School_Baricade.fbx", XMMatrixRotationAxis(XMVectorSet(0.f, 1.f, 0.f, 1.f), XMConvertToRadians(90.f))))))
+		return E_FAIL;
+
+
+
 	lstrcpy(m_szLoadingText, TEXT("¸ÊÀ» ·ÎµùÁßÀÌºñ³®. "));
 
 	/* For.Prototype_Component_Model_Stage_School*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Stage_School_1"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Models/NonAnimModels/Stages/School/", "School_1.fbx", mat))))
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Models/NonAnimModels/Stages/School/", "School_1.fbx", 
+			mat))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("·Îµù ³¡ "));	

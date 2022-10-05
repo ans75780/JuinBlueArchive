@@ -19,6 +19,8 @@ HRESULT CState_Student_Run::Initialize()
 
 
 	m_pBodyCollider = (CCollider*)m_pOwner->Get_Component(L"Com_BodyCollider");
+	
+
 
 	return S_OK;
 }

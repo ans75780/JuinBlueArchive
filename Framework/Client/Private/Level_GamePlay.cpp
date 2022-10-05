@@ -38,11 +38,6 @@ HRESULT CLevel_GamePlay::Initialize()
 	m_vecFormationPos.push_back(XMVectorSet(-0.5f, 0.f, 0.f, 1.f));
 	m_vecFormationPos.push_back(XMVectorSet(0.f, 0.f, -0.5f, 1.f));
 	m_vecFormationPos.push_back(XMVectorSet(0.5f, 0.f, 0.f, 1.f));
-
-	
-	if (FAILED(Ready_Light()))
-		return E_FAIL;
-
 	if (FAILED(Ready_Layer_Student(TEXT("Layer_Student"))))
 		return E_FAIL;
 	if (FAILED(Ready_Layer_Enemy(TEXT("Layer_Enemy"))))
