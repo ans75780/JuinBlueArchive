@@ -41,16 +41,16 @@ void CUI_Progress::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 
 	//TestCode
-	/*
+	
 	if (KEY(A, HOLD))
 	{
-		m_fProgressBarSize.x -= fTimeDelta * 100;
+		m_fProgressBarSize.x -= fTimeDelta * 500;
 	}
 	if (KEY(S, HOLD))
 	{
-		m_fProgressBarSize.x += fTimeDelta * 100;
+		m_fProgressBarSize.x += fTimeDelta * 500;
 	}
-	*/
+	
 }
 
 void CUI_Progress::LateTick(_float fTimeDelta)
@@ -122,8 +122,6 @@ HRESULT CUI_Progress::SetUp_Component()
 	/* For.Com_VIBuffer */
 	if (FAILED(__super::Add_Component(0, TEXT("Prototype_Component_VIBuffer_Point"), TEXT("Com_VIBuffer"), (CComponent**)&m_pVIBufferCom)))
 		return E_FAIL;
-
-
 
 	return S_OK;
 }

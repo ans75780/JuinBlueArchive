@@ -33,8 +33,6 @@ public:
 	void	Add_Formation(CGameObject::OBJ_DESC desc) { m_vecFormation.push_back(desc); }
 	const map<const _tchar*, CGameObject::OBJ_DESC>* Get_Actors(UNIT_TYPE eType);
 
-
-public:
 	const CGameObject::OBJ_DESC*		Find_Actors(UNIT_TYPE eType, const _tchar*	pActorName);
 
 

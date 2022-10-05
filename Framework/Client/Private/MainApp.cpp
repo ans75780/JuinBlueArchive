@@ -11,8 +11,10 @@
 #include "Enemy.h"
 #include "StrUtil.h"
 #include "Json_Utility.h"
-#include "Baricade.h"/////////
-#include "VIBuffer_Point.h"/////////
+
+#include "Baricade.h"
+#include "VIBuffer_Point.h"
+
 CMainApp::CMainApp()
 	: m_pGameInstance(CGameInstance::Get_Instance())
 {
@@ -47,15 +49,6 @@ HRESULT CMainApp::Initialize()
 		return E_FAIL;
 
 	if (FAILED(Ready_Static_Resource()))
-		return E_FAIL;
-
-	//if (FAILED(Ready_Static_AnimModels()))
-	//	return E_FAIL;
-
-	//if (FAILED(Ready_Static_NonAnimModels()))
-	//	return E_FAIL;
-
-	if (FAILED(Ready_Prototype_Objects()))
 		return E_FAIL;
 
 	CUserData::Get_Instance()->Initialize();
@@ -187,8 +180,6 @@ HRESULT CMainApp::Ready_Prototype_Component()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxCubeTex"),
 		CShader::Create(m_pDevice, m_pContext, TEXT("../../ShaderFiles/Shader_VtxCubeTex.hlsl"), VTXCUBETEX_DECLARATION::Element, VTXCUBETEX_DECLARATION::iNumElements))))
 		return E_FAIL;
-
-
 	
 
 	///* For.Prototype_Component_VIBuffer_Cube*/

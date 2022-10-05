@@ -7,6 +7,7 @@
 
 #include "Memorial_Haruka_Start.h"
 #include "Memorial_Haruka_Idle.h"
+
 CLoader_Start::CLoader_Start(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice(pDevice)
 	, m_pContext(pContext)
@@ -127,27 +128,27 @@ HRESULT CLoader_Start::Loading_ForLogoLevel()
 	_matrix mat;
 	mat = XMMatrixIdentity();
 
-	///* For.Prototype_Component_Model_Serika*/
-	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Aru"),
-	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Aru_Original/", "Aru_Original.fbx", mat))))
-	//	return E_FAIL;
+	/* For.Prototype_Component_Model_Serika*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Aru"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Aru_Original/", "Aru_Original.fbx", mat))))
+		return E_FAIL;
 
-	///* For.Prototype_Component_Model_Serika*/
-	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Haruka"),
-	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Haruka_Original/", "Haruka_Original.fbx", mat))))
-	//	return E_FAIL;
+	/* For.Prototype_Component_Model_Serika*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Haruka"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Haruka_Original/", "Haruka_Original.fbx", mat))))
+		return E_FAIL;
 
-	///* For.Prototype_Component_Model_Serika*/
-	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Zunko"),
-	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Zunko_Original/", "Zunko_Original.fbx", mat))))
-	//	return E_FAIL;
+	/* For.Prototype_Component_Model_Serika*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Zunko"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Zunko_Original/", "Zunko_Original.fbx", mat))))
+		return E_FAIL;
 
-	//lstrcpy(m_szLoadingText, TEXT("¸ÊÀ» ·ÎµùÁßÀÌºñ³®. "));
+	lstrcpy(m_szLoadingText, TEXT("¸ÊÀ» ·ÎµùÁßÀÌºñ³®. "));
 
-	///* For.Prototype_Component_Model_Stage_School*/
-	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Stage_School_1"),
-	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Models/NonAnimModels/Stages/School/", "School_1.fbx", mat))))
-	//	return E_FAIL;
+	/* For.Prototype_Component_Model_Stage_School*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Stage_School_1"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Models/NonAnimModels/Stages/School/", "School_1.fbx", mat))))
+		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("·Îµù ³¡ "));	
 

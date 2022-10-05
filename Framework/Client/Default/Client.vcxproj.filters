@@ -160,11 +160,6 @@
     <ClInclude Include="..\Public\Level_Gacha.h">
       <Filter>01.Level\10. Gacha</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Actor.h" />
-    <ClInclude Include="..\Public\Camera_Stage.h" />
-    <ClInclude Include="..\Public\Stage.h" />
-    <ClInclude Include="..\Public\State_Student_Ex.h" />
-    <ClInclude Include="..\Public\Baricade.h" />
     <ClInclude Include="..\Public\Memorial_Haruka_Start.h">
       <Filter>02.GameObject\08. MemorialLobby\01. Haruka</Filter>
     </ClInclude>
@@ -215,6 +210,21 @@
     </ClInclude>
     <ClInclude Include="..\Public\State_Student_Jump.h">
       <Filter>04. State\Student\Jump</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Actor.h">
+      <Filter>02.GameObject\05. Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Baricade.h">
+      <Filter>02.GameObject\Baricade</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Camera_Stage.h">
+      <Filter>02.GameObject\01. Camera\Camera_Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Stage.h">
+      <Filter>02.GameObject\StageObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Student_Ex.h">
+      <Filter>04. State\Student\EX</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -365,11 +375,6 @@
     <ClCompile Include="..\Private\Level_Gacha.cpp">
       <Filter>01.Level\10. Gacha</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Actor.cpp" />
-    <ClCompile Include="..\Private\Camera_Stage.cpp" />
-    <ClCompile Include="..\Private\Stage.cpp" />
-    <ClCompile Include="..\Private\State_Student_Ex.cpp" />
-    <ClCompile Include="..\Private\Baricade.cpp" />
     <ClCompile Include="..\Private\Memorial_Haruka_Start.cpp">
       <Filter>02.GameObject\08. MemorialLobby\01. Haruka</Filter>
     </ClCompile>
@@ -417,6 +422,21 @@
     </ClCompile>
     <ClCompile Include="..\Private\State_Student_Jump.cpp">
       <Filter>04. State\Student\Jump</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Actor.cpp">
+      <Filter>02.GameObject\05. Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Baricade.cpp">
+      <Filter>02.GameObject\Baricade</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera_Stage.cpp">
+      <Filter>02.GameObject\01. Camera\Camera_Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Stage.cpp">
+      <Filter>02.GameObject\StageObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Student_Ex.cpp">
+      <Filter>04. State\Student\EX</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -628,6 +648,12 @@
     </Filter>
     <Filter Include="02.GameObject\09. Start_illust">
       <UniqueIdentifier>{96513a60-8552-46f7-961f-69de45569c92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\01. Camera\Camera_Stage">
+      <UniqueIdentifier>{fc75dff2-9763-4e85-aba0-8d15cfdefca5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\StageObject">
+      <UniqueIdentifier>{ac9405f1-1c23-4c95-8d50-40fa1a6a54ee}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
