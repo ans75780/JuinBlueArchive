@@ -41,9 +41,7 @@ _bool CState_Idle::Loop(_float fTimeDelta)
 {
 	m_pAnimation->Update(fTimeDelta);
 	m_pModel->Update_CombinedMatrix();
-
-	m_pOwner;
-
+	
 	if(KEY(Q, TAP) && m_pOwner->Get_Desc().eType == UNIT_TYPE_STUDENT)
 	{
 		return true;

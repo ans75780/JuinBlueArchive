@@ -43,7 +43,8 @@ _bool CState_Run::Loop(_float fTimeDelta)
 {
 	m_pAnimation->Update(fTimeDelta);
 	m_pModel->Update_CombinedMatrix();
-	
+
+
 	m_pTransform->Go_Backward(fTimeDelta);
 
 	return false;

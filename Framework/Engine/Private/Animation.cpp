@@ -80,6 +80,7 @@ void CAnimation::Update(_float fTimeDelta)
 void CAnimation::Play()
 {
 	m_eAnimState = ANIM_STATE::ANIM_PLAY;
+	
 }
 
 void CAnimation::Pause()

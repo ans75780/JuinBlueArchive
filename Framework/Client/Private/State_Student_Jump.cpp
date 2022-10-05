@@ -30,13 +30,10 @@ HRESULT CState_Student_Jump::Initialize()
 	if (nullptr == m_pAnimation)
 		return E_FAIL;
 
-
 	m_fOriginSpeed = m_pOwner->Get_Transform()->Get_Desc().fSpeedPerSec;
+	m_pOwner->Get_Transform()->Set_Speed(m_fOriginSpeed * 0.8f);	
 
-	m_pOwner->Get_Transform()->Set_Speed(m_fOriginSpeed * 0.8f);
-
-	
-
+	m_pAnimation->Play();
 	return S_OK;
 
 }
@@ -50,15 +47,13 @@ _bool CState_Student_Jump::Loop(_float fTimeDelta)
 {
 	if (m_pAnimation->IsFinished())
 	{
-		m_pAnimation->Stop();
+		m_pAnimation->Reset();
 		m_pOwner->Get_Transform()->Set_Speed(m_fOriginSpeed);
-
 		return true;
 	}
 
 	m_pAnimation->Update(fTimeDelta);
 	m_pModel->Update_CombinedMatrix();
-
 	m_pOwner->Get_Transform()->Go_Backward(fTimeDelta);
 
 	return false;
