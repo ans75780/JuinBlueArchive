@@ -104,6 +104,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>../../Reference/Headers/; ../Public/</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -210,6 +211,7 @@
     <ClInclude Include="..\Public\MapProp.h" />
     <ClInclude Include="..\Public\Sky.h" />
     <ClInclude Include="..\Public\Stage.h" />
+    <ClInclude Include="..\Public\Start_illust.h" />
     <ClInclude Include="..\Public\StateBase.h" />
     <ClInclude Include="..\Public\StateMachineBase.h" />
     <ClInclude Include="..\Public\State_Student_Default.h" />
@@ -274,6 +276,7 @@
     <ClCompile Include="..\Private\MapProp.cpp" />
     <ClCompile Include="..\Private\Sky.cpp" />
     <ClCompile Include="..\Private\Stage.cpp" />
+    <ClCompile Include="..\Private\Start_illust.cpp" />
     <ClCompile Include="..\Private\StateBase.cpp" />
     <ClCompile Include="..\Private\StateMachineBase.cpp" />
     <ClCompile Include="..\Private\State_Student_Default.cpp" />

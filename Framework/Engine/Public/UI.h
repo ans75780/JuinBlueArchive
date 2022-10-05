@@ -93,6 +93,7 @@ protected:
 	_float3			m_fOriginPos = { 0.f, 0.f, 0.f };
 	_float2			m_fThrowPos = { 0.f, 0.f };		//던질위치 (가지고있는 포지션에서 Pos만큼 뺀곳에 생성된뒤, 원점에 도달할때까지 감소)
 	_bool			m_bThrowing = false;
+	_float			m_fThrowBreak = 2.f;
 
 protected:
 	/*

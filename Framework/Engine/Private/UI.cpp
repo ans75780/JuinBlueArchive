@@ -71,15 +71,13 @@ HRESULT CUI::initialization()
 
 void CUI::Tick(_float fTimeDelta)
 {
-	if (fabsf(m_fThrowPos.x))
-	{
-		int a = 0;
-	}
-
 	if (m_bThrowing)	//날라가기
 	{
-		m_fPos.x -= (m_fThrowPos.x * (fTimeDelta * 2));
-		m_fPos.y -= (m_fThrowPos.y * (fTimeDelta * 2));
+		m_fPos.x -= (m_fThrowPos.x * (fTimeDelta * m_fThrowBreak));
+		m_fPos.y -= (m_fThrowPos.y * (fTimeDelta * m_fThrowBreak));
+
+		if (0.15f < m_fThrowBreak)
+			m_fThrowBreak -= (fTimeDelta * 2.02f);
 
 		if (0.f < m_fThrowPos.x)
 		{
@@ -87,6 +85,7 @@ void CUI::Tick(_float fTimeDelta)
 			{
 				m_fPos.x = m_fOriginPos.x;
 				m_bThrowing = false;
+				m_fThrowBreak = 2.f;
 			}
 		}
 		else
@@ -95,6 +94,7 @@ void CUI::Tick(_float fTimeDelta)
 			{
 				m_fPos.x = m_fOriginPos.x;
 				m_bThrowing = false;
+				m_fThrowBreak = 2.f;
 			}
 		}
 
@@ -104,6 +104,7 @@ void CUI::Tick(_float fTimeDelta)
 			{
 				m_fPos.y = m_fOriginPos.y;
 				m_bThrowing = false;
+				m_fThrowBreak = 2.f;
 			}
 		}
 		else
@@ -112,6 +113,7 @@ void CUI::Tick(_float fTimeDelta)
 			{
 				m_fPos.y = m_fOriginPos.y;
 				m_bThrowing = false;
+				m_fThrowBreak = 2.f;
 			}
 		}
 	}

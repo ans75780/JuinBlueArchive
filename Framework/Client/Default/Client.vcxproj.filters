@@ -186,6 +186,9 @@
     <ClInclude Include="..\Public\Loader_Start.h">
       <Filter>01.Level\00. Loading\Loader</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Start_illust.h">
+      <Filter>02.GameObject\09. Start_illust</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -357,6 +360,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Loader_Start.cpp">
       <Filter>01.Level\00. Loading\Loader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Start_illust.cpp">
+      <Filter>02.GameObject\09. Start_illust</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

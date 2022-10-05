@@ -149,7 +149,7 @@
 //   After the sample programs is the "header file" section. This section
 //   includes documentation for each API function.
 //
-//   Some important concepts to understand to use this library:
+//   Some ant concepts to understand to use this library:
 //
 //      Codepoint
 //         Characters are defined by unicode codepoints, e.g. 65 is

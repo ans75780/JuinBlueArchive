@@ -4,7 +4,6 @@
 #include "GameInstance.h"
 #include "Texture.h"
 #include "Renderer.h"
-#include <math.h>
 
 CMemorial_Haruka_Idle::CMemorial_Haruka_Idle(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObject(pDevice, pContext)
