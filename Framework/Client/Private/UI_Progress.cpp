@@ -29,7 +29,7 @@ HRESULT CUI_Progress::Initialize(void * pArg)
 	return S_OK;
 }
 
-HRESULT CUI_Progress::initialization()
+HRESULT CUI_Progress::Initialization()
 {
 	m_fOriginSize = m_fSize;
 

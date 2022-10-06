@@ -26,9 +26,9 @@ HRESULT CUI_Text::Initialize(void * pArg)
 	return S_OK;
 }
 
-HRESULT CUI_Text::initialization()
+HRESULT CUI_Text::Initialization()
 {
-	__super::initialization();
+	__super::Initialization();
 
 	if (0 == lstrcmp(m_szUIName, TEXT("Diamond_Text"))) //유저데이터 에서 가지고있는돈가져오기
 	{

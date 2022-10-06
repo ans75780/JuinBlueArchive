@@ -85,7 +85,7 @@ HRESULT CLoader_Start::Loading_ForLogoLevel()
 	//pUI_Text->Set_UIType(UI_TYPE::UI_POST);
 	//pUI_Text->SetUIText(TEXT("객체를 생성중입니다."));
 	//pUI_Text->Set_UILevel(pGameInstance->Get_CurrentLevelID());
-	//pUI_Text->initialization();
+	//pUI_Text->Initialization();
 
 	//if (FAILED(pGameInstance->Add_UI(LEVEL_LOADING_START, pUI_Text)))
 	//{

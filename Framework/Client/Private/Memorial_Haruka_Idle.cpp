@@ -54,7 +54,7 @@ HRESULT CMemorial_Haruka_Idle::Initialize(void * pArg)
 	return S_OK;
 }
 
-HRESULT CMemorial_Haruka_Idle::initialization()
+HRESULT CMemorial_Haruka_Idle::Initialization()
 {
 	return S_OK;
 }

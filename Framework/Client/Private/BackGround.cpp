@@ -29,7 +29,7 @@ HRESULT CBackGround::Initialize(void * pArg)
 	return S_OK;
 }
 
-HRESULT CBackGround::initialization()
+HRESULT CBackGround::Initialization()
 {
 	return S_OK;
 }

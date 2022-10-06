@@ -64,7 +64,7 @@ void CUI_Canvas::AllUICanvas_Initialization()
 	{
 		for (auto& UI : vecUI)
 		{
-			UI->initialization();
+			UI->Initialization();
 		}
 	}
 }

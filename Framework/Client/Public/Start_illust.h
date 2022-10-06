@@ -19,7 +19,7 @@ public:
 
 public:
 	virtual HRESULT Initialize(void* pArg);
-	virtual HRESULT initialization();
+	virtual HRESULT Initialization();
 	virtual void Tick(_float fTimeDelta);
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();

@@ -213,7 +213,7 @@ HRESULT CLevel_Logo::LoadUI()
 		pUI->Set_UIName(pUtil_Name);
 		pUI->Set_UILevel(_Level);
 		pUI->Set_ThrowPos(_ThrowPos);
-		pUI->initialization();
+		pUI->Initialization();
 
 		if (FAILED(pGameInstance->Add_UI(_Level, pUI)))
 		{

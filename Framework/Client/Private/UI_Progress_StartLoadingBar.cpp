@@ -31,7 +31,7 @@ HRESULT CUI_Progress_StartLoadingBar::Initialize(void * pArg)
 	return S_OK;
 }
 
-HRESULT CUI_Progress_StartLoadingBar::initialization()
+HRESULT CUI_Progress_StartLoadingBar::Initialization()
 {
 	m_fOriginSize = m_fSize;
 

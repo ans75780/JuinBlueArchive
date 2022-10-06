@@ -49,7 +49,7 @@ HRESULT CMemorial_Haruka_Start::Initialize(void * pArg)
 	return S_OK;
 }
 
-HRESULT CMemorial_Haruka_Start::initialization()
+HRESULT CMemorial_Haruka_Start::Initialization()
 {
 	return S_OK;
 }

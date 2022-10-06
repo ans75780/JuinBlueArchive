@@ -841,7 +841,7 @@ void CImguiMgr::Create_LevelMoveButton(_uint _Level)	//LevelButton 을 정의하고 �
 		pUI->Set_ThrowPos(_float2(UI_ThrowPos[0], UI_ThrowPos[1]));
 
 		pUI->Set_UILevel(_Level);
-		pUI->initialization();
+		pUI->Initialization();
 
 		if (FAILED(m_pGameInstance->Add_UI(_Level, pUI)))	//받아온레벨에다 생성
 		{
@@ -896,7 +896,7 @@ void CImguiMgr::Create_UIText(_uint _Level)
 		pUI->Set_Pos(_float3(UI_Pos[0], UI_Pos[1], UI_Pos[2]));
 		pUI->Set_ThrowPos(_float2(UI_ThrowPos[0], UI_ThrowPos[0]));
 		pUI->Set_UILevel(_Level);
-		pUI->initialization();
+		pUI->Initialization();
 
 		if (FAILED(m_pGameInstance->Add_UI(_Level, pUI)))	//받아온레벨에다 생성
 		{
@@ -1001,7 +1001,7 @@ void CImguiMgr::Load_UIVec(void)	//불러오기
 		pUI->Set_UIName(pUtil_Name);
 		pUI->Set_UILevel(_Level);
 		pUI->Set_ThrowPos(_ThrowPos);
-		pUI->initialization();
+		pUI->Initialization();
 
 		if (FAILED(m_pGameInstance->Add_UI(_Level, pUI)))
 		{

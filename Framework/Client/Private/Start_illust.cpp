@@ -48,7 +48,7 @@ HRESULT CStart_illust::Initialize(void * pArg)
 	return S_OK;
 }
 
-HRESULT CStart_illust::initialization()
+HRESULT CStart_illust::Initialization()
 {
 	return S_OK;
 }

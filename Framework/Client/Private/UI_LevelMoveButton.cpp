@@ -21,9 +21,9 @@ HRESULT CUI_LevelMoveButton::Initialize(void * pArg)
 	return S_OK;
 }
 
-HRESULT CUI_LevelMoveButton::initialization()
+HRESULT CUI_LevelMoveButton::Initialization()
 {
-	__super::initialization();
+	__super::Initialization();
 
 	m_fOriginSize = m_fSize;
 

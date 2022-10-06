@@ -40,19 +40,19 @@ HRESULT CUI::Initialize(void * arg)
 	return S_OK;
 }
 
-HRESULT CUI::initialization()
+HRESULT CUI::Initialization()
 {
 	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance)
 
-	if (m_iLevel != pGameInstance->Get_CurrentLevelID())
+	if (m_iLevel != pGameInstance->Get_CurrentLevelID())	//포지션이 바뀌어버리는 현상때문에 현재레벨에서만 실행하도록 함
 	{
 		RELEASE_INSTANCE(CGameInstance);
-		return S_OK;
+		return S_OK;	//탈출	
 	}
 	else
 		RELEASE_INSTANCE(CGameInstance);
 
-	if (m_bThrowing)
+	if (m_bThrowing)	//던져질위치로 이동하였다면 진행하지않도록 함
 		return S_OK;
 
 	m_fOriginPos = m_fPos;
