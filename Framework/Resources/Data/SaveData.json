@@ -448,7 +448,7 @@
       "ClassName": "CUI_LevelMoveButton",
       "Level": 3,
       "MoveLevel": 16,
-      "Name": "Gold_Icon",
+      "Name": "Money_Icon",
       "Pos_x": 40.0,
       "Pos_y": 315.0,
       "Pos_z": 0.6000000238418579,
@@ -622,7 +622,7 @@
       "Size_z": 1.0,
       "TextureName": "Prototype_Component_Texture_Common_Toast_Mission_Common",
       "ThrowPos_x": 0.0,
-      "ThrowPos_y": 0.0,
+      "ThrowPos_y": -200.0,
       "Type": 3
     },
     {
