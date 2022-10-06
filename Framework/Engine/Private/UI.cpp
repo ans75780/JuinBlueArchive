@@ -42,6 +42,16 @@ HRESULT CUI::Initialize(void * arg)
 
 HRESULT CUI::initialization()
 {
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance)
+
+	if (m_iLevel != pGameInstance->Get_CurrentLevelID())
+	{
+		RELEASE_INSTANCE(CGameInstance);
+		return S_OK;
+	}
+	else
+		RELEASE_INSTANCE(CGameInstance);
+
 	if (m_bThrowing)
 		return S_OK;
 
