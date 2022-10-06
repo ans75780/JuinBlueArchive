@@ -141,22 +141,25 @@ HRESULT CLoader_Start::Loading_ForLogoLevel()
 
 	lstrcpy(m_szLoadingText, TEXT("¸ðµ¨À» ·ÎµùÁßÀÌºñ³®. "));
 
-	_matrix mat;
+	_matrix mat, rotMat;
 	mat = XMMatrixIdentity();
+
+	rotMat = XMMatrixRotationAxis(XMVectorSet(0.f, 1.f, 0.f, 1.f), XMConvertToRadians(180.f));
+
 
 	/* For.Prototype_Component_Model_Serika*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Aru_Original"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Aru_Original/", "Aru_Original.fbx", mat))))
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Aru_Original/", "Aru_Original.fbx", rotMat))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Model_Serika*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Haruka_Original"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Haruka_Original/", "Haruka_Original.fbx", mat))))
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Haruka_Original/", "Haruka_Original.fbx", rotMat))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Model_Serika*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Zunko_Original"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Zunko_Original/", "Zunko_Original.fbx", mat))))
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Zunko_Original/", "Zunko_Original.fbx", rotMat))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Model_Soldier_Kaiserpmc_HG*/
@@ -172,13 +175,12 @@ HRESULT CLoader_Start::Loading_ForLogoLevel()
 		return E_FAIL;
 
 
-
 	lstrcpy(m_szLoadingText, TEXT("¸ÊÀ» ·ÎµùÁßÀÌºñ³®. "));
 
 	/* For.Prototype_Component_Model_Stage_School*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Stage_School_1"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Models/NonAnimModels/Stages/School/", "School_1.fbx", 
-			mat))))
+			rotMat))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("·Îµù ³¡ "));	

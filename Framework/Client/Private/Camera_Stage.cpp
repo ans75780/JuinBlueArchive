@@ -35,7 +35,7 @@ HRESULT CCamera_Stage::Initialize(void * pArg)
 
 	m_fSpeed = 3.f;
 	
-	m_vOriginOffset = { -3.f,4.5f, 0.f };
+	m_vOriginOffset = { 3.f,4.5f, 0.f };
 	m_vOffset = m_vOriginOffset;
 	m_bInCam = true;
 	m_fOriginFov = m_CameraDesc.fFovy;

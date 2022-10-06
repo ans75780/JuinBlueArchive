@@ -229,6 +229,12 @@
     <ClInclude Include="..\Public\State_Attack.h">
       <Filter>04. State\Attack</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\UI_Combat_HpBar.h">
+      <Filter>02.GameObject\03. UI\Combat\UI_Combat_HpBar</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Dead.h">
+      <Filter>04. State\Dead</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -444,6 +450,12 @@
     <ClCompile Include="..\Private\State_Attack.cpp">
       <Filter>04. State\Attack</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\UI_Combat_HpBar.cpp">
+      <Filter>02.GameObject\03. UI\Combat\UI_Combat_HpBar</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Dead.cpp">
+      <Filter>04. State\Dead</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -546,9 +558,6 @@
     </Filter>
     <Filter Include="06. User">
       <UniqueIdentifier>{452e91d5-a4d2-4a41-a5d4-a4a4c0cd6679}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObject\For.FormationLevel">
-      <UniqueIdentifier>{7bb8cc3e-d96c-4fb8-bebf-45bc18dd1502}</UniqueIdentifier>
     </Filter>
     <Filter Include="01.Level\00. Loading">
       <UniqueIdentifier>{807441ba-e54d-4b86-960a-e96a8505241f}</UniqueIdentifier>
@@ -663,6 +672,18 @@
     </Filter>
     <Filter Include="04. State\Attack">
       <UniqueIdentifier>{06561c3b-6514-4c2f-8545-192d189df07d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\03. UI\Combat">
+      <UniqueIdentifier>{0def0860-9fa9-4b15-b842-532d52ee9801}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\03. UI\Combat\UI_Combat_HpBar">
+      <UniqueIdentifier>{e88a5751-90ea-4f64-ac8c-4cd229e88e29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Combat">
+      <UniqueIdentifier>{0a67f2fd-281d-4ae3-ba7c-473e2829964b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. State\Dead">
+      <UniqueIdentifier>{a8595b4b-7de0-4c23-a808-f979d57129b5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

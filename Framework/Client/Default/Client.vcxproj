@@ -211,8 +211,10 @@
     <ClInclude Include="..\Public\MainApp.h" />
     <ClInclude Include="..\Public\MapProp.h" />
     <ClInclude Include="..\Public\State_Attack.h" />
+    <ClInclude Include="..\Public\State_Dead.h" />
     <ClInclude Include="..\Public\State_Student_Jump.h" />
     <ClInclude Include="..\Public\State_Student_Run.h" />
+    <ClInclude Include="..\Public\UI_Combat_HpBar.h" />
     <ClInclude Include="..\Public\UI_Progress.h" />
     <ClInclude Include="..\Public\Sky.h" />
     <ClInclude Include="..\Public\Stage.h" />
@@ -281,8 +283,10 @@
     <ClCompile Include="..\Private\MainApp.cpp" />
     <ClCompile Include="..\Private\MapProp.cpp" />
     <ClCompile Include="..\Private\State_Attack.cpp" />
+    <ClCompile Include="..\Private\State_Dead.cpp" />
     <ClCompile Include="..\Private\State_Student_Jump.cpp" />
     <ClCompile Include="..\Private\State_Student_Run.cpp" />
+    <ClCompile Include="..\Private\UI_Combat_HpBar.cpp" />
     <ClCompile Include="..\Private\UI_Progress.cpp" />
     <ClCompile Include="..\Private\Sky.cpp" />
     <ClCompile Include="..\Private\Stage.cpp" />

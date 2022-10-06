@@ -122,12 +122,13 @@ void CLevel_Formation::Tick(_float fTimeDelta)
 				if (i == m_iPickedIndex)
 					continue;
 				m_vecStudent[i]->Set_Transform(m_vecFormationPos[i]);
+				//끌어다놓은 캐릭터가 겹쳐져있다면, 뒤로 밀어버림.
 				if (m_vecStudent[m_iPickedIndex]->Get_AABB()->Collision_AABB((m_vecStudent[i]->Get_AABB())))
 				{
 					
 					_vector vPos = m_vecFormationPos[i];
 					
-					vPos = XMVectorSetZ(vPos, 0.3f);
+					vPos = XMVectorSetZ(vPos, -0.3f);
 	
 					m_vecStudent[i]->Set_Transform(vPos);
 				
@@ -195,7 +196,7 @@ HRESULT CLevel_Formation::Ready_Layer_Camera(const _tchar * pLayerTag)
 	CCamera::CAMERADESC			CameraDesc;
 	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
 
-	CameraDesc.vEye = _float4(0.0f, 0.f, -3.f, 1.f);
+	CameraDesc.vEye = _float4(0.0f, 0.f, 3.f, 1.f);
 	CameraDesc.vAt = _float4(0.f, 0.f, -1.f, 1.f);
 	CameraDesc.TransformDesc.fSpeedPerSec = 5.f;
 	CameraDesc.TransformDesc.fRotationPerSec = XMConvertToRadians(90.0f);

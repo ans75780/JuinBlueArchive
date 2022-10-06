@@ -35,9 +35,9 @@ HRESULT CLevel_GamePlay::Initialize()
 	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
 		return E_FAIL;
 
-	m_vecFormationPos.push_back(XMVectorSet(-0.5f, 0.f, 0.f, 1.f));
-	m_vecFormationPos.push_back(XMVectorSet(0.f, 0.f, -0.5f, 1.f));
 	m_vecFormationPos.push_back(XMVectorSet(0.5f, 0.f, 0.f, 1.f));
+	m_vecFormationPos.push_back(XMVectorSet(0.f, 0.f, 0.5f, 1.f));
+	m_vecFormationPos.push_back(XMVectorSet(-0.5f, 0.f, 0.f, 1.f));
 	if (FAILED(Ready_Layer_Student(TEXT("Layer_Student"))))
 		return E_FAIL;
 	if (FAILED(Ready_Layer_Enemy(TEXT("Layer_Enemy"))))
@@ -51,7 +51,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	(
 		CState_Student_Default::Create(m_vecStudent[1], L"_Normal_Callsign")
 	);
-	_float3	vOffset = { -1.5f,1.f,-1.5f };
+	_float3	vOffset = { 1.5f,1.f, 1.5f };
 
 	m_pEventCam->Ready_Event_Stage_Start(m_pStageCam, m_vecStudent[1],
 		m_vecStudent[1]->Get_StateMachine()->Get_CurrentState()->Get_Animation(),
@@ -195,10 +195,31 @@ HRESULT CLevel_GamePlay::Ready_Layer_Enemy(const _tchar * pLayerTag)
 	const map<const _tchar*, CGameObject::OBJ_DESC>* EnemyData  = CUserData::Get_Instance()->Get_Actors(UNIT_TYPE::UNIT_TYPE_ENEMY);
 	for (auto& pair : *EnemyData)
 	{
-		if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, szPath, (void*)&pair.second, &pObj)))
-			return E_FAIL;
-		m_pEnemy = (CEnemy*)pObj;
-		m_pEnemy->Set_Transform(XMVectorSet(0, 0, -15.f, 1.f));
+		for (int i = 1; i < 8; i++)
+		{
+			if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, szPath, (void*)&pair.second, &pObj)))
+				return E_FAIL;
+			m_pEnemy = (CEnemy*)pObj;
+			m_pEnemy->Set_Transform(XMVectorSet(-1.5f, 0, 10.f * i, 1.f));
+			m_pEnemy->Get_Transform()->Rotation(XMVectorSet(0, 1.f, 0.f, 1.f), XMConvertToRadians(180.f));
+
+			if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, szPath, (void*)&pair.second, &pObj)))
+				return E_FAIL;
+			m_pEnemy = (CEnemy*)pObj;
+			m_pEnemy->Set_Transform(XMVectorSet(0, 0, 10.f * i, 1.f));
+			m_pEnemy->Get_Transform()->Rotation(XMVectorSet(0, 1.f, 0.f, 1.f), XMConvertToRadians(180.f));
+
+			if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, szPath, (void*)&pair.second, &pObj)))
+				return E_FAIL;
+			m_pEnemy = (CEnemy*)pObj;
+			m_pEnemy->Set_Transform(XMVectorSet(1.5f, 0, 10.f * i, 1.f));
+			m_pEnemy->Get_Transform()->Rotation(XMVectorSet(0, 1.f, 0.f, 1.f), XMConvertToRadians(180.f));
+
+
+
+
+		}
+		
 	}
 	return S_OK;
 }
@@ -257,15 +278,15 @@ HRESULT CLevel_GamePlay::Ready_Layer_Baricade(const _tchar * pLayerTag)
 	{
 		if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Prototype_Baricade"), L"Prototype_Component_Model_School_Baricade", &pObj)))
 			return E_FAIL;
-		pObj->Get_Transform()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(-1.f, 0.f, i * -8.f, 1.f));
+		pObj->Get_Transform()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(-1.f, 0.f, i * 8.f, 1.f));
 
 		if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Prototype_Baricade"), L"Prototype_Component_Model_School_Baricade", &pObj)))
 			return E_FAIL;
-		pObj->Get_Transform()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(0.f, 0.f, i * -8.f, 1.f));
+		pObj->Get_Transform()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(0.f, 0.f, i * 8.f, 1.f));
 
 		if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Prototype_Baricade"), L"Prototype_Component_Model_School_Baricade", &pObj)))
 			return E_FAIL;
-		pObj->Get_Transform()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(1.f, 0.f, i * -8.f, 1.f));
+		pObj->Get_Transform()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(1.f, 0.f, i * 8.f, 1.f));
 	}
 
 	RELEASE_INSTANCE(CGameInstance);

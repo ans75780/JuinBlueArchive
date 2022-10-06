@@ -38,6 +38,8 @@ HRESULT CCamera_Event::Initialize(void * pArg)
 
 	lstrcpy(m_desc.sz_Name, TEXT("Camera_Event"));
 
+	m_MatExRot = XMMatrixRotationAxis(XMVectorSet(0.f, 1.f, 0.f, 1.f), XMConvertToRadians(180.f));
+
 	return S_OK;
 }
 
@@ -166,9 +168,9 @@ void CCamera_Event::Event_Stage_Start()
 {
 	if (m_pAnimation->IsFinished() == true)
 	{
-		(*m_pVecStduent)[0]->Set_Transform(XMVectorSet(-1.f, 0.f, 0.f, 1.f));
+		(*m_pVecStduent)[0]->Set_Transform(XMVectorSet(1.f, 0.f, 0.f, 1.f));
 		(*m_pVecStduent)[1]->Set_Transform(XMVectorSet(0.f, 0.f, 0.f, 1.f));
-		(*m_pVecStduent)[2]->Set_Transform(XMVectorSet(1.f, 0.f, 0.f, 1.f));
+		(*m_pVecStduent)[2]->Set_Transform(XMVectorSet(-1.f, 0.f, 0.f, 1.f));
 
 
 		CCamera::Set_MainCam(m_pReturnToCam);
@@ -209,6 +211,9 @@ void CCamera_Event::Event_Ex(_float fTimeDelta)
 
 	m_CameraDesc.fFovy = XMConvertToRadians(15.0f);
 	_matrix vMatrix = m_pTarget->Get_ModelCom()->Find_Bone("Camera001")->Get_CombinedMatrix();
+
+	vMatrix *= m_MatExRot;
+
 	_matrix vTargetViewMatrix = m_pTarget->Get_ModelCom()->Find_Bone("Camera001.Target")->Get_CombinedMatrix();
 	_vector	vTargetPos = m_pTarget->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION);
 

@@ -18,6 +18,9 @@ private:
 public:
 	static	void	Set_Pos(class CTransform* pTransform, const _float4& fPos);
 	static	void	Add_Pos(class CTransform* pTransform, const _float4& fPos);
+	static	_float	Get_Range(class CTransform* pDest, class CTransform* pSour);
+
+
 };
 
 END

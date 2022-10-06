@@ -57,6 +57,9 @@ private:
 	class CAnimation*	m_pAnimation;
 	_float4		m_fTargetOriginPos;
 
+//축 회전 180도 조정용 매트릭스
+private:
+	_matrix m_MatExRot;
 
 };
 

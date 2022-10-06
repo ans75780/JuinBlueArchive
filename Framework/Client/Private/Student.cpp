@@ -65,7 +65,7 @@ void CStudent::LateTick(_float fTimeDelta)
 {
 	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 	CGameInstance*	pInstance = GET_INSTANCE(CGameInstance);
 
 	if (pInstance->Get_CurrentLevelID() == LEVEL_FORMATION)
@@ -79,7 +79,7 @@ void CStudent::LateTick(_float fTimeDelta)
 
 	}
 	RELEASE_INSTANCE(CGameInstance);
-#endif // _DEBUG
+//#endif // _DEBUG
 
 
 }

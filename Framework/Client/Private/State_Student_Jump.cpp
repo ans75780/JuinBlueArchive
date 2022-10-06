@@ -54,7 +54,7 @@ _bool CState_Student_Jump::Loop(_float fTimeDelta)
 
 	m_pAnimation->Update(fTimeDelta);
 	m_pModel->Update_CombinedMatrix();
-	m_pOwner->Get_Transform()->Go_Backward(fTimeDelta);
+	m_pOwner->Get_Transform()->Go_Straight(fTimeDelta);
 
 	return false;
 }

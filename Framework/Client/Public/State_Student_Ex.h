@@ -20,6 +20,11 @@ public:
 private:
 	class CAnimation*	m_pExCutin= nullptr;
 	class CAnimation*	m_pEx= nullptr;
+
+
+
+
+
 };
 
 END

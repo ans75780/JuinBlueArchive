@@ -45,7 +45,7 @@ _bool CState_Run::Loop(_float fTimeDelta)
 	m_pModel->Update_CombinedMatrix();
 
 
-	m_pTransform->Go_Backward(fTimeDelta);
+	m_pTransform->Go_Straight(fTimeDelta);
 
 	return false;
 }

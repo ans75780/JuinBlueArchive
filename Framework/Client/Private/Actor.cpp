@@ -8,9 +8,11 @@
 #include "Collider.h"
 #include "State_Student_Formation_Idle.h"
 #include "Animation.h"
+#include "State_Dead.h"
 CActor::CActor(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObject(pDevice, pContext)
 {
+
 }
 
 
@@ -33,6 +35,8 @@ HRESULT CActor::Initialize(void * pArg)
 
 	if (FAILED(__super::Initialize(&TransformDesc)))
 		return E_FAIL;
+
+	m_eStageState = STAGE_STATE_MOVE;
 	return S_OK;
 }
 
@@ -119,6 +123,14 @@ CAnimation * CActor::Get_Animation(const char * pAnimationName)
 _bool CActor::Collision_AABB(RAYDESC & ray, _float & distance)
 {
 	return m_pAABBCom->Collision_AABB(ray, distance);
+}
+
+void CActor::Damaged(_float fAtk)
+{
+	m_desc.fHp -= fAtk;
+	if (0 >= m_desc.fHp)
+		m_pStateMachine->Add_State(CState_Dead::Create(this));
+
 }
 
 HRESULT CActor::SetUp_Components()
