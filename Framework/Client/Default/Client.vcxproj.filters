@@ -226,6 +226,9 @@
     <ClInclude Include="..\Public\State_Student_Ex.h">
       <Filter>04. State\Student\EX</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\State_Attack.h">
+      <Filter>04. State\Attack</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -437,6 +440,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\State_Student_Ex.cpp">
       <Filter>04. State\Student\EX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Attack.cpp">
+      <Filter>04. State\Attack</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -654,6 +660,9 @@
     </Filter>
     <Filter Include="02.GameObject\StageObject">
       <UniqueIdentifier>{ac9405f1-1c23-4c95-8d50-40fa1a6a54ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. State\Attack">
+      <UniqueIdentifier>{06561c3b-6514-4c2f-8545-192d189df07d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

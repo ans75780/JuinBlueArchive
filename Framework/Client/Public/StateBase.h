@@ -21,11 +21,10 @@ public:
 	virtual void		Enter();
 	virtual _bool		Loop(_float fTimeDelta) = 0;
 	virtual CStateBase*	Exit() = 0;
-
+	
 public:
 	class CAnimation*	Get_Animation() { return m_pAnimation; }
 	void	CallExit() { m_bCalledExit = true; }
-
 
 
 protected:
