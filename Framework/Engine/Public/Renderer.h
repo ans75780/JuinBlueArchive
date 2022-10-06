@@ -10,7 +10,7 @@ BEGIN(Engine)
 class ENGINE_DLL CRenderer final : public CComponent
 {
 public:
-	enum RENDERGROUP { RENDER_PRIORITY, RENDER_NONALPHABLEND, RENDER_NONLIGHT, RENDER_ALPHABLEND, RENDER_UI, RENDER_END };
+	enum RENDERGROUP { RENDER_PRIORITY, RENDER_NONALPHABLEND, RENDER_NONLIGHT, RENDER_ALPHABLEND, RENDER_UIBG, RENDER_UI, RENDER_END };
 
 private:
 	CRenderer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -53,6 +53,7 @@ private:
 		HRESULT Render_Blend(); /* Diffuse * Shade 백버퍼에 그린다. */
 		HRESULT Render_NonLight();
 		HRESULT Render_AlphaBlend();
+		HRESULT Render_UIBG();
 		HRESULT Render_UI();
 
 	#ifdef _DEBUG

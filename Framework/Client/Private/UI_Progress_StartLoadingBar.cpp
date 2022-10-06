@@ -23,7 +23,7 @@ HRESULT CUI_Progress_StartLoadingBar::Initialize(void * pArg)
 	m_fPos = { -500.f,-280.f,0.f };
 	m_fSize = { 1.f,1.f,1.f };
 
-	m_fFrontBarSize = { 1.f,10.f};
+	m_fFrontBarSize = { 1.f,15.f};
 	
 	m_fFrontColor = { 75.f / 255.f, 206.f / 255.f, 255.f / 255.f, 1.f };
 

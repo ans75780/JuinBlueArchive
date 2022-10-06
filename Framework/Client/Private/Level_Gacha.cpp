@@ -14,6 +14,12 @@ HRESULT CLevel_Gacha::Initialize()
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 
+
+	if (FAILED(Ready_Layer_Bg()))
+		return E_FAIL;
+
+
+
 	return S_OK;
 }
 
@@ -30,6 +36,20 @@ HRESULT CLevel_Gacha::Render()
 
 	SetWindowText(g_hWnd, TEXT("CLevel_Gacha ·¹º§"));
 
+	return S_OK;
+}
+
+HRESULT CLevel_Gacha::Ready_Layer_Bg()
+{
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GACHA, TEXT("Layer_Gacha_BG"), TEXT("Prototype_GameObject_Gacha_BG"))))
+		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GACHA, TEXT("Layer_Gacha_BG"), TEXT("Prototype_GameObject_Gacha_BG_Video"))))
+		return E_FAIL;
+
+	RELEASE_INSTANCE(CGameInstance);
 	return S_OK;
 }
 

@@ -134,6 +134,8 @@ HRESULT CRenderer::Draw_RenderGroup()
 		return E_FAIL;
 	if (FAILED(Render_AlphaBlend()))
 		return E_FAIL;
+	if (FAILED(Render_UIBG()))
+		return E_FAIL;
 	if (FAILED(Render_UI()))
 		return E_FAIL;
 
@@ -276,6 +278,25 @@ HRESULT CRenderer::Render_AlphaBlend()
 	return S_OK;
 }
 
+HRESULT CRenderer::Render_UIBG()
+{
+	m_RenderObjects[RENDER_UIBG].sort([](CGameObject* pSour, CGameObject* pDest)
+	{
+		return (pSour)->Get_BgPos().z > (pDest)->Get_BgPos().z;
+	});
+
+	for (auto& pGameObject : m_RenderObjects[RENDER_UIBG])
+	{
+		if (nullptr != pGameObject)
+			pGameObject->Render();
+
+		Safe_Release(pGameObject);
+	}
+	m_RenderObjects[RENDER_UIBG].clear();
+
+	return S_OK;
+}
+
 HRESULT CRenderer::Render_UI()
 {
 	m_RenderObjects[RENDER_UI].sort([](CGameObject* pSour, CGameObject* pDest)
@@ -294,6 +315,7 @@ HRESULT CRenderer::Render_UI()
 
 	return S_OK;
 }
+
 #ifdef _DEBUG
 
 HRESULT CRenderer::Render_Debug()

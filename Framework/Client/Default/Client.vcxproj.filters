@@ -229,6 +229,12 @@
     <ClInclude Include="..\Public\UI_Progress_StartLoadingBar.h">
       <Filter>02.GameObject\03. UI\04. Progress\StartLoadingBar</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\BG_Gacha.h">
+      <Filter>02.GameObject\10. LevelBG\BG_Gacha</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BG_Gacha_Video.h">
+      <Filter>02.GameObject\10. LevelBG\BG_Gacha</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -443,6 +449,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\UI_Progress_StartLoadingBar.cpp">
       <Filter>02.GameObject\03. UI\04. Progress\StartLoadingBar</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BG_Gacha.cpp">
+      <Filter>02.GameObject\10. LevelBG\BG_Gacha</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BG_Gacha_Video.cpp">
+      <Filter>02.GameObject\10. LevelBG\BG_Gacha</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -664,6 +676,12 @@
     <Filter Include="02.GameObject\03. UI\04. Progress\StartLoadingBar">
       <UniqueIdentifier>{d318a1dd-b2a0-492d-b033-47ca829fff43}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObject\10. LevelBG">
+      <UniqueIdentifier>{3294b03f-251f-4366-a993-3cdcd3406487}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\10. LevelBG\BG_Gacha">
+      <UniqueIdentifier>{86bd56c7-f74d-4191-9d0c-881cf0a15cc0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -721,5 +739,10 @@
     <FxCompile Include="..\..\ShaderFiles\Shader_PointToProgress_StartLoadingBar.hlsl">
       <Filter>03.ShaderFiles</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Resources\Data\SaveData.json">
+      <Filter>96.Imgui\Imgui</Filter>
+    </None>
   </ItemGroup>
 </Project>

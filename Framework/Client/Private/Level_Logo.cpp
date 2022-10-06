@@ -148,6 +148,8 @@ HRESULT CLevel_Logo::LoadUI()
 		string	_Name = (*it)["Name"];
 
 		_uint	_Level = (*it)["Level"];
+		if (_Level == LEVEL::LEVEL_LOADING_START)
+			continue;
 		_uint	_Type = (*it)["Type"];
 
 		_float3 _Pos;

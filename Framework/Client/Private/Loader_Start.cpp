@@ -67,34 +67,34 @@ HRESULT CLoader_Start::Loading_ForLogoLevel()
 
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
 	
-	//CUI_Progress_StartLoadingBar* pUI_ProgreeBar = CUI_Progress_StartLoadingBar::Create(m_pDevice, m_pContext);
+	CUI_Progress_StartLoadingBar* pUI_ProgreeBar = CUI_Progress_StartLoadingBar::Create(m_pDevice, m_pContext);
+	pUI_ProgreeBar->Set_UILevel(LEVEL_LOADING_START);
+	if (FAILED(pGameInstance->Add_UI(LEVEL_LOADING_START, pUI_ProgreeBar)))
+	{
+		MSG_BOX("실패로딩바");
+		return E_FAIL;
+	}
 
-	//if (FAILED(pGameInstance->Add_UI(LEVEL_LOADING_START, pUI_ProgreeBar)))
-	//{
-	//	MSG_BOX("실패로딩바");
-	//	return E_FAIL;
-	//}
+	CUI_Text* pUI_Text = CUI_Text::Create(m_pDevice, m_pContext);
+	pUI_Text->Set_UIName(TEXT("UI_ProgreeBarLoadingText"));
+	pUI_Text->Set_Size(_float3(50.f, 50.f, 0.f));
+	pUI_Text->Set_Pos(_float3(-100.f, -300.f, 1.f));
+	pUI_Text->SetUIScale(0.5f);
+	pUI_Text->SetUITextColor(_float4(1.f, 1.f, 1.f, 1.f));
+	pUI_Text->Set_ThrowPos(_float2(0.f, 0.f));
+	pUI_Text->Set_UIType(UI_TYPE::UI_POST);
+	pUI_Text->SetUIText(TEXT("객체를 생성중입니다."));
+	pUI_Text->Set_UILevel(LEVEL_LOADING_START);
+	pUI_Text->Initialization();
 
-	//CUI_Text* pUI_Text = CUI_Text::Create(m_pDevice, m_pContext);
-	//pUI_Text->Set_UIName(TEXT("UI_ProgreeBarLoadingText"));
-	//pUI_Text->Set_Size(_float3(50.f, 50.f, 0.f));
-	//pUI_Text->Set_Pos(_float3(-100.f, -300.f, 1.f));
-	//pUI_Text->SetUIScale(0.5f);
-	//pUI_Text->SetUITextColor(_float4(1.f, 1.f, 1.f, 1.f));
-	//pUI_Text->Set_ThrowPos(_float2(0.f, 0.f));
-	//pUI_Text->Set_UIType(UI_TYPE::UI_POST);
-	//pUI_Text->SetUIText(TEXT("객체를 생성중입니다."));
-	//pUI_Text->Set_UILevel(pGameInstance->Get_CurrentLevelID());
-	//pUI_Text->Initialization();
+	if (FAILED(pGameInstance->Add_UI(LEVEL_LOADING_START, pUI_Text)))
+	{
+		MSG_BOX("실페로딩텍스트");
+		return E_FAIL;
+	}
 
-	//if (FAILED(pGameInstance->Add_UI(LEVEL_LOADING_START, pUI_Text)))
-	//{
-	//	MSG_BOX("실페로딩텍스트");
-	//	return E_FAIL;
-	//}
-
-	//pUI_ProgreeBar->Plus_WidthSize(100.f);	//10%
-	//pUI_Text->SetUIText(TEXT("텍스쳐를 불러오는중입니다."));
+	pUI_ProgreeBar->Plus_WidthSize(100.f);	//10%
+	pUI_Text->SetUIText(TEXT("텍스쳐를 불러오는중입니다."));
 
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중이비낟. "));
 
@@ -123,45 +123,41 @@ HRESULT CLoader_Start::Loading_ForLogoLevel()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/DefaultButton.png"), 1))))
 		return E_FAIL;
 
-	//LoadUITexture("Combat", m_pGameInstance);
-	LoadUITexture("Common", pGameInstance);
-	//LoadUITexture("Emoji", m_pGameInstance);
-	//LoadUITexture("Floater", m_pGameInstance);
+	//LoadUITexture("Combat");
+	if (FAILED(LoadUITexture("Common")))
+		return E_FAIL;
+	//LoadUITexture("Emoji");
+	//LoadUITexture("Floater");
 
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Common_Bottom_Menu_Bg"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/Common_Bottom_Menu_Bg%d.png"), 1))))
+	if (FAILED(LoadBg()))
 		return E_FAIL;
 
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Common_Top_Menu_Bg"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/Common_Top_Menu_Bg%d.png"), 1))))
-		return E_FAIL;
-
-	//pUI_ProgreeBar->Plus_WidthSize(100.f); //20%
-	//pUI_Text->SetUIText(TEXT("메모리얼을 불러오는중입니다."));
+	pUI_ProgreeBar->Plus_WidthSize(100.f); //20%
+	pUI_Text->SetUIText(TEXT("메모리얼을 불러오는중입니다."));
 
 	lstrcpy(m_szLoadingText, TEXT("메모리얼을 로딩중이비낟. "));
 
 
-	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Memorial_Haruka_Start"),
-	//	CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Memorial/Haruka/Start/Haruka_home_D_35_%d.png"), 515))))
-	//	return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Memorial_Haruka_Start"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Memorial/Haruka/Start/Haruka_home_D_35_%d.png"), 515))))
+		return E_FAIL;
 
-	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Memorial_Haruka_Idle"),
-	//	CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Memorial/Haruka/Idle/Haruka_home_I_35_%d.png"), 286))))
-	//	return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Memorial_Haruka_Idle"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Memorial/Haruka/Idle/Haruka_home_I_35_%d.png"), 286))))
+		return E_FAIL;
 
-	///* For.Prototype_GameObject_Memorial_Haruka */
-	//if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Memorial_Haruka_Start"),
-	//	CMemorial_Haruka_Start::Create(m_pDevice, m_pContext))))
-	//	return E_FAIL;
-	///* For.Prototype_GameObject_Memorial_Haruka */
-	//if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Memorial_Haruka_Idle"),
-	//	CMemorial_Haruka_Idle::Create(m_pDevice, m_pContext))))
-	//	return E_FAIL;
+	/* For.Prototype_GameObject_Memorial_Haruka */
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Memorial_Haruka_Start"),
+		CMemorial_Haruka_Start::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	/* For.Prototype_GameObject_Memorial_Haruka */
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Memorial_Haruka_Idle"),
+		CMemorial_Haruka_Idle::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 
-	//pUI_ProgreeBar->Plus_WidthSize(200.f); //40%
-	//pUI_Text->SetUIText(TEXT("오브젝트를 생성중입니다."));
+	pUI_ProgreeBar->Plus_WidthSize(200.f); //40%
+	pUI_Text->SetUIText(TEXT("오브젝트를 생성중입니다."));
 
 
 	lstrcpy(m_szLoadingText, TEXT("오브젝트를 로딩중입니다. "));
@@ -173,8 +169,8 @@ HRESULT CLoader_Start::Loading_ForLogoLevel()
 		return E_FAIL;
 
 
-	//pUI_ProgreeBar->Plus_WidthSize(100.f); //50%
-	//pUI_Text->SetUIText(TEXT("모델을 불러오는중입니다."));
+	pUI_ProgreeBar->Plus_WidthSize(100.f); //50%
+	pUI_Text->SetUIText(TEXT("모델을 불러오는중입니다."));
 
 
 	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중이비낟. "));
@@ -182,38 +178,39 @@ HRESULT CLoader_Start::Loading_ForLogoLevel()
 	_matrix mat;
 	mat = XMMatrixIdentity();
 
-	///* For.Prototype_Component_Model_Serika*/
-	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Aru_Original"),
-	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Aru_Original/", "Aru_Original.fbx", mat))))
-	//	return E_FAIL;
+	/* For.Prototype_Component_Model_Serika*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Aru_Original"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Aru_Original/", "Aru_Original.fbx", mat))))
+		return E_FAIL;
 
 	///* For.Prototype_Component_Model_Serika*/
 	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Haruka_Original"),
 	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Haruka_Original/", "Haruka_Original.fbx", mat))))
 	//	return E_FAIL;
-	//pUI_ProgreeBar->Plus_WidthSize(200.f); //70%
 
-	///* For.Prototype_Component_Model_Serika*/
-	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Zunko_Original"),
-	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Zunko_Original/", "Zunko_Original.fbx", mat))))
-	//	return E_FAIL;
+	pUI_ProgreeBar->Plus_WidthSize(200.f); //70%
+
+	/* For.Prototype_Component_Model_Serika*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Zunko_Original"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Zunko_Original/", "Zunko_Original.fbx", mat))))
+		return E_FAIL;
 
 
-	//pUI_ProgreeBar->Plus_WidthSize(100.f); //80%
-	//pUI_Text->SetUIText(TEXT("맵을 불러오는중입니다."));
+	pUI_ProgreeBar->Plus_WidthSize(100.f); //80%
+	pUI_Text->SetUIText(TEXT("맵을 불러오는중입니다."));
 
 	lstrcpy(m_szLoadingText, TEXT("맵을 로딩중이비낟. "));
 
 
 	/* For.Prototype_Component_Model_Stage_School*/
-	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Stage_School_1"),
-	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Models/NonAnimModels/Stages/School/", "School_1.fbx", mat))))
-	//	return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Stage_School_1"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Models/NonAnimModels/Stages/School/", "School_1.fbx", mat))))
+		return E_FAIL;
 
 
-	//pUI_ProgreeBar->Plus_WidthSize(200.f); //100%
-	//pUI_ProgreeBar->Set_LoadingSusccess(true);
-	//pUI_Text->SetUIText(TEXT("ENTER TO START"));
+	pUI_ProgreeBar->Plus_WidthSize(200.f); //100%
+	pUI_ProgreeBar->Set_LoadingSusccess(true);
+	pUI_Text->SetUIText(TEXT("ENTER TO START"));
 
 	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));
 
@@ -225,7 +222,7 @@ HRESULT CLoader_Start::Loading_ForLogoLevel()
 	return S_OK;
 }
 
-HRESULT CLoader_Start::LoadUITexture(char * folderName, void * pGameInstance)
+HRESULT CLoader_Start::LoadUITexture(char * folderName)
 {
 	string jsonPath = "../../Resources/UI/UI_original/json/";
 	jsonPath += folderName;
@@ -262,12 +259,12 @@ HRESULT CLoader_Start::LoadUITexture(char * folderName, void * pGameInstance)
 		_ImagePath += _name;
 		_ImagePath += ".png";
 
-		CGameInstance* pGamePointer = (CGameInstance*)pGameInstance;
+		CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
-		if (FAILED(pGamePointer->Add_Prototype(LEVEL_STATIC
+		if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC
 			, CStrUtil::ConvertCtoWC(TextureName.c_str())
 			, CTexture::Create(m_pDevice, m_pContext
-				, CStrUtil::ConvertCtoWC(_ImagePath.c_str())))))
+			, CStrUtil::ConvertCtoWC(_ImagePath.c_str())))))
 		{
 			string jsonFail = "제이슨을 통한 경로 이미지";
 			jsonFail += folderName;
@@ -279,8 +276,30 @@ HRESULT CLoader_Start::LoadUITexture(char * folderName, void * pGameInstance)
 			return E_FAIL;
 		}
 
+		RELEASE_INSTANCE(CGameInstance);
+
 	}
 
+	return S_OK;
+}
+
+HRESULT CLoader_Start::LoadBg()
+{
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Common_Bottom_Menu_Bg"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/Common_Bottom_Menu_Bg%d.png"), 1))))
+		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Common_Top_Menu_Bg"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/Common_Top_Menu_Bg%d.png"), 1))))
+		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Gacha_BtnBg"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/Gacha/Gacha_BtnBg.png"), 1))))
+		return E_FAIL;
+
+	RELEASE_INSTANCE(CGameInstance);
 	return S_OK;
 }
 

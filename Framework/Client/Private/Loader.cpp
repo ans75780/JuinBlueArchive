@@ -33,7 +33,8 @@
 #include "Stage.h"
 #include "Enemy.h"
 
-
+#include "BG_Gacha.h"
+#include "BG_Gacha_Video.h"
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice(pDevice)
@@ -316,9 +317,25 @@ HRESULT CLoader::Loading_ForRecruitLevel()
 	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
 	Safe_AddRef(pGameInstance);
 
+	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중이비낟. "));
+
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GACHA, TEXT("Prototype_Component_Texture_Gacha_BG_Blur"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/Gacha/Gacha_BGtemp.png"), 1))))
+		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GACHA, TEXT("Prototype_Component_Texture_Gacha_Pv"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Gacha_Banner/GachaBanner_%d.jpg"), 533))))
+		return E_FAIL;
+
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
 
-	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중이비낟. "));
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Gacha_BG"),
+		CBG_Gacha::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Gacha_BG_Video"),
+		CBG_Gacha_Video::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중이비낟. "));
 

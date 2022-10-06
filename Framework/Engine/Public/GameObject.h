@@ -62,6 +62,8 @@ public:
 	_bool	Get_Delete() { return m_bDelete; }
 	void	Set_Delete(_bool _bDelete) { m_bDelete = _bDelete; }
 
+public:
+	virtual _float3 Get_BgPos() { return _float3(0.f, 0.f, 0.f); }
 
 protected:
 	ID3D11Device*				m_pDevice = nullptr;

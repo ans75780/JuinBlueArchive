@@ -35,7 +35,8 @@ public:
 	HRESULT Loading_ForLogoLevel();
 
 private:
-	HRESULT LoadUITexture(char* folderName, void* pGameInstance);
+	HRESULT LoadUITexture(char* folderName);
+	HRESULT LoadBg();
 
 private:
 	ID3D11Device*				m_pDevice = nullptr;

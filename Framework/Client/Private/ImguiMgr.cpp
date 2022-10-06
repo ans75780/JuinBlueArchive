@@ -662,7 +662,7 @@ void CImguiMgr::UITool_SelectUI(void)
 	if (ImGui::InputFloat2("Set Pos##2", InputPos, "%.1f", 0))
 		m_pSelectUI->Set_Pos(_float3(InputPos[0], InputPos[1], InputPos[2]));
 	
-	if (ImGui::InputFloat2("Set ThrowPos", InputThrowPos, "%.1f", 0))
+	if (ImGui::InputFloat2("Set ThrowPos##2", InputThrowPos, "%.1f", 0))
 		m_pSelectUI->Set_ThrowPos(_float2(InputThrowPos[0], InputThrowPos[1]));
 
 
@@ -838,8 +838,8 @@ void CImguiMgr::Create_LevelMoveButton(_uint _Level)	//LevelButton 을 정의하고 �
 		pUI->Set_UIName(CStrUtil::ConvertCtoWC(UI_Name));
 		pUI->Set_UIType((UI_TYPE)Render_Num);
 		pUI->Set_Size(_float3(UI_Size[0], UI_Size[1], UI_Size[2]));
+		pUI->Set_Pos(_float3(UI_Pos[0], UI_Pos[1], UI_Pos[2]));
 		pUI->Set_ThrowPos(_float2(UI_ThrowPos[0], UI_ThrowPos[1]));
-
 		pUI->Set_UILevel(_Level);
 		pUI->Initialization();
 
@@ -937,6 +937,8 @@ void CImguiMgr::Load_UIVec(void)	//불러오기
 		string	_Name = (*it)["Name"];
 
 		_uint	_Level = (*it)["Level"];
+		if (_Level == LEVEL::LEVEL_LOADING_START)
+			continue;
 		_uint	_Type = (*it)["Type"];
 
 		_float3 _Pos;

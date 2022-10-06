@@ -61,7 +61,7 @@ void CStart_illust::Tick(_float fTimeDelta)
 
 	FrameCheck(fTimeDelta);
 
-	if (num > 6.f)
+	if (num > 4.f)
 	{
 		m_fPos.x = 0.f;
 		m_fPos.y = 0.f;
