@@ -16,6 +16,7 @@
 #include "VIBuffer_Point.h"
 
 #include "Start_illust.h"
+#include "UI_Progress_StartLoadingBar.h"
 
 CMainApp::CMainApp()
 	: m_pGameInstance(CGameInstance::Get_Instance())
@@ -50,6 +51,9 @@ HRESULT CMainApp::Initialize()
 		return E_FAIL;
 
 	if (FAILED(Ready_Static_Resource()))
+		return E_FAIL;
+
+	if (FAILED(Ready_Loading_Resource()))
 		return E_FAIL;
 
 	CUserData::Get_Instance()->Initialize();
@@ -220,6 +224,17 @@ HRESULT CMainApp::Ready_Prototype_Component()
 
 HRESULT CMainApp::Ready_Static_Resource()
 {
+
+
+	return S_OK;
+}
+
+HRESULT CMainApp::Ready_Loading_Resource()
+{
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_StartLoadingBar"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../../ShaderFiles/Shader_PointToProgress_StartLoadingBar.hlsl"), VTXPOS_DECLARATION::Element, VTXPOS_DECLARATION::iNumElements))))
+		return E_FAIL;
+
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOADING_START, TEXT("Prototype_Component_Texture_Startillust"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/Start/Start_%d.png"), 16))))
 		return E_FAIL;
@@ -227,7 +242,7 @@ HRESULT CMainApp::Ready_Static_Resource()
 	if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Start_illust"), CStart_illust::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	return S_OK;
+	return S_OK;	
 }
 
 CMainApp * CMainApp::Create()

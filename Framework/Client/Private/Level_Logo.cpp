@@ -5,6 +5,7 @@
 #include "UI_Progress.h"
 #include "UI_LevelMoveButton.h"
 #include "UI_Text.h"
+#include "StrUtil.h"
 
 //Json 사용
 #include "Json_Utility.h"
@@ -20,8 +21,11 @@ HRESULT CLevel_Logo::Initialize()
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
-		return E_FAIL;	
+	//if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
+	//	return E_FAIL;	
+	
+	if (FAILED(LoadUI()))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -112,6 +116,118 @@ HRESULT CLevel_Logo::UI_Extract()
 		imwrite(savePath.c_str(), cropped_image);
 	}
 	
+	return S_OK;
+}
+
+HRESULT CLevel_Logo::LoadUI()
+{
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+	//pGameInstace->Clear_UIVec();	UI 있는거다지움
+
+	json loadJson;
+
+	ifstream fin;
+	fin.open("../../Resources/Data/SaveData.json");
+
+	if (fin.is_open())
+		fin >> (loadJson);
+	else
+	{
+		MSG_BOX("JSON_UI 불러오기 실패");
+		return E_FAIL;
+	}
+	fin.close();
+
+	auto UIJsonVec = loadJson["UI"];
+
+	for (auto it = UIJsonVec.begin(); it != UIJsonVec.end(); ++it)
+	{
+		string	_ClassName = (*it)["ClassName"];
+		string	_TextureName = (*it)["TextureName"];
+		string	_Name = (*it)["Name"];
+
+		_uint	_Level = (*it)["Level"];
+		_uint	_Type = (*it)["Type"];
+
+		_float3 _Pos;
+		_Pos.x = (*it)["Pos_x"];
+		_Pos.y = (*it)["Pos_y"];
+		_Pos.z = (*it)["Pos_z"];
+
+		_float3 _Size;
+		_Size.x = (*it)["Size_x"];
+		_Size.y = (*it)["Size_y"];
+		_Size.z = (*it)["Size_z"];
+
+		_float2 _ThrowPos;
+		_ThrowPos.x = (*it)["ThrowPos_x"];
+		_ThrowPos.y = (*it)["ThrowPos_y"];
+
+		CUI* pUI = nullptr;
+
+
+		if (!strcmp(_ClassName.c_str(), "CUI_LevelMoveButton"))
+		{
+			pUI = CUI_LevelMoveButton::Create(m_pDevice, m_pContext);
+
+			_uint	_MoveLevel = (*it)["MoveLevel"];
+			static_cast<CUI_LevelMoveButton*>(pUI)->SetMoveLevel(_MoveLevel);
+		}
+
+
+		else if (!strcmp(_ClassName.c_str(), "CUI_Text"))
+		{
+			pUI = CUI_Text::Create(m_pDevice, m_pContext);
+
+			string _UITextTemp = (*it)["UIText"];
+			_tchar* _UIText = CStrUtil::ConvertUTF8toWC(_UITextTemp.c_str());
+			static_cast<CUI_Text*>(pUI)->SetUIText(_UIText);
+			Safe_Delete_Array(_UIText);
+
+			static_cast<CUI_Text*>(pUI)->SetUIScale(((*it)["UITextScale"]));
+
+			_float4 _UITextColor;
+			_UITextColor.x = (*it)["UITextColor_x"];
+			_UITextColor.y = (*it)["UITextColor_y"];
+			_UITextColor.z = (*it)["UITextColor_z"];
+			_UITextColor.w = (*it)["UITextColor_w"];
+
+			static_cast<CUI_Text*>(pUI)->SetUITextColor(_UITextColor);
+
+		}
+
+		if (nullptr == pUI)
+		{
+			MSG_BOX("클래스정보 에러로 생성불가");
+			return E_FAIL;
+		}
+
+		_tchar* pUtil_ImageTag = CStrUtil::ConvertCtoWC(_TextureName.c_str());
+		_tchar* pUtil_Name = CStrUtil::ConvertCtoWC(_Name.c_str());
+
+		pUI->LoadUIImage(pUtil_ImageTag);
+		pUI->Set_UIType((UI_TYPE)_Type);
+		pUI->Set_Size(_float3(_Size.x, _Size.y, _Size.z));
+		pUI->Set_Pos(_float3(_Pos.x, _Pos.y, _Pos.z));
+		pUI->Set_UIName(pUtil_Name);
+		pUI->Set_UILevel(_Level);
+		pUI->Set_ThrowPos(_ThrowPos);
+		pUI->initialization();
+
+		if (FAILED(pGameInstance->Add_UI(_Level, pUI)))
+		{
+			MSG_BOX("UI정보 불러오기 실패");
+			return E_FAIL;
+		}
+
+		Safe_Delete_Array(pUtil_Name);
+		Safe_Delete_Array(pUtil_ImageTag);
+	}
+
+	RELEASE_INSTANCE(CGameInstance);
+
+
 	return S_OK;
 }
 

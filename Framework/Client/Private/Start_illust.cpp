@@ -61,7 +61,7 @@ void CStart_illust::Tick(_float fTimeDelta)
 
 	FrameCheck(fTimeDelta);
 
-	if (num > 8.f)
+	if (num > 6.f)
 	{
 		m_fPos.x = 0.f;
 		m_fPos.y = 0.f;
@@ -179,29 +179,29 @@ void CStart_illust::FrameCheck(_float & _Delta)
 
 void CStart_illust::Move_Right(_float & _Delta)
 {
-	m_fPos.x += _Delta * 3.f;
+	m_fPos.x += _Delta * 5.f;
 }
 
 void CStart_illust::Move_Left(_float & _Delta)
 {
-	m_fPos.x -= _Delta * 3.f;
+	m_fPos.x -= _Delta * 5.f;
 }
 
 void CStart_illust::Move_Down(_float & _Delta)
 {
-	m_fPos.y -= _Delta * 2.5f;
+	m_fPos.y -= _Delta * 4.5f;
 }
 
 void CStart_illust::Move_ZoomIn(_float & _Delta)
 {
-	m_fSize.x += _Delta * 10.f;
-	m_fSize.y += _Delta * 5.625f;
+	m_fSize.x += _Delta * 14.f;
+	m_fSize.y += _Delta * 8.75f;
 }
 
 void CStart_illust::Move_ZoomOut(_float & _Delta)
 {
-	m_fSize.x -= _Delta * 10.f;
-	m_fSize.y -= _Delta * 5.625f;
+	m_fSize.x -= _Delta * 14.f;
+	m_fSize.y -= _Delta * 8.75f;
 }
 
 CStart_illust * CStart_illust::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)

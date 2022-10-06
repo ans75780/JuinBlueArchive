@@ -30,7 +30,7 @@ HRESULT CUI_Text::initialization()
 {
 	__super::initialization();
 
-	if (0 == lstrcmp(m_szUIName, TEXT("Diamond_Text")))
+	if (0 == lstrcmp(m_szUIName, TEXT("Diamond_Text"))) //유저데이터 에서 가지고있는돈가져오기
 	{
 		_tchar temp[10] = {};
 

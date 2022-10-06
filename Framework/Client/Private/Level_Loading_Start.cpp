@@ -2,10 +2,10 @@
 #include "..\Public\Level_Loading_Start.h"
 
 #include "Loader_Start.h"
-
 #include "Level_Logo.h"
-
 #include "GameInstance.h"
+
+#include "UI_Progress_StartLoadingBar.h"
 
 CLevel_Loading_Start::CLevel_Loading_Start(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)

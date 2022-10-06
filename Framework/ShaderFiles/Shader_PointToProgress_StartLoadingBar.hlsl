@@ -7,6 +7,8 @@ vector	g_vCamPosition;
 
 float2	g_ProgressBarSize;
 
+float4	g_vColor;
+
 texture2D	g_DiffuseTexture;
 
 sampler DefaultSampler = sampler_state
@@ -112,8 +114,7 @@ PS_OUT PS_MAIN(PS_IN In)
 {
 	PS_OUT		Out = (PS_OUT)0;
 
-	Out.vColor = 1.f;
-	Out.vColor.gb = 0.f;
+	Out.vColor = g_vColor;
 
 	if (Out.vColor.a < 0.1f)
 		discard;

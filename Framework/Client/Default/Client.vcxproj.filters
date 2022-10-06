@@ -203,7 +203,7 @@
       <Filter>02.GameObject\Baricade</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\UI_Progress.h">
-      <Filter>02.GameObject\03. UI\04.Progress</Filter>
+      <Filter>02.GameObject\03. UI\04. Progress</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State_Student_Run.h">
       <Filter>04. State\Student\Run</Filter>
@@ -225,6 +225,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\State_Student_Ex.h">
       <Filter>04. State\Student\EX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_Progress_StartLoadingBar.h">
+      <Filter>02.GameObject\03. UI\04. Progress\StartLoadingBar</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -415,7 +418,7 @@
       <Filter>02.GameObject\Baricade</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\UI_Progress.cpp">
-      <Filter>02.GameObject\03. UI\04.Progress</Filter>
+      <Filter>02.GameObject\03. UI\04. Progress</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State_Student_Run.cpp">
       <Filter>04. State\Student\Run</Filter>
@@ -437,6 +440,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\State_Student_Ex.cpp">
       <Filter>04. State\Student\EX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_Progress_StartLoadingBar.cpp">
+      <Filter>02.GameObject\03. UI\04. Progress\StartLoadingBar</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -631,9 +637,6 @@
     <Filter Include="04. State\Idle">
       <UniqueIdentifier>{7604fe63-d291-4b4a-8da4-9e6621296a6f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObject\03. UI\04.Progress">
-      <UniqueIdentifier>{b63d5817-442b-4656-823c-5a73df864c37}</UniqueIdentifier>
-    </Filter>
     <Filter Include="04. State\Student\Run">
       <UniqueIdentifier>{73ac411a-4a54-42b5-91db-ebcbc61a91e1}</UniqueIdentifier>
     </Filter>
@@ -654,6 +657,12 @@
     </Filter>
     <Filter Include="02.GameObject\StageObject">
       <UniqueIdentifier>{ac9405f1-1c23-4c95-8d50-40fa1a6a54ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\03. UI\04. Progress">
+      <UniqueIdentifier>{b63d5817-442b-4656-823c-5a73df864c37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\03. UI\04. Progress\StartLoadingBar">
+      <UniqueIdentifier>{d318a1dd-b2a0-492d-b033-47ca829fff43}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -707,6 +716,9 @@
       <Filter>03.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\..\ShaderFiles\Shader_PointToProgress.hlsl">
+      <Filter>03.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\ShaderFiles\Shader_PointToProgress_StartLoadingBar.hlsl">
       <Filter>03.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

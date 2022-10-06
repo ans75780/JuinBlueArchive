@@ -19,6 +19,7 @@ public:
 private:	
 	HRESULT Ready_Layer_BackGround(const _tchar* pLayerTag);
 	HRESULT UI_Extract();
+	HRESULT LoadUI();
 
 
 public:

@@ -56,6 +56,11 @@ HRESULT CMemorial_Haruka_Start::initialization()
 
 void CMemorial_Haruka_Start::Tick(_float fTimeDelta)
 {
+	if (KEY(LBUTTON, HOLD))
+	{
+		m_fFrame = 513.f;
+	}
+
 	m_fFrame += 514.f * (fTimeDelta * 0.05f);
 
 	if (m_fFrame >= 514.f)

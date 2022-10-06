@@ -31,6 +31,7 @@ private:
 	HRESULT	Open_Level_Start(LEVEL eLevelID);
 	HRESULT Ready_Prototype_Component();
 	HRESULT Ready_Static_Resource();
+	HRESULT Ready_Loading_Resource();
 
 private:
 	_uint					m_iNumRender = 0;

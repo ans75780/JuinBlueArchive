@@ -9,6 +9,8 @@
 
 #include "Memorial_Haruka_Start.h"
 #include "Memorial_Haruka_Idle.h"
+#include "UI_Progress_StartLoadingBar.h"
+#include "UI_Text.h"
 
 CLoader_Start::CLoader_Start(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice(pDevice)
@@ -53,6 +55,8 @@ HRESULT CLoader_Start::Initialize(LEVEL eNextLevel)
 	if (0 == m_hThread)
 		return E_FAIL;
 
+
+
 	return S_OK;
 }
 
@@ -62,6 +66,35 @@ HRESULT CLoader_Start::Loading_ForLogoLevel()
 	Safe_AddRef(pGameInstance);
 
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
+	
+	//CUI_Progress_StartLoadingBar* pUI_ProgreeBar = CUI_Progress_StartLoadingBar::Create(m_pDevice, m_pContext);
+
+	//if (FAILED(pGameInstance->Add_UI(LEVEL_LOADING_START, pUI_ProgreeBar)))
+	//{
+	//	MSG_BOX("실패로딩바");
+	//	return E_FAIL;
+	//}
+
+	//CUI_Text* pUI_Text = CUI_Text::Create(m_pDevice, m_pContext);
+	//pUI_Text->Set_UIName(TEXT("UI_ProgreeBarLoadingText"));
+	//pUI_Text->Set_Size(_float3(50.f, 50.f, 0.f));
+	//pUI_Text->Set_Pos(_float3(-100.f, -300.f, 1.f));
+	//pUI_Text->SetUIScale(0.5f);
+	//pUI_Text->SetUITextColor(_float4(1.f, 1.f, 1.f, 1.f));
+	//pUI_Text->Set_ThrowPos(_float2(0.f, 0.f));
+	//pUI_Text->Set_UIType(UI_TYPE::UI_POST);
+	//pUI_Text->SetUIText(TEXT("객체를 생성중입니다."));
+	//pUI_Text->Set_UILevel(pGameInstance->Get_CurrentLevelID());
+	//pUI_Text->initialization();
+
+	//if (FAILED(pGameInstance->Add_UI(LEVEL_LOADING_START, pUI_Text)))
+	//{
+	//	MSG_BOX("실페로딩텍스트");
+	//	return E_FAIL;
+	//}
+
+	//pUI_ProgreeBar->Plus_WidthSize(100.f);	//10%
+	//pUI_Text->SetUIText(TEXT("텍스쳐를 불러오는중입니다."));
 
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중이비낟. "));
 
@@ -103,6 +136,9 @@ HRESULT CLoader_Start::Loading_ForLogoLevel()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/Common_Top_Menu_Bg%d.png"), 1))))
 		return E_FAIL;
 
+	//pUI_ProgreeBar->Plus_WidthSize(100.f); //20%
+	//pUI_Text->SetUIText(TEXT("메모리얼을 불러오는중입니다."));
+
 	lstrcpy(m_szLoadingText, TEXT("메모리얼을 로딩중이비낟. "));
 
 
@@ -124,6 +160,10 @@ HRESULT CLoader_Start::Loading_ForLogoLevel()
 	//	return E_FAIL;
 
 
+	//pUI_ProgreeBar->Plus_WidthSize(200.f); //40%
+	//pUI_Text->SetUIText(TEXT("오브젝트를 생성중입니다."));
+
+
 	lstrcpy(m_szLoadingText, TEXT("오브젝트를 로딩중입니다. "));
 
 	if (FAILED(pGameInstance->Add_Prototype(L"Prototype_Student", CStudent::Create(m_pDevice, m_pContext))))
@@ -133,10 +173,14 @@ HRESULT CLoader_Start::Loading_ForLogoLevel()
 		return E_FAIL;
 
 
+	//pUI_ProgreeBar->Plus_WidthSize(100.f); //50%
+	//pUI_Text->SetUIText(TEXT("모델을 불러오는중입니다."));
+
+
 	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중이비낟. "));
 
-	//_matrix mat;
-	//mat = XMMatrixIdentity();
+	_matrix mat;
+	mat = XMMatrixIdentity();
 
 	///* For.Prototype_Component_Model_Serika*/
 	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Aru_Original"),
@@ -147,20 +191,32 @@ HRESULT CLoader_Start::Loading_ForLogoLevel()
 	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Haruka_Original"),
 	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Haruka_Original/", "Haruka_Original.fbx", mat))))
 	//	return E_FAIL;
+	//pUI_ProgreeBar->Plus_WidthSize(200.f); //70%
 
 	///* For.Prototype_Component_Model_Serika*/
 	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Zunko_Original"),
 	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Zunko_Original/", "Zunko_Original.fbx", mat))))
 	//	return E_FAIL;
 
-	//lstrcpy(m_szLoadingText, TEXT("맵을 로딩중이비낟. "));
 
-	///* For.Prototype_Component_Model_Stage_School*/
+	//pUI_ProgreeBar->Plus_WidthSize(100.f); //80%
+	//pUI_Text->SetUIText(TEXT("맵을 불러오는중입니다."));
+
+	lstrcpy(m_szLoadingText, TEXT("맵을 로딩중이비낟. "));
+
+
+	/* For.Prototype_Component_Model_Stage_School*/
 	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Stage_School_1"),
 	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Models/NonAnimModels/Stages/School/", "School_1.fbx", mat))))
 	//	return E_FAIL;
 
-	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));	
+
+	//pUI_ProgreeBar->Plus_WidthSize(200.f); //100%
+	//pUI_ProgreeBar->Set_LoadingSusccess(true);
+	//pUI_Text->SetUIText(TEXT("ENTER TO START"));
+
+	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));
+
 
 	m_isFinished = true;
 

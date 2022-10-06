@@ -34,6 +34,12 @@ void CUI_LevelMoveButton::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
+	if (true)
+	{
+		m_fPos.x = m_fPos.x;
+		m_fPos.y = m_fPos.y;
+	}
+
 	if (m_bUIButtonDown)
 	{
 		m_fSize.x = m_fOriginSize.x * 0.01f * 90.f;
@@ -84,6 +90,9 @@ void CUI_LevelMoveButton::OnLButtonUp()
 		if (LEVEL_END != m_MoveLevel)
 		{
 			CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+			m_fSize = m_fOriginSize;
+
 
 #if _DEBUG
 			CImguiMgr* pImgui = GET_INSTANCE(CImguiMgr);
