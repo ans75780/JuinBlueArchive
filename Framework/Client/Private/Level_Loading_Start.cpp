@@ -6,6 +6,7 @@
 #include "GameInstance.h"
 
 #include "UI_Progress_StartLoadingBar.h"
+#include "UI_Loading.h"
 
 CLevel_Loading_Start::CLevel_Loading_Start(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
@@ -77,6 +78,26 @@ HRESULT CLevel_Loading_Start::Ready_Layer_Start_illust()
 
 	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOADING_START, TEXT("Layer_Loading_Start_illust"), TEXT("Prototype_GameObject_Start_illust"))))
 		return E_FAIL;
+
+	CUI * pUI = CUI_Loading::Create(m_pDevice, m_pContext);
+
+	if (FAILED(pUI->LoadUIImage(TEXT("Prototype_Component_Texture_Pop_logo"), LEVEL_LOADING_START)))
+		return E_FAIL;
+
+	pUI->Set_UIName(TEXT("Loading_Start_BlueArchive_logo"));
+	pUI->Set_UIType(UI_TYPE::UI_POST);
+	pUI->Set_Size(_float3(250.f, 85.f, 1.f));
+	pUI->Set_Pos(_float3(-490.f, 315.f, 0.f));
+	pUI->Set_ThrowPos(_float2(0.f, 0.f));
+	pUI->Set_UILevel(LEVEL_LOADING_START);
+	pUI->Initialization();
+
+	if (FAILED(pGameInstance->Add_UI(LEVEL_LOADING_START, pUI)))	//받아온레벨에다 생성
+	{
+		MSG_BOX("UI 블루아카이브 로고 생성 실패");
+		return E_FAIL;
+	}
+
 
 	RELEASE_INSTANCE(CGameInstance);
 	return S_OK;

@@ -299,6 +299,10 @@ HRESULT CLoader_Start::LoadBg()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/Gacha/Gacha_BtnBg.png"), 1))))
 		return E_FAIL;
 
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Loading_Black_Bg"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/Loading/Black_Bg.png"), 1))))
+		return E_FAIL;
+
 	RELEASE_INSTANCE(CGameInstance);
 	return S_OK;
 }

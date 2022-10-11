@@ -35,6 +35,9 @@ HRESULT CLevel_Loading::Initialize(LEVEL eNextLevel)
 	if (nullptr == m_pLoader)
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_LoadingImage()))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -95,7 +98,6 @@ void CLevel_Loading::Tick(_float fTimeDelta)
 				break;
 			}
 
-
 			if (nullptr == pLevel)
 				return;
 
@@ -115,6 +117,17 @@ HRESULT CLevel_Loading::Render()
 
 	SetWindowText(g_hWnd, m_pLoader->Get_LoadingText());	
 
+	return S_OK;
+}
+
+HRESULT CLevel_Loading::Ready_Layer_LoadingImage()
+{
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+	//if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOADING_START, TEXT("Layer_Loading_Start_illust"), TEXT("Prototype_GameObject_Start_illust"))))
+	//	return E_FAIL;
+
+	RELEASE_INSTANCE(CGameInstance);
 	return S_OK;
 }
 

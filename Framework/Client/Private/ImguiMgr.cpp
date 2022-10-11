@@ -14,6 +14,7 @@
 #include "UI_Canvas.h"
 #include "UI_LevelMoveButton.h"
 #include "UI_Text.h"
+#include "UI_Loading.h"
 #include "BackGround.h"
 
 #include "Json_Utility.h"
@@ -403,92 +404,6 @@ void CImguiMgr::UITool_View(void)	//UI툴  새창을 띄움
 {
 	ImGui::Begin("UITool", &UIToolCheckBox, 0);
 
-#pragma region 이미지받기
-	if (m_ImageVec.empty())
-	{
-		map<const _tchar*, class CComponent*> _ComMap = m_pGameInstance->Get_Prototype_Component_Map(LEVEL_STATIC);
-
-		if (!_ComMap.empty())
-		{
-			for (const auto& iter : _ComMap)
-			{
-				if (0 < wcscmp(iter.first, TEXT("Prototype_Component_Texture_")))
-				{
-					_tchar _name[MAX_PATH];
-
-					lstrcpy(_name, iter.first + lstrlenW(TEXT("Prototype_Component_Texture_")));
-
-					t_ImageVec _Imagevec;
-					ZeroMemory(&_Imagevec, sizeof(t_ImageVec));
-					char* pUtil_name = CStrUtil::ConvertWCtoC(_name);
-
-					strcpy_s(_Imagevec.name, MAX_PATH, pUtil_name);
-					_Imagevec.texture = (CTexture*)iter.second;
-
-					m_ImageVec.push_back(_Imagevec);
-
-					Safe_Delete_Array(pUtil_name);
-				}
-			}
-			{
-				sort(m_ImageVec.begin(), m_ImageVec.end(),
-					[](t_ImageVec &s1, t_ImageVec &s2)
-				{
-					if (s1.name[0] == s2.name[0])
-					{
-						if (s1.name[1] == s2.name[1])
-						{
-							if (s1.name[2] == s2.name[2])
-							{
-								if (s1.name[3] == s2.name[3])
-								{
-									if (s1.name[4] == s2.name[4])
-									{
-										if (s1.name[5] == s2.name[5])
-										{
-											if (s1.name[6] == s2.name[6])
-											{
-												if (s1.name[7] == s2.name[7])
-												{
-													if (s1.name[8] == s2.name[8])
-													{
-														if (s1.name[9] == s2.name[9])
-														{
-															if (s1.name[10] == s2.name[10])
-															{
-																if (s1.name[11] == s2.name[11])
-																{
-																	return s1.name[12] < s2.name[12];
-																}
-																return s1.name[11] < s2.name[11];
-															}
-															return s1.name[10] < s2.name[10];
-														}
-														return s1.name[9] < s2.name[9];
-													}
-													return s1.name[8] < s2.name[8];
-												}
-												return s1.name[7] < s2.name[7];
-											}
-											return s1.name[6] < s2.name[6];
-										}
-										return s1.name[5] < s2.name[5];
-									}
-									return s1.name[4] < s2.name[4];
-								}
-								return s1.name[3] < s2.name[3];
-							}
-							return s1.name[2] < s2.name[2];
-						}
-						return s1.name[1] < s2.name[1];
-					}
-					return s1.name[0] < s2.name[0];
-				});
-			}
-		}
-	}
-#pragma endregion 
-
 	if (ImGui::Button("Save"))
 		m_pGameInstance->Save_UIVec();//세이브 저장
 	
@@ -556,6 +471,95 @@ void CImguiMgr::UITool_View(void)	//UI툴  새창을 띄움
 		ImGui::EndCombo();
 	}
 
+	if ((UI_Class_SelectNum == 1 || UI_Class_SelectNum == 3) && m_ImageVec.empty())
+	{
+#pragma region 이미지받기
+		if (m_ImageVec.empty())
+		{
+			map<const _tchar*, class CComponent*> _ComMap = m_pGameInstance->Get_Prototype_Component_Map(LEVEL_STATIC);
+
+			if (!_ComMap.empty())
+			{
+				for (const auto& iter : _ComMap)
+				{
+					if (0 < wcscmp(iter.first, TEXT("Prototype_Component_Texture_")))
+					{
+						_tchar _name[MAX_PATH];
+
+						lstrcpy(_name, iter.first + lstrlenW(TEXT("Prototype_Component_Texture_")));
+
+						t_ImageVec _Imagevec;
+						ZeroMemory(&_Imagevec, sizeof(t_ImageVec));
+						char* pUtil_name = CStrUtil::ConvertWCtoC(_name);
+
+						strcpy_s(_Imagevec.name, MAX_PATH, pUtil_name);
+						_Imagevec.texture = (CTexture*)iter.second;
+
+						m_ImageVec.push_back(_Imagevec);
+
+						Safe_Delete_Array(pUtil_name);
+					}
+				}
+				{
+					sort(m_ImageVec.begin(), m_ImageVec.end(),
+						[](t_ImageVec &s1, t_ImageVec &s2)
+					{
+						if (s1.name[0] == s2.name[0])
+						{
+							if (s1.name[1] == s2.name[1])
+							{
+								if (s1.name[2] == s2.name[2])
+								{
+									if (s1.name[3] == s2.name[3])
+									{
+										if (s1.name[4] == s2.name[4])
+										{
+											if (s1.name[5] == s2.name[5])
+											{
+												if (s1.name[6] == s2.name[6])
+												{
+													if (s1.name[7] == s2.name[7])
+													{
+														if (s1.name[8] == s2.name[8])
+														{
+															if (s1.name[9] == s2.name[9])
+															{
+																if (s1.name[10] == s2.name[10])
+																{
+																	if (s1.name[11] == s2.name[11])
+																	{
+																		return s1.name[12] < s2.name[12];
+																	}
+																	return s1.name[11] < s2.name[11];
+																}
+																return s1.name[10] < s2.name[10];
+															}
+															return s1.name[9] < s2.name[9];
+														}
+														return s1.name[8] < s2.name[8];
+													}
+													return s1.name[7] < s2.name[7];
+												}
+												return s1.name[6] < s2.name[6];
+											}
+											return s1.name[5] < s2.name[5];
+										}
+										return s1.name[4] < s2.name[4];
+									}
+									return s1.name[3] < s2.name[3];
+								}
+								return s1.name[2] < s2.name[2];
+							}
+							return s1.name[1] < s2.name[1];
+						}
+						return s1.name[0] < s2.name[0];
+					});
+				}
+			}
+		}
+#pragma endregion 
+	}
+
 	switch (UI_Class_SelectNum)	//버튼클래스 생성
 	{
 	case 1:
@@ -575,6 +579,7 @@ void CImguiMgr::UITool_View(void)	//UI툴  새창을 띄움
 		break;
 	case 3:
 		ImGui::Separator();
+		Create_UIJump(m_currentLevelID);
 		break;
 	default:
 		ImGui::Text("Class Select plz");
@@ -656,7 +661,11 @@ void CImguiMgr::UITool_SelectUI(void)
 			m_fSelectUIColor[1] = _SelColor.y;
 			m_fSelectUIColor[2] = _SelColor.z;
 			m_fSelectUIColor[3] = _SelColor.w;
-	}
+		}
+		else if (!strcmp(OnceClass, "CUI_Loading"))
+		{
+
+		}
 
 		Safe_Delete_Array(OnceClass);
 	}
@@ -928,6 +937,105 @@ void CImguiMgr::Create_UIText(_uint _Level)
 
 }
 
+void CImguiMgr::Create_UIJump(_uint _Level)
+{
+	static _float UI_Size[3] = { 100.f, 100.f, 1.f };
+	static _float UI_Pos[3] = { 0.f, 0.f, 0.f };
+	static _float UI_ThrowPos[2]{ 0.f, 0.f };
+	static char UI_Name[MAX_PATH] = {};
+
+	static unsigned int Image_Num = 0;
+	if (!m_ImageVec.empty())
+	{
+		const char* Image_Value = m_ImageVec[Image_Num].name;
+
+		ImGui::Image(m_ImageVec[Image_Num].texture->Get_ResourceView(), ImVec2(100.f, 100.f), ImVec2(0.f, 0.f), ImVec2(1.f, 1.f), ImVec4(1.f, 1.f, 1.f, 1.f), ImVec4(1.f, 1.f, 1.f, 0.5f));
+
+		if (ImGui::BeginCombo("Static_Image", Image_Value, 0))
+		{
+			for (int i = 0; i < m_ImageVec.size(); ++i)
+			{
+				const bool is_selected = (Image_Num == i);
+				if (ImGui::Selectable(m_ImageVec[i].name, is_selected))
+				{
+					Image_Num = i;
+
+					ID3D11Resource* pResource = nullptr;
+					m_ImageVec[Image_Num].texture->Get_ResourceView()->GetResource(&pResource);
+					D3D11_RESOURCE_DIMENSION resourceType;
+					pResource->GetType(&resourceType);
+
+					if (D3D11_RESOURCE_DIMENSION_TEXTURE2D == resourceType)
+					{
+						ID3D11Texture2D* pTexture2D = (ID3D11Texture2D*)pResource;
+						D3D11_TEXTURE2D_DESC desc;
+						pTexture2D->GetDesc(&desc);
+
+						UI_Size[0] = (float)desc.Width;
+						UI_Size[1] = (float)desc.Height;
+					}
+				}
+			}
+
+			ImGui::EndCombo();
+		}
+	}
+
+	const char* Render_Type[] = { "UI_POST", "UI_DIALOG_BUTTON", "UI_DIALOG", "UI_BUTTTON", "UI_BACKGROUND", "NONE" };
+	static unsigned int Render_Num = 5;
+	const char* Render_Value = Render_Type[Render_Num];
+	if (ImGui::BeginCombo("Render Type", Render_Value, 0))
+	{
+		for (int i = 0; i < IM_ARRAYSIZE(Render_Type); ++i)
+		{
+			const bool is_selected = (Render_Num == i);
+			if (ImGui::Selectable(Render_Type[i], is_selected))
+				Render_Num = i;
+		}
+		ImGui::EndCombo();
+	}
+
+	ImGui::InputText("Name", UI_Name, MAX_PATH);
+	ImGui::InputFloat2("Set Size", UI_Size, "%.1f", 0);
+	ImGui::InputFloat2("Set Pos", UI_Pos, "%.1f", 0);
+	ImGui::InputFloat2("Set ThrowPos", UI_ThrowPos, "%.1f", 0);
+
+	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@복구요망
+	if (/*m_currentLevelID == LEVEL::LEVEL_LOADING || */Render_Num == 5/*UI_NONE*/) //로딩이거나, UI그룹설정안했다면
+	{
+		ImGui::Text("RenderType is NONE");
+		return;
+	}
+
+	if (ImGui::Button("Create_UI"))
+	{
+		string ImageName = "Prototype_Component_Texture_";
+		ImageName += m_ImageVec[Image_Num].name;
+
+		CUI * pUI = CUI_Loading::Create(m_pDevice, m_pContext);
+
+		pUI->LoadUIImage(CStrUtil::ConvertCtoWC(ImageName.c_str()));
+		pUI->Set_UIName(CStrUtil::ConvertCtoWC(UI_Name));
+		pUI->Set_UIType((UI_TYPE)Render_Num);
+		pUI->Set_Size(_float3(UI_Size[0], UI_Size[1], UI_Size[2]));
+		pUI->Set_Pos(_float3(UI_Pos[0], UI_Pos[1], UI_Pos[2]));
+		pUI->Set_ThrowPos(_float2(UI_ThrowPos[0], UI_ThrowPos[1]));
+		pUI->Set_UILevel(_Level);
+		pUI->Initialization();
+
+		if (FAILED(m_pGameInstance->Add_UI(_Level, pUI)))	//받아온레벨에다 생성
+		{
+			MSG_BOX("UI생성실패");
+		}
+
+
+		ImGui::Text("Create");
+	}
+
+
+
+}
+
 void CImguiMgr::Load_UIVec(void)	//불러오기
 {
 	m_pSelectUI = nullptr;
@@ -1003,9 +1111,12 @@ void CImguiMgr::Load_UIVec(void)	//불러오기
 			_UITextColor.w = (*it)["UITextColor_w"];
 
 			static_cast<CUI_Text*>(pUI)->SetUITextColor(_UITextColor);
-
 		}
-
+		else if (!strcmp(_ClassName.c_str(), "CUI_Loading"))
+		{
+			pUI = CUI_Loading::Create(m_pDevice, m_pContext);
+		}
+		
 		if (nullptr == pUI)
 		{
 			MSG_BOX("클래스정보 에러로 생성불가");

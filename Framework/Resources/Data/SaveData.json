@@ -1,6 +1,21 @@
 {
   "UI": [
     {
+      "ClassName": "CUI_Loading",
+      "Level": 1,
+      "Name": "Loading_Black_Bg",
+      "Pos_x": 0.0,
+      "Pos_y": 0.0,
+      "Pos_z": 0.0,
+      "Size_x": 1280.0,
+      "Size_y": 720.0,
+      "Size_z": 1.0,
+      "TextureName": "Prototype_Component_Texture_Loading_Black_Bg",
+      "ThrowPos_x": 0.0,
+      "ThrowPos_y": 0.0,
+      "Type": 0
+    },
+    {
       "ClassName": "CUI_Text",
       "Level": 3,
       "Name": "Cafe_Btn_Text",
@@ -878,6 +893,21 @@
       "ThrowPos_x": 0.0,
       "ThrowPos_y": 0.0,
       "Type": 4
+    },
+    {
+      "ClassName": "CUI_Loading",
+      "Level": 15,
+      "Name": "Loading_Start_BlueArchive_logo",
+      "Pos_x": -490.0,
+      "Pos_y": 315.0,
+      "Pos_z": 0.0,
+      "Size_x": 250.0,
+      "Size_y": 85.0,
+      "Size_z": 1.0,
+      "TextureName": "Prototype_Component_Texture_Pop_logo",
+      "ThrowPos_x": 0.0,
+      "ThrowPos_y": 0.0,
+      "Type": 0
     },
     {
       "ClassName": "CUI_Text",

@@ -56,6 +56,7 @@ private:	//새창으로 구분
 	void				SelectUI_Text(void);
 	void			Create_LevelMoveButton(_uint _Level);
 	void			Create_UIText(_uint _Level);
+	void			Create_UIJump(_uint _Level);
 
 private:
 	void		Load_UIVec(void);

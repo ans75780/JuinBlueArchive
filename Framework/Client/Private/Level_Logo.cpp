@@ -5,6 +5,7 @@
 #include "UI_Progress.h"
 #include "UI_LevelMoveButton.h"
 #include "UI_Text.h"
+#include "UI_Loading.h"
 #include "StrUtil.h"
 
 //Json »ç¿ë
@@ -197,6 +198,12 @@ HRESULT CLevel_Logo::LoadUI()
 
 			static_cast<CUI_Text*>(pUI)->SetUITextColor(_UITextColor);
 
+		}
+
+		else if (!strcmp(_ClassName.c_str(), "CUI_Loading"))
+		{
+			pUI = CUI_Loading::Create(m_pDevice, m_pContext);
+			
 		}
 
 		if (nullptr == pUI)

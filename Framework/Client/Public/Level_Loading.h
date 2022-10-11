@@ -19,6 +19,8 @@ public:
 	virtual HRESULT Initialize(LEVEL eNextLevel);
 	virtual void Tick(_float TimeDelta);
 	virtual HRESULT Render();
+private:
+	HRESULT Ready_Layer_LoadingImage();
 
 private:
 	LEVEL			m_eNextLevel = LEVEL_END;

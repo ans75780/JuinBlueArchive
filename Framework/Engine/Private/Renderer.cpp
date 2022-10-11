@@ -301,7 +301,7 @@ HRESULT CRenderer::Render_UI()
 {
 	m_RenderObjects[RENDER_UI].sort([](CGameObject* pSour, CGameObject* pDest)
 	{
-		return ((CUI*)pSour)->Get_Pos().z > ((CUI*)pDest)->Get_Pos().z;
+		return static_cast<CUI*>(pSour)->Get_Pos().z > static_cast<CUI*>(pDest)->Get_Pos().z;
 	});
 
 	for (auto& pGameObject : m_RenderObjects[RENDER_UI])

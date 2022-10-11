@@ -242,8 +242,13 @@ HRESULT CMainApp::Ready_Loading_Resource()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/Start/Start_%d.png"), 16))))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOADING_START, TEXT("Prototype_Component_Texture_Pop_logo"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/Pop_logo.png"), 1))))
+		return E_FAIL;
+
 	if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Start_illust"), CStart_illust::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
 
 	return S_OK;	
 }
