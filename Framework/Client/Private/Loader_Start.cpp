@@ -307,6 +307,10 @@ HRESULT CLoader_Start::LoadBg()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/Loading/dot_%d.png"), 4))))
 		return E_FAIL;
 
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Loading_Image"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/Loading/Loading_Image/LoadingImage_%d.png"), 28))))
+		return E_FAIL;
+
 	RELEASE_INSTANCE(CGameInstance);
 	return S_OK;
 }

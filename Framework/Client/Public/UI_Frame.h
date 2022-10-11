@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Client_Defines.h"
+#include <random>
 #include "UI.h"
 
 BEGIN(Engine)
@@ -43,9 +44,11 @@ public:
 	void	Set_MaxFrame(_float _MaxFrame) { m_fMaxFrame = _MaxFrame; }
 
 private:
-	_float m_fDelay;
-	_float m_fFrame;
-	_float m_fMaxFrame;
+	_float	m_fDelay;
+	_float	m_fFrame;
+	_float	m_fMaxFrame;
+
+	_bool	m_bLoadingImage = false;
 
 public:
 	static CUI_Frame* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

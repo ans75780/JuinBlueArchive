@@ -4,6 +4,7 @@
 
 #include "ImguiMgr.h"
 
+
 CUI_Frame::CUI_Frame(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CUI(pDevice, pContext)
 {
@@ -20,6 +21,7 @@ HRESULT CUI_Frame::Initialize(void * pArg)
 	m_fFrame = 0.f;
 	m_fMaxFrame = 0.f;
 	m_fDelay = 0.f;
+	m_bLoadingImage = false;
 
 	return S_OK;
 }
@@ -27,6 +29,16 @@ HRESULT CUI_Frame::Initialize(void * pArg)
 HRESULT CUI_Frame::Initialization()
 {
 	__super::Initialization();
+
+	if (0 == lstrcmp(m_szUIName, TEXT("Loading_ImageFrame"))) //¿ÃπÃ¡ˆπŸ≤„¡‹§ª
+	{
+		random_device _rd;
+		mt19937_64 _random(_rd());
+
+		uniform_int_distribution<__int64> _range(0, 27);
+
+		m_fFrame = (_float)(_range(_random));
+	}
 
 	return S_OK;
 }
