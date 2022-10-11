@@ -168,6 +168,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\ShaderFiles\Client_Shader_Defines.hpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Public\Actor.h" />
     <ClInclude Include="..\public\BackGround.h" />
@@ -325,7 +326,10 @@
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="..\..\ShaderFiles\Shader_Cell.hlsl" />
+    <FxCompile Include="..\..\ShaderFiles\Shader_Cell.hlsl">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </EntryPointName>
+    </FxCompile>
     <FxCompile Include="..\..\ShaderFiles\Shader_Deferred.hlsl" />
     <FxCompile Include="..\..\ShaderFiles\Shader_PointToProgress.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
