@@ -34,12 +34,6 @@ void CUI_LevelMoveButton::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	if (true)
-	{
-		m_fPos.x = m_fPos.x;
-		m_fPos.y = m_fPos.y;
-	}
-
 	if (m_bUIButtonDown)
 	{
 		m_fSize.x = m_fOriginSize.x * 0.01f * 90.f;

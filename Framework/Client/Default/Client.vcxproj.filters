@@ -235,6 +235,9 @@
     <ClInclude Include="..\Public\BG_Gacha_Video.h">
       <Filter>02.GameObject\10. LevelBG\BG_Gacha</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\UI_Loading.h">
+      <Filter>02.GameObject\03. UI\05. UI_Loading</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -455,6 +458,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\BG_Gacha_Video.cpp">
       <Filter>02.GameObject\10. LevelBG\BG_Gacha</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_Loading.cpp">
+      <Filter>02.GameObject\03. UI\05. UI_Loading</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -681,6 +687,9 @@
     </Filter>
     <Filter Include="02.GameObject\10. LevelBG\BG_Gacha">
       <UniqueIdentifier>{86bd56c7-f74d-4191-9d0c-881cf0a15cc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\03. UI\05. UI_Loading">
+      <UniqueIdentifier>{d09b22ec-8a02-4624-b456-246038cf22cc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

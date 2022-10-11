@@ -61,6 +61,9 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(Open_Level_Start(LEVEL_LOGO)))
 		return E_FAIL;
 
+	_float4 backBuffer_Color = { 0.274f, 0.49f, 1.f, 1.f };
+	m_pGameInstance->Set_BackBufferColor(backBuffer_Color);
+
 	return S_OK;
 }
 
