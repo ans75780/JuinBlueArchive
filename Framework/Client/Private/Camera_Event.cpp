@@ -168,13 +168,10 @@ void CCamera_Event::Event_Stage_Start()
 {
 	if (m_pAnimation->IsFinished() == true)
 	{
-		(*m_pVecStduent)[0]->Set_Transform(XMVectorSet(1.f, 0.f, 0.f, 1.f));
-		(*m_pVecStduent)[1]->Set_Transform(XMVectorSet(0.f, 0.f, 0.f, 1.f));
+		(*m_pVecStduent)[0]->Set_Transform(XMVectorSet(0.f, 0.f, 0.f, 1.f));
+		(*m_pVecStduent)[1]->Set_Transform(XMVectorSet(1.f, 0.f, 0.f, 1.f));
 		(*m_pVecStduent)[2]->Set_Transform(XMVectorSet(-1.f, 0.f, 0.f, 1.f));
-
-
 		CCamera::Set_MainCam(m_pReturnToCam);
-		
 	}
 	
 	m_pTransformCom->LookAt(m_pTarget->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION));

@@ -125,8 +125,8 @@ HRESULT CCombatFormation::StartGame()
 	}
 	else
 	{
-		m_vecStudent[0]->Set_Transform(XMVectorSet(1.f, 0.f, 0.f, 1.f));
-		m_vecStudent[1]->Set_Transform(XMVectorSet(0.f, 0.f, 0.f, 1.f));
+		m_vecStudent[0]->Set_Transform(XMVectorSet(0.f, 0.f, 0.f, 1.f));
+		m_vecStudent[1]->Set_Transform(XMVectorSet(1.f, 0.f, 0.f, 1.f));
 		m_vecStudent[2]->Set_Transform(XMVectorSet(-1.f, 0.f, 0.f, 1.f));
 	}
 	
