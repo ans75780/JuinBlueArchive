@@ -235,6 +235,9 @@
     <ClInclude Include="..\Public\State_Dead.h">
       <Filter>04. State\Dead</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CombatFormation.h">
+      <Filter>02.GameObject\CombatFormation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -455,6 +458,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\State_Dead.cpp">
       <Filter>04. State\Dead</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CombatFormation.cpp">
+      <Filter>02.GameObject\CombatFormation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -679,11 +685,11 @@
     <Filter Include="02.GameObject\03. UI\Combat\UI_Combat_HpBar">
       <UniqueIdentifier>{e88a5751-90ea-4f64-ac8c-4cd229e88e29}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObject\Combat">
-      <UniqueIdentifier>{0a67f2fd-281d-4ae3-ba7c-473e2829964b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="04. State\Dead">
       <UniqueIdentifier>{a8595b4b-7de0-4c23-a808-f979d57129b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\CombatFormation">
+      <UniqueIdentifier>{0a67f2fd-281d-4ae3-ba7c-473e2829964b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
