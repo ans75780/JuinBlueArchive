@@ -6,7 +6,7 @@
 #include "GameInstance.h"
 
 #include "UI_Progress_StartLoadingBar.h"
-#include "UI_Loading.h"
+#include "UI_Frame.h"
 
 CLevel_Loading_Start::CLevel_Loading_Start(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
@@ -79,7 +79,7 @@ HRESULT CLevel_Loading_Start::Ready_Layer_Start_illust()
 	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOADING_START, TEXT("Layer_Loading_Start_illust"), TEXT("Prototype_GameObject_Start_illust"))))
 		return E_FAIL;
 
-	CUI * pUI = CUI_Loading::Create(m_pDevice, m_pContext);
+	CUI * pUI = CUI_Frame::Create(m_pDevice, m_pContext);
 
 	if (FAILED(pUI->LoadUIImage(TEXT("Prototype_Component_Texture_Pop_logo"), LEVEL_LOADING_START)))
 		return E_FAIL;

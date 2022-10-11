@@ -5,7 +5,7 @@
 #include "UI_Progress.h"
 #include "UI_LevelMoveButton.h"
 #include "UI_Text.h"
-#include "UI_Loading.h"
+#include "UI_Frame.h"
 #include "StrUtil.h"
 
 //Json »ç¿ë
@@ -169,7 +169,6 @@ HRESULT CLevel_Logo::LoadUI()
 
 		CUI* pUI = nullptr;
 
-
 		if (!strcmp(_ClassName.c_str(), "CUI_LevelMoveButton"))
 		{
 			pUI = CUI_LevelMoveButton::Create(m_pDevice, m_pContext);
@@ -177,8 +176,6 @@ HRESULT CLevel_Logo::LoadUI()
 			_uint	_MoveLevel = (*it)["MoveLevel"];
 			static_cast<CUI_LevelMoveButton*>(pUI)->SetMoveLevel(_MoveLevel);
 		}
-
-
 		else if (!strcmp(_ClassName.c_str(), "CUI_Text"))
 		{
 			pUI = CUI_Text::Create(m_pDevice, m_pContext);
@@ -199,11 +196,15 @@ HRESULT CLevel_Logo::LoadUI()
 			static_cast<CUI_Text*>(pUI)->SetUITextColor(_UITextColor);
 
 		}
-
-		else if (!strcmp(_ClassName.c_str(), "CUI_Loading"))
+		else if (!strcmp(_ClassName.c_str(), "CUI_Frame"))
 		{
-			pUI = CUI_Loading::Create(m_pDevice, m_pContext);
-			
+			pUI = CUI_Frame::Create(m_pDevice, m_pContext);
+
+			_float	_MaxFrame = (*it)["MaxFrame"];
+			_float	_Delay = (*it)["Delay"];
+
+			static_cast<CUI_Frame*>(pUI)->Set_MaxFrame(_MaxFrame);
+			static_cast<CUI_Frame*>(pUI)->Set_Delay(_Delay);
 		}
 
 		if (nullptr == pUI)

@@ -14,11 +14,11 @@ END
 BEGIN(Client)
 
 
-class CUI_Loading final : public CUI
+class CUI_Frame final : public CUI
 {
 public:
-	CUI_Loading(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual ~CUI_Loading() = default;
+	CUI_Frame(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual ~CUI_Frame() = default;
 
 public:
 	virtual HRESULT Initialize(void* pArg);
@@ -33,15 +33,22 @@ public:
 	virtual void	OnLButtonClicked();
 
 private:
-	HRESULT SetUp_ShaderResource();
-
-private:
-	_float m_fJumpStartDelay;
-	_float m_fJumpDelay;
-	_float m_fJumpPos;
+	virtual HRESULT	SetUp_ShaderResource();
 
 public:
-	static CUI_Loading* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	_float	Get_Delay() { return m_fDelay; }
+	void	Set_Delay(_float _delay) { m_fDelay = _delay; }
+	
+	_float	Get_MaxFrame() { return m_fMaxFrame; }
+	void	Set_MaxFrame(_float _MaxFrame) { m_fMaxFrame = _MaxFrame; }
+
+private:
+	_float m_fDelay;
+	_float m_fFrame;
+	_float m_fMaxFrame;
+
+public:
+	static CUI_Frame* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual void Free() override;
 };
 

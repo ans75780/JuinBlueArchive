@@ -54,9 +54,10 @@ private:	//새창으로 구분
 	void			UITool_SelectUI(void);	//m_pSelectUI에 담긴UI 포인터의 정보를 보고 수정할수있음
 	void				SelectUI_LevelMoveButton(void);	
 	void				SelectUI_Text(void);
+	void				SelectUI_Frame(void);
 	void			Create_LevelMoveButton(_uint _Level);
 	void			Create_UIText(_uint _Level);
-	void			Create_UIJump(_uint _Level);
+	void			Create_UILoading(_uint _Level);
 
 private:
 	void		Load_UIVec(void);
@@ -84,6 +85,9 @@ private:
 
 	_float	m_fSelectUITextScale = 1.f;		//클릭한 UITextScale 확인용
 	float	m_fSelectUIColor[4] = { 1.f, };	
+
+	_float	m_fSelectUIFrameMaxFrame = 0.f;
+	_float	m_fSelectUIFrameDelay = 0.f;
 
 public:
 	void	Set_SelectUI(CUI* _UI) { m_pSelectUI = _UI; }

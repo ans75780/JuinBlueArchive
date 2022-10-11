@@ -5,6 +5,7 @@
 
 #include "../../Client/Public/UI_LevelMoveButton.h"
 #include "../../Client/Public/UI_Text.h"
+#include "../../Client/Public/UI_Frame.h"
 #include "StrUtil.h"
 
 IMPLEMENT_SINGLETON(CUI_Manager);
@@ -155,8 +156,13 @@ HRESULT CUI_Manager::Save_UIVec()
 					element["UITextColor_y"] = _pUIText->GetUITextColor().y;
 					element["UITextColor_z"] = _pUIText->GetUITextColor().z;
 					element["UITextColor_w"] = _pUIText->GetUITextColor().w;
-
 				}
+				else if (!strcmp(_ClassName, "CUI_Frame"))
+				{
+					element["MaxFrame"] = static_cast<CUI_Frame*>(it)->Get_MaxFrame();
+					element["Delay"] = static_cast<CUI_Frame*>(it)->Get_Delay();
+				}
+
 
 				Safe_Delete_Array(_Name);
 				Safe_Delete_Array(_ClassName);

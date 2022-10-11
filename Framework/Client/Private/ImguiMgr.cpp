@@ -14,7 +14,7 @@
 #include "UI_Canvas.h"
 #include "UI_LevelMoveButton.h"
 #include "UI_Text.h"
-#include "UI_Loading.h"
+#include "UI_Frame.h"
 #include "BackGround.h"
 
 #include "Json_Utility.h"
@@ -579,7 +579,7 @@ void CImguiMgr::UITool_View(void)	//UI툴  새창을 띄움
 		break;
 	case 3:
 		ImGui::Separator();
-		Create_UIJump(m_currentLevelID);
+		Create_UILoading(m_currentLevelID);
 		break;
 	default:
 		ImGui::Text("Class Select plz");
@@ -662,9 +662,10 @@ void CImguiMgr::UITool_SelectUI(void)
 			m_fSelectUIColor[2] = _SelColor.z;
 			m_fSelectUIColor[3] = _SelColor.w;
 		}
-		else if (!strcmp(OnceClass, "CUI_Loading"))
+		else if (!strcmp(OnceClass, "CUI_Frame"))
 		{
-
+			m_fSelectUIFrameDelay = static_cast<CUI_Frame*>(m_pSelectUI)->Get_Delay();
+			m_fSelectUIFrameMaxFrame = static_cast<CUI_Frame*>(m_pSelectUI)->Get_MaxFrame();
 		}
 
 		Safe_Delete_Array(OnceClass);
@@ -701,6 +702,8 @@ void CImguiMgr::UITool_SelectUI(void)
 		SelectUI_LevelMoveButton();
 	else if (!strcmp(tempClassName, "CUI_Text"))
 		SelectUI_Text();
+	else if (!strcmp(tempClassName, "CUI_Frame"))
+		SelectUI_Frame();
 
 	Safe_Delete_Array(tempClassName);
 	//@@@@@@@@@@@@@@@@@@클래스별 추가항목 END@@@@@@@@@@@@@@@@@@//
@@ -782,6 +785,26 @@ void CImguiMgr::SelectUI_Text(void)
 		}
 		_float4 _InputColor = { m_fSelectUIColor[0], m_fSelectUIColor[1], m_fSelectUIColor[2], m_fSelectUIColor[3] };
 		static_cast<CUI_Text*>(m_pSelectUI)->SetUITextColor(_InputColor);
+	}
+}
+
+void CImguiMgr::SelectUI_Frame(void)
+{
+	if (ImGui::InputFloat("MaxFrame", &m_fSelectUIFrameMaxFrame))
+	{
+		if (m_fSelectUIFrameMaxFrame >= 0.f)
+		{
+			static_cast<CUI_Frame*>(m_pSelectUI)->Set_MaxFrame(m_fSelectUIFrameMaxFrame);
+		}
+	}
+
+	if (ImGui::InputFloat("Delay", &m_fSelectUIFrameDelay))
+	{
+		if (m_fSelectUIFrameDelay >= 0.f)
+		{
+			static_cast<CUI_Frame*>(m_pSelectUI)->Set_Delay(m_fSelectUIFrameDelay);
+
+		}
 	}
 }
 
@@ -937,7 +960,7 @@ void CImguiMgr::Create_UIText(_uint _Level)
 
 }
 
-void CImguiMgr::Create_UIJump(_uint _Level)
+void CImguiMgr::Create_UILoading(_uint _Level)
 {
 	static _float UI_Size[3] = { 100.f, 100.f, 1.f };
 	static _float UI_Pos[3] = { 0.f, 0.f, 0.f };
@@ -1012,7 +1035,7 @@ void CImguiMgr::Create_UIJump(_uint _Level)
 		string ImageName = "Prototype_Component_Texture_";
 		ImageName += m_ImageVec[Image_Num].name;
 
-		CUI * pUI = CUI_Loading::Create(m_pDevice, m_pContext);
+		CUI * pUI = CUI_Frame::Create(m_pDevice, m_pContext);
 
 		pUI->LoadUIImage(CStrUtil::ConvertCtoWC(ImageName.c_str()));
 		pUI->Set_UIName(CStrUtil::ConvertCtoWC(UI_Name));
@@ -1112,11 +1135,17 @@ void CImguiMgr::Load_UIVec(void)	//불러오기
 
 			static_cast<CUI_Text*>(pUI)->SetUITextColor(_UITextColor);
 		}
-		else if (!strcmp(_ClassName.c_str(), "CUI_Loading"))
+		else if (!strcmp(_ClassName.c_str(), "CUI_Frame"))
 		{
-			pUI = CUI_Loading::Create(m_pDevice, m_pContext);
+			pUI = CUI_Frame::Create(m_pDevice, m_pContext);
+
+			_float	_MaxFrame = (*it)["MaxFrame"];
+			_float	_Delay = (*it)["Delay"];
+
+			static_cast<CUI_Frame*>(pUI)->Set_MaxFrame(_MaxFrame);
+			static_cast<CUI_Frame*>(pUI)->Set_Delay(_Delay);
 		}
-		
+
 		if (nullptr == pUI)
 		{
 			MSG_BOX("클래스정보 에러로 생성불가");
