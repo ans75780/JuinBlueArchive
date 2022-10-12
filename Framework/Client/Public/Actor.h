@@ -68,6 +68,7 @@ protected:
 protected:
 	_uint					m_iAnimIndex = 0;
 	STAGE_STATE			m_eStageState = STAGE_STATE_END;
+	class CHpBar*	m_pHpBar = nullptr;
 
 
 protected:

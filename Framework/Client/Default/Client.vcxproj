@@ -181,7 +181,6 @@
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\CombatFormation.h" />
     <ClInclude Include="..\Public\Enemy.h" />
-    <ClInclude Include="..\Public\Formation.h" />
     <ClInclude Include="..\Public\Level_Loading_Start.h" />
     <ClInclude Include="..\Public\Loader_Start.h" />
     <ClInclude Include="..\Public\Memorial_Haruka_Idle.h" />
@@ -256,7 +255,6 @@
     <ClCompile Include="..\Private\HpBar.cpp" />
     <ClCompile Include="..\Private\CombatFormation.cpp" />
     <ClCompile Include="..\Private\Enemy.cpp" />
-    <ClCompile Include="..\Private\Formation.cpp" />
     <ClCompile Include="..\Private\Level_Loading_Start.cpp" />
     <ClCompile Include="..\Private\Loader_Start.cpp" />
     <ClCompile Include="..\Private\Memorial_Haruka_Idle.cpp" />
@@ -347,6 +345,7 @@
     </FxCompile>
     <FxCompile Include="..\..\ShaderFiles\Shader_VtxAnimModel.hlsl" />
     <FxCompile Include="..\..\ShaderFiles\Shader_VtxCubeTex.hlsl" />
+    <FxCompile Include="..\..\ShaderFiles\Shader_VtxHpBar.hlsl" />
     <FxCompile Include="..\..\ShaderFiles\Shader_VtxInstance.hlsl" />
     <FxCompile Include="..\..\ShaderFiles\Shader_VtxModel.hlsl" />
     <FxCompile Include="..\..\ShaderFiles\Shader_VtxNorTex.hlsl" />

@@ -6,6 +6,9 @@
 namespace Engine
 {
 	class CGameObject;
+	class CRenderer;
+	class CVIBuffer_Rect;
+	class CShader;
 };
 
 

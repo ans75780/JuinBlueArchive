@@ -67,39 +67,7 @@ HRESULT CCombatFormation::Initialize(void * pArg)
 
 void CCombatFormation::Tick(_float fTimeDelta)
 {
-	if (KEY(R, TAP))
-	{
-		m_vecStudent[1]->Get_StateMachine()->Add_State
-		(
-			CState_Student_Default::Create(m_vecStudent[1], L"_Normal_Callsign")
-		);
-	}
-	if (KEY(NUM1, TAP))
-	{
-		m_vecStudent[0]->Get_StateMachine()->Add_State
-		(
-			CState_Student_Ex::Create(m_vecStudent[0])
-		);
-		m_pEventCam->Ready_Event_Ex(m_pStageCam, m_vecStudent[0]);
 
-	}
-	if (KEY(NUM2, TAP))
-	{
-		m_vecStudent[1]->Get_StateMachine()->Add_State
-		(
-			CState_Student_Ex::Create(m_vecStudent[1])
-		);
-		m_pEventCam->Ready_Event_Ex(m_pStageCam, m_vecStudent[1]);
-
-	}
-	if (KEY(NUM3, TAP))
-	{
-		m_vecStudent[2]->Get_StateMachine()->Add_State
-		(
-			CState_Student_Ex::Create(m_vecStudent[2])
-		);
-		m_pEventCam->Ready_Event_Ex(m_pStageCam, m_vecStudent[2]);
-	}
 }
 
 void CCombatFormation::LateTick(_float fTimeDelta)
@@ -117,7 +85,7 @@ HRESULT CCombatFormation::StartGame()
 	{
 		m_vecStudent[0]->Get_StateMachine()->Add_State
 		(
-			CState_Student_Default::Create(m_vecStudent[1], L"_Normal_Callsign")
+			CState_Student_Default::Create(m_vecStudent[0], L"_Normal_Callsign")
 		);
 		_float3	vOffset = { 1.5f,1.f, 1.5f };
 

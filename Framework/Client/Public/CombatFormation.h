@@ -5,6 +5,7 @@
 namespace Engine
 {
 	class CGameObject;
+	class CCamera;
 }
 
 BEGIN(Client)

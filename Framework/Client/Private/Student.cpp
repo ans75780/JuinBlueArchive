@@ -9,6 +9,7 @@
 #include "Collider.h"
 #include "State_Student_Formation_Idle.h"
 #include "Animation.h"
+#include "HpBar.h"
 CStudent::CStudent(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CActor(pDevice, pContext)
 {
@@ -50,6 +51,19 @@ HRESULT CStudent::StartLevel(_uint iLevel)
 {
 	if (FAILED(SetUp_StateMachine(iLevel)))
 		return E_FAIL;
+	LEVEL eLevel;
+
+	CGameInstance*	pInstance = GET_INSTANCE(CGameInstance);
+
+	if (iLevel == LEVEL::LEVEL_GAMEPLAY)
+	{
+		if (FAILED(pInstance->Add_GameObject(iLevel, L"Layer_HpBar", L"Prototype_HpBar", this, ((CGameObject**)&m_pHpBar))))
+			return E_FAIL;
+	}
+	RELEASE_INSTANCE(CGameInstance);
+
+	return S_OK;
+
 
 	return S_OK;
 }

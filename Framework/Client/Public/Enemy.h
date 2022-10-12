@@ -22,6 +22,7 @@ protected:
 	virtual ~CEnemy() = default;
 
 public:
+	virtual HRESULT StartLevel(_uint iLevel) override;
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* pArg);
 	virtual void Tick(_float fTimeDelta);
@@ -30,10 +31,6 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 protected:
 	virtual HRESULT SetUp_StateMachine(_uint iClonedLevel) override;
-
-
-protected:
-	class CHpBar*	m_pHpBar = nullptr;
 
 public:
 	static CEnemy* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

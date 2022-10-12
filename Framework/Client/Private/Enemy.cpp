@@ -22,6 +22,21 @@ CEnemy::CEnemy(const CEnemy & rhs)
 
 }
 
+HRESULT CEnemy::StartLevel(_uint iLevel)
+{
+	CGameInstance*	pInstance = GET_INSTANCE(CGameInstance);
+
+
+	if (iLevel == LEVEL::LEVEL_GAMEPLAY)
+	{
+		if (FAILED(pInstance->Add_GameObject(iLevel, L"Layer_HpBar", L"Prototype_HpBar", this, ((CGameObject**)&m_pHpBar))))
+			return E_FAIL;
+	}
+	RELEASE_INSTANCE(CGameInstance);
+
+	return S_OK;
+}
+
 HRESULT CEnemy::Initialize_Prototype()
 {
 	return S_OK;
@@ -44,15 +59,6 @@ HRESULT CEnemy::Initialize(void * pArg)
 	if (FAILED(SetUp_StateMachine(0)))
 		return E_FAIL;
 
-
-	CGameInstance*	pInstance = GET_INSTANCE(CGameInstance);
-
-
-
-	RELEASE_INSTANCE(CGameInstance);
-
-
-
 	m_pTransformCom->Set_Scaled(_float3(1.00f, 1.00f, 1.00f));
 
 	return S_OK;
@@ -61,6 +67,11 @@ HRESULT CEnemy::Initialize(void * pArg)
 void CEnemy::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
+	if (m_eStageState == CActor::STAGE_STATE::STAGE_STATE_DEAD)
+	{
+		m_pHpBar->Set_Delete(true);
+	}
 }
 
 HRESULT CEnemy::Render()

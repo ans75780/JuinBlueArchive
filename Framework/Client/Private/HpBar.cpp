@@ -29,8 +29,8 @@ HRESULT CHpBar::Start_Level()
 
 HRESULT CHpBar::Initialize_Prototype()
 {
-	m_vOffset = { 0.f,1.f,0.f };
-	m_vSize = { 3.f,0.5f,1.f };
+	m_vOffset = { 0.f,1.1f,0.f };
+	m_vSize = { 1.f,0.1f,1.f };
 
 	return S_OK;
 }
@@ -73,6 +73,34 @@ void CHpBar::Tick(_float fTimeDelta)
 	//매 틱마다 오프셋만큼 조정
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION,
 		m_pTarget->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION) + XMLoadFloat3(&m_vOffset));
+
+	//빌보드 만드는법
+	/*
+	빌보드란? 항상 나를 바라보는 오브젝트.
+	원래는 카메라위치 - 오브젝트 위치 = 방향벡터를 통해 회전시킨다.
+
+	근데, 항상 카메라를 바라보는 행렬이 있잖아?.
+	뷰 행렬을 생각해보자.
+	뷰 행렬이란 것이 무엇인가?
+	카메라를 Z양의 방향의 원점으로 돌리고, 원점으로 돌린 값을 저장한 행렬이 아닌가?
+	그러면 이의 역행렬은 카메라를 바라보는 방향이라는 것이 아닌가?
+
+	뷰 행렬의 역행렬.
+	룩 벡터에 이거 그냥 곱해주면 되지 않나.
+	*/
+
+	CGameInstance*	pInstacne = GET_INSTANCE(CGameInstance);
+
+	//뷰행렬 가져옴.
+	_matrix matViewInv = XMMatrixInverse(nullptr, pInstacne->Get_Transform(CPipeLine::D3DTS_VIEW));
+	
+	m_pTransformCom->Set_State(CTransform::STATE_RIGHT, matViewInv.r[0]);
+	m_pTransformCom->Set_State(CTransform::STATE_UP, matViewInv.r[1]);
+	m_pTransformCom->Set_State(CTransform::STATE_LOOK, matViewInv.r[2]);
+	
+	RELEASE_INSTANCE(CGameInstance);
+
+	m_pTransformCom->Set_Scaled(m_vSize);
 
 	m_fRatio = m_pTarget->Get_Desc().fHp / m_pTarget->Get_Desc().fMaxHp;
 
@@ -150,7 +178,7 @@ CHpBar * CHpBar::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		Safe_Delete(pInstance);
+		Safe_Release(pInstance);
 		return nullptr;
 	}
 
@@ -164,7 +192,7 @@ CGameObject * CHpBar::Clone(void * pArg)
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
-		Safe_Delete(pInstance);
+		Safe_Release(pInstance);
 		return nullptr;
 	}
 

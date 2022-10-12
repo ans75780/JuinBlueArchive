@@ -106,9 +106,6 @@
     <ClInclude Include="..\Public\Camera_Formation.h">
       <Filter>02.GameObject\01. Camera\Camera_Formation</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Formation.h">
-      <Filter>02.GameObject\06. Formation</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\State_Student_Formation_Idle.h">
       <Filter>04. State\Student\Formation</Filter>
     </ClInclude>
@@ -341,9 +338,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\Camera_Formation.cpp">
       <Filter>02.GameObject\01. Camera\Camera_Formation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Formation.cpp">
-      <Filter>02.GameObject\06. Formation</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State_Student_Formation_Pickup.cpp">
       <Filter>04. State\Student\Formation</Filter>
@@ -625,9 +619,6 @@
     <Filter Include="02.GameObject\05. Actor\Student">
       <UniqueIdentifier>{a5477715-8bc1-4140-a022-797e60da67ef}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObject\06. Formation">
-      <UniqueIdentifier>{21a7108e-7177-40a3-9e95-1ab62c7ee622}</UniqueIdentifier>
-    </Filter>
     <Filter Include="04. State\Student">
       <UniqueIdentifier>{3f7fdb12-5682-4400-adc8-83a39af198fb}</UniqueIdentifier>
     </Filter>
@@ -752,6 +743,9 @@
       <Filter>03.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\..\ShaderFiles\Shader_PointToProgress.hlsl">
+      <Filter>03.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\ShaderFiles\Shader_VtxHpBar.hlsl">
       <Filter>03.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>
