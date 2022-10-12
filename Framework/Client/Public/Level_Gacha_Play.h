@@ -16,7 +16,13 @@ public:
 	virtual void Tick(_float TimeDelta);
 	virtual HRESULT Render();
 private:
-	HRESULT Ready_Layer_Bg();
+	HRESULT Ready_Layer_Camera(const _tchar* pLayerTag);
+	HRESULT Ready_Layer_Student(const _tchar* pLayerTag);
+
+private:
+
+
+
 
 public:
 	static CLevel_Gacha_Play* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

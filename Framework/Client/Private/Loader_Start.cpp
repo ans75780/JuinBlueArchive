@@ -202,7 +202,7 @@ HRESULT CLoader_Start::Loading_ForLogoLevel()
 	lstrcpy(m_szLoadingText, TEXT("¸ÊÀ» ·ÎµùÁßÀÌºñ³®. "));
 
 
-	///* For.Prototype_Component_Model_Stage_School*/
+	/* For.Prototype_Component_Model_Stage_School*/
 	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Stage_School_1"),
 	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Models/NonAnimModels/Stages/School/", "School_1.fbx", mat))))
 	//	return E_FAIL;

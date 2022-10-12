@@ -3,6 +3,8 @@
 #include "GameInstance.h"
 #include "LEvel_Loading.h"
 
+#include "Camera.h"
+
 CLevel_Gacha_Play::CLevel_Gacha_Play(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -14,7 +16,10 @@ HRESULT CLevel_Gacha_Play::Initialize()
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Bg()))
+	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Student(TEXT("Layer_Student"))))
 		return E_FAIL;
 
 	return S_OK;
@@ -36,12 +41,39 @@ HRESULT CLevel_Gacha_Play::Render()
 	return S_OK;
 }
 
-HRESULT CLevel_Gacha_Play::Ready_Layer_Bg()
+HRESULT CLevel_Gacha_Play::Ready_Layer_Camera(const _tchar * pLayerTag)
 {
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
-	//if (FAILED(pGameInstance->Add_GameObject(LEVEL_GACHA, TEXT("Layer_Gacha_BG"), TEXT("Prototype_GameObject_Gacha_BG"))))
-	//	return E_FAIL;
+	/* For.Camera_Free */
+	CCamera::CAMERADESC			CameraDesc;
+	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
+
+	CameraDesc.vEye = _float4(0.0f, 0.f, -3.f, 1.f);
+	CameraDesc.vAt = _float4(0.f, 0.f, -1.f, 1.f);
+	CameraDesc.TransformDesc.fSpeedPerSec = 5.f;
+	CameraDesc.TransformDesc.fRotationPerSec = XMConvertToRadians(90.0f);
+
+	CameraDesc.fFovy = XMConvertToRadians(65.0f);
+	CameraDesc.fAspect = (_float)g_iWinCX / g_iWinCY;
+	CameraDesc.fNear = 0.2f;
+	CameraDesc.fFar = 300.f;
+
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GACHA_PLAY, pLayerTag, TEXT("Prototype_GameObject_Camera_GachaPlay"), &CameraDesc)))
+		return E_FAIL;
+
+	RELEASE_INSTANCE(CGameInstance);
+
+	return S_OK;
+}
+
+HRESULT CLevel_Gacha_Play::Ready_Layer_Student(const _tchar * pLayerTag)
+{
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+
+
+
 
 
 

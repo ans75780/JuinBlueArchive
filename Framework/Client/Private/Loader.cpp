@@ -589,6 +589,12 @@ HRESULT CLoader::Loading_ForGachaPlayLevel()
 
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
 
+	/* For.Prototype_GameObject_Camera_Free*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Camera_GachaPlay"),
+		CCamera_Formation::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+
 	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중이비낟. "));
 
 	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));
