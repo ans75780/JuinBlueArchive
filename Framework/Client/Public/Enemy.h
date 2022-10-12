@@ -16,7 +16,7 @@ BEGIN(Client)
 
 class CEnemy final : public CActor
 {
-public:
+protected:
 	CEnemy(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CEnemy(const CEnemy& rhs);
 	virtual ~CEnemy() = default;
@@ -28,8 +28,12 @@ public:
 	virtual HRESULT Render();
 
 	virtual void LateTick(_float fTimeDelta);
-private:
+protected:
 	virtual HRESULT SetUp_StateMachine(_uint iClonedLevel) override;
+
+
+protected:
+	class CHpBar*	m_pHpBar = nullptr;
 
 public:
 	static CEnemy* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

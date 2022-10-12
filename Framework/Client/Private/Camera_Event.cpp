@@ -215,7 +215,6 @@ void CCamera_Event::Event_Ex(_float fTimeDelta)
 	_vector	vTargetPos = m_pTarget->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION);
 
 
-
 	m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vMatrix.r[0]);
 	m_pTransformCom->Set_State(CTransform::STATE_UP, vMatrix.r[1]);
 	m_pTransformCom->Set_State(CTransform::STATE_LOOK, vMatrix.r[2]);

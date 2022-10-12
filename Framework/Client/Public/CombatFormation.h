@@ -1,7 +1,7 @@
 #pragma once
 #include "Client_Defines.h"
 #include "Engine_Defines.h"
-
+#include "Base.h"
 namespace Engine
 {
 	class CGameObject;
@@ -9,7 +9,7 @@ namespace Engine
 
 BEGIN(Client)
 
-class CCombatFormation
+class CCombatFormation : public CBase
 {
 public:
 	typedef struct tagFormationDesc
@@ -46,6 +46,9 @@ public:
 private:
 	FORMATIONDESC  m_eDesc;
 	vector<_vector>			m_vecFormationPos;
+
+public:
+	virtual void	Free() override;
 
 };
 END

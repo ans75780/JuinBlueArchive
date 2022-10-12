@@ -13,6 +13,8 @@
 #include "Camera_Event.h"
 #include "Camera_Stage.h"
 #include "State_Student_Ex.h"
+#include "Base.h"
+
 
 CCombatFormation::CCombatFormation()
 {
@@ -146,6 +148,12 @@ CCombatFormation * CCombatFormation::Create(FORMATIONDESC * pDesc, CCamera * pSt
 		return nullptr;
 	}
 	return pInstance;
+}
+
+void CCombatFormation::Free()
+{
+	m_vecStudent.clear();
+
 }
 
 

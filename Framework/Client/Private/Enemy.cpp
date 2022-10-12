@@ -9,6 +9,7 @@
 #include "Collider.h"
 #include "State_Student_Formation_Idle.h"
 #include "Animation.h"
+#include "HpBar.h"
 CEnemy::CEnemy(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CActor(pDevice, pContext)
 {
@@ -42,6 +43,16 @@ HRESULT CEnemy::Initialize(void * pArg)
 		return E_FAIL;
 	if (FAILED(SetUp_StateMachine(0)))
 		return E_FAIL;
+
+
+	CGameInstance*	pInstance = GET_INSTANCE(CGameInstance);
+
+
+
+	RELEASE_INSTANCE(CGameInstance);
+
+
+
 	m_pTransformCom->Set_Scaled(_float3(1.00f, 1.00f, 1.00f));
 
 	return S_OK;

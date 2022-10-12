@@ -200,7 +200,7 @@
       <Filter>04. State\Run</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Baricade.h">
-      <Filter>02.GameObject\Baricade</Filter>
+      <Filter>02.GameObject\12. Baricade</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\UI_Progress.h">
       <Filter>02.GameObject\03. UI\04.Progress</Filter>
@@ -236,7 +236,10 @@
       <Filter>04. State\Dead</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CombatFormation.h">
-      <Filter>02.GameObject\CombatFormation</Filter>
+      <Filter>02.GameObject\11. CombatFormation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\HpBar.h">
+      <Filter>02.GameObject\10. HpBar</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -424,7 +427,7 @@
       <Filter>04. State\Run</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Baricade.cpp">
-      <Filter>02.GameObject\Baricade</Filter>
+      <Filter>02.GameObject\12. Baricade</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\UI_Progress.cpp">
       <Filter>02.GameObject\03. UI\04.Progress</Filter>
@@ -460,7 +463,10 @@
       <Filter>04. State\Dead</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CombatFormation.cpp">
-      <Filter>02.GameObject\CombatFormation</Filter>
+      <Filter>02.GameObject\11. CombatFormation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\HpBar.cpp">
+      <Filter>02.GameObject\10. HpBar</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -616,9 +622,6 @@
     <Filter Include="02.GameObject\05. Actor">
       <UniqueIdentifier>{52440e42-5d7e-4516-bb6e-3b60a4fa5312}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObject\Baricade">
-      <UniqueIdentifier>{8ba48e91-f70a-442e-b6d4-5e8eea9c7cd9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObject\05. Actor\Student">
       <UniqueIdentifier>{a5477715-8bc1-4140-a022-797e60da67ef}</UniqueIdentifier>
     </Filter>
@@ -688,8 +691,14 @@
     <Filter Include="04. State\Dead">
       <UniqueIdentifier>{a8595b4b-7de0-4c23-a808-f979d57129b5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObject\CombatFormation">
+    <Filter Include="02.GameObject\11. CombatFormation">
       <UniqueIdentifier>{0a67f2fd-281d-4ae3-ba7c-473e2829964b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\12. Baricade">
+      <UniqueIdentifier>{8ba48e91-f70a-442e-b6d4-5e8eea9c7cd9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\10. HpBar">
+      <UniqueIdentifier>{d1afeeb2-07dd-4f4b-8ae0-35ab0d0a0eaa}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

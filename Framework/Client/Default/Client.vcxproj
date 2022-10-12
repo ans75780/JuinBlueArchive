@@ -177,6 +177,7 @@
     <ClInclude Include="..\Public\Camera_Formation.h" />
     <ClInclude Include="..\Public\Camera_Free.h" />
     <ClInclude Include="..\Public\Camera_Stage.h" />
+    <ClInclude Include="..\Public\HpBar.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\CombatFormation.h" />
     <ClInclude Include="..\Public\Enemy.h" />
@@ -252,6 +253,7 @@
     <ClCompile Include="..\Private\Camera_Formation.cpp" />
     <ClCompile Include="..\Private\Camera_Free.cpp" />
     <ClCompile Include="..\Private\Camera_Stage.cpp" />
+    <ClCompile Include="..\Private\HpBar.cpp" />
     <ClCompile Include="..\Private\CombatFormation.cpp" />
     <ClCompile Include="..\Private\Enemy.cpp" />
     <ClCompile Include="..\Private\Formation.cpp" />

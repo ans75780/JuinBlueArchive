@@ -7,6 +7,7 @@
 #include "StrUtil.h"
 #include "Json_Utility.h"
 #include "Baricade.h"
+#include "HpBar.h"
 
 
 
@@ -138,6 +139,8 @@ HRESULT CLoader_Start::Loading_ForLogoLevel()
 	if (FAILED(pGameInstance->Add_Prototype(L"Prototype_Baricade", CBaricade::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	if (FAILED(pGameInstance->Add_Prototype(L"Prototype_HpBar", CHpBar::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중이비낟. "));
 
