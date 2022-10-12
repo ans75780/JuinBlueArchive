@@ -238,6 +238,9 @@
     <ClInclude Include="..\Public\UI_Frame.h">
       <Filter>02.GameObject\03. UI\05. UI_Loading</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Level_Gacha_Play.h">
+      <Filter>01.Level\10. Gacha</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -461,6 +464,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\UI_Frame.cpp">
       <Filter>02.GameObject\03. UI\05. UI_Loading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Gacha_Play.cpp">
+      <Filter>01.Level\10. Gacha</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

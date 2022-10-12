@@ -41,13 +41,13 @@ public:
 	HRESULT Loading_ForCircleLevel();
 	HRESULT Loading_ForManufactureLevel();
 	HRESULT Loading_ForShopLevel();
-	HRESULT Loading_ForRecruitLevel();
+	HRESULT Loading_ForGachaLevel();
 	HRESULT Loading_ForWorkLevel();
-
 
 	HRESULT Loading_ForGamePlayLevel();
 	HRESULT Loading_ForMapToolLevel();
 
+	HRESULT Loading_ForGachaPlayLevel();
 
 
 private:

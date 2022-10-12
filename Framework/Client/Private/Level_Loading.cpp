@@ -16,6 +16,8 @@
 #include "Level_Work.h"
 #include "Level_GamePlay.h"
 #include "Level_MapTool.h"
+
+#include "Level_Gacha_Play.h"
 #include "GameInstance.h"
 
 CLevel_Loading::CLevel_Loading(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -89,6 +91,8 @@ void CLevel_Loading::Tick(_float fTimeDelta)
 			case LEVEL_MAPTOOL:
 				pLevel = CLevel_MapTool::Create(m_pDevice, m_pContext);
 				break;
+			case LEVEL_GACHA_PLAY:
+				pLevel = CLevel_Gacha_Play::Create(m_pDevice, m_pContext);
 			case LEVEL_END:
 				break;
 			default:

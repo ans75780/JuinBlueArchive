@@ -84,7 +84,7 @@ unsigned int APIENTRY LoadingMain(void* pArg)
 		hr = pLoader->Loading_ForShopLevel();
 		break;
 	case LEVEL_GACHA:
-		hr = pLoader->Loading_ForRecruitLevel();
+		hr = pLoader->Loading_ForGachaLevel();
 		break;
 	case LEVEL_WORK:
 		hr = pLoader->Loading_ForWorkLevel();
@@ -94,6 +94,9 @@ unsigned int APIENTRY LoadingMain(void* pArg)
 		break;
 	case LEVEL_MAPTOOL:
 		hr = pLoader->Loading_ForMapToolLevel();
+		break;
+	case LEVEL_GACHA_PLAY:
+		hr = pLoader->Loading_ForGachaPlayLevel();
 		break;
 	}
 
@@ -312,7 +315,7 @@ HRESULT CLoader::Loading_ForShopLevel()
 	return S_OK;
 }
 
-HRESULT CLoader::Loading_ForRecruitLevel()
+HRESULT CLoader::Loading_ForGachaLevel()
 {
 	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
 	Safe_AddRef(pGameInstance);
@@ -567,6 +570,26 @@ HRESULT CLoader::Loading_ForMapToolLevel()
 
 
 #pragma endregion
+
+	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));
+
+	m_isFinished = true;
+
+	Safe_Release(pGameInstance);
+
+	return S_OK;
+}
+
+HRESULT CLoader::Loading_ForGachaPlayLevel()
+{
+	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
+	Safe_AddRef(pGameInstance);
+
+	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중이비낟. "));
+
+	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
+
+	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중이비낟. "));
 
 	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));
 

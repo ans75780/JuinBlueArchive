@@ -414,30 +414,13 @@ void CImguiMgr::UITool_View(void)	//UI툴  새창을 띄움
 	
 	ImGui::Separator();
 
-	/////////////복구하셈//////////////
-	//const char*	UI_Set_Level[] = { SELECT_LEVEL };	//@@@@@@@@@@@@@@@@@@@레벨추가시 헤더에있는거 추가좀@@@@@@@@@@@@@@@@@@@
-	//static int	UI_Set_LevelNum = 2;
-	//const char* UI_Set_Level_Value = UI_Set_Level[UI_Set_LevelNum];
-	static bool	UI_EditMode = false;
-	//
-	//if (false == UI_EditMode && (m_currentLevelID != LEVEL_STATIC && m_currentLevelID != LEVEL_LOADING && m_currentLevelID != LEVEL_LOADING_START)) //에디트모드 꺼져있을땐 항상 현재스테이지로 생성하도록
-	//	UI_Set_LevelNum = m_currentLevelID - 2;	//SELECT_LEVEL 갯수차이 스태틱, 로딩 포함하면 + 2라서;
-	///////////////복구하셈////////////
-	
-	//제거부탁@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-	const char*	UI_Set_Level[] = { 
-		"LEVEL_STATIC",	"LEVEL_LOADING",
-		"LEVEL_LOGO",		"LEVEL_LOBBY",
-		"LEVEL_CAFE",		"LEVEL_SCHEDULE",	"LEVEL_STUDENTS",
-		"LEVEL_FORMATION","LEVEL_CIRCLE",	"LEVEL_MANUFACTURE",
-		"LEVEL_SHOP",		"LEVEL_GACHA",	"LEVEL_WORK",
-		"LEVEL_GAMEPLAY",	"LEVEL_MAPTOOL",
-		"LEVEL_LOADING_START",
-		"LEVEL_END"
-	};
+	const char*	UI_Set_Level[] = { SELECT_LEVEL };	//@@@@@@@@@@@@@@@@@@@레벨추가시 헤더에있는거 추가좀@@@@@@@@@@@@@@@@@@@
 	static int	UI_Set_LevelNum = 2;
 	const char* UI_Set_Level_Value = UI_Set_Level[UI_Set_LevelNum];
-	//제거부탁@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+	static bool	UI_EditMode = false;
+	
+	if (false == UI_EditMode && (m_currentLevelID != LEVEL_STATIC && m_currentLevelID != LEVEL_LOADING && m_currentLevelID != LEVEL_LOADING_START)) //에디트모드 꺼져있을땐 항상 현재스테이지로 생성하도록
+		UI_Set_LevelNum = m_currentLevelID - 2;	//SELECT_LEVEL 갯수차이 스태틱, 로딩 포함하면 + 2라서;
 
 	m_pGameInstance->Set_LevelEditMode(UI_EditMode);
 	
@@ -450,14 +433,14 @@ void CImguiMgr::UITool_View(void)	//UI툴  새창을 띄움
 			if (ImGui::Selectable(UI_Set_Level[i], is_selected))
 				UI_Set_LevelNum = i;
 		}
-		m_pGameInstance->Set_EditLevel((_uint)UI_Set_LevelNum/* + 2*/);  //스태틱 로딩 해서 +2
+		m_pGameInstance->Set_EditLevel((_uint)UI_Set_LevelNum + 2);  //스태틱 로딩 해서 +2
 		ImGui::EndCombo();
 	}
 
 	ImGui::Separator();
 	
 	ImGui::Text("Make UI");
-	const char* UI_Class_Type[] = { "None", "LevelMoveButton", "Text", "TEST" };	//UI 추가할때마다 생성해주기
+	const char* UI_Class_Type[] = { "None", "LevelMoveButton", "Text", "Frame" };	//UI 추가할때마다 생성해주기
 	static int UI_Class_SelectNum = 0;
 	const char* UI_Class_Value = UI_Class_Type[UI_Class_SelectNum];
 	if (ImGui::BeginCombo("Class Type", UI_Class_Value, 0))
@@ -871,8 +854,7 @@ void CImguiMgr::Create_LevelMoveButton(_uint _Level)	//LevelButton 을 정의하고 �
 	ImGui::InputFloat2("Set Pos", UI_Pos, "%.1f", 0);
 	ImGui::InputFloat2("Set ThrowPos", UI_ThrowPos, "%.1f", 0);
 
-	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@복구요망
-	if (/*m_currentLevelID == LEVEL::LEVEL_LOADING || */Render_Num == 5/*UI_NONE*/) //로딩이거나, UI그룹설정안했다면
+	if (m_currentLevelID == LEVEL::LEVEL_LOADING || Render_Num == 5/*UI_NONE*/) //로딩이거나, UI그룹설정안했다면
 	{
 		ImGui::Text("RenderType is NONE");
 		return;
@@ -1023,8 +1005,7 @@ void CImguiMgr::Create_UILoading(_uint _Level)
 	ImGui::InputFloat2("Set Pos", UI_Pos, "%.1f", 0);
 	ImGui::InputFloat2("Set ThrowPos", UI_ThrowPos, "%.1f", 0);
 
-	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@복구요망
-	if (/*m_currentLevelID == LEVEL::LEVEL_LOADING || */Render_Num == 5/*UI_NONE*/) //로딩이거나, UI그룹설정안했다면
+	if (m_currentLevelID == LEVEL::LEVEL_LOADING || Render_Num == 5/*UI_NONE*/) //로딩이거나, UI그룹설정안했다면
 	{
 		ImGui::Text("RenderType is NONE");
 		return;
@@ -1087,7 +1068,7 @@ void CImguiMgr::Load_UIVec(void)	//불러오기
 		string	_Name = (*it)["Name"];
 
 		_uint	_Level = (*it)["Level"];
-		if (_Level == LEVEL_LOADING_START /*|| _Level == LEVEL_LOADING*/)
+		if (_Level == LEVEL_LOADING_START)
 			continue;
 		_uint	_Type = (*it)["Type"];
 
@@ -1234,6 +1215,9 @@ void CImguiMgr::GetLevelString(char * str, _uint len, _uint _LEVEL) //@@@@@@@@@@
 		break;
 	case LEVEL_LOADING_START:
 		strcpy_s(str, len, "LEVEL_LOADING_START");
+		break;
+	case LEVEL_GACHA_PLAY:
+		strcpy_s(str, len, "LEVEL_GACHA_PLAY");
 		break;
 	case LEVEL_END:
 		strcpy_s(str, len, "ERROR");
