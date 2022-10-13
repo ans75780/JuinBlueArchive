@@ -22,7 +22,8 @@ public:
 	이때 중요한건 스테이지 이동은 말그대로 전투를 벗어나서 스테이지를 이동할때 전환됨.
 	전투할때 이동하는건 그냥 배틀 상태인거임.
 	*/
-	enum STAGE_STATE { STAGE_STATE_MOVE, STAGE_STATE_BATTLE, STAGE_STATE_DEAD, STAGE_STATE_END };
+	//특정 상태일 때는 이걸 먹도록 하게.
+	enum STAGE_STATE { STATE_STATE_IDLE, STATE_STATE_MOVE, STAGE_STATE_JUMP, STAGE_STATE_BATTLE, STATE_STATE_EX, STAGE_STATE_DEAD, STAGE_STATE_END };
 public:
 	CActor(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CActor(const CActor& rhs);
@@ -46,8 +47,12 @@ public:
 	STAGE_STATE		Get_StageState() { return m_eStageState; }
 	void			Set_StageState(STAGE_STATE eState) { m_eStageState = eState; }
 
+	class CHpBar*	Get_HpBar() { return m_pHpBar; }
 
 	virtual void	Damaged(_float fAtk);
+
+protected:
+	virtual void	CheckState();
 
 
 protected:
@@ -58,8 +63,7 @@ protected:
 	CCollider*				m_pAABBCom = nullptr;
 	CCollider*				m_pOBBCom = nullptr;
 	CCollider*				m_pSphereCom = nullptr;
-
-
+	
 
 	CCollider*				m_pAttackRangeCollider = nullptr;
 	CCollider*				m_pBodyCollider = nullptr;

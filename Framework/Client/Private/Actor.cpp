@@ -36,7 +36,7 @@ HRESULT CActor::Initialize(void * pArg)
 	if (FAILED(__super::Initialize(&TransformDesc)))
 		return E_FAIL;
 
-	m_eStageState = STAGE_STATE_MOVE;
+	m_eStageState = CActor::STAGE_STATE::STATE_STATE_IDLE;
 	return S_OK;
 }
 
@@ -131,6 +131,10 @@ void CActor::Damaged(_float fAtk)
 	if (0 >= m_desc.fHp)
 		m_pStateMachine->Add_State(CState_Dead::Create(this));
 
+}
+
+void CActor::CheckState()
+{
 }
 
 HRESULT CActor::SetUp_Components()

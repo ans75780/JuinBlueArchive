@@ -4,12 +4,13 @@
 #include "GameInstance.h"
 #include "MeshContainer.h"
 #include "StateMachineBase.h"
-#include "State_Idle.h"
-#include "State_Run.h"
 #include "Collider.h"
-#include "State_Student_Formation_Idle.h"
 #include "Animation.h"
 #include "HpBar.h"
+#include "Transform_Utils.h"
+#include "Layer.h"
+#include "State_Headers.h"
+
 CStudent::CStudent(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CActor(pDevice, pContext)
 {
@@ -63,16 +64,25 @@ HRESULT CStudent::StartLevel(_uint iLevel)
 	RELEASE_INSTANCE(CGameInstance);
 
 	return S_OK;
-
-
-	return S_OK;
 }
 
 void CStudent::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-	m_pTransformCom->Get_WorldMatrix();
 
+
+	CGameInstance*	pInstance = GET_INSTANCE(CGameInstance);
+
+	if (pInstance->Get_CurrentLevelID() == LEVEL_GAMEPLAY)
+		CheckState();
+
+	RELEASE_INSTANCE(CGameInstance);
+
+
+	if (m_eStageState == CActor::STAGE_STATE::STAGE_STATE_DEAD)
+	{
+		m_pHpBar->Set_Delete(true);
+	}
 }
 
 void CStudent::LateTick(_float fTimeDelta)
@@ -170,6 +180,64 @@ HRESULT CStudent::SetUp_StateMachine(_uint iClonedLevel)
 	return S_OK;
 }
 
+void CStudent::CheckState()
+{
+
+	if (m_eStageState == STATE_STATE_MOVE)
+	{
+		list<CGameObject*>	Baricades;
+
+		CGameInstance*	pInstance = GET_INSTANCE(CGameInstance);
+		Baricades = pInstance->Get_Layer(pInstance->Get_CurrentLevelID())[L"Layer_Baricade"]->Get_GameObjects();
+
+		for (auto& elem : Baricades)
+		{
+			if (m_pBodyCollider->Collision((CCollider*)elem->Get_Component(L"Com_SPHERE")))
+			{
+				if (m_desc.eClass != UNIT_CLASS_BACK)
+				{
+					m_pStateMachine->Get_CurrentState()->Get_Animation()->Reset();
+					m_pStateMachine->Add_State(CState_Student_Jump::Create(this));
+				}
+			}
+		}
+		list<CGameObject*>	Enemies;
+		Enemies = pInstance->Get_Layer(pInstance->Get_CurrentLevelID())[L"Layer_Enemy"]->Get_GameObjects();
+
+		CGameObject*	pTarget = nullptr;
+		_float			fPrevDistance = 999.f;
+		for (auto& elem : Enemies)
+		{
+			if (elem == this || ((CActor*)elem)->Get_StageState() == CActor::STAGE_STATE_DEAD)
+				continue;
+
+			float fDistance = CTransform_Utils::Get_Range(Get_Transform(), elem->Get_Transform());
+			if (m_desc.fRange >= fDistance)
+			{
+				//맨처음 타겟이 존재한다면 넘기기
+				if (pTarget == nullptr)
+				{
+					pTarget = elem;
+					fPrevDistance = fDistance;
+				}
+				else
+				{
+					if (fPrevDistance > fDistance)
+					{
+						pTarget = elem;
+						fPrevDistance = fDistance;
+					}
+				}
+			}
+		}
+		if (pTarget != nullptr)
+		{
+			m_pStateMachine->Get_CurrentState()->Get_Animation()->Reset();
+			m_pStateMachine->Add_State(CState_Attack::Create(this, (CActor*)pTarget));
+		}
+		RELEASE_INSTANCE(CGameInstance);
+	}
+}
 
 
 

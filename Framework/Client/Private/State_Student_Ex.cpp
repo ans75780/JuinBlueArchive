@@ -37,6 +37,9 @@ HRESULT CState_Student_Ex::Initialize()
 		return E_FAIL;
 
 	m_pAnimation = m_pExCutin;
+
+	m_pOwner->Set_StageState(CActor::STATE_STATE_EX);
+
 	return S_OK;
 }
 

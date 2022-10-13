@@ -212,6 +212,7 @@
     <ClInclude Include="..\Public\Loader.h" />
     <ClInclude Include="..\Public\MainApp.h" />
     <ClInclude Include="..\Public\MapProp.h" />
+    <ClInclude Include="..\Public\State_Headers.h" />
     <ClInclude Include="..\Public\State_Attack.h" />
     <ClInclude Include="..\Public\State_Dead.h" />
     <ClInclude Include="..\Public\State_Student_Jump.h" />

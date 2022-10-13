@@ -238,6 +238,9 @@
     <ClInclude Include="..\Public\HpBar.h">
       <Filter>02.GameObject\10. HpBar</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\State_Headers.h">
+      <Filter>04. State</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">

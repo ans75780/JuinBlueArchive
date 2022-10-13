@@ -29,7 +29,8 @@ public:
 	void	Event_Stage_Start();
 	void	Event_Ex(_float fTimeDelta);
 
-
+public:
+	const vector<_float4>&	Get_VecStudentStartPos() { return m_vecStartPos; }
 public:
 	static CCamera_Event* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
@@ -49,7 +50,7 @@ private:
 //for Stage_Start Variable
 private:
 	vector<CStudent*>*	m_pVecStduent = nullptr;
-
+	vector<_float4>		m_vecStartPos;
 
 
 	//for ExCam Variable

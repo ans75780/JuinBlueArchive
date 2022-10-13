@@ -108,7 +108,8 @@ void CHpBar::Tick(_float fTimeDelta)
 
 void CHpBar::LateTick(_float fTimeDelta)
 {
-	m_pRendererCom->Add_RenderGroup(CRenderer::RENDERGROUP::RENDER_ALPHABLEND, this);
+	if (m_bEnable)
+		m_pRendererCom->Add_RenderGroup(CRenderer::RENDERGROUP::RENDER_ALPHABLEND, this);
 }
 
 HRESULT CHpBar::Render()
@@ -188,7 +189,6 @@ CHpBar * CHpBar::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 CGameObject * CHpBar::Clone(void * pArg)
 {
 	CHpBar*	pInstance = new CHpBar(*this);
-
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{

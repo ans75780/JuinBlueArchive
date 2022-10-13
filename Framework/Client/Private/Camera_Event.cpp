@@ -9,6 +9,8 @@
 #include "StateMachineBase.h"
 #include "BoneNode.h"
 #include "Actor.h"
+#include "HpBar.h"
+#include "State_Student_Run.h"
 
 
 CCamera_Event::CCamera_Event(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -39,6 +41,12 @@ HRESULT CCamera_Event::Initialize(void * pArg)
 	lstrcpy(m_desc.sz_Name, TEXT("Camera_Event"));
 
 	m_MatExRot = XMMatrixRotationAxis(XMVectorSet(0.f, 1.f, 0.f, 1.f), XMConvertToRadians(180.f));
+
+
+	m_vecStartPos.push_back(_float4(0.0f , 0.f, 0.f, 1.f));
+	m_vecStartPos.push_back(_float4(1.0f, 0.f, 0.f, 1.f));
+	m_vecStartPos.push_back(_float4(-1.0f, 0.f, 0.f, 1.f));
+	
 
 	return S_OK;
 }
@@ -104,6 +112,8 @@ void CCamera_Event::Ready_Event_Stage_Start(CCamera * pReturnCamera, CActor * pT
 
 	m_pVecStduent = pVecStudents;
 
+	m_pTarget->Get_HpBar()->Set_Enable(false);
+
 	CCamera::Set_MainCam(this);
 
 
@@ -168,10 +178,14 @@ void CCamera_Event::Event_Stage_Start()
 {
 	if (m_pAnimation->IsFinished() == true)
 	{
-		(*m_pVecStduent)[0]->Set_Transform(XMVectorSet(0.f, 0.f, 0.f, 1.f));
-		(*m_pVecStduent)[1]->Set_Transform(XMVectorSet(1.f, 0.f, 0.f, 1.f));
-		(*m_pVecStduent)[2]->Set_Transform(XMVectorSet(-1.f, 0.f, 0.f, 1.f));
+
+		for (_uint i = 0; i < m_pVecStduent->size();i++)
+		{
+			(*m_pVecStduent)[i]->Set_Transform(XMLoadFloat4(&m_vecStartPos[i]));
+			(*m_pVecStduent)[i]->Get_StateMachine()->Add_State(CState_Student_Run::Create((*m_pVecStduent)[i]));
+		}
 		CCamera::Set_MainCam(m_pReturnToCam);
+		m_pTarget->Get_HpBar()->Set_Enable(true);
 	}
 	
 	m_pTransformCom->LookAt(m_pTarget->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION));

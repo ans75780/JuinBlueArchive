@@ -58,7 +58,7 @@ HRESULT CState_Attack::Initialize()
 		return E_FAIL;
 
 	m_eCurrentState = ATTACK_STATE_START;
-
+	m_pOwner->Set_StageState(CActor::STAGE_STATE_BATTLE);
 	return S_OK;
 }
 
@@ -105,8 +105,7 @@ _bool CState_Attack::Loop(_float fTimeDelta)
 			break;
 		default:
 			break;
-		}
-		
+		}	
 		if (m_pTarget->Get_StageState() == CActor::STAGE_STATE_DEAD &&
 			m_eCurrentState != ATTACK_STATE_END)
 		{

@@ -29,6 +29,10 @@ public:
 	virtual HRESULT Render();
 
 	virtual void LateTick(_float fTimeDelta);
+
+protected:
+	virtual void	CheckState();
+
 protected:
 	virtual HRESULT SetUp_StateMachine(_uint iClonedLevel) override;
 

@@ -34,6 +34,8 @@ HRESULT CState_Student_Jump::Initialize()
 	m_pOwner->Get_Transform()->Set_Speed(m_fOriginSpeed * 0.8f);	
 
 	m_pAnimation->Play();
+	m_pOwner->Set_StageState(CActor::STAGE_STATE_JUMP);
+
 	return S_OK;
 
 }

@@ -29,6 +29,9 @@ HRESULT CState_Idle::Initialize()
 	 if (nullptr == m_pAnimation)
 		 return E_FAIL;
 
+	 m_pBodyCollider = (CCollider*)m_pOwner->Get_Component(L"Com_BodyCollider");
+	 m_pAttackRangeCollider = (CCollider*)m_pOwner->Get_Component(L"Com_AttackRangeCollider");
+
 	return S_OK;
 }
 
@@ -42,11 +45,6 @@ _bool CState_Idle::Loop(_float fTimeDelta)
 	m_pAnimation->Update(fTimeDelta);
 	m_pModel->Update_CombinedMatrix();
 	
-	if(KEY(Q, TAP) && m_pOwner->Get_Desc().eType == UNIT_TYPE_STUDENT)
-	{
-		return true;
-	}
-
 
 	return false;
 }

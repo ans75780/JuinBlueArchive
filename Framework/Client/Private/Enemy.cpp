@@ -4,12 +4,13 @@
 #include "GameInstance.h"
 #include "MeshContainer.h"
 #include "StateMachineBase.h"
-#include "State_Idle.h"
-#include "State_Run.h"
 #include "Collider.h"
-#include "State_Student_Formation_Idle.h"
 #include "Animation.h"
 #include "HpBar.h"
+#include "State_Headers.h"
+#include "Layer.h"
+#include "Transform_Utils.h"
+
 CEnemy::CEnemy(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CActor(pDevice, pContext)
 {
@@ -68,6 +69,8 @@ void CEnemy::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
+	CheckState();
+
 	if (m_eStageState == CActor::STAGE_STATE::STAGE_STATE_DEAD)
 	{
 		m_pHpBar->Set_Delete(true);
@@ -87,6 +90,48 @@ HRESULT CEnemy::Render()
 void CEnemy::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
+}
+
+void CEnemy::CheckState()
+{
+	if (m_eStageState == STATE_STATE_MOVE)
+	{
+		CGameInstance*	pInstance = GET_INSTANCE(CGameInstance);
+		list<CGameObject*>	Enemies;
+		Enemies = pInstance->Get_Layer(pInstance->Get_CurrentLevelID())[L"Layer_Student"]->Get_GameObjects();
+
+		CGameObject*	pTarget = nullptr;
+		_float			fPrevDistance = 999.f;
+		for (auto& elem : Enemies)
+		{
+			if (elem == this || ((CActor*)elem)->Get_StageState() == CActor::STAGE_STATE_DEAD)
+				continue;
+			float fDistance = CTransform_Utils::Get_Range(Get_Transform(), elem->Get_Transform());
+			if (m_desc.fRange >= fDistance)
+			{
+				//맨처음 타겟이 존재한다면 넘기기
+				if (pTarget == nullptr)
+				{
+					pTarget = elem;
+					fPrevDistance = fDistance;
+				}
+				else
+				{
+					if (fPrevDistance > fDistance)
+					{
+						pTarget = elem;
+						fPrevDistance = fDistance;
+					}
+				}
+			}
+		}
+		if (pTarget != nullptr)
+		{
+			m_pStateMachine->Get_CurrentState()->Get_Animation()->Reset();
+			m_pStateMachine->Add_State(CState_Attack::Create(this, (CActor*)pTarget));
+		}
+		RELEASE_INSTANCE(CGameInstance);
+	}
 }
 
 

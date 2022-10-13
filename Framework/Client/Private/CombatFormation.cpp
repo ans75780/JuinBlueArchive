@@ -95,9 +95,9 @@ HRESULT CCombatFormation::StartGame()
 	}
 	else
 	{
-		m_vecStudent[0]->Set_Transform(XMVectorSet(0.f, 0.f, 0.f, 1.f));
-		m_vecStudent[1]->Set_Transform(XMVectorSet(1.f, 0.f, 0.f, 1.f));
-		m_vecStudent[2]->Set_Transform(XMVectorSet(-1.f, 0.f, 0.f, 1.f));
+		vector<_float4> StartPos = m_pEventCam->Get_VecStudentStartPos();
+		for (_uint i = 0; i < StartPos.size();i++)
+			m_vecStudent[i]->Set_Transform(XMLoadFloat4(&StartPos[i]));
 	}
 	
 	return S_OK;
