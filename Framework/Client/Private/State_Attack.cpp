@@ -70,6 +70,11 @@ void CState_Attack::Enter()
 
 _bool CState_Attack::Loop(_float fTimeDelta)
 {
+	if (m_pOwner == nullptr ||  m_pOwner->Get_StageState() == CActor::STAGE_STATE_DEAD)
+		return true;
+	if (m_pTarget == nullptr || m_pTarget->Get_StageState() == CActor::STAGE_STATE_DEAD)
+		return true;
+
 	if(m_pTarget->Get_StageState() != CActor::STAGE_STATE_DEAD)
 		m_pOwner->Get_Transform()->LookAt(m_pTarget->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION));
 

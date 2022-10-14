@@ -67,7 +67,17 @@ HRESULT CCombatFormation::Initialize(void * pArg)
 
 void CCombatFormation::Tick(_float fTimeDelta)
 {
-
+	for (auto& elem  = m_vecStudent.begin(); elem != m_vecStudent.end();)
+	{
+		if ((*elem)->Get_StageState()  == CActor::STAGE_STATE_DEAD)
+		{
+			elem = m_vecStudent.erase(elem);
+		}
+		else
+		{
+			elem++;
+		}
+	}
 }
 
 void CCombatFormation::LateTick(_float fTimeDelta)

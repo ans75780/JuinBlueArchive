@@ -30,11 +30,18 @@ public:
 
 	virtual void LateTick(_float fTimeDelta);
 
+public:
+	virtual void	Damaged(_float fAtk);
+
 protected:
 	virtual void	CheckState();
 
 protected:
 	virtual HRESULT SetUp_StateMachine(_uint iClonedLevel) override;
+
+protected:
+	class CActor*	m_pTarget = nullptr;
+
 
 public:
 	static CEnemy* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

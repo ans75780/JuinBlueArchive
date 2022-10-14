@@ -29,13 +29,13 @@ HRESULT CState_Dead::Initialize()
 	if (nullptr == m_pAnimation)
 		return E_FAIL;
 
-	m_pOwner->Set_StageState(CActor::STAGE_STATE_DEAD);
 	return S_OK;
 }
 
 void CState_Dead::Enter()
 {
 	m_pAnimation->Play();
+	m_pOwner->Set_StageState(CActor::STAGE_STATE_DEAD);
 }
 
 _bool CState_Dead::Loop(_float fTimeDelta)
@@ -43,6 +43,7 @@ _bool CState_Dead::Loop(_float fTimeDelta)
 	if (m_pAnimation->IsFinished())
 	{
 		m_pAnimation->Reset();
+		m_pOwner->Set_Enable(false);
 		m_pOwner->Set_Delete(true);
 		return true;
 	}

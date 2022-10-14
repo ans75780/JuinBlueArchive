@@ -23,9 +23,8 @@ HRESULT CState_Student_Run::Initialize()
 
 	m_pBodyCollider = (CCollider*)m_pOwner->Get_Component(L"Com_BodyCollider");
 	m_pAttackRangeCollider = (CCollider*)m_pOwner->Get_Component(L"Com_AttackRangeCollider");
-	m_pOwner->Set_StageState(CActor::STATE_STATE_MOVE);
-
-
+	
+	
 	return S_OK;
 }
 
@@ -33,6 +32,7 @@ void CState_Student_Run::Enter()
 {
 	__super::Enter();
 	m_pOwner->Get_Transform()->Rotation(XMVectorSet(0,1.f,0.f,1.f),XMConvertToRadians(0.f));
+	m_pOwner->Set_StageState(CActor::STATE_STATE_MOVE);
 
 }
 

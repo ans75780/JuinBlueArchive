@@ -57,7 +57,8 @@ void CActor::Tick(_float fTimeDelta)
 
 void CActor::LateTick(_float fTimeDelta)
 {
-	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+	if (m_bEnable == true)
+		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
 
 #ifdef _DEBUG
 	CGameInstance*	pInstance = GET_INSTANCE(CGameInstance);

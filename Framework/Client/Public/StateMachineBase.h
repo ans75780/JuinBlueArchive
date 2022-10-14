@@ -31,7 +31,7 @@ public:
 public:
 	class CStateBase* const	Get_CurrentState();
 private:
-	class CActor*				m_pStudent = nullptr;
+	class CActor*				m_pOwner= nullptr;
 	stack<class CStateBase*>	m_States;
 
 

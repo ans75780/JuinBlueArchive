@@ -34,11 +34,16 @@ private:
 	_float3			m_vTargetPos;
 	_float			m_fSpeed;
 
+
+	//멀어지면 fov를 Zoom아웃으로 서서히 만들어줄꺼임.
 	_float			m_fOriginFov;
+	_float			m_fZoomOutFov;
 
 	vector<class CStudent*>* m_pVecStudents;
 	_bool			m_bInCam;
 
+	_ubyte			m_iCamFocusIndex;
+	
 };
 
 END

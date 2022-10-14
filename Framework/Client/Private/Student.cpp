@@ -70,14 +70,8 @@ void CStudent::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-
-	CGameInstance*	pInstance = GET_INSTANCE(CGameInstance);
-
-	if (pInstance->Get_CurrentLevelID() == LEVEL_GAMEPLAY)
+	if (m_eStageState != CActor::STAGE_STATE::STAGE_STATE_DEAD)
 		CheckState();
-
-	RELEASE_INSTANCE(CGameInstance);
-
 
 	if (m_eStageState == CActor::STAGE_STATE::STAGE_STATE_DEAD)
 	{
@@ -182,13 +176,18 @@ HRESULT CStudent::SetUp_StateMachine(_uint iClonedLevel)
 
 void CStudent::CheckState()
 {
+	CGameInstance*	pInstance = GET_INSTANCE(CGameInstance);
 
+	if (pInstance->Get_CurrentLevelID() != LEVEL_GAMEPLAY)
+		return;
 	if (m_eStageState == STATE_STATE_MOVE)
 	{
+		map<const _tchar*, class CLayer*>				m_pLayers;
+		m_pLayers = pInstance->Get_Layer(LEVEL_GAMEPLAY);
+
 		list<CGameObject*>	Baricades;
 
-		CGameInstance*	pInstance = GET_INSTANCE(CGameInstance);
-		Baricades = pInstance->Get_Layer(pInstance->Get_CurrentLevelID())[L"Layer_Baricade"]->Get_GameObjects();
+		Baricades = find_if(m_pLayers.begin(), m_pLayers.end(), CTag_Finder(L"Layer_Baricade"))->second->Get_GameObjects();
 
 		for (auto& elem : Baricades)
 		{
@@ -202,7 +201,9 @@ void CStudent::CheckState()
 			}
 		}
 		list<CGameObject*>	Enemies;
-		Enemies = pInstance->Get_Layer(pInstance->Get_CurrentLevelID())[L"Layer_Enemy"]->Get_GameObjects();
+
+
+		Enemies = find_if(m_pLayers.begin(), m_pLayers.end(), CTag_Finder(L"Layer_Enemy"))->second->Get_GameObjects();
 
 		CGameObject*	pTarget = nullptr;
 		_float			fPrevDistance = 999.f;
@@ -235,8 +236,9 @@ void CStudent::CheckState()
 			m_pStateMachine->Get_CurrentState()->Get_Animation()->Reset();
 			m_pStateMachine->Add_State(CState_Attack::Create(this, (CActor*)pTarget));
 		}
-		RELEASE_INSTANCE(CGameInstance);
 	}
+	RELEASE_INSTANCE(CGameInstance);
+
 }
 
 
