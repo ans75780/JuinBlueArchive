@@ -241,6 +241,15 @@
     <ClInclude Include="..\Public\Level_Gacha_Play.h">
       <Filter>01.Level\10. Gacha</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Arona.h">
+      <Filter>02.GameObject\11. Arona</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Arona_Cam.h">
+      <Filter>02.GameObject\11. Arona</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Arona_Camera.h">
+      <Filter>02.GameObject\11. Arona</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -467,6 +476,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\Level_Gacha_Play.cpp">
       <Filter>01.Level\10. Gacha</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Arona.cpp">
+      <Filter>02.GameObject\11. Arona</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Arona_Cam.cpp">
+      <Filter>02.GameObject\11. Arona</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Arona_Camera.cpp">
+      <Filter>02.GameObject\11. Arona</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -696,6 +714,9 @@
     </Filter>
     <Filter Include="02.GameObject\03. UI\05. UI_Loading">
       <UniqueIdentifier>{d09b22ec-8a02-4624-b456-246038cf22cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\11. Arona">
+      <UniqueIdentifier>{872e4deb-f802-423d-abac-5bf4f2f424c4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

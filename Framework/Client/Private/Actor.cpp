@@ -108,7 +108,6 @@ void CActor::Set_Transform(_vector vPos)
 
 CAnimation * CActor::Get_Animation(const char * pAnimationName)
 {
-
 	CAnimation*	m_pAnimation = nullptr;
 
 	m_pAnimation = m_pModelCom->Get_AnimationFromName(pAnimationName);
