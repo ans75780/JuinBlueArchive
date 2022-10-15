@@ -170,9 +170,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Public\Actor.h" />
-    <ClInclude Include="..\Public\Arona.h" />
-    <ClInclude Include="..\Public\Arona_Cam.h" />
-    <ClInclude Include="..\Public\Arona_Camera.h" />
     <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\Public\Baricade.h" />
     <ClInclude Include="..\Public\BG_Gacha.h" />
@@ -249,9 +246,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Actor.cpp" />
-    <ClCompile Include="..\Private\Arona.cpp" />
-    <ClCompile Include="..\Private\Arona_Cam.cpp" />
-    <ClCompile Include="..\Private\Arona_Camera.cpp" />
     <ClCompile Include="..\private\BackGround.cpp" />
     <ClCompile Include="..\Private\Baricade.cpp" />
     <ClCompile Include="..\Private\BG_Gacha.cpp" />

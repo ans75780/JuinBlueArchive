@@ -3,11 +3,6 @@
 #include "Client_Defines.h"
 #include "Level.h"
 
-BEGIN(Engine)
-class CModel;
-class CGameObject;
-END
-
 BEGIN(Client)
 
 class CLevel_Gacha_Play final : public CLevel
@@ -23,11 +18,9 @@ public:
 private:
 	HRESULT Ready_Layer_Camera(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_Student(const _tchar* pLayerTag);
-	HRESULT Ready_Light();
-	HRESULT	Ready_GachaCam(const _tchar* pLayerTag);
 
 private:
-	CGameObject*	m_pGachaCam = nullptr;
+
 
 
 

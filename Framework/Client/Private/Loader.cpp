@@ -35,9 +35,6 @@
 
 #include "BG_Gacha.h"
 #include "BG_Gacha_Video.h"
-#include "Arona.h"
-#include "Arona_Cam.h"
-#include "Arona_Camera.h"
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice(pDevice)
@@ -588,40 +585,17 @@ HRESULT CLoader::Loading_ForGachaPlayLevel()
 	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
 	Safe_AddRef(pGameInstance);
 
+	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중이비낟. "));
+
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
-
-	/* For.Prototype_GameObject_Arona */
-	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Arona"),
-		CArona::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-
-	/* For.Prototype_GameObject_Arona */
-	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Arona_Cam"),
-		CArona_Cam::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-
 
 	/* For.Prototype_GameObject_Camera_Free*/
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Camera_GachaPlay"),
-		CArona_Camera::Create(m_pDevice, m_pContext))))
+		CCamera_Formation::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중이비낟. "));
 
 	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중이비낟. "));
-
-	_matrix mat;
-	mat = XMMatrixIdentity();
-	mat = XMMatrixScaling(1.f, 1.f, 1.f) * XMMatrixRotationX(XMConvertToRadians(90.f));
-
-	/* For.Prototype_Component_Model_Arona*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GACHA_PLAY, TEXT("Prototype_Component_Model_Arona_Gacha"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Arona/", "Arona1.fbx", mat))))
-		return E_FAIL;
-
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GACHA_PLAY, TEXT("Prototype_Component_Model_Arona_Cam"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Arona/", "CAM.fbx", mat))))
-		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));
 
