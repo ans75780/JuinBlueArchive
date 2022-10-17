@@ -215,9 +215,13 @@
     <ClInclude Include="..\Public\State_Headers.h" />
     <ClInclude Include="..\Public\State_Attack.h" />
     <ClInclude Include="..\Public\State_Dead.h" />
+    <ClInclude Include="..\Public\State_Student_Ex_Cutin.h" />
     <ClInclude Include="..\Public\State_Student_Jump.h" />
     <ClInclude Include="..\Public\State_Student_Run.h" />
+    <ClInclude Include="..\Public\Student_Fx.h" />
+    <ClInclude Include="..\Public\UI_CombatFormation_Skill.h" />
     <ClInclude Include="..\Public\UI_Combat_HpBar.h" />
+    <ClInclude Include="..\Public\UI_Default.h" />
     <ClInclude Include="..\Public\UI_Progress.h" />
     <ClInclude Include="..\Public\Sky.h" />
     <ClInclude Include="..\Public\Stage.h" />
@@ -253,6 +257,7 @@
     <ClCompile Include="..\Private\Camera_Formation.cpp" />
     <ClCompile Include="..\Private\Camera_Free.cpp" />
     <ClCompile Include="..\Private\Camera_Stage.cpp" />
+    <ClCompile Include="..\Private\Student_Fx.cpp" />
     <ClCompile Include="..\Private\HpBar.cpp" />
     <ClCompile Include="..\Private\CombatFormation.cpp" />
     <ClCompile Include="..\Private\Enemy.cpp" />
@@ -288,9 +293,12 @@
     <ClCompile Include="..\Private\MapProp.cpp" />
     <ClCompile Include="..\Private\State_Attack.cpp" />
     <ClCompile Include="..\Private\State_Dead.cpp" />
+    <ClCompile Include="..\Private\State_Student_Ex_Cutin.cpp" />
     <ClCompile Include="..\Private\State_Student_Jump.cpp" />
     <ClCompile Include="..\Private\State_Student_Run.cpp" />
+    <ClCompile Include="..\Private\UI_CombatFormation_Skill.cpp" />
     <ClCompile Include="..\Private\UI_Combat_HpBar.cpp" />
+    <ClCompile Include="..\Private\UI_Default.cpp" />
     <ClCompile Include="..\Private\UI_Progress.cpp" />
     <ClCompile Include="..\Private\Sky.cpp" />
     <ClCompile Include="..\Private\Stage.cpp" />

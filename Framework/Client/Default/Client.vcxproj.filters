@@ -241,6 +241,16 @@
     <ClInclude Include="..\Public\State_Headers.h">
       <Filter>04. State</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\State_Student_Ex_Cutin.h">
+      <Filter>04. State\Student\EX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Student_Fx.h">
+      <Filter>02.GameObject\05. Actor\Student\Student_FX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_CombatFormation_Skill.h">
+      <Filter>02.GameObject\11. CombatFormation\UI_CombatFormation_Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_Default.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -465,6 +475,16 @@
     <ClCompile Include="..\Private\HpBar.cpp">
       <Filter>02.GameObject\10. HpBar</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\State_Student_Ex_Cutin.cpp">
+      <Filter>04. State\Student\EX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Student_Fx.cpp">
+      <Filter>02.GameObject\05. Actor\Student\Student_FX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_CombatFormation_Skill.cpp">
+      <Filter>02.GameObject\11. CombatFormation\UI_CombatFormation_Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_Default.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -693,6 +713,21 @@
     </Filter>
     <Filter Include="02.GameObject\10. HpBar">
       <UniqueIdentifier>{d1afeeb2-07dd-4f4b-8ae0-35ab0d0a0eaa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Level\12.EffectTool">
+      <UniqueIdentifier>{1efdd4a8-f0c7-427a-bd39-b051c7b42e12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\05. Actor\Student\Student_FX">
+      <UniqueIdentifier>{c81c4a2c-1a82-4691-a68c-a2cdba2a34e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\03. UI\Combat\UI_CombatFormation">
+      <UniqueIdentifier>{2e7a7355-81ca-4054-931f-719d268d9935}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\11. CombatFormation\UI_CombatFormation_Skill">
+      <UniqueIdentifier>{3fc52146-3016-4aec-a284-c2b570eac689}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\03. UI\05. UI_DefaultButton">
+      <UniqueIdentifier>{82ea15ca-7924-4bea-b213-0014bc183bee}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

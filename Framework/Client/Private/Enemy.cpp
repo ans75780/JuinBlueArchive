@@ -50,7 +50,7 @@ HRESULT CEnemy::Initialize(void * pArg)
 	TransformDesc.fRotationPerSec = XMConvertToRadians(90.0f);
 
 	//GameObject 에서 디스크립션 초기화해서 먼저 이거 해줘야함.
-	if (FAILED(__super::Initialize(&TransformDesc)))
+	if (FAILED(CGameObject::Initialize(&TransformDesc)))
 		return E_FAIL;
 
 	memcpy(&m_desc, pArg, sizeof(OBJ_DESC));
@@ -61,7 +61,7 @@ HRESULT CEnemy::Initialize(void * pArg)
 		return E_FAIL;
 
 	m_pTransformCom->Set_Scaled(_float3(1.00f, 1.00f, 1.00f));
-
+	
 	return S_OK;
 }
 
@@ -140,6 +140,8 @@ void CEnemy::Damaged(_float fAtk)
 
 void CEnemy::CheckState() 
 {
+
+
 	if (m_eStageState == STATE_STATE_MOVE || m_eStageState == STATE_STATE_IDLE)
 	{
 		CGameInstance*	pInstance = GET_INSTANCE(CGameInstance);
@@ -190,14 +192,14 @@ void CEnemy::CheckState()
 		}
 		RELEASE_INSTANCE(CGameInstance);
 	}
-	else if (m_eStageState == STAGE_STATE_BATTLE)
-	{
+
 		/*
 		//만약에 적이 배틀상태다가 플레이어가 죽었다면
 		가장 가까운 플레이어를 찾아 이동함.
 		만약 모든 플레이어가 죽어서 타겟이 nullptr로 존재하면 Idle로 상태전환.
 		*/
-
+	if (m_pTarget)
+	{
 		if (m_pTarget->Get_StageState() == STAGE_STATE_DEAD)
 		{
 			CGameInstance*	pInstance = GET_INSTANCE(CGameInstance);
@@ -241,7 +243,7 @@ void CEnemy::CheckState()
 			RELEASE_INSTANCE(CGameInstance);
 		}
 	}
-
+		
 
 }
 

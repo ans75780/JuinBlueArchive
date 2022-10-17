@@ -11,7 +11,8 @@
 #include "Actor.h"
 #include "HpBar.h"
 #include "State_Student_Run.h"
-
+#include "State_Student_Ex_Cutin.h"
+#include "State_Student_Ex.h"
 
 CCamera_Event::CCamera_Event(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CCamera(pDevice, pContext)
@@ -120,15 +121,15 @@ void CCamera_Event::Ready_Event_Stage_Start(CCamera * pReturnCamera, CActor * pT
 
 }
 
-void CCamera_Event::Ready_Event_Ex(CCamera * pReturnCamera, CActor * pTarget)
+void CCamera_Event::Ready_Event_Ex(CCamera * pReturnCamera, CActor * pTarget, CActor * pEx)
 {
 	m_pReturnToCam = pReturnCamera;
-
+	m_pTargetEx = pEx;
 	m_pTarget = pTarget;
 
 	char pAnimaitonStr[MAX_PATH];
 	char pAnimationPullName[MAX_PATH];
-	WideCharToMultiByte(CP_ACP, 0, ((CStudent*)m_pTarget)->Get_Name(), MAX_PATH, pAnimaitonStr, MAX_PATH, NULL, NULL);
+	WideCharToMultiByte(CP_ACP, 0, ((CActor*)m_pTarget)->Get_Name(), MAX_PATH, pAnimaitonStr, MAX_PATH, NULL, NULL);
 
 	//28
 
@@ -136,15 +137,15 @@ void CCamera_Event::Ready_Event_Ex(CCamera * pReturnCamera, CActor * pTarget)
 
 	strcat_s(pAnimationPullName, "_Exs_Cutin_Cam");
 
-	m_pAnimation = ((CStudent*)m_pTarget)->Get_Animation(pAnimationPullName);
-	
+	m_pAnimation = m_pTarget->Get_Animation(pAnimationPullName);
+
 	if (m_pAnimation == nullptr)
 	{
 		strcpy_s(pAnimationPullName, pAnimaitonStr);
 
 		strcat_s(pAnimationPullName, "_Exs_Cam");
 
-		m_pAnimation = ((CStudent*)m_pTarget)->Get_Animation(pAnimationPullName);
+		m_pAnimation = m_pTarget->Get_Animation(pAnimationPullName);
 		if (nullptr == m_pAnimation)
 		{
 			MSG_BOX("Load Failed : Ex Cam");
@@ -156,10 +157,10 @@ void CCamera_Event::Ready_Event_Ex(CCamera * pReturnCamera, CActor * pTarget)
 
 	_vector	vTargetPos = m_pTarget->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION);
 
-	XMStoreFloat4(&m_fTargetOriginPos,vTargetPos);
+	XMStoreFloat4(&m_fTargetOriginPos, vTargetPos);
 
 	//EX때는 캐릭터를 원점으로 돌려놓음(왜? 노드에 카메라가 원점을 기준으로 되어잇음)
-	m_pTarget->Get_Transform()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(0.f,0.f,0.f,1.f));
+	m_pTarget->Get_Transform()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(0.f, 0.f, 0.f, 1.f));
 	CCamera::Set_MainCam(this);
 
 	//이벤트 시작될동안 이벤트 오브젝트에 들어가있는 애들 빼고는 틱 멈춤
@@ -170,6 +171,9 @@ void CCamera_Event::Ready_Event_Ex(CCamera * pReturnCamera, CActor * pTarget)
 	pInstance->Add_EventObject(this);
 	pInstance->Add_EventObject(m_pTarget);
 
+	m_pTarget->Get_StateMachine()->Add_State(CState_Student_Ex_Cutin::Create(m_pTarget));
+
+	m_pTarget->Set_Enable(true);
 
 	RELEASE_INSTANCE(CGameInstance);
 }
@@ -207,7 +211,7 @@ void CCamera_Event::Event_Ex(_float fTimeDelta)
 		CCamera::Set_MainCam(m_pReturnToCam);
 		m_pAnimation->Reset();
 
-		m_pTarget->Get_Transform()->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&m_fTargetOriginPos));
+	//	m_pTarget->Get_Transform()->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&m_fTargetOriginPos));
 
 		CGameInstance*	pInstance = GET_INSTANCE(CGameInstance);
 	
@@ -215,7 +219,8 @@ void CCamera_Event::Event_Ex(_float fTimeDelta)
 
 
 		RELEASE_INSTANCE(CGameInstance);
-
+		m_pTarget->Set_Enable(false);
+		m_pTargetEx->Get_StateMachine()->Add_State(CState_Student_Ex::Create(m_pTargetEx));
 		return;
 	}
 	m_pAnimation->Update(fTimeDelta);
@@ -223,7 +228,6 @@ void CCamera_Event::Event_Ex(_float fTimeDelta)
 	m_CameraDesc.fFovy = XMConvertToRadians(15.0f);
 	_matrix vMatrix = m_pTarget->Get_ModelCom()->Find_Bone("Camera001")->Get_CombinedMatrix();
 
-	vMatrix *= m_MatExRot;
 
 	_matrix vTargetViewMatrix = m_pTarget->Get_ModelCom()->Find_Bone("Camera001.Target")->Get_CombinedMatrix();
 	_vector	vTargetPos = m_pTarget->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION);

@@ -232,6 +232,12 @@ HRESULT CMainApp::Ready_Static_Resource()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/Start/Start_%d.png"), 16))))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Combat_Cost_Gauge"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/UI/UI_extract/image/Combat/Combat_Cost_Gauge.png")))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Combat_Cost_Gauge_Back"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/Combat_Cost_Gauge_Back.png")))))
+		return E_FAIL;
 	return S_OK;
 }
 

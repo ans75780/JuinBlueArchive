@@ -38,6 +38,7 @@ HRESULT CState_Idle::Initialize()
 void CState_Idle::Enter()
 {
 	m_pAnimation->Play();
+	m_pOwner->Set_StageState(CActor::STATE_STATE_IDLE);
 }
 
 _bool CState_Idle::Loop(_float fTimeDelta)

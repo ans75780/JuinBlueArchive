@@ -76,7 +76,8 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 		if (FAILED(pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_FORMATION))))
 			return;
 	}
-	m_pCombatFormaiton->Tick(fTimeDelta);
+	if (m_pCombatFormaiton)
+		m_pCombatFormaiton->Tick(fTimeDelta);
 
 }
 
@@ -108,8 +109,8 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _tchar * pLayerTag)
 
 	CameraDesc.fFovy = XMConvertToRadians(65.0f);
 	CameraDesc.fAspect = (_float)g_iWinCX / g_iWinCY;
-	CameraDesc.fNear = 1.f;
-	CameraDesc.fFar = 30.f;
+	CameraDesc.fNear = 0.1f;
+	CameraDesc.fFar = 100.f;
 
 	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Prototype_GameObject_Camera_Stage"), &CameraDesc, 
 		((CGameObject**)&m_pStageCam)
@@ -208,7 +209,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Student(const _tchar * pLayerTag)
 	lstrcpy(desc.szLayer, pLayerTag);
 	desc.eGameStartEvent = true;
 
-	m_pCombatFormaiton = CCombatFormation::Create(&desc, m_pStageCam, m_pEventCam);
+	m_pCombatFormaiton = CCombatFormation::Create(&desc, m_pStageCam, m_pEventCam, m_pDevice, m_pContext);
 	
 	if (nullptr == m_pCombatFormaiton)
 		return  E_FAIL;
@@ -279,6 +280,6 @@ CLevel_GamePlay * CLevel_GamePlay::Create(ID3D11Device* pDevice, ID3D11DeviceCon
 void CLevel_GamePlay::Free()
 {
 	__super::Free();
-
+	Safe_Release(m_pCombatFormaiton);
 }
 

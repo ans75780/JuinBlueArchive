@@ -7,6 +7,8 @@ vector	g_vCamPosition;
 
 float2	g_ProgressBarSize;
 
+float		g_Ratio;
+
 texture2D	g_DiffuseTexture;
 
 
@@ -127,6 +129,21 @@ PS_OUT PS_MAIN(PS_IN In)
 	return Out;
 }
 
+PS_OUT PS_MAIN_RATIO(PS_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+
+	Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+
+	if (In.vTexUV.x > g_Ratio )
+		discard;
+
+	return Out;
+}
+
+
+
+
 technique11 DefaultTechnique
 {
 	pass Default
@@ -138,5 +155,16 @@ technique11 DefaultTechnique
 		VertexShader = compile vs_5_0 VS_MAIN();
 		GeometryShader = compile gs_5_0 GS_MAIN();
 		PixelShader = compile ps_5_0 PS_MAIN();
+	}
+
+	pass Ratio
+	{
+		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+		SetRasterizerState(RS_Default);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = compile gs_5_0 GS_MAIN();
+		PixelShader = compile ps_5_0 PS_MAIN_RATIO();
 	}
 }

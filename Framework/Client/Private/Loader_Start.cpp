@@ -8,7 +8,7 @@
 #include "Json_Utility.h"
 #include "Baricade.h"
 #include "HpBar.h"
-
+#include "Student_Fx.h"
 
 
 #include "Memorial_Haruka_Start.h"
@@ -130,6 +130,8 @@ HRESULT CLoader_Start::Loading_ForLogoLevel()
 
 	lstrcpy(m_szLoadingText, TEXT("오브젝트를 로딩중입니다. "));
 
+	if (FAILED(pGameInstance->Add_Prototype(L"Prototype_Student_FX", CStudent_FX::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(L"Prototype_Student", CStudent::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
@@ -156,14 +158,32 @@ HRESULT CLoader_Start::Loading_ForLogoLevel()
 		return E_FAIL;
 
 	/* For.Prototype_Component_Model_Serika*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Aru_Original_FX"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Effects/ExModel/Aru_Original/", "Aru_Original.fbx", mat))))
+		return E_FAIL;
+
+
+	/* For.Prototype_Component_Model_Serika*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Haruka_Original"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Haruka_Original/", "Haruka_Original.fbx", rotMat))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Model_Serika*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Haruka_Original_FX"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Effects/ExModel/Haruka_Original/", "Haruka_Original.fbx", mat))))
+		return E_FAIL;
+
+
+	/* For.Prototype_Component_Model_Serika*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Zunko_Original"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Zunko_Original/", "Zunko_Original.fbx", rotMat))))
 		return E_FAIL;
+
+	/* For.Prototype_Component_Model_Serika*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Zunko_Original_FX"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Effects/ExModel/Zunko_Original/", "Zunko_Original.fbx", mat))))
+		return E_FAIL;
+
 
 	/* For.Prototype_Component_Model_Soldier_Kaiserpmc_HG*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Soldier_Kaiserpmc_HG"),

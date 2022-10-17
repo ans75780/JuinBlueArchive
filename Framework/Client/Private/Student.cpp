@@ -35,7 +35,7 @@ HRESULT CStudent::Initialize(void * pArg)
 	TransformDesc.fRotationPerSec = XMConvertToRadians(90.0f);
 
 	//GameObject 에서 디스크립션 초기화해서 먼저 이거 해줘야함.
-	if (FAILED(__super::Initialize(&TransformDesc)))
+	if (FAILED(CGameObject::Initialize(&TransformDesc)))
 		return E_FAIL;
 
 	memcpy(&m_desc, pArg, sizeof(OBJ_DESC));
@@ -81,7 +81,8 @@ void CStudent::Tick(_float fTimeDelta)
 
 void CStudent::LateTick(_float fTimeDelta)
 {
-	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+	if(m_bEnable)
+		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
 
 //#ifdef _DEBUG
 	CGameInstance*	pInstance = GET_INSTANCE(CGameInstance);

@@ -30,13 +30,19 @@ HRESULT CActor::Initialize_Prototype()
 HRESULT CActor::Initialize(void * pArg)
 {
 	CTransform::TRANSFORMDESC		TransformDesc;
+	TransformDesc.fSpeedPerSec = 3.f;
+	TransformDesc.fRotationPerSec = XMConvertToRadians(90.0f);
 
-	memcpy(&TransformDesc, pArg, sizeof(CTransform::TRANSFORMDESC));
-
-	if (FAILED(__super::Initialize(&TransformDesc)))
+	//GameObject 에서 디스크립션 초기화해서 먼저 이거 해줘야함.
+	if (FAILED(CGameObject::Initialize(&TransformDesc)))
 		return E_FAIL;
 
-	m_eStageState = CActor::STAGE_STATE::STATE_STATE_IDLE;
+	memcpy(&m_desc, pArg, sizeof(OBJ_DESC));
+
+	if (FAILED(SetUp_Components()))
+		return E_FAIL;
+	if (FAILED(SetUp_StateMachine(0)))
+		return E_FAIL;
 	return S_OK;
 }
 
@@ -124,6 +130,11 @@ CAnimation * CActor::Get_Animation(const char * pAnimationName)
 _bool CActor::Collision_AABB(RAYDESC & ray, _float & distance)
 {
 	return m_pAABBCom->Collision_AABB(ray, distance);
+}
+
+void CActor::Set_Desc(OBJ_DESC & desc)
+{
+	memcpy(&m_desc, &desc, sizeof(OBJ_DESC));
 }
 
 void CActor::Damaged(_float fAtk)
@@ -235,7 +246,22 @@ HRESULT CActor::SetUp_ShaderResource()
 
 HRESULT CActor::SetUp_StateMachine(_uint iLevel)
 {
+	m_pStateMachine = CStateMachineBase::Create(this);
+
 	return S_OK;
+}
+
+CGameObject * CActor::Clone(void * pArg)
+{
+	CActor*		pInstance = new CActor(*this);
+
+	if (FAILED(pInstance->Initialize(pArg)))
+	{
+		MSG_BOX("Failed to Cloned : CActor");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
 }
 
 void CActor::Free()

@@ -40,7 +40,7 @@ HRESULT CCamera_Stage::Initialize(void * pArg)
 	m_bInCam = true;
 	m_fOriginFov = m_CameraDesc.fFovy;
 	m_fZoomOutFov = m_fOriginFov + 30.f;
-
+	
 	m_iCamFocusIndex = 0;
 	
 	return S_OK;

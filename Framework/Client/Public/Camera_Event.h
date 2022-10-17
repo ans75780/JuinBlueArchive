@@ -23,7 +23,7 @@ public:
 public:
 	void	Ready_Event_Stage_Start(class CCamera* pReturnCamera, class CActor* pTarget, class CAnimation* pAnimation, _float3 vOffset, vector<CStudent*>* pVecStudents);
 
-	void	Ready_Event_Ex(class CCamera* pReturnCamera, class CActor* pTarget);
+	void	Ready_Event_Ex(class CCamera* pReturnCamera, class CActor* pTarget, class CActor* pEx);
 
 public:
 	void	Event_Stage_Start();
@@ -42,6 +42,8 @@ private:
 	EVENT_TYPE	m_eEventType = EVENT_TYPE::EVENT_END;
 	class CCamera*	m_pReturnToCam = nullptr;
 	class CActor* m_pTarget = nullptr;
+	class CActor* m_pTargetEx = nullptr;
+
 
 private:
 	_float3			m_vOffset;

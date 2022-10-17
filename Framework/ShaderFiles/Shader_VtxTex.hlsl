@@ -3,7 +3,14 @@
 
 matrix	g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 
+
+
+float2		g_Ratio;
+
 texture2D	g_DiffuseTexture;
+
+
+
 
 sampler DefaultSampler = sampler_state 
 {		
@@ -69,6 +76,23 @@ PS_OUT PS_MAIN(PS_IN In)
 	return Out;	
 }
 
+PS_OUT PS_MAIN_RATIO(PS_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+
+	Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+
+	if (In.vTexUV.x > g_Ratio.x)
+		discard;
+	if (In.vTexUV.y > g_Ratio.y)
+		discard;
+	/*if (Out.vColor.a < 0.1f)
+		discard;*/
+
+	return Out;
+}
+
+
 technique11 DefaultTechnique
 {
 	pass Default
@@ -81,16 +105,11 @@ technique11 DefaultTechnique
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN();
 	}
-	/*pass Default
+	pass Ratio
 	{
 		VertexShader = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
-		PixelShader = compile ps_5_0 PS_MAIN();
+		PixelShader = compile ps_5_0 PS_MAIN_RATIO();
 	}
-	pass Default
-	{
-		VertexShader = compile vs_5_0 VS_MAIN();
-		GeometryShader = NULL;
-		PixelShader = compile ps_5_0 PS_MAIN();
-	}*/
+
 }

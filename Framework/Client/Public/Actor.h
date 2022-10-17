@@ -49,6 +49,8 @@ public:
 
 	class CHpBar*	Get_HpBar() { return m_pHpBar; }
 
+
+	virtual void	Set_Desc(OBJ_DESC& desc);
 	virtual void	Damaged(_float fAtk);
 
 protected:
@@ -74,14 +76,13 @@ protected:
 	STAGE_STATE			m_eStageState = STAGE_STATE_END;
 	class CHpBar*	m_pHpBar = nullptr;
 
-
 protected:
 	virtual HRESULT SetUp_Components();
 	virtual HRESULT SetUp_ShaderResource();
-	virtual HRESULT	SetUp_StateMachine(_uint iLevel) = 0;
+	virtual HRESULT	SetUp_StateMachine(_uint iLevel);
 
 public:
-	virtual CGameObject* Clone(void* pArg) = 0;
+	virtual CGameObject* Clone(void* pArg);
 	virtual void Free() override;
 };
 
