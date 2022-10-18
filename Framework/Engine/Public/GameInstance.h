@@ -88,6 +88,8 @@ public: /*For. UI_Manager*/
 	void	Set_DisableUI(_bool _Set) { m_pUI_Manager->Set_DisableUI(_Set); }
 	void	Clear_UIVec() { m_pUI_Manager->Clear_UIVec(); }
 	void	AllUI_Initialization() { m_pUI_Manager->AllUI_Initialization(); }
+	void	Clear_Canvas(_uint _iLevel) { m_pUI_Manager->Clear_Canvas(_iLevel); }
+
 
 public: /* For.PipeLine */
 	void Set_Transform(CPipeLine::TRANSFORMSTATE eState, _fmatrix TransformState);

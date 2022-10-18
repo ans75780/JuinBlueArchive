@@ -222,9 +222,7 @@ HRESULT CLoader::Loading_ForFormationLevel()
 	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
 	Safe_AddRef(pGameInstance);
 
-
 	lstrcpy(m_szLoadingText, TEXT("·ÎµùÁß..ÇÜ¹ö°Å..¸Ô°í½Í´Ù.."));
-
 
 	/* For.Prototype_GameObject_Camera_Free*/
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Camera_Formation"),
@@ -240,6 +238,68 @@ HRESULT CLoader::Loading_ForFormationLevel()
 	/* For.Prototype_Component_Texture_Sky */
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_FORMATION, TEXT("Prototype_Component_Texture_Formaiton_Background"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/SkyBox/Background.dds"), 1))))
+		return E_FAIL;
+
+
+	lstrcpy(m_szLoadingText, TEXT("¸ðµ¨À» ·ÎµùÁßÀÌºñ³®. "));
+
+	_matrix mat, rotMat;
+	mat = XMMatrixIdentity();
+
+	rotMat = XMMatrixRotationAxis(XMVectorSet(0.f, 1.f, 0.f, 1.f), XMConvertToRadians(180.f));
+
+
+	/* For.Prototype_Component_Model_Serika*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Aru_Original"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Aru_Original/", "Aru_Original.fbx", rotMat))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_Serika*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Aru_Original_FX"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Effects/ExModel/Aru_Original/", "Aru_Original.fbx", mat))))
+		return E_FAIL;
+
+
+	/* For.Prototype_Component_Model_Serika*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Haruka_Original"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Haruka_Original/", "Haruka_Original.fbx", rotMat))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_Serika*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Haruka_Original_FX"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Effects/ExModel/Haruka_Original/", "Haruka_Original.fbx", mat))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_Serika*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Zunko_Original"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Zunko_Original/", "Zunko_Original.fbx", rotMat))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_Serika*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Zunko_Original_FX"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Effects/ExModel/Zunko_Original/", "Zunko_Original.fbx", mat))))
+		return E_FAIL;
+
+
+	/* For.Prototype_Component_Model_Soldier_Kaiserpmc_HG*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Soldier_Kaiserpmc_HG"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Enemies/Soldier_Kaiserpmc_HG/", "Soldier_Kaiserpmc_HG.fbx",
+			XMMatrixRotationAxis(XMVectorSet(0.f, 1.f, 0.f, 1.f), XMConvertToRadians(180.f))))))
+		return E_FAIL;
+
+
+	/* For.Prototype_Component_Model_Stage_School*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_School_Baricade"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Models/NonAnimModels/Obstacles/School_Baricade/", "School_Baricade.fbx", XMMatrixRotationAxis(XMVectorSet(0.f, 1.f, 0.f, 1.f), XMConvertToRadians(90.f))))))
+		return E_FAIL;
+
+
+	lstrcpy(m_szLoadingText, TEXT("¸ÊÀ» ·ÎµùÁßÀÌºñ³®. "));
+
+	/* For.Prototype_Component_Model_Stage_School*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Stage_School_1"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Models/NonAnimModels/Stages/School/", "School_1.fbx",
+			rotMat))))
 		return E_FAIL;
 
 	m_isFinished = true;

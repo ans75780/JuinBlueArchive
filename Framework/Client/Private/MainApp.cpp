@@ -51,6 +51,10 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(Ready_Static_Resource()))
 		return E_FAIL;
 
+	if (FAILED(Ready_Static_NonAnimModels()))
+		return E_FAIL;
+
+
 	CUserData::Get_Instance()->Initialize();
 
 	if (FAILED(Open_Level_Start(LEVEL_LOGO)))
@@ -235,9 +239,31 @@ HRESULT CMainApp::Ready_Static_Resource()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Combat_Cost_Gauge"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/UI/UI_extract/image/Combat/Combat_Cost_Gauge.png")))))
 		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Combat_CostBg"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/UI/UI_extract/image/Combat/Combat_CostBg.png")))))
+		return E_FAIL;
+	
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Combat_Cost_Gauge_Back"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/Combat_Cost_Gauge_Back.png")))))
 		return E_FAIL;
+
+	
+	
+	return S_OK;
+}
+
+HRESULT CMainApp::Ready_Static_NonAnimModels()
+{
+
+	_matrix	 mat;
+
+	mat = XMMatrixIdentity();
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_FX_MESH_Circle"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Effects/Mesh/FX_MESH_Circle/", "FX_MESH_Circle.fbx", mat))))
+		return E_FAIL;
+
+
 	return S_OK;
 }
 

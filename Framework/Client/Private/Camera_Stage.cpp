@@ -114,6 +114,14 @@ void CCamera_Stage::Tick(_float fTimeDelta)
 		}
 	}
 	*/
+	if (KEY(J, HOLD))
+	{
+		m_vOffset.y -= 1.f * fTimeDelta;
+	}
+	if (KEY(K, HOLD))
+	{
+		m_vOffset.y += 1.f * fTimeDelta;
+	}
 
 }
 

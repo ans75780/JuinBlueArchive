@@ -68,9 +68,11 @@ HRESULT CCombatFormation::Initialize(void * pArg)
 
 
 	if (m_eDesc.eLevel == LEVEL_GAMEPLAY)
+	{
 		SetUp_ExModels();
+		m_pCombatSkill = CUI_CombatFormation_Skill::Create(m_pDevice, m_pContext);
 
-	m_pCombatSkill = CUI_CombatFormation_Skill::Create(m_pDevice, m_pContext);
+	}
 	return S_OK;
 }
 
@@ -147,7 +149,7 @@ HRESULT CCombatFormation::StartGame()
 		for (_uint i = 0; i < StartPos.size();i++)
 			m_vecStudent[i]->Set_Transform(XMLoadFloat4(&StartPos[i]));
 	}
-	
+	m_pCombatSkill->StartGame();
 	return S_OK;
 }
 

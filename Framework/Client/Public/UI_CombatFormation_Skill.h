@@ -37,8 +37,12 @@ private:
 private:
 	vector<class CStudent*> m_vecStudent;
 
-	class CUI_Default*	m_pUICostBack = nullptr;
-	class CUI_Default*	m_pUICostFront = nullptr;
+	class CUI_Default*	m_pUICostBarBack = nullptr;
+	class CUI_Default*	m_pUICostBarFront = nullptr;
+	class CUI_Default*	m_pUICostNumberBack = nullptr;
+	class CUI_Text*		m_pUICostText = nullptr;
+
+	_tchar				m_szCost[MAX_PATH] = L"";
 	
 public:
 	static CUI_CombatFormation_Skill*	Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

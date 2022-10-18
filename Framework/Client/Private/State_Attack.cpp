@@ -117,7 +117,6 @@ _bool CState_Attack::Loop(_float fTimeDelta)
 			Change_Animation(ATTACK_STATE_END);
 		}
 	}
-	
 	m_pAnims[m_eCurrentState]->Update(fTimeDelta);
 	m_pModel->Update_CombinedMatrix();
 	return false;

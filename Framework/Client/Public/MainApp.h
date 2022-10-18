@@ -31,7 +31,7 @@ private:
 	HRESULT	Open_Level_Start(LEVEL eLevelID);
 	HRESULT Ready_Prototype_Component();
 	HRESULT Ready_Static_Resource();
-
+	HRESULT	Ready_Static_NonAnimModels();
 private:
 	_uint					m_iNumRender = 0;
 	_tchar					m_szFPS[MAX_PATH] = TEXT("");

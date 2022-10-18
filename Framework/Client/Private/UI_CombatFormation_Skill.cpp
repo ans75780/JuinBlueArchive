@@ -3,6 +3,8 @@
 #include "UI_Progress.h"
 #include "GameInstance.h"
 #include "UI_Default.h"
+#include "UI_Text.h"
+
 CUI_CombatFormation_Skill::CUI_CombatFormation_Skill(ID3D11Device * _pDevice, ID3D11DeviceContext * _pContext)
 	:m_pDevice(_pDevice), m_pContext(_pContext)
 {
@@ -18,42 +20,53 @@ HRESULT CUI_CombatFormation_Skill::Initialize(void * pArg)
 {
 	CGameInstance*	pInstance = GET_INSTANCE(CGameInstance);
 
-	m_pUICostFront = CUI_Default::Create(m_pDevice, m_pContext);
-	m_pUICostBack = CUI_Default::Create(m_pDevice, m_pContext);
-	
+	m_pUICostBarFront = CUI_Default::Create(m_pDevice, m_pContext);
+	m_pUICostBarBack = CUI_Default::Create(m_pDevice, m_pContext);
+	m_pUICostNumberBack = CUI_Default::Create(m_pDevice, m_pContext);
+	m_pUICostText = CUI_Text::Create(m_pDevice, m_pContext);
+
 	m_fCost = 0.f;
 	m_fCostMax = 10.f;
 
-	m_pUICostFront->Set_Pos(_float3(350.f, -300.f, 0.f));
-	m_pUICostFront->Set_Size(_float3(368.f, 18.f, 1.f));
+	m_pUICostBarFront->Set_Pos(_float3(350.f, -300.f, 0.f));
+	m_pUICostBarFront->Set_Size(_float3(368.f, 18.f, 1.f));
 
-	m_pUICostBack->Set_Pos(_float3(350.f, -300.f, 0.f));
-	m_pUICostBack->Set_Size(_float3(368.f, 18.f, 1.f));
+	m_pUICostBarBack->Set_Pos(_float3(350.f, -300.f, 0.f));
+	m_pUICostBarBack->Set_Size(_float3(368.f, 18.f, 1.f));
+
+	m_pUICostNumberBack->Set_Pos(_float3(290.f, -300.f, 0.f));
+	m_pUICostNumberBack->Set_Size(_float3(50.f, 56.f, 1.f));
+
+	m_pUICostText->Set_Pos(_float3(290.f, -300.f, 0.f));
+	
+
+	m_pUICostBarFront->Set_UIType(UI_TYPE::UI_BUTTTON);
+	m_pUICostBarBack->Set_UIType(UI_TYPE::UI_BACKGROUND);
+	m_pUICostBarFront->SetPath(1);
 
 
-	m_pUICostFront->Set_UIType(UI_TYPE::UI_BUTTTON);
-	m_pUICostBack->Set_UIType(UI_TYPE::UI_BACKGROUND);
+	m_pUICostNumberBack->Set_UIType(UI_TYPE::UI_BACKGROUND);
+	
+	m_pUICostText->Set_UIType(UI_TYPE::UI_BUTTTON);
 
-	m_pUICostFront->SetPath(1);
-	if (FAILED(m_pUICostFront->LoadUIImage(L"Prototype_Component_Texture_Combat_Cost_Gauge")))
-	{
+
+	if (FAILED(m_pUICostBarFront->LoadUIImage(L"Prototype_Component_Texture_Combat_Cost_Gauge")))
+		return E_FAIL;
+	if (FAILED(pInstance->Add_UI(LEVEL_GAMEPLAY, m_pUICostBarFront, nullptr)))
 		return E_FAIL;
 
-	}
-	if (FAILED(pInstance->Add_UI(LEVEL_GAMEPLAY, m_pUICostFront, nullptr)))
-	{
-		return E_FAIL;
-	}
 
-	if (FAILED(m_pUICostBack->LoadUIImage(L"Prototype_Component_Texture_Combat_Cost_Gauge_Back")))
-	{
+	if (FAILED(m_pUICostBarBack->LoadUIImage(L"Prototype_Component_Texture_Combat_Cost_Gauge_Back")))
+		return E_FAIL;
+	if (FAILED(pInstance->Add_UI(LEVEL_GAMEPLAY, m_pUICostBarBack, nullptr)))
 		return E_FAIL;
 
-	}
-	if (FAILED(pInstance->Add_UI(LEVEL_GAMEPLAY, m_pUICostBack, nullptr)))
-	{
+	if (FAILED(m_pUICostNumberBack->LoadUIImage(L"Prototype_Component_Texture_Combat_CostBg")))
 		return E_FAIL;
-	}
+	if (FAILED(pInstance->Add_UI(LEVEL_GAMEPLAY, m_pUICostNumberBack, nullptr)))
+		return E_FAIL;
+
+
 	RELEASE_INSTANCE(CGameInstance);
 
 	return S_OK;
@@ -61,22 +74,18 @@ HRESULT CUI_CombatFormation_Skill::Initialize(void * pArg)
 
 void CUI_CombatFormation_Skill::Tick(_float fTimeDelta)
 {
-
 	m_fCost += fTimeDelta * 0.1f;
+		
+	_itow_s((_uint)m_fCost, m_szCost, 10);
+
+	m_pUICostText->SetUIText(m_szCost);
+	
 	if (m_fCost >= m_fCostMax)
 	{
 		m_fCost = m_fCostMax;
 	}
-	m_pUICostFront->SetRatioWidth(m_fCost);
+	m_pUICostBarFront->SetRatioWidth(m_fCost);
 
-	if (KEY(A, TAP))
-	{
-		m_fCost -= 0.1f;
-	}
-	if (KEY(S, TAP))
-	{
-		m_fCost += 0.1f;
-	}
 }
 
 void CUI_CombatFormation_Skill::LateTick(_float fTimeDelta)
@@ -90,6 +99,9 @@ HRESULT CUI_CombatFormation_Skill::Render()
 
 HRESULT CUI_CombatFormation_Skill::StartGame()
 {
+	m_fCost = 0.f;
+	m_pUICostBarFront->SetRatioWidth(m_fCost);
+
 	return S_OK;
 }
 
@@ -113,7 +125,9 @@ void CUI_CombatFormation_Skill::Free()
 	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);
 
-	//Safe_Release(m_pUICostBack);
-	//Safe_Release(m_pUICostFront);
+	CGameInstance* pInstance = GET_INSTANCE(CGameInstance);
 
+	pInstance->Clear_Canvas(LEVEL_GAMEPLAY);
+
+	RELEASE_INSTANCE(CGameInstance);
 }

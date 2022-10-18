@@ -188,6 +188,11 @@ void CUI_Manager::Clear_UIVec()
 		pCanvas->Clear_UIVec();
 }
 
+void CUI_Manager::Clear_Canvas(_uint iLevelIndex)
+{
+	m_vecCanvas[iLevelIndex]->Clear_UIVec();
+}
+
 void CUI_Manager::AllUI_Initialization()
 {
 	for (auto& pCanvas : m_vecCanvas)
