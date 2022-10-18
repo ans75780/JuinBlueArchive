@@ -16,10 +16,13 @@ HRESULT CLevel_Gacha_Play::Initialize()
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
+	if (FAILED(Ready_Layer_Student(TEXT("Layer_Student"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Student(TEXT("Layer_Student"))))
+	if (FAILED(Ready_Right()))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
 	return S_OK;
@@ -49,8 +52,8 @@ HRESULT CLevel_Gacha_Play::Ready_Layer_Camera(const _tchar * pLayerTag)
 	CCamera::CAMERADESC			CameraDesc;
 	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
 
-	CameraDesc.vEye = _float4(0.0f, 0.f, -3.f, 1.f);
-	CameraDesc.vAt = _float4(0.f, 0.f, -1.f, 1.f);
+	CameraDesc.vEye = _float4(0.0f, 2.f, -3.f, 1.f);
+	CameraDesc.vAt = _float4(0.f, 0.f, 0.f, 1.f);
 	CameraDesc.TransformDesc.fSpeedPerSec = 5.f;
 	CameraDesc.TransformDesc.fRotationPerSec = XMConvertToRadians(90.0f);
 
@@ -58,9 +61,11 @@ HRESULT CLevel_Gacha_Play::Ready_Layer_Camera(const _tchar * pLayerTag)
 	CameraDesc.fAspect = (_float)g_iWinCX / g_iWinCY;
 	CameraDesc.fNear = 0.2f;
 	CameraDesc.fFar = 300.f;
-
-	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GACHA_PLAY, pLayerTag, TEXT("Prototype_GameObject_Camera_GachaPlay"), &CameraDesc)))
+	//Layer_Camera
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GACHA_PLAY, pLayerTag, TEXT("Prototype_GameObject_Arona_Camera"), &CameraDesc)))
 		return E_FAIL;
+
+
 
 	RELEASE_INSTANCE(CGameInstance);
 
@@ -70,14 +75,36 @@ HRESULT CLevel_Gacha_Play::Ready_Layer_Camera(const _tchar * pLayerTag)
 HRESULT CLevel_Gacha_Play::Ready_Layer_Student(const _tchar * pLayerTag)
 {
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+	//Layer_Student
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GACHA_PLAY, pLayerTag, TEXT("Prototype_GameObject_Arona"))))
+		return E_FAIL;
 
-
-
-
-
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GACHA_PLAY, TEXT("Layer_Gacha_Cam"), TEXT("Prototype_GameObject_Arona_Gacha_Cam"))))
+		return E_FAIL;
 
 
 	RELEASE_INSTANCE(CGameInstance);
+	return S_OK;
+}
+
+HRESULT CLevel_Gacha_Play::Ready_Right()
+{
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+	LIGHTDESC			LightDesc;
+	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
+
+	LightDesc.eType = tagLightDesc::TYPE_DIRECTIONAL;
+	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
+	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vAmbient = _float4(0.4f, 0.4f, 0.4f, 1.f);
+	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
+
+	if (FAILED(pGameInstance->Add_Light(m_pDevice, m_pContext, LightDesc)))
+		return E_FAIL;
+
+	RELEASE_INSTANCE(CGameInstance);
+
 	return S_OK;
 }
 
