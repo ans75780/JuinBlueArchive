@@ -27,11 +27,14 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
+	class CAnimation*	Get_Animation(const char* pAnimationName);
+	CModel*				Get_Model() { return m_pModelCom; }
+
 private:
 	CShader*				m_pShaderCom = nullptr;
 	CRenderer*				m_pRendererCom = nullptr;
 	CModel*					m_pModelCom = nullptr;
-
+	CAnimation*				m_pAnimation = nullptr;
 private:
 	HRESULT SetUp_Components();
 	HRESULT SetUp_ShaderResource();

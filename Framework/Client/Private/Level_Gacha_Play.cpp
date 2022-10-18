@@ -19,6 +19,9 @@ HRESULT CLevel_Gacha_Play::Initialize()
 	if (FAILED(Ready_Layer_Student(TEXT("Layer_Student"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_Sky(TEXT("Layer_Sky"))))
+		return E_FAIL;
+
 	if (FAILED(Ready_Right()))
 		return E_FAIL;
 
@@ -81,6 +84,17 @@ HRESULT CLevel_Gacha_Play::Ready_Layer_Student(const _tchar * pLayerTag)
 
 	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GACHA_PLAY, TEXT("Layer_Gacha_Cam"), TEXT("Prototype_GameObject_Arona_Gacha_Cam"))))
 		return E_FAIL;
+
+	RELEASE_INSTANCE(CGameInstance);
+	return S_OK;
+}
+
+HRESULT CLevel_Gacha_Play::Ready_Layer_Sky(const _tchar * pLayerTag)//Layer_Sky
+{
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GACHA_PLAY, pLayerTag, TEXT("Prototype_GameObject_Sky"),
+		L"Prototype_Component_Texture_Formaiton_Background")))
 
 
 	RELEASE_INSTANCE(CGameInstance);

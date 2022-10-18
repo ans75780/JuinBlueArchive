@@ -2,6 +2,12 @@
 #include "..\Public\Arona_Camera.h"
 #include "GameInstance.h"
 
+#include "Arona_GachaCam.h"
+#include "Arona.h"
+#include "Animation.h"
+#include "BoneNode.h"
+
+
 CArona_Camera::CArona_Camera(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CCamera(pDevice, pContext)
 {
@@ -45,11 +51,15 @@ void CArona_Camera::Tick(_float fTimeDelta)
 	{
 		_once = false;
 		LookAtArona();
+		LinkCam();
 	}
 
-
-	CameraMove(fTimeDelta);
-
+	TickGacha(fTimeDelta);
+	
+	
+	if (m_pCamAni->IsFinished())
+		CameraMove(fTimeDelta);
+	
 	if (FAILED(Bind_PipeLine()))
 		return;
 }
@@ -149,4 +159,65 @@ void CArona_Camera::LookAtArona()
 
 
 	RELEASE_INSTANCE(CGameInstance);
+}
+
+void CArona_Camera::LinkCam()
+{
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+	
+	m_pCam = static_cast<CArona_GachaCam*>(pGameInstance->Get_GameObjects(LEVEL_GACHA_PLAY, L"Layer_Gacha_Cam").front());
+	m_pCamAni = m_pCam->Get_Animation("Arona_Original_Gacha_Anim");
+	
+	m_pArona = static_cast<CArona*>(pGameInstance->Get_GameObjects(LEVEL_GACHA_PLAY, L"Layer_Student").front());
+	m_pAronaAni = m_pCam->Get_Animation("Arona_Original_Gacha_Anim");
+
+	m_pCamAni->Play();
+	m_pAronaAni->Play();
+
+	m_pCam->Get_Transform()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(0.f, 0.f, 0.f, 1.f));
+	m_pArona->Get_Transform()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(0.f, 0.f, 0.f, 1.f));
+
+	RELEASE_INSTANCE(CGameInstance);
+}
+
+void CArona_Camera::TickGacha(_float & fTimeDelta)
+{
+	static bool Once = true;
+
+	if (nullptr == m_pCam || nullptr == m_pCamAni)
+		return;
+	
+	if (m_pCamAni->IsFinished())
+	{
+		if (Once)
+		{
+			m_pArona->Get_Model()->Play_Animation(1.f);
+			m_pAronaAni->Pause();
+			Once = false;
+		}
+
+		return;
+	}
+
+	m_pCam->Get_Model()->Play_Animation(fTimeDelta );
+	m_pArona->Get_Model()->Play_Animation(fTimeDelta );
+
+	m_CameraDesc.fFovy = XMConvertToRadians(15.0f);
+
+	
+	_matrix vMatrix = m_pCam->Get_Model()->Find_Bone("Camera001")->Get_CombinedMatrix();
+	_matrix vTargetViewMatrix = m_pCam->Get_Model()->Find_Bone("Camera001.Target")->Get_CombinedMatrix();
+	_vector	vTargetPos = m_pCam->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION);
+
+	m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vMatrix.r[0]);
+	m_pTransformCom->Set_State(CTransform::STATE_UP, vMatrix.r[1]);
+	m_pTransformCom->Set_State(CTransform::STATE_LOOK, vMatrix.r[2]);
+
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vMatrix.r[3]);
+
+
+	m_pTransformCom->LookAt(vTargetViewMatrix.r[3]);
+
+
+
 }

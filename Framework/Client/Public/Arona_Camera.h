@@ -3,6 +3,10 @@
 #include "Client_Defines.h"
 #include "Camera.h"
 
+BEGIN(Engine)
+class CAnimation;
+END
+
 BEGIN(Client)
 
 class CArona_Camera final : public CCamera
@@ -27,6 +31,18 @@ public:
 public:
 	void	CameraMove(_float& fTimeDelta);
 	void	LookAtArona();
+	void	LinkCam();
+
+	void	TickGacha(_float& fTimeDelta);
+
+private:
+	class CArona_GachaCam*	m_pCam = nullptr;
+	CAnimation*		m_pCamAni = nullptr;
+
+	class CArona*	m_pArona = nullptr;
+	CAnimation*		m_pAronaAni = nullptr;
+
+
 };
 
 END

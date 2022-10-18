@@ -7,6 +7,7 @@ BEGIN(Engine)
 class CShader;
 class CRenderer;
 class CModel;
+class CAnimation;
 END
 
 BEGIN(Client)
@@ -24,6 +25,10 @@ public:
 	virtual void Tick(_float fTimeDelta);
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
+
+	class CAnimation*	Get_Animation(const char* pAnimationName);
+	CModel*				Get_Model() { return m_pModelCom; }
+
 
 private:
 	CShader*				m_pShaderCom = nullptr;

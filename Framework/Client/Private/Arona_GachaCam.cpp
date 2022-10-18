@@ -38,7 +38,7 @@ HRESULT CArona_GachaCam::Initialize(void * pArg)
 
 void CArona_GachaCam::Tick(_float fTimeDelta)
 {
-	m_pModelCom->Play_Animation(fTimeDelta * 0.5f);
+	//m_pModelCom->Play_Animation(fTimeDelta * 0.5f);
 
 }
 
@@ -71,6 +71,15 @@ HRESULT CArona_GachaCam::Render()
 	}
 
 	return S_OK;
+}
+
+CAnimation * CArona_GachaCam::Get_Animation(const char * pAnimationName)
+{
+	CAnimation*	m_pAnimation = nullptr;
+
+	m_pAnimation = m_pModelCom->Get_AnimationFromName(pAnimationName);
+
+	return m_pAnimation;
 }
 
 HRESULT CArona_GachaCam::SetUp_Components()

@@ -18,6 +18,7 @@ public:
 private:
 	HRESULT Ready_Layer_Camera(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_Student(const _tchar* pLayerTag);
+	HRESULT Ready_Layer_Sky(const _tchar* pLayerTag);
 	HRESULT Ready_Right();
 
 private:

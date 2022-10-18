@@ -591,6 +591,11 @@ HRESULT CLoader::Loading_ForGachaPlayLevel()
 
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중이비낟. "));
 
+		/* For.Prototype_Component_Texture_Sky */
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_FORMATION, TEXT("Prototype_Component_Texture_Formaiton_Background"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/SkyBox/Background.dds"), 1))))
+		return E_FAIL;
+
 	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중이비낟. "));
 
 	_matrix mat;
@@ -599,7 +604,7 @@ HRESULT CLoader::Loading_ForGachaPlayLevel()
 
 	/* For.Prototype_Component_Model_Arona*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GACHA_PLAY, TEXT("Prototype_Component_Model_Arona_Gacha"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Arona/", "Arona1.fbx", mat))))
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Arona/", "Arona.fbx", mat))))
 		return E_FAIL;
 
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GACHA_PLAY, TEXT("Prototype_Component_Model_Arona_Gacha_Cam"),
@@ -619,6 +624,11 @@ HRESULT CLoader::Loading_ForGachaPlayLevel()
 	/* For.Prototype_GameObject_Camera_Free*/
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Arona_Camera"),
 		CArona_Camera::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Sky */
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Sky"),
+		CSky::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));
