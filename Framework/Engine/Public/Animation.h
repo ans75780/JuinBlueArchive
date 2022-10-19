@@ -26,6 +26,8 @@ public:
 	const	char*		Get_Name() { return m_szName; }
 
 	_float		Get_Duration() { return m_fDuration; }
+
+	void		Set_TimeAcc(_float _TimeAcc) { m_fTickPerSecond = _TimeAcc; }
 	_float		Get_TimeAcc() { return m_fTimeAcc; }
 
 public:

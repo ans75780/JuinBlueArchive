@@ -10,11 +10,15 @@ CCollider::CCollider(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 CCollider::CCollider(const CCollider & rhs)
 	: CComponent(rhs)
 	, m_eType(rhs.m_eType)
+#ifdef _DEBUG
 	, m_pBatch(rhs.m_pBatch)
 	, m_pEffect(rhs.m_pEffect)
 	, m_pInputLayout(rhs.m_pInputLayout)
-{	
+#endif // _DEBUG
+{
+#ifdef _DEBUG
 	Safe_AddRef(m_pInputLayout);
+#endif // _DEBUG
 }
 
 HRESULT CCollider::Initialize_Prototype(TYPE eType)
@@ -225,7 +229,7 @@ _matrix CCollider::Remove_Rotation(_fmatrix TransformMatrix)
 
 	return Transform;
 }
-
+#ifdef _DEBUG
 HRESULT CCollider::Render()
 {
 	m_pContext->GSSetShader(nullptr, nullptr, 0);
@@ -264,6 +268,7 @@ HRESULT CCollider::Render()
 
 	return S_OK;
 }
+#endif // _DEBUG
 
 CCollider::OBBDESC CCollider::Compute_OBBDesc()
 {
@@ -322,12 +327,13 @@ CComponent * CCollider::Clone(void * pArg)
 void CCollider::Free()
 {
 	__super::Free();
-
+#ifdef _DEBUG
 	if (false == m_isCloned)
 	{
 		Safe_Delete(m_pEffect);
 		Safe_Delete(m_pBatch);
 	}
+#endif // _DEBUG
 
 
 	Safe_Delete(m_pAABB_Original);
@@ -337,6 +343,7 @@ void CCollider::Free()
 	Safe_Delete(m_pAABB);
 	Safe_Delete(m_pOBB);
 	Safe_Delete(m_pSphere);
-
+#ifdef _DEBUG
 	Safe_Release(m_pInputLayout);
+#endif // _DEBUG
 }

@@ -1152,22 +1152,6 @@
       "ThrowPos_x": 0.0,
       "ThrowPos_y": 0.0,
       "Type": 3
-    },
-    {
-      "ClassName": "CUI_LevelMoveButton",
-      "Level": 16,
-      "MoveLevel": 11,
-      "Name": "BACK",
-      "Pos_x": -578.0,
-      "Pos_y": 295.0,
-      "Pos_z": 0.0,
-      "Size_x": 80.0,
-      "Size_y": 100.0,
-      "Size_z": 1.0,
-      "TextureName": "Prototype_Component_Texture_Common_Icon_Gacha_Common",
-      "ThrowPos_x": 0.0,
-      "ThrowPos_y": 0.0,
-      "Type": 0
     }
   ]
 }

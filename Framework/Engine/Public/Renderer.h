@@ -35,38 +35,35 @@ private:
 	class CLight_Manager*					m_pLight_Manager = nullptr;
 
 
-#ifdef _DEBUG
-	/* 직교투영을 위한 정보이다. */
-	private:
+/* 직교투영을 위한 정보이다. */
+private:
 		_float4x4					m_WorldMatrix, m_ViewMatrix, m_ProjMatrix;
 		class CShader*				m_pShader = nullptr;
 		class CVIBuffer_Rect*		m_pVIBuffer = nullptr;
 
 private:
 	vector<class CComponent*>		m_DebugComponents;
-	#endif // _DEBUG
 
-	public:
-		HRESULT Render_Priority();
-		HRESULT Render_NonAlphaBlend();
-		HRESULT Render_Lights();
-		HRESULT Render_Blend(); /* Diffuse * Shade 백버퍼에 그린다. */
-		HRESULT Render_NonLight();
-		HRESULT Render_AlphaBlend();
-		HRESULT Render_UIBG();
-		HRESULT Render_UI();
+public:
+	HRESULT Render_Priority();
+	HRESULT Render_NonAlphaBlend();
+	HRESULT Render_Lights();
+	HRESULT Render_Blend(); /* Diffuse * Shade 백버퍼에 그린다. */
+	HRESULT Render_NonLight();
+	HRESULT Render_AlphaBlend();
+	HRESULT Render_UIBG();
+	HRESULT Render_UI();
 
-	#ifdef _DEBUG
-	public:
-		HRESULT Render_Debug();
-		HRESULT	Add_DebugRenderGroup(class CComponent* pComponent);
-	#endif // _DEBUG
+#ifdef _DEBUG
+public:
+	HRESULT Render_Debug();
+	HRESULT	Add_DebugRenderGroup(class CComponent* pComponent);
+#endif // _DEBUG
 
-
-	public:
-		static CRenderer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-		virtual CComponent* Clone(void* pArg) override;
-		virtual void Free() override;
+public:
+	static CRenderer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual CComponent* Clone(void* pArg) override;
+	virtual void Free() override;
 };
 
 END

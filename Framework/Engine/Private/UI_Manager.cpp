@@ -106,8 +106,13 @@ HRESULT CUI_Manager::Save_UIVec()
 {
 	json root;
 
+	int cnt = 0;
+
 	for (auto& pCanvas : m_vecCanvas)
 	{
+		if (cnt == LEVEL_GACHA_PLAY)
+			continue;
+
 		vector<class CUI*>* UI_vec = pCanvas->Get_UIVec();
 
 		for (_uint i = 0; i < UI_END; i++)
@@ -172,6 +177,7 @@ HRESULT CUI_Manager::Save_UIVec()
 				root["UI"].push_back(element);
 			}
 		}
+		++cnt;
 	}
 
 	ofstream fout;

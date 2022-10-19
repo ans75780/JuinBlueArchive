@@ -100,6 +100,7 @@ HRESULT CMainApp::Render()
 
 	m_pGameInstance->Render_Engine();
 
+#if _DEBUG
 	++m_iNumRender;
 	if (m_fTimeAcc >= 1.f)
 	{
@@ -108,6 +109,7 @@ HRESULT CMainApp::Render()
 		m_iNumRender = 0;
 	}
 	m_pGameInstance->Render_Font(TEXT("Font_Default"), m_szFPS, _float2(0.f, 0.f), XMVectorSet(1.f, 1.f, 1.f, 1.f), 1.f);
+#endif	//IMGUI Ãß°¡
 
 	m_pGameInstance->Present();
 

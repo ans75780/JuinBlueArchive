@@ -6,6 +6,7 @@
 #include "Arona.h"
 #include "Animation.h"
 #include "BoneNode.h"
+#include "MeshContainer.h"
 
 
 CArona_Camera::CArona_Camera(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -57,7 +58,7 @@ void CArona_Camera::Tick(_float fTimeDelta)
 	TickGacha(fTimeDelta);
 	
 	
-	if (m_pCamAni->IsFinished())
+	if (nullptr == m_pAronaAni || CAnimation::ANIM_STATE::ANIM_PAUSE == m_pAronaAni->Get_AnimState())
 		CameraMove(fTimeDelta);
 	
 	if (FAILED(Bind_PipeLine()))
@@ -112,22 +113,22 @@ void CArona_Camera::CameraMove(_float & fTimeDelta)
 
 	if (pGameInstance->Get_DIKeyState(DIK_W) & 0x80)
 	{
-		m_pTransformCom->Go_Straight(fTimeDelta * 0.5f);
+		m_pTransformCom->Go_Straight(fTimeDelta);
 	}
 
 	if (pGameInstance->Get_DIKeyState(DIK_S) & 0x80)
 	{
-		m_pTransformCom->Go_Backward(fTimeDelta * 0.5f);
+		m_pTransformCom->Go_Backward(fTimeDelta);
 	}
 
 	if (pGameInstance->Get_DIKeyState(DIK_A) & 0x80)
 	{
-		m_pTransformCom->Go_Left(fTimeDelta * 0.5f);
+		m_pTransformCom->Go_Left(fTimeDelta);
 	}
 
 	if (pGameInstance->Get_DIKeyState(DIK_D) & 0x80)
 	{
-		m_pTransformCom->Go_Right(fTimeDelta * 0.5f);
+		m_pTransformCom->Go_Right(fTimeDelta);
 	}
 
 	_long		MouseMove = 0;
@@ -142,9 +143,9 @@ void CArona_Camera::CameraMove(_float & fTimeDelta)
 		m_pTransformCom->Turn(m_pTransformCom->Get_State(CTransform::STATE_RIGHT), fTimeDelta * MouseMove * 0.1f);
 	}
 
-	if (KEY(SPACE, TAP))
+	if (pGameInstance->Get_DIKeyState(DIK_SPACE) & 0x80)
 	{
-
+		m_pTransformCom->Go_Up(fTimeDelta);
 	}
 
 	Safe_Release(pGameInstance);
@@ -169,7 +170,7 @@ void CArona_Camera::LinkCam()
 	m_pCamAni = m_pCam->Get_Animation("Arona_Original_Gacha_Anim");
 	
 	m_pArona = static_cast<CArona*>(pGameInstance->Get_GameObjects(LEVEL_GACHA_PLAY, L"Layer_Student").front());
-	m_pAronaAni = m_pCam->Get_Animation("Arona_Original_Gacha_Anim");
+	m_pAronaAni = m_pArona->Get_Animation("ARONA|Arona_Original_Gacha_Anim|Base Layer");
 
 	m_pCamAni->Play();
 	m_pAronaAni->Play();
@@ -186,38 +187,41 @@ void CArona_Camera::TickGacha(_float & fTimeDelta)
 
 	if (nullptr == m_pCam || nullptr == m_pCamAni)
 		return;
-	
-	if (m_pCamAni->IsFinished())
-	{
-		if (Once)
-		{
-			m_pArona->Get_Model()->Play_Animation(1.f);
-			m_pAronaAni->Pause();
-			Once = false;
-		}
 
+	if (m_pAronaAni->IsFinished() && Once)
+	{
+		m_pArona->Free();
+		Once = false;
 		return;
 	}
 
-	m_pCam->Get_Model()->Play_Animation(fTimeDelta );
-	m_pArona->Get_Model()->Play_Animation(fTimeDelta );
 
-	m_CameraDesc.fFovy = XMConvertToRadians(15.0f);
+	if (!m_pAronaAni->IsFinished())
+	{
+		if (117.f < m_pAronaAni->Get_TimeAcc())
+		{
+			m_pAronaAni->Set_TimeAcc(126.f);
+			m_pCamAni->Set_TimeAcc(5.f);
+		}
 
-	
-	_matrix vMatrix = m_pCam->Get_Model()->Find_Bone("Camera001")->Get_CombinedMatrix();
-	_matrix vTargetViewMatrix = m_pCam->Get_Model()->Find_Bone("Camera001.Target")->Get_CombinedMatrix();
-	_vector	vTargetPos = m_pCam->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION);
+		m_pCam->Get_Model()->Play_Animation(fTimeDelta);
+		m_pArona->Get_Model()->Play_Animation(fTimeDelta);
 
-	m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vMatrix.r[0]);
-	m_pTransformCom->Set_State(CTransform::STATE_UP, vMatrix.r[1]);
-	m_pTransformCom->Set_State(CTransform::STATE_LOOK, vMatrix.r[2]);
-
-	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vMatrix.r[3]);
+		m_CameraDesc.fFovy = XMConvertToRadians(15.0f);
 
 
-	m_pTransformCom->LookAt(vTargetViewMatrix.r[3]);
+		_matrix vMatrix = m_pCam->Get_Model()->Find_Bone("Camera001")->Get_CombinedMatrix();
+		_matrix vTargetViewMatrix = m_pCam->Get_Model()->Find_Bone("Camera001.Target")->Get_CombinedMatrix();
 
+		m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vMatrix.r[0]);
+		m_pTransformCom->Set_State(CTransform::STATE_UP, vMatrix.r[1]);
+		m_pTransformCom->Set_State(CTransform::STATE_LOOK, vMatrix.r[2]);
+
+		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vMatrix.r[3]);
+
+
+		m_pTransformCom->LookAt(vTargetViewMatrix.r[3]);
+	}
 
 
 }
