@@ -8,6 +8,9 @@
 #include "BoneNode.h"
 #include "MeshContainer.h"
 
+#include "UI.h"
+#include "UI_GachaCard.h"
+#include "UI_Canvas.h"
 
 CArona_Camera::CArona_Camera(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CCamera(pDevice, pContext)
@@ -46,11 +49,10 @@ void CArona_Camera::Tick(_float fTimeDelta)
 	if (!IsMainCam())
 		return;
 
-	static bool _once = true;
 
-	if (_once)
+	if (m_bTickOnce)
 	{
-		_once = false;
+		m_bTickOnce = false;
 		LookAtArona();
 		LinkCam();
 	}
@@ -58,8 +60,10 @@ void CArona_Camera::Tick(_float fTimeDelta)
 	TickGacha(fTimeDelta);
 	
 	
-	if (nullptr == m_pAronaAni || CAnimation::ANIM_STATE::ANIM_PAUSE == m_pAronaAni->Get_AnimState())
-		CameraMove(fTimeDelta);
+	if (m_pAronaAni->IsFinished())
+		MakeUI();
+
+	//CameraMove(fTimeDelta);
 	
 	if (FAILED(Bind_PipeLine()))
 		return;
@@ -183,15 +187,18 @@ void CArona_Camera::LinkCam()
 
 void CArona_Camera::TickGacha(_float & fTimeDelta)
 {
-	static bool Once = true;
+	if (!m_bTickGachaOnce)
+		return;
 
 	if (nullptr == m_pCam || nullptr == m_pCamAni)
 		return;
 
-	if (m_pAronaAni->IsFinished() && Once)
+	if (m_pAronaAni->IsFinished() && m_bTickGachaOnce)
 	{
-		m_pArona->Free();
-		Once = false;
+		m_pTransformCom->Go_Up(3.f);
+
+
+		m_bTickGachaOnce = false;
 		return;
 	}
 
@@ -199,6 +206,11 @@ void CArona_Camera::TickGacha(_float & fTimeDelta)
 	if (!m_pAronaAni->IsFinished())
 	{
 		if (117.f < m_pAronaAni->Get_TimeAcc())
+		{
+			m_pAronaAni->Set_TimeAcc(126.f);
+			m_pCamAni->Set_TimeAcc(5.f);
+		}
+		if (KEY(TAB,TAP))
 		{
 			m_pAronaAni->Set_TimeAcc(126.f);
 			m_pCamAni->Set_TimeAcc(5.f);
@@ -224,4 +236,68 @@ void CArona_Camera::TickGacha(_float & fTimeDelta)
 	}
 
 
+}
+
+void CArona_Camera::MakeUI(void)
+{
+	static _uint i = 0;
+
+	if (9 < i)
+		return;
+
+	if (m_bMakeUIOnce)
+	{
+		CreateUI(i);
+		i++;
+		m_bMakeUIOnce = false;
+	}
+
+	if (nullptr != m_pUI)
+	{
+		if (!m_pUI->Get_Thorwing())
+		{
+			CreateUI(i);
+			i++;
+		}
+	}
+
+}
+
+void CArona_Camera::CreateUI(_uint i)
+{
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+	m_pUI = CUI_GachaCard::Create(m_pDevice, m_pContext);
+
+	if (FAILED(m_pUI->LoadUIImage(TEXT("Prototype_Component_Texture_Gacha_Card"), LEVEL_GACHA_PLAY)))
+	{
+		MSG_BOX("UI 갸차카드 이미지 생성 실패");
+		return;
+	}
+	_tchar _name[MAX_PATH] = {};
+
+	wsprintf(_name, TEXT("Gacha_Play_Random_Card_%d"), i);
+	m_pUI->Set_UIName(_name);
+	m_pUI->Set_UIType(UI_TYPE::UI_BACKGROUND);
+	m_pUI->Set_Size(_float3(200.f, 200.f, 1.f));
+	if (5 > i)
+		m_pUI->Set_Pos(_float3(-440.f + (_float)i * 220.f, 150.f, 0.f));
+	else
+		m_pUI->Set_Pos(_float3(-440.f + (_float)(i - 5) * 220.f, -150.f, 0.f));
+
+	if (5 > i)
+		m_pUI->Set_ThrowPos(_float2(300.f, 300.f));
+	else
+		m_pUI->Set_ThrowPos(_float2(-300.f, -300.f));
+
+
+	m_pUI->Set_UILevel(LEVEL_GACHA_PLAY);
+	m_pUI->Initialization();
+
+	if (FAILED(pGameInstance->Add_UI(LEVEL_GACHA_PLAY, m_pUI)))	//받아온레벨에다 생성
+	{
+		MSG_BOX("UI 갸차카드 생성 실패");
+		return;
+	}
+	RELEASE_INSTANCE(CGameInstance);
 }

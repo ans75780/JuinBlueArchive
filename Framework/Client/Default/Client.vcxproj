@@ -184,6 +184,7 @@
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\Enemy.h" />
     <ClInclude Include="..\Public\Formation.h" />
+    <ClInclude Include="..\Public\Gacha_Sky.h" />
     <ClInclude Include="..\Public\Level_Gacha_Play.h" />
     <ClInclude Include="..\Public\Level_Loading_Start.h" />
     <ClInclude Include="..\Public\Loader_Start.h" />
@@ -219,6 +220,7 @@
     <ClInclude Include="..\Public\State_Student_Jump.h" />
     <ClInclude Include="..\Public\State_Student_Run.h" />
     <ClInclude Include="..\Public\UI_Frame.h" />
+    <ClInclude Include="..\Public\UI_GachaCard.h" />
     <ClInclude Include="..\Public\UI_Progress.h" />
     <ClInclude Include="..\Public\Sky.h" />
     <ClInclude Include="..\Public\Stage.h" />
@@ -262,6 +264,7 @@
     <ClCompile Include="..\Private\Camera_Stage.cpp" />
     <ClCompile Include="..\Private\Enemy.cpp" />
     <ClCompile Include="..\Private\Formation.cpp" />
+    <ClCompile Include="..\Private\Gacha_Sky.cpp" />
     <ClCompile Include="..\Private\Level_Gacha_Play.cpp" />
     <ClCompile Include="..\Private\Level_Loading_Start.cpp" />
     <ClCompile Include="..\Private\Loader_Start.cpp" />
@@ -296,6 +299,7 @@
     <ClCompile Include="..\Private\State_Student_Jump.cpp" />
     <ClCompile Include="..\Private\State_Student_Run.cpp" />
     <ClCompile Include="..\Private\UI_Frame.cpp" />
+    <ClCompile Include="..\Private\UI_GachaCard.cpp" />
     <ClCompile Include="..\Private\UI_Progress.cpp" />
     <ClCompile Include="..\Private\Sky.cpp" />
     <ClCompile Include="..\Private\Stage.cpp" />

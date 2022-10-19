@@ -3,17 +3,7 @@
 #include "Client_Defines.h"
 #include "UI.h"
 
-BEGIN(Engine)
-class CShader;
-class CTexture;
-class CRenderer;
-class CVIBuffer_Rect;
-class CUI;
-class CKey_Manager;
-END
-
 BEGIN(Client)
-
 
 class CUI_Progress  : public CUI
 {
@@ -37,7 +27,6 @@ public:
 	virtual	void	Set_Size(_float3 _fSize);
 	virtual void	Set_ProgressWidth(_float fWidth);
 	virtual void	Set_ProgressHeight(_float fHeight);
-
 
 
 protected:

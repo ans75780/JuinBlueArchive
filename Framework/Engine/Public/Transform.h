@@ -47,6 +47,7 @@ public:
 	_float3 Get_Scaled();
 
 	void	Set_Speed(_float fSpeed) { m_TransformDesc.fSpeedPerSec = fSpeed; }
+	void	Set_Rotate(_float fRotateSpeed) { m_TransformDesc.fRotationPerSec = fRotateSpeed; }
 
 public:
 	virtual HRESULT Initialize_Prototype() override;

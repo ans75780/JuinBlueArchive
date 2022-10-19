@@ -76,13 +76,13 @@ HRESULT CLoader_Start::Loading_ForLogoLevel()
 	}
 
 	CUI_Text* pUI_Text = CUI_Text::Create(m_pDevice, m_pContext);
+	pUI_Text->Set_UIType(UI_TYPE::UI_POST);
 	pUI_Text->Set_UIName(TEXT("UI_ProgreeBarLoadingText"));
 	pUI_Text->Set_Size(_float3(50.f, 50.f, 0.f));
 	pUI_Text->Set_Pos(_float3(-100.f, -300.f, 1.f));
 	pUI_Text->SetUIScale(0.5f);
 	pUI_Text->SetUITextColor(_float4(1.f, 1.f, 1.f, 1.f));
 	pUI_Text->Set_ThrowPos(_float2(0.f, 0.f));
-	pUI_Text->Set_UIType(UI_TYPE::UI_POST);
 	pUI_Text->SetUIText(TEXT("객체를 생성중입니다."));
 	pUI_Text->Set_UILevel(LEVEL_LOADING_START);
 	pUI_Text->Initialization();

@@ -3,16 +3,7 @@
 #include "Client_Defines.h"
 #include "UI.h"
 
-BEGIN(Engine)
-class CShader;
-class CTexture;
-class CRenderer;
-class CVIBuffer_Rect;
-class CUI;
-END
-
 BEGIN(Client)
-
 
 class CUI_Text final : public CUI
 {

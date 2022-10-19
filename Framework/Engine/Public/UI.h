@@ -55,6 +55,7 @@ public:
 public:
 	void			Set_ThrowPos(_float2 _Pos) { m_fThrowPos = _Pos; }
 	_float2			Get_ThrowPos() { return m_fThrowPos; }
+	_bool			Get_Thorwing() { return m_bThrowing; }
 
 public:
 	virtual CUI*	Get_MouseOveredUI(const POINT& pt);
@@ -116,8 +117,8 @@ protected:
 		UI의 터치를 우선적으로 받을 수 있도록 되어있다.
 	*/
 	UI_TYPE	m_eUIType = UI_END;
-	_bool	m_bMouseOver;
-	_bool	m_bMouseClicked;
+	_bool	m_bMouseOver = false;
+	_bool	m_bMouseClicked = false;
 //UI는 클론을 사용하지 않지만, CGameOjbect를 상속받기에 외부에서 못쓰도록 막아놓았음. 쓰지 말도록.
 
 protected:

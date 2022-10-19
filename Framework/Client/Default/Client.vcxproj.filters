@@ -236,7 +236,7 @@
       <Filter>02.GameObject\10. LevelBG\BG_Gacha</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\UI_Frame.h">
-      <Filter>02.GameObject\03. UI\05. UI_Loading</Filter>
+      <Filter>02.GameObject\03. UI\05. UI_Frame</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Level_Gacha_Play.h">
       <Filter>01.Level\10. Gacha</Filter>
@@ -249,6 +249,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\Arona_GachaCam.h">
       <Filter>02.GameObject\09. Start_illust\Arona</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Gacha_Sky.h">
+      <Filter>02.GameObject\09. Start_illust\Arona</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_GachaCard.h">
+      <Filter>02.GameObject\03. UI\06. UI_GachaCard</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -472,7 +478,7 @@
       <Filter>02.GameObject\10. LevelBG\BG_Gacha</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\UI_Frame.cpp">
-      <Filter>02.GameObject\03. UI\05. UI_Loading</Filter>
+      <Filter>02.GameObject\03. UI\05. UI_Frame</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Level_Gacha_Play.cpp">
       <Filter>01.Level\10. Gacha</Filter>
@@ -485,6 +491,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Arona_GachaCam.cpp">
       <Filter>02.GameObject\09. Start_illust\Arona</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Gacha_Sky.cpp">
+      <Filter>02.GameObject\09. Start_illust\Arona</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_GachaCard.cpp">
+      <Filter>02.GameObject\03. UI\06. UI_GachaCard</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -712,11 +724,14 @@
     <Filter Include="02.GameObject\10. LevelBG\BG_Gacha">
       <UniqueIdentifier>{86bd56c7-f74d-4191-9d0c-881cf0a15cc0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObject\03. UI\05. UI_Loading">
-      <UniqueIdentifier>{d09b22ec-8a02-4624-b456-246038cf22cc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObject\09. Start_illust\Arona">
       <UniqueIdentifier>{ffb487bb-3f12-4d65-9329-a4e729569826}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\03. UI\05. UI_Frame">
+      <UniqueIdentifier>{d09b22ec-8a02-4624-b456-246038cf22cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\03. UI\06. UI_GachaCard">
+      <UniqueIdentifier>{86bc692f-deb0-435e-96dc-95279f0c3e94}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

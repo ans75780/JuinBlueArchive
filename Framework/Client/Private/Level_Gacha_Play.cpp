@@ -93,8 +93,8 @@ HRESULT CLevel_Gacha_Play::Ready_Layer_Sky(const _tchar * pLayerTag)//Layer_Sky
 {
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
-	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GACHA_PLAY, pLayerTag, TEXT("Prototype_GameObject_Sky"),
-		L"Prototype_Component_Texture_Formaiton_Background")))
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GACHA_PLAY, pLayerTag, TEXT("Prototype_GameObject_Gacha_Sky"))))
+		return E_FAIL;
 
 
 	RELEASE_INSTANCE(CGameInstance);

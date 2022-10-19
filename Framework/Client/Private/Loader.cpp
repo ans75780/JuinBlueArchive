@@ -39,6 +39,7 @@
 #include "Arona.h"
 #include "Arona_Camera.h"
 #include "Arona_GachaCam.h"
+#include "Gacha_Sky.h"
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice(pDevice)
@@ -592,9 +593,14 @@ HRESULT CLoader::Loading_ForGachaPlayLevel()
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중이비낟. "));
 
 		/* For.Prototype_Component_Texture_Sky */
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_FORMATION, TEXT("Prototype_Component_Texture_Formaiton_Background"),
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GACHA_PLAY, TEXT("Prototype_Component_Texture_Gacha_Sky"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/SkyBox/Background.dds"), 1))))
 		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GACHA_PLAY, TEXT("Prototype_Component_Texture_Gacha_Card"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/Gacha/FX_TEX_GT_Card_%d.png"), 3))))
+		return E_FAIL;
+
 
 	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중이비낟. "));
 
@@ -627,8 +633,8 @@ HRESULT CLoader::Loading_ForGachaPlayLevel()
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Sky */
-	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Sky"),
-		CSky::Create(m_pDevice, m_pContext))))
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Gacha_Sky"),
+		CGacha_Sky::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));

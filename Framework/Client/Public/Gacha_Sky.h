@@ -5,20 +5,19 @@
 
 BEGIN(Engine)
 class CShader;
+class CTexture;
 class CRenderer;
-class CModel;
-class CAnimation;
-class CBoneNode;
+class CVIBuffer_Cube;
 END
 
 BEGIN(Client)
 
-class CArona final : public CGameObject
+class CGacha_Sky final : public CGameObject
 {
 public:
-	CArona(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CArona(const CArona& rhs);
-	virtual ~CArona() = default;
+	CGacha_Sky(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CGacha_Sky(const CGacha_Sky& rhs);
+	virtual ~CGacha_Sky() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype();
@@ -27,26 +26,19 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
-	class CAnimation*	Get_Animation(const char* pAnimationName);
-	CModel*				Get_Model() { return m_pModelCom; }
-
 private:
 	CShader*				m_pShaderCom = nullptr;
+	CTexture*				m_pTextureCom = nullptr;
 	CRenderer*				m_pRendererCom = nullptr;
-	CModel*					m_pModelCom = nullptr;
-	CAnimation*				m_pAnimation = nullptr;
+	CVIBuffer_Cube*			m_pVIBufferCom = nullptr;
+
 private:
 	HRESULT SetUp_Components();
 	HRESULT SetUp_ShaderResource();
-
 public:
-	static CArona* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CGacha_Sky* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
-
-private:
-	_bool m_bRenderOnce = true;
-
 };
 
 END

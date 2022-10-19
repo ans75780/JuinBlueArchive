@@ -5,6 +5,7 @@
 
 BEGIN(Engine)
 class CAnimation;
+class CUI;
 END
 
 BEGIN(Client)
@@ -34,6 +35,8 @@ public:
 	void	LinkCam();
 
 	void	TickGacha(_float& fTimeDelta);
+	void	MakeUI(void);
+	void	CreateUI(_uint i);
 
 private:
 	class CArona_GachaCam*	m_pCam = nullptr;
@@ -41,6 +44,12 @@ private:
 
 	class CArona*	m_pArona = nullptr;
 	CAnimation*		m_pAronaAni = nullptr;
+
+	_bool m_bTickOnce = true;
+	_bool m_bTickGachaOnce = true;
+	_bool m_bMakeUIOnce = true;
+
+	CUI*	m_pUI = nullptr;
 
 
 };

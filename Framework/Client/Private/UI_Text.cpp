@@ -22,6 +22,7 @@ HRESULT CUI_Text::Initialize(void * pArg)
 
 	m_fColor = _float4(0.2f, 0.27f, 0.36f, 1.f);
 	m_fScale = 0.6f;
+	m_eUIType = UI_TYPE::UI_POST;
 
 	return S_OK;
 }

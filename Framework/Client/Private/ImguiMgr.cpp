@@ -650,7 +650,10 @@ void CImguiMgr::UITool_SelectUI(void)
 			m_fSelectUIFrameDelay = static_cast<CUI_Frame*>(m_pSelectUI)->Get_Delay();
 			m_fSelectUIFrameMaxFrame = static_cast<CUI_Frame*>(m_pSelectUI)->Get_MaxFrame();
 		}
+		else if (!strcmp(OnceClass, "CUI_GachaCard"))
+		{
 
+		}
 		Safe_Delete_Array(OnceClass);
 	}
 
@@ -687,6 +690,8 @@ void CImguiMgr::UITool_SelectUI(void)
 		SelectUI_Text();
 	else if (!strcmp(tempClassName, "CUI_Frame"))
 		SelectUI_Frame();
+	else if (!strcmp(tempClassName, "CUI_GachaCard"))
+		SelectUI_Gacha();
 
 	Safe_Delete_Array(tempClassName);
 	//@@@@@@@@@@@@@@@@@@클래스별 추가항목 END@@@@@@@@@@@@@@@@@@//
@@ -789,6 +794,10 @@ void CImguiMgr::SelectUI_Frame(void)
 
 		}
 	}
+}
+
+void CImguiMgr::SelectUI_Gacha(void)
+{
 }
 
 void CImguiMgr::Create_LevelMoveButton(_uint _Level)	//LevelButton 을 정의하고 만들어줌 (Create는 밖으로 뻴것같음)

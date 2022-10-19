@@ -66,18 +66,15 @@ HRESULT CArona::Render()
 
 	_uint iNumMeshContainers = m_pModelCom->Get_NumMeshContainers();
 
-
-	static bool Once = true;
-
-	if (nullptr == m_pAnimation && Once)
+	if (nullptr == m_pAnimation && m_bRenderOnce)
 	{
 		m_pAnimation = m_pModelCom->Get_AnimationFromName("ARONA|Arona_Original_Gacha_Anim|Base Layer");
 		
 		if(nullptr != m_pAnimation)
-			Once = false;
+			m_bRenderOnce = false;
 	}
 
-	if (Once)
+	if (m_bRenderOnce)
 		return S_OK;
 
 	/*
