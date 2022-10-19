@@ -247,8 +247,18 @@ HRESULT CMainApp::Ready_Static_Resource()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/Combat_Cost_Gauge_Back.png")))))
 		return E_FAIL;
 
-	
-	
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Skill_Portrait_Aru_Original"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/UI/CharacterCard/Skill_Portrait_Aru_Original.png")))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Skill_Portrait_Haruka_Original"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/UI/CharacterCard/Skill_Portrait_Haruka_Original.png")))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Skill_Portrait_Zunko_Original"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/UI/CharacterCard/Skill_Portrait_Zunko_Original.png")))))
+		return E_FAIL;
+
 	return S_OK;
 }
 

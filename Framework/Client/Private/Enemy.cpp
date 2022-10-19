@@ -67,6 +67,9 @@ HRESULT CEnemy::Initialize(void * pArg)
 
 void CEnemy::Tick(_float fTimeDelta)
 {
+	if (m_bEnable == false)
+		return;
+
 	__super::Tick(fTimeDelta);
 
 		CheckState();

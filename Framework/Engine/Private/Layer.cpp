@@ -38,7 +38,7 @@ void CLayer::Tick(_float fTimeDelta)
 			{
 				pGameObject->Free();
 				m_GameObjects.remove(pGameObject);
-				break;
+				continue;
 			}
 			pGameObject->Tick(fTimeDelta);
 		}
