@@ -28,6 +28,7 @@ public:
 	CTransform* Get_Transform() { return m_pTransformCom; }
 	void		Set_TickStop(_bool _tickStop) { m_bTickStop = _tickStop; }
 	void		Set_Render(_bool _Render) { m_bRender= _Render; }
+	_float		Get_CardNum() { return m_fCardNum; }
 
 private:
 	virtual HRESULT	SetUp_ShaderResource();

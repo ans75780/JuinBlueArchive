@@ -12,7 +12,7 @@ private:
 public:
 	static CUI_Canvas*	Create(ID3D11Device* pDevice, ID3D11DeviceContext*	pContext);
 
-	void		Free() override;
+	virtual void		Free() override;
 
 public:
 	virtual HRESULT Initialize();
@@ -33,8 +33,8 @@ private:
 	_bool					m_bEventCurFrame = false;
 	ID3D11Device*			m_pDevice = nullptr;
 	ID3D11DeviceContext*	m_pContext = nullptr;
-	_bool					m_bOnDialog;
-	vector<class CUI*>		m_vecUI[UI_END];
+	_bool					m_bOnDialog = false;
+	vector<class CUI*>		m_vecUI[(_uint)UI_END];
 	typedef vector<class CUI*> VECTOR_UI;
 };
 END

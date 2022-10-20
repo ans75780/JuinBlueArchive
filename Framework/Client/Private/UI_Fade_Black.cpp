@@ -55,12 +55,12 @@ void CUI_Fade_Black::Tick(_float fTimeDelta)
 	if (m_bAlpha)
 	{
 		if (1.f > m_fAlpha)
-			m_fAlpha += fTimeDelta * 1.5f;
+			m_fAlpha += fTimeDelta * 1.2f;
 	}
 	else
 	{
 		if (0.f < m_fAlpha)
-			m_fAlpha -= fTimeDelta * 1.5f;
+			m_fAlpha -= fTimeDelta * 1.2f;
 	}
 
 }

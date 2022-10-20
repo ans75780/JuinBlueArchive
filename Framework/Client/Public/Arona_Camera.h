@@ -35,12 +35,15 @@ public:
 	void	LinkCam();
 
 	void	TickGacha(_float& fTimeDelta);
-	void	MakeUI(void);
+	void	MakeUI(_float& fTimeDelta);
 	void	CreateUI(_uint i);
 	void	CardOpen();
+	void	CardOpen_Num(_uint num);
+
 
 	void	CreateFadeWhite();
 	void	CreateFadeBlack();
+	void	CreateUIInfo();
 
 private:
 	class CArona_GachaCam*	m_pCam = nullptr;
@@ -52,12 +55,25 @@ private:
 	_bool m_bTickOnce = true;
 	_bool m_bTickGachaOnce = true;
 	_bool m_bMakeUIOnce = true;
+	_bool m_bMakeUIOnce2 = true;
+
+
+	_bool m_bOpenEvent = false;
+	_bool m_bFadeWhite = false;
+
+	_bool m_bOnceInfo = false;	//카드 1장 깟을때 한번실행
+
 
 	CUI*	m_pUI[10] = { nullptr, };
 	CUI*	m_pFadeWhite = nullptr;
 	CUI*	m_pFadeBlack = nullptr;
-	_bool m_bOpenEvent = false;
+	CUI*	m_pInfoUI[3] = { nullptr, };
 
+	_uint	m_uCardIndex = 0;
+	_int	m_iCardOpenChange = -1;
+
+	_float	m_fFOV = 10.f;
+	_float	m_fCardDelay = 0.f;
 
 };
 

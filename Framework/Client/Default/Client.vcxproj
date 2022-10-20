@@ -223,6 +223,7 @@
     <ClInclude Include="..\Public\UI_Fade_White.h" />
     <ClInclude Include="..\Public\UI_Frame.h" />
     <ClInclude Include="..\Public\UI_GachaCard.h" />
+    <ClInclude Include="..\Public\UI_Gacha_Info.h" />
     <ClInclude Include="..\Public\UI_Progress.h" />
     <ClInclude Include="..\Public\Sky.h" />
     <ClInclude Include="..\Public\Stage.h" />
@@ -304,6 +305,7 @@
     <ClCompile Include="..\Private\UI_Fade_White.cpp" />
     <ClCompile Include="..\Private\UI_Frame.cpp" />
     <ClCompile Include="..\Private\UI_GachaCard.cpp" />
+    <ClCompile Include="..\Private\UI_Gacha_Info.cpp" />
     <ClCompile Include="..\Private\UI_Progress.cpp" />
     <ClCompile Include="..\Private\Sky.cpp" />
     <ClCompile Include="..\Private\Stage.cpp" />

@@ -41,6 +41,10 @@ void CUI_Canvas::Free()
 void CUI_Canvas::Add_UI(CUI * pUI)
 {
 	UI_TYPE	 eUIType = pUI->Get_UIType();
+
+	if (5 < (uint)eUIType)
+		MSG_BOX("UI캔버스에 말도안되는 값이 들어왔습니다");
+
 	m_vecUI[eUIType].push_back(pUI);
 }
 
@@ -62,6 +66,9 @@ void CUI_Canvas::AllUICanvas_Initialization()
 {
 	for (auto& vecUI : m_vecUI)
 	{
+		if (vecUI.empty())
+			continue;
+
 		for (auto& UI : vecUI)
 		{
 			UI->Initialization();

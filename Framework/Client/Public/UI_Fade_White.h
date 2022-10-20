@@ -27,9 +27,18 @@ private:
 	virtual HRESULT	SetUp_ShaderResource();
 	virtual	HRESULT	SetUp_Component();
 
+public:
+	_bool	Get_FullWhite() { return m_bFullWhite; }
+	void	Set_FullWhite(_bool _b) { m_bFullWhite = _b; }
+	
+	void	Set_Alpha(_bool _b) { m_bAlpha = _b; } //Æ®·çÀÏ¶§ ÇÏ¾á»öÀ¸·Î µ¤¾îÁü
+	void	Set_AlphaValue(_float _value) { m_fAlpha = _value; }
+
 private:
 	_float	m_fAlpha = 0.f;
 	_bool	m_bAlpha = true;
+	_bool	m_bFullWhite = false;
+	
 
 public:
 	static CUI_Fade_White* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

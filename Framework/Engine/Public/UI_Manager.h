@@ -42,8 +42,8 @@ private:
 	typedef vector<class CUI_Canvas*>	CANVASES;
 	_uint					m_iNumLevels = 0;
 
-	_bool					m_bLevelEditMode;
-	_uint					m_iEditLevel;
+	_bool					m_bLevelEditMode = false;
+	_uint					m_iEditLevel = 0;
 
 	_bool					m_bDisableUI = false;
 

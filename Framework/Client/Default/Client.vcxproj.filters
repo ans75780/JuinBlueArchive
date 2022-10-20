@@ -262,6 +262,9 @@
     <ClInclude Include="..\Public\UI_Fade_Black.h">
       <Filter>02.GameObject\03. UI\06. UI_GachaCard</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\UI_Gacha_Info.h">
+      <Filter>02.GameObject\03. UI\06. UI_GachaCard</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -508,6 +511,9 @@
       <Filter>02.GameObject\03. UI\06. UI_GachaCard</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\UI_Fade_Black.cpp">
+      <Filter>02.GameObject\03. UI\06. UI_GachaCard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_Gacha_Info.cpp">
       <Filter>02.GameObject\03. UI\06. UI_GachaCard</Filter>
     </ClCompile>
   </ItemGroup>

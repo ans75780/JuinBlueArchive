@@ -29,10 +29,11 @@ private:
 
 public:
 	void	Set_AlphaValue(_float _value) { m_fAlpha = _value; }
-
+	_float	Get_AlphaValue() { return m_fAlpha; }
 private:
 	_float	m_fAlpha = 0.f;
 	_bool	m_bAlpha = true;
+
 
 public:
 	static CUI_Fade_Black* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
