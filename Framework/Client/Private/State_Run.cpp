@@ -35,6 +35,7 @@ HRESULT CState_Run::Initialize()
 void CState_Run::Enter()
 {
 	__super::Enter();
+	m_pAnimation->Reset();
 	m_pOwner->Set_StageState(CActor::STATE_STATE_MOVE);
 
 

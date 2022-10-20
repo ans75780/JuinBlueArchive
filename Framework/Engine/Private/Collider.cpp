@@ -21,7 +21,7 @@ HRESULT CCollider::Initialize_Prototype(TYPE eType)
 {
 	m_eType = eType;
 
-	
+
 
 
 #ifdef _DEBUG
@@ -224,6 +224,22 @@ _matrix CCollider::Remove_Rotation(_fmatrix TransformMatrix)
 	Transform.r[2] = XMVectorSet(0.f, 0.f, 1.f, 0.f) * XMVectorGetX(XMVector3Length(TransformMatrix.r[2]));
 
 	return Transform;
+}
+
+_float3 CCollider::Get_Center()
+{
+	switch (m_eType)
+	{
+	case TYPE_AABB:
+		return m_pAABB->Center;
+		break;
+	case TYPE_OBB:
+		return m_pOBB->Center;
+		break;
+	case TYPE_SPHERE:
+		return m_pSphere->Center;
+		break;
+	}
 }
 
 HRESULT CCollider::Render()

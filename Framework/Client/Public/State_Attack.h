@@ -7,6 +7,7 @@ namespace Engine
 {
 	class CAnimation;
 	class CModel;
+	class CGameInstance;
 }
 
 BEGIN(Client)
@@ -32,13 +33,13 @@ public:
 	virtual class CAnimation*	Get_Animation();
 
 
+
 protected:
 	class CActor*	m_pTarget = nullptr;
-
-
+	class CGameInstance*	m_pInstance = nullptr;
 private:
 	void				Change_Animation(ATTACK_STATE	eState);
-
+	void				Create_Effect();
 private:
 	class CAnimation*		m_pAnims[ATTACK_STATE_ENUM_END];
 	ATTACK_STATE			m_eCurrentState = ATTACK_STATE_ENUM_END;

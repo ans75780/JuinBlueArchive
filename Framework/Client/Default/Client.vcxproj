@@ -177,6 +177,8 @@
     <ClInclude Include="..\Public\Camera_Formation.h" />
     <ClInclude Include="..\Public\Camera_Free.h" />
     <ClInclude Include="..\Public\Camera_Stage.h" />
+    <ClInclude Include="..\Public\Effect.h" />
+    <ClInclude Include="..\Public\Effect_Hit.h" />
     <ClInclude Include="..\Public\HpBar.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\CombatFormation.h" />
@@ -212,6 +214,7 @@
     <ClInclude Include="..\Public\Loader.h" />
     <ClInclude Include="..\Public\MainApp.h" />
     <ClInclude Include="..\Public\MapProp.h" />
+    <ClInclude Include="..\Public\Skill_Base.h" />
     <ClInclude Include="..\Public\State_Headers.h" />
     <ClInclude Include="..\Public\State_Attack.h" />
     <ClInclude Include="..\Public\State_Dead.h" />
@@ -257,6 +260,8 @@
     <ClCompile Include="..\Private\Camera_Formation.cpp" />
     <ClCompile Include="..\Private\Camera_Free.cpp" />
     <ClCompile Include="..\Private\Camera_Stage.cpp" />
+    <ClCompile Include="..\Private\Effect.cpp" />
+    <ClCompile Include="..\Private\Skill_Base.cpp" />
     <ClCompile Include="..\Private\Student_Fx.cpp" />
     <ClCompile Include="..\Private\HpBar.cpp" />
     <ClCompile Include="..\Private\CombatFormation.cpp" />
@@ -322,6 +327,7 @@
     <ClCompile Include="..\Private\UI_Text.cpp" />
     <ClCompile Include="..\Private\UserData.cpp" />
     <ClCompile Include="Client.cpp" />
+    <ClCompile Include="Effect_Hit.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -360,6 +366,7 @@
     <FxCompile Include="..\..\ShaderFiles\Shader_VtxNorTex.hlsl" />
     <FxCompile Include="..\..\ShaderFiles\Shader_VtxPointInstance.hlsl" />
     <FxCompile Include="..\..\ShaderFiles\Shader_VtxTex.hlsl" />
+    <FxCompile Include="..\..\ShaderFiles\Shader_VtxTexEffect.hlsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

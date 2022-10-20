@@ -6,6 +6,7 @@
 #include "UI_LevelMoveButton.h"
 #include "UI_Text.h"
 #include "UI_Default.h"
+#include "Effect_Hit.h"
 //Json 사용
 #include "Json_Utility.h"
 
@@ -58,14 +59,6 @@ HRESULT CLevel_Logo::Ready_Layer_BackGround(const _tchar * pLayerTag)
 	CGameInstance*		pInstance = CGameInstance::Get_Instance();
 	Safe_AddRef(pInstance);
 	
-	CUI_Progress*	pHpBar= CUI_Progress::Create(m_pDevice, m_pContext);
-
-	if (FAILED(pInstance->Add_UI(LEVEL_LOGO, pHpBar)))
-	{
-		MSG_BOX("UI생성실패");
-	}
-
-
 	CUI_Default* m_pUICostBarFront = CUI_Default::Create(m_pDevice, m_pContext);
 	CUI_Default* m_pUICostBarBack = CUI_Default::Create(m_pDevice, m_pContext);
 	CUI_Default* m_pUICostNumberBack = CUI_Default::Create(m_pDevice, m_pContext);
@@ -148,6 +141,9 @@ HRESULT CLevel_Logo::Ready_Layer_BackGround(const _tchar * pLayerTag)
 		return E_FAIL;
 	if (FAILED(pInstance->Add_UI(LEVEL_LOGO, m_pTestCard2, nullptr)))
 		return E_FAIL;
+
+
+
 
 	Safe_Release(pInstance);
 

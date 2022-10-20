@@ -11,7 +11,7 @@
 #include "Student_Fx.h"
 #include "Camera_Free.h"
 #include "Stage.h"
-
+#include "Effect_Hit.h"
 
 #include "Memorial_Haruka_Start.h"
 #include "Memorial_Haruka_Idle.h"
@@ -70,6 +70,12 @@ HRESULT CLoader_Start::Loading_ForLogoLevel()
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
 
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중이비낟. "));
+
+
+	/* For.Prototype_Component_Texture_Sky */
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_FX_Hit_0"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Effects/Texture/FX_Hit_0/FX_TEX_HIT_0_%d.png"), 4))))
+		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_Default */
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Default"),
@@ -146,7 +152,8 @@ HRESULT CLoader_Start::Loading_ForLogoLevel()
 	if (FAILED(pGameInstance->Add_Prototype(L"Prototype_HpBar", CHpBar::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	
+	if (FAILED(pGameInstance->Add_Prototype(L"Prototype_Effect_Hit", CEffect_Hit::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	_matrix mat, rotMat;
 	mat = XMMatrixIdentity();
@@ -154,8 +161,12 @@ HRESULT CLoader_Start::Loading_ForLogoLevel()
 	rotMat = XMMatrixRotationAxis(XMVectorSet(0.f, 1.f, 0.f, 1.f), XMConvertToRadians(180.f));
 
 
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_FX_MESH_Circle"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Effects/Mesh/FX_MESH_Circle/", "FX_MESH_Circle.fbx", mat))))
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_FX_MESH_Circle"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Effects/Mesh/FX_MESH_Circle/", "FX_MESH_Circle.fbx", mat))))
+	//	return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_FX_MESH_Circle_B"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Effects/t/Mesh/", "circle_b.obj", mat))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Model_Stage_School*/
@@ -163,6 +174,11 @@ HRESULT CLoader_Start::Loading_ForLogoLevel()
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Models/NonAnimModels/Stages/School/", "School_1.fbx",
 			rotMat))))
 		return E_FAIL;
+
+
+
+
+
 
 
 	/* For.Prototype_GameObject_Camera_Event*/

@@ -52,7 +52,7 @@ public:
 
 	virtual void	Set_Desc(OBJ_DESC& desc);
 	virtual void	Damaged(_float fAtk);
-
+	class CCollider*		Get_BodyCollider() { return m_pBodyCollider; }
 protected:
 	virtual void	CheckState();
 

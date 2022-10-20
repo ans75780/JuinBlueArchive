@@ -253,6 +253,13 @@
     <ClInclude Include="..\Public\UI_Default.h">
       <Filter>02.GameObject\03. UI\05. UI_DefaultButton</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Skill_Base.h">
+      <Filter>02.GameObject\13.Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Effect.h">
+      <Filter>02.GameObject\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Effect_Hit.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -489,6 +496,13 @@
     <ClCompile Include="..\Private\UI_Default.cpp">
       <Filter>02.GameObject\03. UI\05. UI_DefaultButton</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Skill_Base.cpp">
+      <Filter>02.GameObject\13.Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Effect.cpp">
+      <Filter>02.GameObject\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect_Hit.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -733,6 +747,15 @@
     <Filter Include="02.GameObject\03. UI\05. UI_DefaultButton">
       <UniqueIdentifier>{82ea15ca-7924-4bea-b213-0014bc183bee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObject\13.Skill">
+      <UniqueIdentifier>{d76a8e01-aa89-4aff-ba9d-830b37b33b98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Effect">
+      <UniqueIdentifier>{930fb5ce-b26e-450f-a87e-fcbec7b60ac1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Effect\Effect_Hit">
+      <UniqueIdentifier>{f715932d-beb6-422b-a445-a6a22b8b9c9c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -788,6 +811,9 @@
       <Filter>03.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\..\ShaderFiles\Shader_VtxHpBar.hlsl">
+      <Filter>03.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\ShaderFiles\Shader_VtxTexEffect.hlsl">
       <Filter>03.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

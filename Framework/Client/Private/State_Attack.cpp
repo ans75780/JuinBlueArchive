@@ -8,7 +8,8 @@
 #include "GameInstance.h"
 #include "Actor.h"
 #include "GameObject.h"
-
+#include "Effect_Hit.h"
+#include "GameInstance.h"
 CState_Attack::CState_Attack(CActor * pStudent, CActor * pTarget)
 	:CStateBase(pStudent)
 {
@@ -59,6 +60,9 @@ HRESULT CState_Attack::Initialize()
 
 	m_eCurrentState = ATTACK_STATE_START;
 	m_pOwner->Set_StageState(CActor::STAGE_STATE_BATTLE);
+
+	m_pInstance = CGameInstance::Get_Instance();
+
 	return S_OK;
 }
 
@@ -90,7 +94,6 @@ _bool CState_Attack::Loop(_float fTimeDelta)
 			break;
 			//탄창 분기.(레퍼런스로 빼온 탄환이 마지막이면 재장전, 아니면 딜레이 줌)
 		case Client::CState_Attack::ATTACK_STATE_ING:
-			m_pTarget->Damaged(m_pOwner->Get_Desc().fDamage);
 			m_pOwner->Get_OBJ_DESC_Reference().iMagazine--;
 			if (m_pOwner->Get_OBJ_DESC_Reference().iMagazine == 0)
 				Change_Animation(ATTACK_STATE_RELOAD);
@@ -137,9 +140,28 @@ CAnimation * CState_Attack::Get_Animation()
 //애니메이션 분기 함수. 전 애니메이션 초기화 하고 현재 애니메이션 돌림
 void CState_Attack::Change_Animation(ATTACK_STATE eState)
 {
+	if (m_eCurrentState == ATTACK_STATE_ING)
+	{
+		m_pTarget->Damaged(m_pOwner->Get_Desc().fDamage);
+		Create_Effect();
+	}
+
 	m_pAnims[m_eCurrentState]->Reset();
 	m_eCurrentState = eState;
 	m_pAnims[m_eCurrentState]->Play();
+}
+
+void CState_Attack::Create_Effect()
+{
+	CGameObject*	pEffect = nullptr;
+	m_pInstance->Add_GameObject(LEVEL_GAMEPLAY, L"Layer_Effect", L"Prototype_Effect_Hit", nullptr, &pEffect);
+
+	_vector pos = m_pTarget->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION);
+	_float3	vOffset = _float3(0.f, 0.5f, 0.f);
+	
+	pos += XMLoadFloat3(&vOffset);
+
+	pEffect->Get_Transform()->Set_State(CTransform::STATE_TRANSLATION, pos);
 }
 
 CState_Attack * CState_Attack::Create(CActor * pActor, class CActor* pTarget)

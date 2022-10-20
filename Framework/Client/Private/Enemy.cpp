@@ -46,7 +46,7 @@ HRESULT CEnemy::Initialize_Prototype()
 HRESULT CEnemy::Initialize(void * pArg)
 {
 	CTransform::TRANSFORMDESC		TransformDesc;
-	TransformDesc.fSpeedPerSec = 5.f;
+	TransformDesc.fSpeedPerSec = 2.f;
 	TransformDesc.fRotationPerSec = XMConvertToRadians(90.0f);
 
 	//GameObject 에서 디스크립션 초기화해서 먼저 이거 해줘야함.
@@ -234,6 +234,7 @@ void CEnemy::CheckState()
 			}
 			if (pTarget != nullptr)
 			{
+				m_pTarget = (CActor*)pTarget;
 				m_pStateMachine->Get_CurrentState()->Get_Animation()->Reset();
 				m_pTransformCom->LookAt(pTarget->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION));
 				m_pStateMachine->Add_State(CState_Run::Create(this));

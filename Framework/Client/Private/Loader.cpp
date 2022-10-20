@@ -471,6 +471,9 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/SkyBox/Sky_%d.dds"), 4))))
 		return E_FAIL;
 
+
+
+
 #pragma endregion
 
 #pragma region LOAD_MODEL

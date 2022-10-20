@@ -19,7 +19,7 @@
 #include "Camera.h"
 #include "Enemy.h"
 #include "CombatFormation.h"
-
+#include "Effect_Hit.h"
 
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
@@ -58,6 +58,16 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);		
 
 	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
+
+
+	if (KEY(V, TAP))
+	{
+		pGameInstance->Set_TimeMagnifiaction(0.7f);
+	}
+	if (KEY(B, TAP))
+	{
+		pGameInstance->Reset_TimeMagnifiaction();
+	}
 
 	if (KEY(T, TAP))
 	{
@@ -194,6 +204,8 @@ HRESULT CLevel_GamePlay::Ready_Layer_Effect(const _tchar * pLayerTag)
 			return E_FAIL;
 	}
 
+
+
 	Safe_Release(pGameInstance);
 
 	return S_OK;
@@ -213,6 +225,8 @@ HRESULT CLevel_GamePlay::Ready_Layer_Student(const _tchar * pLayerTag)
 	
 	if (nullptr == m_pCombatFormaiton)
 		return  E_FAIL;
+
+
 
 	return S_OK;
 }
@@ -237,6 +251,11 @@ HRESULT CLevel_GamePlay::Ready_Layer_Baricade(const _tchar * pLayerTag)
 			return E_FAIL;
 		pObj->Get_Transform()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(1.f, 0.f, i * 8.f, 1.f));
 	}
+
+	pObj = CEffect_Hit::Create(m_pDevice, m_pContext);
+
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, L"Layer_Effect", L"Prototype_Effect_Hit")))
+		return E_FAIL;
 
 	RELEASE_INSTANCE(CGameInstance);
 
