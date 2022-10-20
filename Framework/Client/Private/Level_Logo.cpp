@@ -140,17 +140,14 @@ HRESULT CLevel_Logo::Ready_Layer_BackGround(const _tchar * pLayerTag)
 	if (FAILED(pInstance->Add_UI(LEVEL_LOGO, m_pTestCard0, nullptr)))
 		return E_FAIL;
 
-	if (FAILED(m_pTestCard1->LoadUIImage(L"Prototype_Component_Texture_Skill_Portrait_Aru_Original")))
+	if (FAILED(m_pTestCard1->LoadUIImage(L"Prototype_Component_Texture_Skill_Portrait_Haruka_Original")))
 		return E_FAIL;
 	if (FAILED(pInstance->Add_UI(LEVEL_LOGO, m_pTestCard1, nullptr)))
 		return E_FAIL;
-
-	if (FAILED(m_pTestCard2->LoadUIImage(L"Prototype_Component_Texture_Skill_Portrait_Aru_Original")))
+	if (FAILED(m_pTestCard2->LoadUIImage(L"Prototype_Component_Texture_Skill_Portrait_Haruka_Original")))
 		return E_FAIL;
 	if (FAILED(pInstance->Add_UI(LEVEL_LOGO, m_pTestCard2, nullptr)))
 		return E_FAIL;
-
-
 
 	Safe_Release(pInstance);
 

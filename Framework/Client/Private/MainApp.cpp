@@ -265,14 +265,15 @@ HRESULT CMainApp::Ready_Static_Resource()
 HRESULT CMainApp::Ready_Static_NonAnimModels()
 {
 
-	_matrix	 mat;
-
+	_matrix mat, rotMat;
 	mat = XMMatrixIdentity();
 
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_FX_MESH_Circle"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Effects/Mesh/FX_MESH_Circle/", "FX_MESH_Circle.fbx", mat))))
-		return E_FAIL;
+	rotMat = XMMatrixRotationAxis(XMVectorSet(0.f, 1.f, 0.f, 1.f), XMConvertToRadians(180.f));
 
+
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_FX_MESH_Circle"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Effects/Mesh/FX_MESH_Circle/", "FX_MESH_Circle.fbx", mat))))
+	//	return E_FAIL;
 
 	return S_OK;
 }

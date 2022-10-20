@@ -155,6 +155,7 @@ void CUI_Canvas::Check_UI(CUI * pUI)
 		if (nullptr != pMouseOveredUI)
 		{
 			pMouseOveredUI->OnLButtonClicked();
+			pMouseOveredUI->m_bClickTogle = !pMouseOveredUI->m_bClickTogle;//클릭 토글
 		}
 	}
 }

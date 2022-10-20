@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "..\Public\Camera_Free.h"
 #include "GameInstance.h"
-
+#include "Engine_Defines.h"
 CCamera_Free::CCamera_Free(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CCamera(pDevice, pContext)
 {
@@ -41,6 +41,17 @@ void CCamera_Free::Tick(_float fTimeDelta)
 
 	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
 	Safe_AddRef(pGameInstance);		
+
+	
+	if(KEY(Q,TAP))
+	{
+		m_CameraDesc.fNear -= 0.1f;
+	}
+	
+	if (KEY(E, TAP))
+	{
+		m_CameraDesc.fNear += 0.1f;
+	}
 
 	if (pGameInstance->Get_DIKeyState(DIK_W) & 0x80)
 	{

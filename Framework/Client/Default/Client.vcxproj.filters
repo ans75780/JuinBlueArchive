@@ -250,7 +250,9 @@
     <ClInclude Include="..\Public\UI_CombatFormation_Skill.h">
       <Filter>02.GameObject\11. CombatFormation\UI_CombatFormation_Skill</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\UI_Default.h" />
+    <ClInclude Include="..\Public\UI_Default.h">
+      <Filter>02.GameObject\03. UI\05. UI_DefaultButton</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -484,7 +486,9 @@
     <ClCompile Include="..\Private\UI_CombatFormation_Skill.cpp">
       <Filter>02.GameObject\11. CombatFormation\UI_CombatFormation_Skill</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\UI_Default.cpp" />
+    <ClCompile Include="..\Private\UI_Default.cpp">
+      <Filter>02.GameObject\03. UI\05. UI_DefaultButton</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

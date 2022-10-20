@@ -294,14 +294,6 @@ HRESULT CLoader::Loading_ForFormationLevel()
 		return E_FAIL;
 
 
-	lstrcpy(m_szLoadingText, TEXT("맵을 로딩중이비낟. "));
-
-	/* For.Prototype_Component_Model_Stage_School*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Stage_School_1"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Models/NonAnimModels/Stages/School/", "School_1.fbx",
-			rotMat))))
-		return E_FAIL;
-
 	m_isFinished = true;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩 끝."));
@@ -436,22 +428,13 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 		CCamera_Event::Create(m_pDevice, m_pContext))))
 		return E_FAIL;		//왠진모르겠지만 얘지우면 레퍼런스카운트 잘받아짐
 
-
-		/* For.Prototype_GameObject_Camera_Event*/
-	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Camera_Free"),
-		CCamera_Free::Create(m_pDevice, m_pContext))))
-		return E_FAIL;	
-
-	
 	/* For.Prototype_GameObject_Sky */
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Sky"),
 		CSky::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 
-	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Stage_School"),
-		CStage::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
+	
 
 	///* For.Prototype_GameObject_Monster */
 	//if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Monster"),

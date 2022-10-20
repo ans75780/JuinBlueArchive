@@ -8,7 +8,7 @@
 _float4x4	CUI::g_UIMatProj;
 
 CUI::CUI(ID3D11Device * pDevice, ID3D11DeviceContext * pDeviceContext)
-	:CGameObject(pDevice, pDeviceContext),m_bMouseClicked(false), m_bMouseOver(false),m_bDead(false)
+	:CGameObject(pDevice, pDeviceContext),m_bMouseClicked(false), m_bMouseOver(false),m_bDead(false), m_bClickTogle(false)
 {
 
 }

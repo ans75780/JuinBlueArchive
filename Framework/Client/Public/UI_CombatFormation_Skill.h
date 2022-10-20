@@ -41,6 +41,8 @@ private:
 	class CUI_Default*	m_pUICostBarFront = nullptr;
 	class CUI_Default*	m_pUICostNumberBack = nullptr;
 	class CUI_Text*		m_pUICostText = nullptr;
+	vector<class CUI_Default*>	m_vecSkillCard;
+
 
 	_tchar				m_szCost[MAX_PATH] = L"";
 	

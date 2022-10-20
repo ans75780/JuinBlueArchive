@@ -9,6 +9,8 @@
 #include "Baricade.h"
 #include "HpBar.h"
 #include "Student_Fx.h"
+#include "Camera_Free.h"
+#include "Stage.h"
 
 
 #include "Memorial_Haruka_Start.h"
@@ -145,6 +147,34 @@ HRESULT CLoader_Start::Loading_ForLogoLevel()
 		return E_FAIL;
 
 	
+
+	_matrix mat, rotMat;
+	mat = XMMatrixIdentity();
+
+	rotMat = XMMatrixRotationAxis(XMVectorSet(0.f, 1.f, 0.f, 1.f), XMConvertToRadians(180.f));
+
+
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_FX_MESH_Circle"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Effects/Mesh/FX_MESH_Circle/", "FX_MESH_Circle.fbx", mat))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_Stage_School*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Stage_School_1"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Models/NonAnimModels/Stages/School/", "School_1.fbx",
+			rotMat))))
+		return E_FAIL;
+
+
+	/* For.Prototype_GameObject_Camera_Event*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Camera_Free"),
+		CCamera_Free::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Stage_School"),
+		CStage::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 
 	lstrcpy(m_szLoadingText, TEXT("·Îµù ³¡ "));	
 

@@ -22,7 +22,7 @@ HRESULT CUI_CombatFormation_Skill::Initialize(void * pArg)
 	m_pUICostNumberBack = CUI_Default::Create(m_pDevice, m_pContext);
 	m_pUICostText = CUI_Text::Create(m_pDevice, m_pContext);
 
-
+	
 	m_fCost = 0.f;
 	m_fCostMax = 10.f;
 

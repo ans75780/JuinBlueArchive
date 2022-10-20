@@ -109,8 +109,8 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _tchar * pLayerTag)
 
 	CameraDesc.fFovy = XMConvertToRadians(65.0f);
 	CameraDesc.fAspect = (_float)g_iWinCX / g_iWinCY;
-	CameraDesc.fNear = 0.1f;
-	CameraDesc.fFar = 100.f;
+	CameraDesc.fNear = 1.f;
+	CameraDesc.fFar = 3000.f;
 
 	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Prototype_GameObject_Camera_Stage"), &CameraDesc, 
 		((CGameObject**)&m_pStageCam)
