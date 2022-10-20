@@ -601,6 +601,14 @@ HRESULT CLoader::Loading_ForGachaPlayLevel()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/Gacha/FX_TEX_GT_Card_%d.png"), 3))))
 		return E_FAIL;
 
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GACHA_PLAY, TEXT("Prototype_Component_Texture_FadeWhite"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/Gacha/1280_720_White.png"), 1))))
+		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GACHA_PLAY, TEXT("Prototype_Component_Texture_FadeBlack"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/Gacha/1280_720_Black.png"), 1))))
+		return E_FAIL;
+
 
 	lstrcpy(m_szLoadingText, TEXT("¸ðµ¨À» ·ÎµùÁßÀÌºñ³®. "));
 

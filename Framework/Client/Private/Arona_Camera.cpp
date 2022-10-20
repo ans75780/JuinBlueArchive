@@ -10,7 +10,9 @@
 
 #include "UI.h"
 #include "UI_GachaCard.h"
-#include "UI_Canvas.h"
+
+#include "UI_Fade_White.h"
+#include "UI_Fade_Black.h"
 
 CArona_Camera::CArona_Camera(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CCamera(pDevice, pContext)
@@ -59,9 +61,16 @@ void CArona_Camera::Tick(_float fTimeDelta)
 
 	TickGacha(fTimeDelta);
 	
-	
 	if (m_pAronaAni->IsFinished())
 		MakeUI();
+	
+	if (m_bOpenEvent)
+		CardOpen();
+
+	//if (KEY(SPACE, TAP))
+	//{
+	//	static_cast<CUI_Fade_Black*>(m_pFadeBlack)->Set_AlphaValue(1.f);
+	//}
 
 	//CameraMove(fTimeDelta);
 	
@@ -216,15 +225,15 @@ void CArona_Camera::TickGacha(_float & fTimeDelta)
 			m_pCamAni->Set_TimeAcc(5.f);
 		}
 
-		m_pCam->Get_Model()->Play_Animation(fTimeDelta);
-		m_pArona->Get_Model()->Play_Animation(fTimeDelta);
+		m_pCam->Get_Model()->Play_Animation(fTimeDelta * 0.8f);
+		m_pArona->Get_Model()->Play_Animation(fTimeDelta * 0.8f);
 
-		m_CameraDesc.fFovy = XMConvertToRadians(15.0f);
+		m_CameraDesc.fFovy = XMConvertToRadians(10.0f);
 
 
 		_matrix vMatrix = m_pCam->Get_Model()->Find_Bone("Camera001")->Get_CombinedMatrix();
 		_matrix vTargetViewMatrix = m_pCam->Get_Model()->Find_Bone("Camera001.Target")->Get_CombinedMatrix();
-
+		
 		m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vMatrix.r[0]);
 		m_pTransformCom->Set_State(CTransform::STATE_UP, vMatrix.r[1]);
 		m_pTransformCom->Set_State(CTransform::STATE_LOOK, vMatrix.r[2]);
@@ -243,21 +252,37 @@ void CArona_Camera::MakeUI(void)
 	static _uint i = 0;
 
 	if (9 < i)
+	{
+		if (i == 10)
+		{
+			for (int Index = 0; Index < 10; ++Index)
+			{
+				m_pUI[Index]->Set_Size(_float3(500.f, 500.f, 1.f));
+				m_pUI[Index]->Set_Pos(_float3(-550.f, -630.f, 0.f));
+				m_bOpenEvent = true;
+			}
+			++i;
+
+			CreateFadeWhite();
+			CreateFadeBlack();
+		}
 		return;
+	}
 
 	if (m_bMakeUIOnce)
 	{
 		CreateUI(i);
-		i++;
 		m_bMakeUIOnce = false;
 	}
 
-	if (nullptr != m_pUI)
+	if (nullptr != m_pUI[i])
 	{
-		if (!m_pUI->Get_Thorwing())
+		if (!m_pUI[i]->Get_Thorwing())
 		{
+			++i;
+			if (9 < i)
+				return;
 			CreateUI(i);
-			i++;
 		}
 	}
 
@@ -267,9 +292,9 @@ void CArona_Camera::CreateUI(_uint i)
 {
 	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
-	m_pUI = CUI_GachaCard::Create(m_pDevice, m_pContext);
+	m_pUI[i] = CUI_GachaCard::Create(m_pDevice, m_pContext);
 
-	if (FAILED(m_pUI->LoadUIImage(TEXT("Prototype_Component_Texture_Gacha_Card"), LEVEL_GACHA_PLAY)))
+	if (FAILED(m_pUI[i]->LoadUIImage(TEXT("Prototype_Component_Texture_Gacha_Card"), LEVEL_GACHA_PLAY)))
 	{
 		MSG_BOX("UI 갸차카드 이미지 생성 실패");
 		return;
@@ -277,27 +302,106 @@ void CArona_Camera::CreateUI(_uint i)
 	_tchar _name[MAX_PATH] = {};
 
 	wsprintf(_name, TEXT("Gacha_Play_Random_Card_%d"), i);
-	m_pUI->Set_UIName(_name);
-	m_pUI->Set_UIType(UI_TYPE::UI_BACKGROUND);
-	m_pUI->Set_Size(_float3(200.f, 200.f, 1.f));
+	m_pUI[i]->Set_UIName(_name);
+	m_pUI[i]->Set_UIType(UI_TYPE::UI_BACKGROUND);
+	m_pUI[i]->Set_Size(_float3(200.f, 200.f, 1.f));
 	if (5 > i)
-		m_pUI->Set_Pos(_float3(-440.f + (_float)i * 220.f, 150.f, 0.f));
+		m_pUI[i]->Set_Pos(_float3(-440.f + (_float)i * 220.f, 150.f, 0.f));
 	else
-		m_pUI->Set_Pos(_float3(-440.f + (_float)(i - 5) * 220.f, -150.f, 0.f));
+		m_pUI[i]->Set_Pos(_float3(-440.f + (_float)(i - 5) * 220.f, -150.f, 0.f));
 
 	if (5 > i)
-		m_pUI->Set_ThrowPos(_float2(300.f, 300.f));
+		m_pUI[i]->Set_ThrowPos(_float2(300.f, 300.f));
 	else
-		m_pUI->Set_ThrowPos(_float2(-300.f, -300.f));
+		m_pUI[i]->Set_ThrowPos(_float2(-300.f, -300.f));
 
 
-	m_pUI->Set_UILevel(LEVEL_GACHA_PLAY);
-	m_pUI->Initialization();
+	m_pUI[i]->Set_UILevel(LEVEL_GACHA_PLAY);
+	m_pUI[i]->Initialization();
 
-	if (FAILED(pGameInstance->Add_UI(LEVEL_GACHA_PLAY, m_pUI)))	//받아온레벨에다 생성
+	if (FAILED(pGameInstance->Add_UI(LEVEL_GACHA_PLAY, m_pUI[i])))	//받아온레벨에다 생성
 	{
 		MSG_BOX("UI 갸차카드 생성 실패");
 		return;
 	}
 	RELEASE_INSTANCE(CGameInstance);
 }
+
+void CArona_Camera::CardOpen()
+{
+	for (int i = 0; i < 10; ++i)
+	{
+		m_pUI[i]->Set_Pos(_float3(0.f, 0.f, 0.f));
+		m_pUI[i]->Set_ThrowPos(_float2(-500.f, -300.f));
+		static_cast<CUI_GachaCard*>(m_pUI[i])->Set_TickStop(true);
+		static_cast<CUI_GachaCard*>(m_pUI[i])->Set_Render(false);
+		m_pUI[i]->Initialization();
+	}
+
+
+
+	m_bOpenEvent = false;
+}
+
+void CArona_Camera::CreateFadeWhite()
+{
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+	m_pFadeWhite = CUI_Fade_White::Create(m_pDevice, m_pContext);
+
+	if (FAILED(m_pFadeWhite->LoadUIImage(TEXT("Prototype_Component_Texture_FadeWhite"), LEVEL_GACHA_PLAY)))
+	{
+		MSG_BOX("UI 화이트 이미지 생성 실패");
+		return;
+	}
+	_tchar _name[MAX_PATH] = {};
+
+	m_pFadeWhite->Set_UIName(TEXT("fade_White"));
+	m_pFadeWhite->Set_UIType(UI_TYPE::UI_POST);
+	m_pFadeWhite->Set_Size(_float3(1280.f, 720.f, 1.f));
+	m_pFadeWhite->Set_Pos(_float3(0.f, 0.f, 0.f));
+	m_pFadeWhite->Set_ThrowPos(_float2(0.f, 0.f));
+	m_pFadeWhite->Set_UILevel(LEVEL_GACHA_PLAY);
+	m_pFadeWhite->Initialization();
+
+	if (FAILED(pGameInstance->Add_UI(LEVEL_GACHA_PLAY, m_pFadeWhite)))	//받아온레벨에다 생성
+	{
+		MSG_BOX("UI화이트 생성 실패");
+		return ;
+	}
+	RELEASE_INSTANCE(CGameInstance);
+
+	return;
+}
+
+void CArona_Camera::CreateFadeBlack()
+{
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+	m_pFadeBlack = CUI_Fade_Black::Create(m_pDevice, m_pContext);
+
+	if (FAILED(m_pFadeBlack->LoadUIImage(TEXT("Prototype_Component_Texture_FadeBlack"), LEVEL_GACHA_PLAY)))
+	{
+		MSG_BOX("UI 화이트 이미지 생성 실패");
+		return;
+	}
+	_tchar _name[MAX_PATH] = {};
+
+	m_pFadeBlack->Set_UIName(TEXT("fade_Black"));
+	m_pFadeBlack->Set_UIType(UI_TYPE::UI_POST);
+	m_pFadeBlack->Set_Size(_float3(1280.f, 720.f, 1.f));
+	m_pFadeBlack->Set_Pos(_float3(0.f, 0.f, 0.f));
+	m_pFadeBlack->Set_ThrowPos(_float2(0.f, 0.f));
+	m_pFadeBlack->Set_UILevel(LEVEL_GACHA_PLAY);
+	m_pFadeBlack->Initialization();
+
+	if (FAILED(pGameInstance->Add_UI(LEVEL_GACHA_PLAY, m_pFadeBlack)))	//받아온레벨에다 생성
+	{
+		MSG_BOX("UI화이트 생성 실패");
+		return;
+	}
+	RELEASE_INSTANCE(CGameInstance);
+
+	return;
+}
+

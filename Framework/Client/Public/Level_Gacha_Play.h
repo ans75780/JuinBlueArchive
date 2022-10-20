@@ -3,6 +3,10 @@
 #include "Client_Defines.h"
 #include "Level.h"
 
+BEGIN(Engine)
+class CUI;
+END
+
 BEGIN(Client)
 
 class CLevel_Gacha_Play final : public CLevel
@@ -22,7 +26,7 @@ private:
 	HRESULT Ready_Right();
 
 private:
-
+	CUI*	m_pUI = nullptr;
 
 
 

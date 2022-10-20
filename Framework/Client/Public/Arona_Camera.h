@@ -37,6 +37,10 @@ public:
 	void	TickGacha(_float& fTimeDelta);
 	void	MakeUI(void);
 	void	CreateUI(_uint i);
+	void	CardOpen();
+
+	void	CreateFadeWhite();
+	void	CreateFadeBlack();
 
 private:
 	class CArona_GachaCam*	m_pCam = nullptr;
@@ -49,7 +53,10 @@ private:
 	_bool m_bTickGachaOnce = true;
 	_bool m_bMakeUIOnce = true;
 
-	CUI*	m_pUI = nullptr;
+	CUI*	m_pUI[10] = { nullptr, };
+	CUI*	m_pFadeWhite = nullptr;
+	CUI*	m_pFadeBlack = nullptr;
+	_bool m_bOpenEvent = false;
 
 
 };

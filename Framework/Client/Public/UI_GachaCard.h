@@ -3,6 +3,7 @@
 #include "Client_Defines.h"
 #include "UI.h"
 
+
 BEGIN(Client)
 
 class CUI_GachaCard final : public CUI
@@ -23,12 +24,18 @@ public:
 	virtual void	OnLButtonUp();
 	virtual void	OnLButtonClicked();
 
+public:
+	CTransform* Get_Transform() { return m_pTransformCom; }
+	void		Set_TickStop(_bool _tickStop) { m_bTickStop = _tickStop; }
+	void		Set_Render(_bool _Render) { m_bRender= _Render; }
+
 private:
 	virtual HRESULT	SetUp_ShaderResource();
 
 private:
 	_float	m_fCardNum = 0.f;
-
+	_bool	m_bTickStop = false;
+	_bool	m_bRender = true;
 
 
 public:

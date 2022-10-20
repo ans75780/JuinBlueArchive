@@ -55,8 +55,8 @@ HRESULT CUI_GachaCard::Initialize(void * pArg)
 		break;
 	}
 
-	m_pTransformCom->Set_Rotate(90.f);
-	m_pTransformCom->Turn(XMVectorSet(0.f, 0.f, 1.f, 0.f), 20.f);
+	m_pTransformCom->Set_Rotate(0.1f);
+	m_pTransformCom->Turn(XMVectorSet(0.f, 0.f, 1.f, 0.f), 1.f);
 
 	return S_OK;
 }
@@ -70,6 +70,9 @@ HRESULT CUI_GachaCard::Initialization()
 
 void CUI_GachaCard::Tick(_float fTimeDelta)
 {
+	if (m_bTickStop)
+		return;
+
 	__super::Tick(fTimeDelta * 3.f);
 }
 
@@ -82,6 +85,9 @@ void CUI_GachaCard::LateTick(_float fTimeDelta)
 
 HRESULT CUI_GachaCard::Render()
 {
+	if (!m_bRender)
+		return S_OK;
+
 	if (nullptr == m_pShaderCom ||
 		nullptr == m_pVIBufferCom)
 		return E_FAIL;

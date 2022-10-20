@@ -256,6 +256,12 @@
     <ClInclude Include="..\Public\UI_GachaCard.h">
       <Filter>02.GameObject\03. UI\06. UI_GachaCard</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\UI_Fade_White.h">
+      <Filter>02.GameObject\03. UI\06. UI_GachaCard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_Fade_Black.h">
+      <Filter>02.GameObject\03. UI\06. UI_GachaCard</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -496,6 +502,12 @@
       <Filter>02.GameObject\09. Start_illust\Arona</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\UI_GachaCard.cpp">
+      <Filter>02.GameObject\03. UI\06. UI_GachaCard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_Fade_White.cpp">
+      <Filter>02.GameObject\03. UI\06. UI_GachaCard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_Fade_Black.cpp">
       <Filter>02.GameObject\03. UI\06. UI_GachaCard</Filter>
     </ClCompile>
   </ItemGroup>
@@ -788,6 +800,9 @@
       <Filter>03.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\..\ShaderFiles\Shader_PointToProgress_StartLoadingBar.hlsl">
+      <Filter>03.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\ShaderFiles\Shader_VtxTexTest.hlsl">
       <Filter>03.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

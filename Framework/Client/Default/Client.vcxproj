@@ -219,6 +219,8 @@
     <ClInclude Include="..\Public\MapProp.h" />
     <ClInclude Include="..\Public\State_Student_Jump.h" />
     <ClInclude Include="..\Public\State_Student_Run.h" />
+    <ClInclude Include="..\Public\UI_Fade_Black.h" />
+    <ClInclude Include="..\Public\UI_Fade_White.h" />
     <ClInclude Include="..\Public\UI_Frame.h" />
     <ClInclude Include="..\Public\UI_GachaCard.h" />
     <ClInclude Include="..\Public\UI_Progress.h" />
@@ -298,6 +300,8 @@
     <ClCompile Include="..\Private\MapProp.cpp" />
     <ClCompile Include="..\Private\State_Student_Jump.cpp" />
     <ClCompile Include="..\Private\State_Student_Run.cpp" />
+    <ClCompile Include="..\Private\UI_Fade_Black.cpp" />
+    <ClCompile Include="..\Private\UI_Fade_White.cpp" />
     <ClCompile Include="..\Private\UI_Frame.cpp" />
     <ClCompile Include="..\Private\UI_GachaCard.cpp" />
     <ClCompile Include="..\Private\UI_Progress.cpp" />
@@ -359,6 +363,7 @@
     <FxCompile Include="..\..\ShaderFiles\Shader_VtxNorTex.hlsl" />
     <FxCompile Include="..\..\ShaderFiles\Shader_VtxPointInstance.hlsl" />
     <FxCompile Include="..\..\ShaderFiles\Shader_VtxTex.hlsl" />
+    <FxCompile Include="..\..\ShaderFiles\Shader_VtxTexTest.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Resources\Data\SaveData.json" />
