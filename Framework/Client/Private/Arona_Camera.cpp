@@ -14,6 +14,7 @@
 #include "UI_Fade_White.h"
 #include "UI_Fade_Black.h"
 #include "UI_Gacha_Info.h"
+#include "UI_UpWall.h"
 
 CArona_Camera::CArona_Camera(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CCamera(pDevice, pContext)
@@ -45,6 +46,8 @@ HRESULT CArona_Camera::Initialize(void * pArg)
 	CreateFadeWhite();
 	CreateFadeBlack();
 	CreateUIInfo();
+	CreateUpWall();
+
 	return S_OK;
 }
 
@@ -69,7 +72,7 @@ void CArona_Camera::Tick(_float fTimeDelta)
 		MakeUI(fTimeDelta);
 	
 	if (m_bOpenEvent)
-		CardOpen();
+		CardOpen(fTimeDelta);
 
 	//CameraMove(fTimeDelta);
 	
@@ -351,12 +354,42 @@ void CArona_Camera::CreateUI(_uint i)
 	RELEASE_INSTANCE(CGameInstance);
 }
 
-void CArona_Camera::CardOpen()
+void CArona_Camera::CardOpen(_float& fTimeDelta)
 {
-	CardOpen_Num(m_uCardIndex);
+	if(10 > m_uCardIndex)
+		CardOpen_Num(m_uCardIndex, fTimeDelta);
+	else
+	{
+		if (m_bEndOnce)
+		{
+			for (int i = 0; i < 10; i++)
+			{
+
+				m_pUI[i]->Set_Size(_float3(200.f, 200.f, 1.f));
+				if (5 > i)
+					m_pUI[i]->Set_Pos(_float3(-440.f + (_float)i * 220.f, 150.f, 0.f));
+				else
+					m_pUI[i]->Set_Pos(_float3(-440.f + (_float)(i - 5) * 220.f, -150.f, 0.f));
+
+				if (5 > i)
+					m_pUI[i]->Set_ThrowPos(_float2(300.f, 300.f));
+				else
+					m_pUI[i]->Set_ThrowPos(_float2(-300.f, -300.f));
+
+				static_cast<CUI_GachaCard*>(m_pUI[i])->Set_Render(true);
+				static_cast<CUI_GachaCard*>(m_pUI[i])->Get_Transform()->Turn(XMVectorSet(0.f, 0.f, 1.f, 0.f), -1.f);
+				static_cast<CUI_GachaCard*>(m_pUI[i])->Set_CardNum(
+					static_cast<CUI_GachaCard*>(m_pUI[i])->Get_CardNum() + 3.f
+				);
+			}
+			m_bEndOnce = false;
+		}
+
+	}
+
 }
 
-void CArona_Camera::CardOpen_Num(_uint num)
+void CArona_Camera::CardOpen_Num(_uint num, _float& fTimeDelta)
 {
 	if (num != m_iCardOpenChange)
 	{//다른숫자들어올경우 한번실행해줌
@@ -365,6 +398,7 @@ void CArona_Camera::CardOpen_Num(_uint num)
 		static_cast<CUI_GachaCard*>(m_pUI[num])->Set_TickStop(false);
 		m_bFadeWhite = true;
 		m_bOnceInfo = true;
+		m_bInfoViewOnce = true;
 	}
 
 	if (!m_pUI[num]->Get_Thorwing() && m_bFadeWhite) //받아온숫자UI의 던지기가 끝나면 Fade걸기
@@ -381,18 +415,71 @@ void CArona_Camera::CardOpen_Num(_uint num)
 			{
 				_float tempNum = static_cast<CUI_GachaCard*>(m_pUI[num])->Get_CardNum();
 				static_cast<CUI_Gacha_Info*>(m_pInfoUI[i])->Set_CharaNum(tempNum);
-				static_cast<CUI_Gacha_Info*>(m_pInfoUI[i])->Set_TickStop(false);
-				static_cast<CUI_Gacha_Info*>(m_pInfoUI[i])->Set_Render(true);
-			}//카드에맞는 번호로바꾸고 보여주기 최종값은 생성값
+			}//카드에맞는 번호로바꾸고 보여주기 최종 포지션크기는 생성값
+			
+			m_pInfoUI[0]->Set_Size(_float3(700.f, 700.f, 0.f));
+			m_pInfoUI[0]->Set_Pos(_float3(50.f, -100.f, 0.f));
+			//m_pInfoUI[0]->Set_Pos(_float3(-120.f, -160.f, 0.f)); 기존포지션
+			m_pInfoUI[0]->Set_ThrowPos(_float2(200.f, 0.f));
+			m_pInfoUI[0]->Initialization();
+			//150 -100
+
+			static_cast<CUI_Gacha_Info*>(m_pInfoUI[0])->Set_TickStop(false);
+			static_cast<CUI_Gacha_Info*>(m_pInfoUI[0])->Set_Render(true);
+
+			static_cast<CUI_GachaCard*>(m_pUI[num])->Set_Render(false);
+			static_cast<CUI_Fade_White*>(m_pFadeWhite)->Set_Alpha(false);
+			m_pUpWall->Set_Pos(_float3(2000.f, -1920.f, 0.f));
 
 			m_bOnceInfo = false;
+			
+			return;
 		}
+	}
 
+	if (false == m_pInfoUI[0]->Get_Thorwing() && false == m_bOnceInfo) //위초기화가 되고 던지는게 끝났다면
+	{
+		if (m_bInfoViewOnce)
+		{
+			m_pInfoUI[0]->Set_Size(_float3(1024.f, 1024.f, 1.f));
+			m_pInfoUI[0]->Set_Pos(_float3(-120.f, -160.f, 0.f));
+			m_pInfoUI[0]->Set_ThrowPos(_float2(50.f, 0.f));
+			m_pInfoUI[0]->Initialization();
 
+			m_pInfoUI[1]->Set_ThrowPos(_float2(-500.f, 0.f));
+			m_pInfoUI[2]->Set_ThrowPos(_float2(0.f , -25.f));
 
-		static_cast<CUI_GachaCard*>(m_pUI[num])->Set_Render(false);
-		static_cast<CUI_Fade_White*>(m_pFadeWhite)->Set_Alpha(false);
+			m_pInfoUI[1]->Initialization();
+			m_pInfoUI[2]->Initialization();
+			static_cast<CUI_Gacha_Info*>(m_pInfoUI[2])->Set_AlphaValue(0.f);
 
+			static_cast<CUI_Gacha_Info*>(m_pInfoUI[1])->Set_TickStop(false);
+			static_cast<CUI_Gacha_Info*>(m_pInfoUI[1])->Set_Render(true);
+			static_cast<CUI_Gacha_Info*>(m_pInfoUI[2])->Set_TickStop(false);
+			static_cast<CUI_Gacha_Info*>(m_pInfoUI[2])->Set_Render(true);
+
+			m_bInfoViewOnce = false;
+		}
+		else
+		{
+			m_fInfoViewDelay += fTimeDelta;
+
+			if (1.0f < m_fInfoViewDelay)
+			{
+				if (KEY(SPACE, TAP))
+				{
+					static_cast<CUI_Gacha_Info*>(m_pInfoUI[0])->Set_TickStop(true);
+					static_cast<CUI_Gacha_Info*>(m_pInfoUI[0])->Set_Render(false);
+					static_cast<CUI_Gacha_Info*>(m_pInfoUI[1])->Set_TickStop(true);
+					static_cast<CUI_Gacha_Info*>(m_pInfoUI[1])->Set_Render(false);
+					static_cast<CUI_Gacha_Info*>(m_pInfoUI[2])->Set_TickStop(true);
+					static_cast<CUI_Gacha_Info*>(m_pInfoUI[2])->Set_Render(false);
+					m_uCardIndex++;
+					m_fInfoViewDelay = 0.f;
+				}
+			}
+		}
+		
 	}
 
 }
@@ -523,7 +610,10 @@ void CArona_Camera::CreateUIInfo()
 	m_pInfoUI[2]->Set_UIType(UI_TYPE::UI_DIALOG);
 	m_pInfoUI[2]->Set_ThrowPos(_float2(0.f, 0.f));
 	m_pInfoUI[2]->Set_UILevel(LEVEL_GACHA_PLAY);
+	m_pInfoUI[2]->Get_Transform()->Set_Rotate(0.1f);
+	m_pInfoUI[2]->Get_Transform()->Turn(XMVectorSet(0.f, 0.f, 1.f, 0.f), 0.3f);
 	m_pInfoUI[2]->Initialization();
+
 
 	if (FAILED(pGameInstance->Add_UI(LEVEL_GACHA_PLAY, m_pInfoUI[2])))	//받아온레벨에다 생성
 	{
@@ -540,5 +630,33 @@ void CArona_Camera::CreateUIInfo()
 		static_cast<CUI_Gacha_Info*>(m_pInfoUI[i])->Set_Render(false);
 	}
 	return;
+}
+
+void CArona_Camera::CreateUpWall()
+{
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+	m_pUpWall = CUI_UpWall::Create(m_pDevice, m_pContext);
+
+	if (FAILED(m_pUpWall->LoadUIImage(TEXT("Prototype_Component_Texture_Wall"), LEVEL_GACHA_PLAY)))
+	{
+		MSG_BOX("UI WALL 이미지 생성 실패");
+		return;
+	}
+
+	m_pUpWall->Set_UIName(TEXT("fade_Wall"));
+	m_pUpWall->Set_UIType(UI_TYPE::UI_POST);
+	m_pUpWall->Set_Size(_float3(2200.f, 2200.f, 1.f));
+	m_pUpWall->Set_Pos(_float3(-840.f, 920.f, 0.f));
+	m_pUpWall->Set_ThrowPos(_float2(0.f, 0.f));
+	m_pUpWall->Set_UILevel(LEVEL_GACHA_PLAY);
+	m_pUpWall->Initialization();
+
+	if (FAILED(pGameInstance->Add_UI(LEVEL_GACHA_PLAY, m_pUpWall)))	//받아온레벨에다 생성
+	{
+		MSG_BOX("UIWALL 생성 실패");
+		return;
+	}
+	RELEASE_INSTANCE(CGameInstance);
 }
 

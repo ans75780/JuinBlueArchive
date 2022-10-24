@@ -598,7 +598,7 @@ HRESULT CLoader::Loading_ForGachaPlayLevel()
 		return E_FAIL;
 
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GACHA_PLAY, TEXT("Prototype_Component_Texture_Gacha_Card"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/Gacha/FX_TEX_GT_Card_%d.png"), 3))))
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/Gacha/Card_%d.png"), 6))))
 		return E_FAIL;
 
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GACHA_PLAY, TEXT("Prototype_Component_Texture_FadeWhite"),
@@ -621,6 +621,10 @@ HRESULT CLoader::Loading_ForGachaPlayLevel()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/Gacha/SubInfo_%d.png"), 3))))
 		return E_FAIL;
 
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GACHA_PLAY, TEXT("Prototype_Component_Texture_Wall"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/Gacha/wall.png"), 1))))
+		return E_FAIL;
+	
 	lstrcpy(m_szLoadingText, TEXT("¸ðµ¨À» ·ÎµùÁßÀÌºñ³®. "));
 
 	_matrix mat;

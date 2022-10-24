@@ -1,15 +1,15 @@
 #include "stdafx.h"
-#include "..\Public\UI_Gacha_Info.h"
+#include "..\Public\UI_UpWall.h"
 #include "Level_Loading.h"
 #include <random>
 #include "ImguiMgr.h"
 
-CUI_Gacha_Info::CUI_Gacha_Info(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
+CUI_UpWall::CUI_UpWall(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CUI(pDevice, pContext)
 {
 }
 
-HRESULT CUI_Gacha_Info::Initialize(void * pArg)
+HRESULT CUI_UpWall::Initialize(void * pArg)
 {
 	CTransform::TRANSFORMDESC		TransformDesc;
 
@@ -33,57 +33,42 @@ HRESULT CUI_Gacha_Info::Initialize(void * pArg)
 	if (FAILED(this->SetUp_Component()))
 		return E_FAIL;
 
-	m_eUIType = UI_TYPE::UI_BUTTTON;
-	lstrcpy(m_szUIClass, TEXT("CUI_Gacha_Info"));
+	m_eUIType = UI_POST;
+	lstrcpy(m_szUIClass, TEXT("CUI_UpWall"));
 
 	m_fAlpha = 1.f;
-	m_bAlpha = true;
-
 	return S_OK;
 }
 
-HRESULT CUI_Gacha_Info::Initialization()
+HRESULT CUI_UpWall::Initialization()
 {
 	__super::Initialization();
 
 	return S_OK;
 }
 
-void CUI_Gacha_Info::Tick(_float fTimeDelta)
+void CUI_UpWall::Tick(_float fTimeDelta)
 {
-	if (m_bTickStop)
-		return;
-
 	__super::Tick(fTimeDelta);
 
-	if (m_bAlpha)
+	if ( -836.f < m_fPos.x || 924.f > m_fPos.y )
 	{
-		if (1.f > m_fAlpha)
-			m_fAlpha += fTimeDelta * 0.5f;
-		else
-			m_bFullAlpha = true;
+		m_fPos.x -= fTimeDelta * 2000.f;
+		m_fPos.y += fTimeDelta * 2000.f;
 	}
-	else
-	{
-		if (0.f < m_fAlpha)
-			m_fAlpha -= fTimeDelta * 0.5f;
-		else
-			m_bFullAlpha = false;
-	}
+
+
 }
 
-void CUI_Gacha_Info::LateTick(_float fTimeDelta)
+void CUI_UpWall::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
 	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UI, (CGameObject*)this);
 }
 
-HRESULT CUI_Gacha_Info::Render()
+HRESULT CUI_UpWall::Render()
 {
-	if (!m_bRender)
-		return S_OK;
-
 	if (nullptr == m_pShaderCom ||
 		nullptr == m_pVIBufferCom)
 		return E_FAIL;
@@ -98,15 +83,15 @@ HRESULT CUI_Gacha_Info::Render()
 	return S_OK;
 }
 
-void CUI_Gacha_Info::OnLButtonDown()
+void CUI_UpWall::OnLButtonDown()
 {
 }
 
-void CUI_Gacha_Info::OnLButtonUp()
+void CUI_UpWall::OnLButtonUp()
 {
 }
 
-void CUI_Gacha_Info::OnLButtonClicked()
+void CUI_UpWall::OnLButtonClicked()
 {
 #if _DEBUG
 	CImguiMgr* pImgui = GET_INSTANCE(CImguiMgr);
@@ -118,7 +103,7 @@ void CUI_Gacha_Info::OnLButtonClicked()
 }
 
 
-HRESULT CUI_Gacha_Info::SetUp_ShaderResource()
+HRESULT CUI_UpWall::SetUp_ShaderResource()
 {
 	if (nullptr == m_pShaderCom)
 		return E_FAIL;
@@ -129,7 +114,7 @@ HRESULT CUI_Gacha_Info::SetUp_ShaderResource()
 		return E_FAIL;
 	if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", &CUI::g_UIMatProj, sizeof(_float4x4))))
 		return E_FAIL;
-	if (FAILED(m_pTextureCom->Set_ShaderResourceView(m_pShaderCom, "g_DiffuseTexture", (_uint)m_fCharaNum)))
+	if (FAILED(m_pTextureCom->Set_ShaderResourceView(m_pShaderCom, "g_DiffuseTexture", 0)))
 		return E_FAIL;
 	if (FAILED(m_pShaderCom->Set_RawValue("g_AlphaValue", &m_fAlpha, sizeof(_float))))
 		return E_FAIL;
@@ -138,7 +123,7 @@ HRESULT CUI_Gacha_Info::SetUp_ShaderResource()
 	return S_OK;
 }
 
-HRESULT CUI_Gacha_Info::SetUp_Component()
+HRESULT CUI_UpWall::SetUp_Component()
 {
 	/* For.Com_Renderer */
 	if (FAILED(__super::Add_Component(0, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
@@ -155,19 +140,19 @@ HRESULT CUI_Gacha_Info::SetUp_Component()
 	return S_OK;
 }
 
-CUI_Gacha_Info * CUI_Gacha_Info::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
+CUI_UpWall * CUI_UpWall::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
-	CUI_Gacha_Info*		pInstance = new CUI_Gacha_Info(pDevice, pContext);
+	CUI_UpWall*		pInstance = new CUI_UpWall(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize(nullptr)))
 	{
-		MSG_BOX("Failed to Created : CUI_Gacha_Info");
+		MSG_BOX("Failed to Created : CUI_UpWall");
 		Safe_Release(pInstance);
 	}
 	return pInstance;
 }
 
-void CUI_Gacha_Info::Free()
+void CUI_UpWall::Free()
 {
 	__super::Free();
 }

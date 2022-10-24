@@ -15,22 +15,22 @@ HRESULT CLevel_Lobby::Initialize()
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 
-	//CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
-	//
-	//pGameInstance->Set_DisableUI(true);
-	//if (pGameInstance->Get_LobbyMemorialOnce())
-	//{
-	//	if (FAILED(Ready_Layer_HarukaMemorial()))
-	//		return E_FAIL;
-	//	pGameInstance->Set_LobbyMemorialOnce(false);
-	//}
-	//else
-	//{
-	//	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_Haruka_Memorial"), TEXT("Prototype_GameObject_Memorial_Haruka_Idle"))))
-	//		return E_FAIL;
-	//}
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+	
+	pGameInstance->Set_DisableUI(true);
+	if (pGameInstance->Get_LobbyMemorialOnce())
+	{
+		if (FAILED(Ready_Layer_HarukaMemorial()))
+			return E_FAIL;
+		pGameInstance->Set_LobbyMemorialOnce(false);
+	}
+	else
+	{
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_Haruka_Memorial"), TEXT("Prototype_GameObject_Memorial_Haruka_Idle"))))
+			return E_FAIL;
+	}
 
-	//RELEASE_INSTANCE(CGameInstance);
+	RELEASE_INSTANCE(CGameInstance);
 
 	return S_OK;
 }

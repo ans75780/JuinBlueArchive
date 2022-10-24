@@ -4,6 +4,8 @@
 #include "LEvel_Loading.h"
 
 #include "Camera.h"
+#include "UI_Canvas.h"
+#include "UI.h"
 
 CLevel_Gacha_Play::CLevel_Gacha_Play(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
@@ -67,8 +69,6 @@ HRESULT CLevel_Gacha_Play::Ready_Layer_Camera(const _tchar * pLayerTag)
 	//Layer_Camera
 	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GACHA_PLAY, pLayerTag, TEXT("Prototype_GameObject_Arona_Camera"), &CameraDesc)))
 		return E_FAIL;
-
-
 
 	RELEASE_INSTANCE(CGameInstance);
 
@@ -138,8 +138,24 @@ CLevel_Gacha_Play * CLevel_Gacha_Play::Create(ID3D11Device* pDevice, ID3D11Devic
 void CLevel_Gacha_Play::Free()
 {
 	__super::Free();
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+	
+	vector<CUI_Canvas*>  pCanvas = pGameInstance->Get_Canvases();
+	vector<CUI*>* UIVec = pCanvas[LEVEL_GACHA_PLAY]->Get_UIVec();
 
+	 for (_uint i = 0; i < UI_END; i++)
+	 {
+		 if (UIVec[i].empty())
+			 continue;
 
+		 for (auto& iter : UIVec[i])
+		 {
+			 iter;
+			 iter->Dead();
+		 }
+		 UIVec[i].clear();
+	 }
 
+	RELEASE_INSTANCE(CGameInstance);
 }
 

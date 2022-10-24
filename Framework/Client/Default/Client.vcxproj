@@ -246,6 +246,7 @@
     <ClInclude Include="..\Public\UI_TestDialog.h" />
     <ClInclude Include="..\Public\UI_TestDialogButton.h" />
     <ClInclude Include="..\Public\UI_Text.h" />
+    <ClInclude Include="..\Public\UI_UpWall.h" />
     <ClInclude Include="..\Public\UserData.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Resource.h" />
@@ -328,6 +329,7 @@
     <ClCompile Include="..\Private\UI_TestDialog.cpp" />
     <ClCompile Include="..\Private\UI_TestDialogButton.cpp" />
     <ClCompile Include="..\Private\UI_Text.cpp" />
+    <ClCompile Include="..\Private\UI_UpWall.cpp" />
     <ClCompile Include="..\Private\UserData.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">

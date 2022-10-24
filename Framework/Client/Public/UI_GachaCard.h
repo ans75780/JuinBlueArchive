@@ -29,6 +29,7 @@ public:
 	void		Set_TickStop(_bool _tickStop) { m_bTickStop = _tickStop; }
 	void		Set_Render(_bool _Render) { m_bRender= _Render; }
 	_float		Get_CardNum() { return m_fCardNum; }
+	void		Set_CardNum(_float _fNum) { m_fCardNum = _fNum; }
 
 private:
 	virtual HRESULT	SetUp_ShaderResource();

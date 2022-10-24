@@ -28,8 +28,12 @@ private:
 	virtual	HRESULT	SetUp_Component();
 
 public:
+	CTransform* Get_TransFormCom() { return m_pTransformCom; }
 	_bool		Get_FullWhite() { return m_bFullAlpha; }
-	void		Set_Alpha(_bool _b) { m_bAlpha = _b; } //Æ®·çÀÏ¶§ ÇÏ¾á»öÀ¸·Î µ¤¾îÁü
+	
+	void		Set_Alpha(_bool _b) { m_bAlpha = _b; }
+	void		Set_AlphaValue(_float _value) { m_fAlpha = _value; }
+
 	void		Set_TickStop(_bool _tickStop) { m_bTickStop = _tickStop; }
 	void		Set_Render(_bool _Render) { m_bRender = _Render; }
 	void		Set_CharaNum(_float _num) { m_fCharaNum = _num; }
