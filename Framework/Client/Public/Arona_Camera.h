@@ -73,6 +73,7 @@ private:
 	CUI*	m_pFadeBlack = nullptr;
 	CUI*	m_pUpWall = nullptr;
 	CUI*	m_pInfoUI[3] = { nullptr, };
+	CUI*	m_pLevelBackBtn = nullptr;
 
 	_uint	m_uCardIndex = 0;
 	_int	m_iCardOpenChange = -1;

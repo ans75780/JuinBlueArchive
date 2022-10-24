@@ -15,6 +15,7 @@
 #include "UI_Fade_Black.h"
 #include "UI_Gacha_Info.h"
 #include "UI_UpWall.h"
+#include "UI_LevelMoveButton.h"
 
 CArona_Camera::CArona_Camera(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CCamera(pDevice, pContext)
@@ -382,8 +383,34 @@ void CArona_Camera::CardOpen(_float& fTimeDelta)
 					static_cast<CUI_GachaCard*>(m_pUI[i])->Get_CardNum() + 3.f
 				);
 			}
+
+			CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+			m_pLevelBackBtn = CUI_LevelMoveButton::Create(m_pDevice, m_pContext);
+
+			if (FAILED(m_pLevelBackBtn->LoadUIImage(TEXT(""), LEVEL_GACHA_PLAY)))
+			{
+				MSG_BOX("UI 레벨무브 백버튼 이미지 생성 실패");
+				return;
+			}
+
+			m_pLevelBackBtn->Set_UIName(TEXT("Level_Back_Btn"));
+			m_pLevelBackBtn->Set_UIType(UI_TYPE::UI_POST);
+			m_pLevelBackBtn->Set_Size(_float3(1280.f, 720.f, 1.f));
+			m_pLevelBackBtn->Set_Pos(_float3(0.f, 0.f, 0.f));
+			m_pLevelBackBtn->Set_ThrowPos(_float2(0.f, 0.f));
+			m_pLevelBackBtn->Set_UILevel(LEVEL_GACHA_PLAY);
+			m_pLevelBackBtn->Initialization();
+
+			if (FAILED(pGameInstance->Add_UI(LEVEL_GACHA_PLAY, m_pLevelBackBtn)))	//받아온레벨에다 생성
+			{
+				MSG_BOX("UI레벨무브 백버튼 생성 실패");
+				return;
+			}
+			RELEASE_INSTANCE(CGameInstance);
 			m_bEndOnce = false;
 		}
+
 
 	}
 
@@ -464,10 +491,12 @@ void CArona_Camera::CardOpen_Num(_uint num, _float& fTimeDelta)
 		{
 			m_fInfoViewDelay += fTimeDelta;
 
-			if (1.0f < m_fInfoViewDelay)
+			if (0.1f < m_fInfoViewDelay)
 			{
 				if (KEY(SPACE, TAP))
 				{
+					static_cast<CUI_Gacha_Info*>(m_pInfoUI[2])->Set_AlphaValue(0.95f);
+
 					static_cast<CUI_Gacha_Info*>(m_pInfoUI[0])->Set_TickStop(true);
 					static_cast<CUI_Gacha_Info*>(m_pInfoUI[0])->Set_Render(false);
 					static_cast<CUI_Gacha_Info*>(m_pInfoUI[1])->Set_TickStop(true);
