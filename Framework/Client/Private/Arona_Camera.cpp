@@ -388,18 +388,19 @@ void CArona_Camera::CardOpen(_float& fTimeDelta)
 
 			m_pLevelBackBtn = CUI_LevelMoveButton::Create(m_pDevice, m_pContext);
 
-			if (FAILED(m_pLevelBackBtn->LoadUIImage(TEXT(""), LEVEL_GACHA_PLAY)))
+			if (FAILED(m_pLevelBackBtn->LoadUIImage(TEXT("Prototype_Component_Texture_Btn_Check"), LEVEL_GACHA_PLAY)))
 			{
 				MSG_BOX("UI 레벨무브 백버튼 이미지 생성 실패");
 				return;
 			}
 
-			m_pLevelBackBtn->Set_UIName(TEXT("Level_Back_Btn"));
+			m_pLevelBackBtn->Set_UIName(TEXT("Btn_Check"));
 			m_pLevelBackBtn->Set_UIType(UI_TYPE::UI_POST);
-			m_pLevelBackBtn->Set_Size(_float3(1280.f, 720.f, 1.f));
-			m_pLevelBackBtn->Set_Pos(_float3(0.f, 0.f, 0.f));
-			m_pLevelBackBtn->Set_ThrowPos(_float2(0.f, 0.f));
 			m_pLevelBackBtn->Set_UILevel(LEVEL_GACHA_PLAY);
+			m_pLevelBackBtn->Set_Pos(_float3(0.f, -300.f, 0.f));
+			m_pLevelBackBtn->Set_Size(_float3(256.f, 128.f, 1.f));
+			m_pLevelBackBtn->Set_ThrowPos(_float2(0.f, 0.f));
+			static_cast<CUI_LevelMoveButton*>(m_pLevelBackBtn)->SetMoveLevel(LEVEL_GACHA);
 			m_pLevelBackBtn->Initialization();
 
 			if (FAILED(pGameInstance->Add_UI(LEVEL_GACHA_PLAY, m_pLevelBackBtn)))	//받아온레벨에다 생성
@@ -526,7 +527,7 @@ void CArona_Camera::CreateFadeWhite()
 	}
 
 	m_pFadeWhite->Set_UIName(TEXT("fade_White"));
-	m_pFadeWhite->Set_UIType(UI_TYPE::UI_POST);
+	m_pFadeWhite->Set_UIType(UI_TYPE::UI_DIALOG_BUTTON);
 	m_pFadeWhite->Set_Size(_float3(1280.f, 720.f, 1.f));
 	m_pFadeWhite->Set_Pos(_float3(0.f, 0.f, 0.f));
 	m_pFadeWhite->Set_ThrowPos(_float2(0.f, 0.f));
@@ -556,7 +557,7 @@ void CArona_Camera::CreateFadeBlack()
 	}
 
 	m_pFadeBlack->Set_UIName(TEXT("fade_Black"));
-	m_pFadeBlack->Set_UIType(UI_TYPE::UI_POST);
+	m_pFadeBlack->Set_UIType(UI_TYPE::UI_DIALOG_BUTTON);
 	m_pFadeBlack->Set_Size(_float3(1280.f, 720.f, 1.f));
 	m_pFadeBlack->Set_Pos(_float3(0.f, 0.f, 0.f));
 	m_pFadeBlack->Set_ThrowPos(_float2(0.f, 0.f));
@@ -674,7 +675,7 @@ void CArona_Camera::CreateUpWall()
 	}
 
 	m_pUpWall->Set_UIName(TEXT("fade_Wall"));
-	m_pUpWall->Set_UIType(UI_TYPE::UI_POST);
+	m_pUpWall->Set_UIType(UI_TYPE::UI_DIALOG_BUTTON);
 	m_pUpWall->Set_Size(_float3(2200.f, 2200.f, 1.f));
 	m_pUpWall->Set_Pos(_float3(-840.f, 920.f, 0.f));
 	m_pUpWall->Set_ThrowPos(_float2(0.f, 0.f));

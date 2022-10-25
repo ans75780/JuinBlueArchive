@@ -624,6 +624,10 @@ HRESULT CLoader::Loading_ForGachaPlayLevel()
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GACHA_PLAY, TEXT("Prototype_Component_Texture_Wall"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/Gacha/wall.png"), 1))))
 		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GACHA_PLAY, TEXT("Prototype_Component_Texture_Btn_Check"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/Gacha/Btn_Check_.png"), 1))))
+		return E_FAIL;
 	
 	lstrcpy(m_szLoadingText, TEXT("¸ðµ¨À» ·ÎµùÁßÀÌºñ³®. "));
 

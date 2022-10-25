@@ -96,6 +96,14 @@ void CUI_Canvas::Tick(_float fTimeDelta)
 		{
 			if (!UI->Get_Enable())
 				continue;
+			 
+			UI->Tick(fTimeDelta);
+
+			if (m_bEventCurFrame == false)
+			{
+				Check_UI(UI);
+			}
+
 			if (UI->m_bDead)
 			{
 				UI->Free();
@@ -103,11 +111,6 @@ void CUI_Canvas::Tick(_float fTimeDelta)
 				break;
 			}
 
-			UI->Tick(fTimeDelta);
-			if (m_bEventCurFrame == false)
-			{
-				Check_UI(UI);
-			}
 			uCnt++;
 		}
 	}

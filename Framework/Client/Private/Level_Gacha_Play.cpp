@@ -150,10 +150,8 @@ void CLevel_Gacha_Play::Free()
 
 		 for (auto& iter : UIVec[i])
 		 {
-			 iter;
 			 iter->Dead();
 		 }
-		 UIVec[i].clear();
 	 }
 
 	RELEASE_INSTANCE(CGameInstance);
