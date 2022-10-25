@@ -33,6 +33,10 @@
 #include <opencv2\imgcodecs.hpp>
 #include <opencv2\imgproc.hpp>
 
+#include "fmod.h"
+#include "fmod.hpp"
+#pragma comment(lib, "fmodex64_vc.lib")
+
 using namespace DirectX;
 using namespace cv;
 
@@ -46,6 +50,7 @@ using namespace cv;
 #include <map>
 #include <unordered_map>
 #include <algorithm>
+#include <io.h>
 
 #include <fstream>
 #include <iostream>

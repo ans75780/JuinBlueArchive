@@ -143,8 +143,6 @@ void CEnemy::Damaged(_float fAtk)
 
 void CEnemy::CheckState() 
 {
-
-
 	if (m_eStageState == STATE_STATE_MOVE || m_eStageState == STATE_STATE_IDLE)
 	{
 		CGameInstance*	pInstance = GET_INSTANCE(CGameInstance);
@@ -250,7 +248,6 @@ void CEnemy::CheckState()
 		
 
 }
-
 
 HRESULT CEnemy::SetUp_StateMachine(_uint iClonedLevel)
 {

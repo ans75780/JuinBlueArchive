@@ -201,6 +201,7 @@
     <ClInclude Include="..\Public\Renderer.h" />
     <ClInclude Include="..\Public\RenderTarget.h" />
     <ClInclude Include="..\public\Shader.h" />
+    <ClInclude Include="..\Public\Sound_Device.h" />
     <ClInclude Include="..\Public\StrUtil.h" />
     <ClInclude Include="..\Public\Target_Manager.h" />
     <ClInclude Include="..\public\Texture.h" />
@@ -248,6 +249,7 @@
     <ClCompile Include="..\Private\Renderer.cpp" />
     <ClCompile Include="..\Private\RenderTarget.cpp" />
     <ClCompile Include="..\private\Shader.cpp" />
+    <ClCompile Include="..\Private\Sound_Device.cpp" />
     <ClCompile Include="..\Private\StrUtil.cpp" />
     <ClCompile Include="..\Private\Target_Manager.cpp" />
     <ClCompile Include="..\private\Texture.cpp" />
