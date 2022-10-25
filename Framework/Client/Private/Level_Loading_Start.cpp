@@ -27,6 +27,9 @@ HRESULT CLevel_Loading_Start::Initialize(LEVEL eNextLevel)
 
 	if (FAILED(Ready_Layer_Start_illust()))
 		return E_FAIL;
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+	pGameInstance->Get_Instance()->Get_SoundManager()->PlayBGM(L"Start_bgm.ogg", 0.5f);
+	RELEASE_INSTANCE(CGameInstance);
 
 	return S_OK;
 }
@@ -121,5 +124,9 @@ void CLevel_Loading_Start::Free()
 	__super::Free();
 
 	Safe_Release(m_pLoader);
+
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+	pGameInstance->Get_Instance()->Get_SoundManager()->StopAll();
+	RELEASE_INSTANCE(CGameInstance);
 }
 
