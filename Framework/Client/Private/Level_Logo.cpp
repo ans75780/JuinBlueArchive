@@ -9,6 +9,8 @@
 #include "Effect_Hit.h"
 //Json »ç¿ë
 #include "Json_Utility.h"
+#include "StrUtil.h"
+#include "UI_Frame.h"
 
 CLevel_Logo::CLevel_Logo(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
@@ -112,8 +114,7 @@ HRESULT CLevel_Logo::Ready_Layer_BackGround(const _tchar * pLayerTag)
 
 	m_pUICostNumberBack->Set_UIType(UI_TYPE::UI_BACKGROUND);
 	m_pUICostText->Set_UIType(UI_TYPE::UI_BUTTTON);
-	m_pUICostText->initialization();
-
+	m_pUICostText->Initialization();
 	if (FAILED(m_pUICostBarFront->LoadUIImage(L"Prototype_Component_Texture_Combat_Cost_Gauge")))
 		return E_FAIL;
 	if (FAILED(pInstance->Add_UI(LEVEL_LOGO, m_pUICostBarFront, nullptr)))

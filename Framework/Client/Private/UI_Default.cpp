@@ -23,7 +23,7 @@ HRESULT CUI_Default::Initialize(void * pArg)
 
 HRESULT CUI_Default::initialization()
 {
-	__super::initialization();
+	CUI::Initialization();
 
 	m_fOriginSize = m_fSize;
 

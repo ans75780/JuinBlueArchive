@@ -52,7 +52,6 @@ HRESULT CStudent::StartLevel(_uint iLevel)
 {
 	if (FAILED(SetUp_StateMachine(iLevel)))
 		return E_FAIL;
-	LEVEL eLevel;
 
 	CGameInstance*	pInstance = GET_INSTANCE(CGameInstance);
 

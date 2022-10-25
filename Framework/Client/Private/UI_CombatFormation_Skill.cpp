@@ -48,7 +48,7 @@ HRESULT CUI_CombatFormation_Skill::Initialize(void * pArg)
 
 	m_pUICostNumberBack->Set_UIType(UI_TYPE::UI_BACKGROUND);
 	m_pUICostText->Set_UIType(UI_TYPE::UI_BUTTTON);
-	m_pUICostText->initialization();
+	m_pUICostText->Initialization();
 	if (FAILED(m_pUICostBarFront->LoadUIImage(L"Prototype_Component_Texture_Combat_Cost_Gauge")))
 		return E_FAIL;
 	if (FAILED(pInstance->Add_UI(LEVEL_GAMEPLAY, m_pUICostBarFront, nullptr)))

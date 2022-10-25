@@ -284,7 +284,6 @@ HRESULT CCollider::Render()
 
 	return S_OK;
 }
-#endif // _DEBUG
 
 CCollider::OBBDESC CCollider::Compute_OBBDesc()
 {

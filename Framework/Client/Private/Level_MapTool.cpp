@@ -132,13 +132,13 @@ HRESULT CLevel_MapTool::Ready_Layer_MapProp(const _tchar * pLayerTag)
 
 HRESULT CLevel_MapTool::Ready_Layer_StageMap(const _tchar * pLayerTag)
 {
-
 	CGameInstance*	pGameInstance = GET_INSTANCE(CGameInstance);
 
 	if (FAILED(pGameInstance->Add_GameObject(LEVEL_MAPTOOL, pLayerTag, TEXT("Prototype_GameObject_Stage_School"), L"Prototype_Component_Model_Stage_School_1")))
 		return E_FAIL;
 
 	RELEASE_INSTANCE(CGameInstance);
+	return S_OK;
 }
 
 HRESULT CLevel_MapTool::UI_Extract()
