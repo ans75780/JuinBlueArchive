@@ -14,7 +14,6 @@ private:
 public:
 	HRESULT		Initialize();
 	void		Update();
-	void		Release();
 
 public:
 	void		LoadSoundFile();

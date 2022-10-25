@@ -165,9 +165,6 @@ HRESULT CLoader_Start::Loading_ForLogoLevel()
 	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Effects/Mesh/FX_MESH_Circle/", "FX_MESH_Circle.fbx", mat))))
 	//	return E_FAIL;
 
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_FX_MESH_Circle_B"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Effects/t/Mesh/", "circle_b.obj", mat))))
-		return E_FAIL;
 
 	/* For.Prototype_Component_Model_Stage_School*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Stage_School_1"),

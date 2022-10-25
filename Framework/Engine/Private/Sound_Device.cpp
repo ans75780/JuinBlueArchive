@@ -8,9 +8,6 @@ CSound_Device::CSound_Device()
 	, m_iCurPlayerChannel(CH_PLAYER_0)
 {}
 
-CSound_Device::~CSound_Device()
-{
-}
 
 HRESULT CSound_Device::Initialize()
 {
@@ -36,11 +33,6 @@ void CSound_Device::Update()
 	m_iCount = 0;
 	FMOD_System_Update(m_pSystem);
 	}*/
-}
-
-void CSound_Device::Release()
-{
-	
 }
 
 

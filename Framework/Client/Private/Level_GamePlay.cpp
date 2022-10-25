@@ -20,7 +20,7 @@
 #include "Enemy.h"
 #include "CombatFormation.h"
 #include "Effect_Hit.h"
-
+#include "Sound_Device.h"
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
 {

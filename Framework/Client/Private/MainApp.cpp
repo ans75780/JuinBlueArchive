@@ -263,6 +263,15 @@ HRESULT CMainApp::Ready_Static_Resource()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/UI/CharacterCard/Skill_Portrait_Zunko_Original.png")))))
 		return E_FAIL;
 
+	m_pGameInstance->Get_Instance()->Get_SoundManager()->LoadSoundFile();
+
+
+	m_pGameInstance->Get_Instance()->Get_SoundManager()->PlayBGM(L"BGM.wav",0.7f);
+
+
+
+
+
 	return S_OK;
 }
 
@@ -277,6 +286,11 @@ HRESULT CMainApp::Ready_Static_NonAnimModels()
 
 
 	return S_OK;
+}
+
+HRESULT CMainApp::Ready_Static_Sounds()
+{
+	return E_NOTIMPL;
 }
 
 CMainApp * CMainApp::Create()

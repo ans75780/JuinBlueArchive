@@ -463,7 +463,6 @@ void CGameInstance::Release_Engine()
 	CFrustum::Get_Instance()->Destroy_Instance();
 
 
-	CSound_Device::Get_Instance()->Destroy_Instance();
 
 }
 
@@ -481,6 +480,5 @@ void CGameInstance::Free()
 	Safe_Release(m_pLevel_Manager);
 	Safe_Release(m_pInput_Device);
 	Safe_Release(m_pGraphic_Device);
-	Safe_Release(m_pSoundManager);
 
 }
