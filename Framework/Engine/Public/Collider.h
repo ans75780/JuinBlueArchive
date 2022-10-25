@@ -52,6 +52,7 @@ public:
 	BoundingBox*	Get_AABB() { return m_pAABB; }
 
 	void			Set_Color(_float4 vColor) { m_vColor = vColor; }
+	_float3			Get_Center();
 #ifdef _DEBUG
 public:
 	HRESULT Render();

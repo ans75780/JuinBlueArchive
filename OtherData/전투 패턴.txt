@@ -1,0 +1,53 @@
+
+아루
+Normal_Attack_Start
+Normal_Attack_Ing
+Normal_Attack_End
+Normal_Attack_Reload
+Normal_Attack_Delay
+	
+Kneel_Attack_Start
+Kneel_Attack_Ing
+Kneel_Attack_End
+Kneel_Attack_Reload
+Kneel_Attack_Delay
+
+하루카
+Normal_Attack_Start
+Normal_Attack_Ing
+Normal_Attack_End
+Normal_Attack_Reload
+Normal_Attack_Delay
+
+준코
+
+
+공격패턴
+
+전투 범위에 들어왔다면 전투 Start
+
+0.Start->Ing(데미지들어감)->Delay
+분기
+1.총알을 다썼다.
+Reload
+2.적이 죽었다.
+End->적을 다시 탐색(이때 자기와 가장 가까운 적을 찾음)
+->적이 있으면 공격범위까지 다가간 다음 0번으로
+없으면 계속 직진.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

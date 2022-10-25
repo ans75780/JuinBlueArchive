@@ -53,6 +53,10 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(Ready_Static_Resource()))
 		return E_FAIL;
 
+	if (FAILED(Ready_Static_NonAnimModels()))
+		return E_FAIL;
+
+
 	if (FAILED(Ready_Loading_Resource()))
 		return E_FAIL;
 
@@ -172,10 +176,21 @@ HRESULT CMainApp::Ready_Prototype_Component()
 		CShader::Create(m_pDevice, m_pContext, TEXT("../../ShaderFiles/Shader_VtxTex.hlsl"), VTXTEX_DECLARATION::Element, VTXTEX_DECLARATION::iNumElements))))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxTexEffect"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../../ShaderFiles/Shader_VtxTexEffect.hlsl"), VTXTEX_DECLARATION::Element, VTXTEX_DECLARATION::iNumElements))))
+		return E_FAIL;
 	/* For.Prototype_Component_Shader_VtxTex */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxTex_Test"),
 		CShader::Create(m_pDevice, m_pContext, TEXT("../../ShaderFiles/Shader_VtxTexTest.hlsl"), VTXTEX_DECLARATION::Element, VTXTEX_DECLARATION::iNumElements))))
 		return E_FAIL;
+
+
+	/* For.Prototype_Component_Shader_VtxHpBar*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxHpBar"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../../ShaderFiles/Shader_VtxHpBar.hlsl"), VTXTEX_DECLARATION::Element, VTXTEX_DECLARATION::iNumElements))))
+		return E_FAIL;
+
+
 
 
 	/* For.Prototype_Component_Shader_VtxModel */
@@ -256,8 +271,57 @@ HRESULT CMainApp::Ready_Loading_Resource()
 	if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Start_illust"), CStart_illust::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Combat_Cost_Gauge"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/UI/UI_extract/image/Combat/Combat_Cost_Gauge.png")))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Combat_CostBg"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/UI/UI_extract/image/Combat/Combat_CostBg.png")))))
+		return E_FAIL;
+	
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Combat_Cost_Gauge_Back"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/Combat_Cost_Gauge_Back.png")))))
+		return E_FAIL;
 
-	return S_OK;	
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Skill_Portrait_Aru_Original"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/UI/CharacterCard/Skill_Portrait_Aru_Original.png")))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Skill_Portrait_Haruka_Original"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/UI/CharacterCard/Skill_Portrait_Haruka_Original.png")))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Skill_Portrait_Zunko_Original"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/UI/CharacterCard/Skill_Portrait_Zunko_Original.png")))))
+		return E_FAIL;
+
+	m_pGameInstance->Get_Instance()->Get_SoundManager()->LoadSoundFile();
+
+
+	m_pGameInstance->Get_Instance()->Get_SoundManager()->PlayBGM(L"BGM.wav",0.7f);
+
+
+
+
+
+	return S_OK;
+}
+
+HRESULT CMainApp::Ready_Static_NonAnimModels()
+{
+
+	_matrix mat, rotMat;
+	mat = XMMatrixIdentity();
+
+	rotMat = XMMatrixRotationAxis(XMVectorSet(0.f, 1.f, 0.f, 1.f), XMConvertToRadians(180.f));
+
+
+
+	return S_OK;
+}
+
+HRESULT CMainApp::Ready_Static_Sounds()
+{
+	return E_NOTIMPL;
 }
 
 CMainApp * CMainApp::Create()

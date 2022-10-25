@@ -14,7 +14,7 @@ BEGIN(Client)
 
 class CBaricade final : public CGameObject
 {
-public:
+private:
 	CBaricade(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CBaricade(const CBaricade& rhs);
 	virtual ~CBaricade() = default;

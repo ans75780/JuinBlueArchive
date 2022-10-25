@@ -18,6 +18,9 @@
 #include "Animation.h"
 #include "Camera.h"
 #include "Enemy.h"
+#include "CombatFormation.h"
+#include "Effect_Hit.h"
+#include "Sound_Device.h"
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -34,15 +37,6 @@ HRESULT CLevel_GamePlay::Initialize()
 
 	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
 		return E_FAIL;
-
-	m_vecFormationPos.push_back(XMVectorSet(-0.5f, 0.f, 0.f, 1.f));
-	m_vecFormationPos.push_back(XMVectorSet(0.f, 0.f, -0.5f, 1.f));
-	m_vecFormationPos.push_back(XMVectorSet(0.5f, 0.f, 0.f, 1.f));
-
-	
-	if (FAILED(Ready_Light()))
-		return E_FAIL;
-
 	if (FAILED(Ready_Layer_Student(TEXT("Layer_Student"))))
 		return E_FAIL;
 	if (FAILED(Ready_Layer_Enemy(TEXT("Layer_Enemy"))))
@@ -52,18 +46,9 @@ HRESULT CLevel_GamePlay::Initialize()
 		return E_FAIL;
 	if (FAILED(Ready_Light()))
 		return E_FAIL;
-	m_vecStudent[1]->Get_StateMachine()->Add_State
-	(
-		CState_Student_Default::Create(m_vecStudent[1], L"_Normal_Callsign")
-	);
-	_float3	vOffset = { -1.5f,1.f,-1.5f };
 
-	m_pEventCam->Ready_Event_Stage_Start(m_pStageCam, m_vecStudent[1],
-		m_vecStudent[1]->Get_StateMachine()->Get_CurrentState()->Get_Animation(),
-		vOffset, &m_vecStudent);
 
-	m_pStageCam->Set_Formation(&m_vecStudent);
-
+	m_pCombatFormaiton->StartGame();
 	
 	return S_OK;
 }
@@ -73,6 +58,16 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);		
 
 	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
+
+
+	if (KEY(V, TAP))
+	{
+		pGameInstance->Set_TimeMagnifiaction(0.7f);
+	}
+	if (KEY(B, TAP))
+	{
+		pGameInstance->Reset_TimeMagnifiaction();
+	}
 
 	if (KEY(T, TAP))
 	{
@@ -91,39 +86,9 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 		if (FAILED(pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_FORMATION))))
 			return;
 	}
-	if (KEY(R, TAP))
-	{
-		m_vecStudent[1]->Get_StateMachine()->Add_State
-		(
-			CState_Student_Default::Create(m_vecStudent[1], L"_Normal_Callsign")
-		);
-	}
-	if (KEY(NUM1, TAP))
-	{
-		m_vecStudent[0]->Get_StateMachine()->Add_State
-		(
-			CState_Student_Ex::Create(m_vecStudent[0])
-		);
-		m_pEventCam->Ready_Event_Ex(m_pStageCam, m_vecStudent[0]);
+	if (m_pCombatFormaiton)
+		m_pCombatFormaiton->Tick(fTimeDelta);
 
-	}
-	if (KEY(NUM2, TAP))
-	{
-		m_vecStudent[1]->Get_StateMachine()->Add_State
-		(
-			CState_Student_Ex::Create(m_vecStudent[1])
-		);
-		m_pEventCam->Ready_Event_Ex(m_pStageCam, m_vecStudent[1]);
-
-	}
-	if (KEY(NUM3, TAP))
-	{
-		m_vecStudent[2]->Get_StateMachine()->Add_State
-		(
-			CState_Student_Ex::Create(m_vecStudent[2])
-		);
-		m_pEventCam->Ready_Event_Ex(m_pStageCam, m_vecStudent[2]);
-	}
 }
 
 HRESULT CLevel_GamePlay::Render()
@@ -154,8 +119,8 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _tchar * pLayerTag)
 
 	CameraDesc.fFovy = XMConvertToRadians(65.0f);
 	CameraDesc.fAspect = (_float)g_iWinCX / g_iWinCY;
-	CameraDesc.fNear = 0.2f;
-	CameraDesc.fFar = 300.f;
+	CameraDesc.fNear = 1.f;
+	CameraDesc.fFar = 3000.f;
 
 	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Prototype_GameObject_Camera_Stage"), &CameraDesc, 
 		((CGameObject**)&m_pStageCam)
@@ -200,10 +165,28 @@ HRESULT CLevel_GamePlay::Ready_Layer_Enemy(const _tchar * pLayerTag)
 	const map<const _tchar*, CGameObject::OBJ_DESC>* EnemyData  = CUserData::Get_Instance()->Get_Actors(UNIT_TYPE::UNIT_TYPE_ENEMY);
 	for (auto& pair : *EnemyData)
 	{
-		if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, szPath, (void*)&pair.second, &pObj)))
-			return E_FAIL;
-		m_pEnemy = (CEnemy*)pObj;
-		m_pEnemy->Set_Transform(XMVectorSet(0, 0, -15.f, 1.f));
+		for (int i = 1; i < 8; i++)
+		{
+			if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, szPath, (void*)&pair.second, &pObj)))
+				return E_FAIL;
+			m_pEnemy = (CEnemy*)pObj;
+			m_pEnemy->Set_Transform(XMVectorSet(-1.5f, 0, 10.f * i, 1.f));
+			m_pEnemy->Get_Transform()->Rotation(XMVectorSet(0, 1.f, 0.f, 1.f), XMConvertToRadians(180.f));
+
+			if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, szPath, (void*)&pair.second, &pObj)))
+				return E_FAIL;
+			m_pEnemy = (CEnemy*)pObj;
+			m_pEnemy->Set_Transform(XMVectorSet(0, 0, 10.f * i, 1.f));
+			m_pEnemy->Get_Transform()->Rotation(XMVectorSet(0, 1.f, 0.f, 1.f), XMConvertToRadians(180.f));
+
+			if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, szPath, (void*)&pair.second, &pObj)))
+				return E_FAIL;
+			m_pEnemy = (CEnemy*)pObj;
+			m_pEnemy->Set_Transform(XMVectorSet(1.5f, 0, 10.f * i, 1.f));
+			m_pEnemy->Get_Transform()->Rotation(XMVectorSet(0, 1.f, 0.f, 1.f), XMConvertToRadians(180.f));
+
+		}
+		
 	}
 	return S_OK;
 }
@@ -221,6 +204,8 @@ HRESULT CLevel_GamePlay::Ready_Layer_Effect(const _tchar * pLayerTag)
 			return E_FAIL;
 	}
 
+
+
 	Safe_Release(pGameInstance);
 
 	return S_OK;
@@ -228,26 +213,20 @@ HRESULT CLevel_GamePlay::Ready_Layer_Effect(const _tchar * pLayerTag)
 
 HRESULT CLevel_GamePlay::Ready_Layer_Student(const _tchar * pLayerTag)
 {
-	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
-	Safe_AddRef(pGameInstance);
 
-	CGameObject* pStudent = nullptr;
-
-	_tchar	szStudentPath[MAX_PATH] = L"Prototype_Student";
-
-	//각 클론된 스튜던트에 정보를 넣어줌.
-	CGameObject::OBJ_DESC	desc;
+	CCombatFormation::FORMATIONDESC desc;
 
 
-	vector<CGameObject::OBJ_DESC> m_formationDesc = CUserData::Get_Instance()->Get_Formation();
-	for (_uint i = 0; i < m_formationDesc.size(); i++)
-	{
-		if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, szStudentPath, (void*)&m_formationDesc[i], &pStudent)))
-			return E_FAIL;
-		((CStudent*)pStudent)->Set_Transform(m_vecFormationPos[i]);
-		m_vecStudent.push_back((CStudent*)pStudent);
-	}
-	Safe_Release(pGameInstance);
+	desc.eLevel = LEVEL::LEVEL_GAMEPLAY;
+	lstrcpy(desc.szLayer, pLayerTag);
+	desc.eGameStartEvent = true;
+
+	m_pCombatFormaiton = CCombatFormation::Create(&desc, m_pStageCam, m_pEventCam, m_pDevice, m_pContext);
+	
+	if (nullptr == m_pCombatFormaiton)
+		return  E_FAIL;
+
+
 
 	return S_OK;
 }
@@ -262,16 +241,21 @@ HRESULT CLevel_GamePlay::Ready_Layer_Baricade(const _tchar * pLayerTag)
 	{
 		if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Prototype_Baricade"), L"Prototype_Component_Model_School_Baricade", &pObj)))
 			return E_FAIL;
-		pObj->Get_Transform()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(-1.f, 0.f, i * -8.f, 1.f));
+		pObj->Get_Transform()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(-1.f, 0.f, i * 8.f, 1.f));
 
 		if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Prototype_Baricade"), L"Prototype_Component_Model_School_Baricade", &pObj)))
 			return E_FAIL;
-		pObj->Get_Transform()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(0.f, 0.f, i * -8.f, 1.f));
+		pObj->Get_Transform()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(0.f, 0.f, i * 8.f, 1.f));
 
 		if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Prototype_Baricade"), L"Prototype_Component_Model_School_Baricade", &pObj)))
 			return E_FAIL;
-		pObj->Get_Transform()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(1.f, 0.f, i * -8.f, 1.f));
+		pObj->Get_Transform()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(1.f, 0.f, i * 8.f, 1.f));
 	}
+
+	pObj = CEffect_Hit::Create(m_pDevice, m_pContext);
+
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, L"Layer_Effect", L"Prototype_Effect_Hit")))
+		return E_FAIL;
 
 	RELEASE_INSTANCE(CGameInstance);
 
@@ -315,6 +299,6 @@ CLevel_GamePlay * CLevel_GamePlay::Create(ID3D11Device* pDevice, ID3D11DeviceCon
 void CLevel_GamePlay::Free()
 {
 	__super::Free();
-
+	Safe_Release(m_pCombatFormaiton);
 }
 

@@ -21,8 +21,11 @@ HRESULT CLevel_MapTool::Initialize()
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
-	//if (FAILED(Ready_Layer_MapProp(TEXT("Layer_MapProp"))))
-	//	return E_FAIL;
+//	if (FAILED(Ready_Layer_MapProp(TEXT("Layer_Map"))))
+//		return E_FAIL;
+
+	if (FAILED(Ready_Layer_StageMap(TEXT("Layer_Stage"))))
+		return E_FAIL;
 
 	if (FAILED(Ready_Light()))
 		return E_FAIL;
@@ -42,7 +45,6 @@ HRESULT CLevel_MapTool::Render()
 {
 	if (FAILED(__super::Render()))
 		return E_FAIL;
-
 
 	SetWindowText(g_hWnd, TEXT("¸ÊÅø·¹º§ÀÓ. "));
 
@@ -66,14 +68,15 @@ HRESULT CLevel_MapTool::Ready_Layer_Camera(const _tchar * pLayerTag)
 
 	CameraDesc.fFovy = XMConvertToRadians(65.0f);
 	CameraDesc.fAspect = (_float)g_iWinCX / g_iWinCY;
-	CameraDesc.fNear = 0.2f;
-	CameraDesc.fFar = 300.f;
+	CameraDesc.fNear = 1.f;
+	CameraDesc.fFar = 3000.f;
 
-	if (FAILED(pGameInstance->Add_GameObject(LEVEL_MAPTOOL, pLayerTag, TEXT("Prototype_GameObject_Camera_Free"), &CameraDesc)))
-		return E_FAIL;
-
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_MAPTOOL, pLayerTag, TEXT("Prototype_GameObject_Camera_Free"), &CameraDesc,
+		((CGameObject**)&m_pFreeCam)
+	)))
 	Safe_Release(pGameInstance);
 
+	m_pFreeCam->Set_MainCam(m_pFreeCam);
 	return S_OK;
 }
 
@@ -125,6 +128,17 @@ HRESULT CLevel_MapTool::Ready_Layer_MapProp(const _tchar * pLayerTag)
 	Safe_Release(pGameInstance);
 
 	return S_OK;
+}
+
+HRESULT CLevel_MapTool::Ready_Layer_StageMap(const _tchar * pLayerTag)
+{
+
+	CGameInstance*	pGameInstance = GET_INSTANCE(CGameInstance);
+
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_MAPTOOL, pLayerTag, TEXT("Prototype_GameObject_Stage_School"), L"Prototype_Component_Model_Stage_School_1")))
+		return E_FAIL;
+
+	RELEASE_INSTANCE(CGameInstance);
 }
 
 HRESULT CLevel_MapTool::UI_Extract()

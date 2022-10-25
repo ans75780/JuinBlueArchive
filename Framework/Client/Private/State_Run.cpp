@@ -35,6 +35,8 @@ HRESULT CState_Run::Initialize()
 void CState_Run::Enter()
 {
 	__super::Enter();
+	m_pAnimation->Reset();
+	m_pOwner->Set_StageState(CActor::STATE_STATE_MOVE);
 
 
 }
@@ -45,7 +47,7 @@ _bool CState_Run::Loop(_float fTimeDelta)
 	m_pModel->Update_CombinedMatrix();
 
 
-	m_pTransform->Go_Backward(fTimeDelta);
+	m_pTransform->Go_Straight(fTimeDelta);
 
 	return false;
 }

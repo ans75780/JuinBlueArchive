@@ -6,6 +6,12 @@
 #include "Enemy.h"
 #include "StrUtil.h"
 #include "Json_Utility.h"
+#include "Baricade.h"
+#include "HpBar.h"
+#include "Student_Fx.h"
+#include "Camera_Free.h"
+#include "Stage.h"
+#include "Effect_Hit.h"
 
 #include "Memorial_Haruka_Start.h"
 #include "Memorial_Haruka_Idle.h"
@@ -98,6 +104,12 @@ HRESULT CLoader_Start::Loading_ForLogoLevel()
 
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중이비낟. "));
 
+
+	/* For.Prototype_Component_Texture_Sky */
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_FX_Hit_0"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Effects/Texture/FX_Hit_0/FX_TEX_HIT_0_%d.png"), 4))))
+		return E_FAIL;
+
 	/* For.Prototype_Component_Texture_Default */
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Default"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/Default%d.jpg"), 2))))
@@ -162,22 +174,44 @@ HRESULT CLoader_Start::Loading_ForLogoLevel()
 
 	lstrcpy(m_szLoadingText, TEXT("오브젝트를 로딩중입니다. "));
 
+	if (FAILED(pGameInstance->Add_Prototype(L"Prototype_Student_FX", CStudent_FX::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(L"Prototype_Student", CStudent::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	if (FAILED(pGameInstance->Add_Prototype(L"Prototype_Enemy", CEnemy::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	if (FAILED(pGameInstance->Add_Prototype(L"Prototype_Baricade", CBaricade::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
+	if (FAILED(pGameInstance->Add_Prototype(L"Prototype_HpBar", CHpBar::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 	pUI_ProgreeBar->Plus_WidthSize(100.f); //50%
 	pUI_Text->SetUIText(TEXT("모델을 불러오는중입니다."));
 
 
 	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중이비낟. "));
 
-	_matrix mat;
+	if (FAILED(pGameInstance->Add_Prototype(L"Prototype_Effect_Hit", CEffect_Hit::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	_matrix mat, rotMat;
 	mat = XMMatrixIdentity();
 
+	rotMat = XMMatrixRotationAxis(XMVectorSet(0.f, 1.f, 0.f, 1.f), XMConvertToRadians(180.f));
+
+
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_FX_MESH_Circle"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Effects/Mesh/FX_MESH_Circle/", "FX_MESH_Circle.fbx", mat))))
+	//	return E_FAIL;
+
+
+	/* For.Prototype_Component_Model_Stage_School*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Stage_School_1"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Models/NonAnimModels/Stages/School/", "School_1.fbx",
+			rotMat))))
+		return E_FAIL;
 	///* For.Prototype_Component_Model_Serika*/
 	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Aru_Original"),
 	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Aru_Original/", "Aru_Original.fbx", mat))))
@@ -196,11 +230,17 @@ HRESULT CLoader_Start::Loading_ForLogoLevel()
 	//	return E_FAIL;
 
 
+	/* For.Prototype_GameObject_Camera_Event*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Camera_Free"),
+		CCamera_Free::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 	pUI_ProgreeBar->Plus_WidthSize(100.f); //80%
 	pUI_Text->SetUIText(TEXT("맵을 불러오는중입니다."));
 
-	lstrcpy(m_szLoadingText, TEXT("맵을 로딩중이비낟. "));
 
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Stage_School"),
+		CStage::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	/* For.Prototype_Component_Model_Stage_School*/
 	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Stage_School_1"),

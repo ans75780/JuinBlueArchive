@@ -8,9 +8,11 @@
 #include "Collider.h"
 #include "State_Student_Formation_Idle.h"
 #include "Animation.h"
+#include "State_Dead.h"
 CActor::CActor(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObject(pDevice, pContext)
 {
+
 }
 
 
@@ -28,10 +30,18 @@ HRESULT CActor::Initialize_Prototype()
 HRESULT CActor::Initialize(void * pArg)
 {
 	CTransform::TRANSFORMDESC		TransformDesc;
+	TransformDesc.fSpeedPerSec = 3.f;
+	TransformDesc.fRotationPerSec = XMConvertToRadians(90.0f);
 
-	memcpy(&TransformDesc, pArg, sizeof(CTransform::TRANSFORMDESC));
+	//GameObject 에서 디스크립션 초기화해서 먼저 이거 해줘야함.
+	if (FAILED(CGameObject::Initialize(&TransformDesc)))
+		return E_FAIL;
 
-	if (FAILED(__super::Initialize(&TransformDesc)))
+	memcpy(&m_desc, pArg, sizeof(OBJ_DESC));
+
+	if (FAILED(SetUp_Components()))
+		return E_FAIL;
+	if (FAILED(SetUp_StateMachine(0)))
 		return E_FAIL;
 	return S_OK;
 }
@@ -53,7 +63,8 @@ void CActor::Tick(_float fTimeDelta)
 
 void CActor::LateTick(_float fTimeDelta)
 {
-	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+	if (m_bEnable == true)
+		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
 
 #ifdef _DEBUG
 	CGameInstance*	pInstance = GET_INSTANCE(CGameInstance);
@@ -119,6 +130,23 @@ CAnimation * CActor::Get_Animation(const char * pAnimationName)
 _bool CActor::Collision_AABB(RAYDESC & ray, _float & distance)
 {
 	return m_pAABBCom->Collision_AABB(ray, distance);
+}
+
+void CActor::Set_Desc(OBJ_DESC & desc)
+{
+	memcpy(&m_desc, &desc, sizeof(OBJ_DESC));
+}
+
+void CActor::Damaged(_float fAtk)
+{
+	m_desc.fHp -= fAtk;
+	if (0 >= m_desc.fHp)
+		m_pStateMachine->Add_State(CState_Dead::Create(this));
+
+}
+
+void CActor::CheckState()
+{
 }
 
 HRESULT CActor::SetUp_Components()
@@ -218,7 +246,22 @@ HRESULT CActor::SetUp_ShaderResource()
 
 HRESULT CActor::SetUp_StateMachine(_uint iLevel)
 {
+	m_pStateMachine = CStateMachineBase::Create(this);
+
 	return S_OK;
+}
+
+CGameObject * CActor::Clone(void * pArg)
+{
+	CActor*		pInstance = new CActor(*this);
+
+	if (FAILED(pInstance->Initialize(pArg)))
+	{
+		MSG_BOX("Failed to Cloned : CActor");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
 }
 
 void CActor::Free()

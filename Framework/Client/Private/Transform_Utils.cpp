@@ -23,4 +23,14 @@ void CTransform_Utils::Add_Pos(CTransform * pTransform, const _float4 & fPos)
 	pTransform->Set_State(CTransform::STATE_TRANSLATION, vOriginPos);
 }
 
+_float CTransform_Utils::Get_Range(CTransform * pDest, CTransform * pSour)
+{
+	_vector	fVecDesc = pDest->Get_State(CTransform::STATE_TRANSLATION);
+	_vector	fVecSour= pSour->Get_State(CTransform::STATE_TRANSLATION);
+	_vector fRange = fVecDesc - fVecSour;
+
+
+	return  fabsf(XMVectorGetX(XMVector3Length(fRange)));
+}
+
 END

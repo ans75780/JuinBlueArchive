@@ -15,6 +15,8 @@ public:
 		_float		fRange = 5.f;
 		_float		fMaxHp = 10.f;
 		_float		fHp = 10.f;
+		_uint		iMagazine = 5;
+		_uint		iMaxMagazine = 5;
 		UNIT_TYPE	eType = UNIT_TYPE_END;
 		UNIT_CLASS	eClass = UNIT_CLASS_END;
 	}OBJ_DESC;
@@ -31,6 +33,8 @@ public:
 		return m_fCamDistance;
 	}
 	OBJ_DESC Get_OBJ_DESC() { return m_desc; }
+	OBJ_DESC& Get_OBJ_DESC_Reference() { return m_desc; }
+
 
 public:
 	class CTransform*	Get_Transform() { return m_pTransformCom; }

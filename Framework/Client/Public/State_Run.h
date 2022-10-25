@@ -1,5 +1,5 @@
+#pragma once
 #include "StateBase.h"
-
 
 namespace Engine
 {

@@ -26,6 +26,11 @@ HRESULT CUI_Progress::Initialize(void * pArg)
 
 	m_fProgressBarSize = { 100.f,100.f};
 	
+	m_fOriginWidth = 0.f;
+	m_fOriginHeight = 0.f;
+
+	m_fRatio = 1.f;
+
 	return S_OK;
 }
 
@@ -41,16 +46,7 @@ void CUI_Progress::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 
 	//TestCode
-	
-	if (KEY(A, HOLD))
-	{
-		m_fProgressBarSize.x -= fTimeDelta * 500;
-	}
-	if (KEY(S, HOLD))
-	{
-		m_fProgressBarSize.x += fTimeDelta * 500;
-	}
-	
+		
 }
 
 void CUI_Progress::LateTick(_float fTimeDelta)
@@ -70,7 +66,7 @@ HRESULT CUI_Progress::Render()
 	if (FAILED(SetUp_ShaderResource()))
 		return E_FAIL;
 
-	m_pShaderCom->Begin(0);
+	m_pShaderCom->Begin(m_iPathNum);
 	m_pVIBufferCom->Render();
 
 	return S_OK;
@@ -100,11 +96,23 @@ void CUI_Progress::Set_Size(_float3 _fSize)
 void CUI_Progress::Set_ProgressWidth(_float fWidth)
 {
 	m_fProgressBarSize.x = fWidth;
+	
+
+	if (m_fOriginWidth == 0.f)
+	{
+		m_fOriginWidth = fWidth;
+	}
+
 }
 
 void CUI_Progress::Set_ProgressHeight(_float fHeight)
 {
 	m_fProgressBarSize.y = fHeight;
+
+	if (m_fOriginHeight == 0.f)
+	{
+		m_fOriginHeight = fHeight;
+	}
 
 }
 
@@ -139,9 +147,14 @@ HRESULT CUI_Progress::SetUp_ShaderResource()
 
 	if (FAILED(m_pShaderCom->Set_RawValue("g_ProgressBarSize", &m_fProgressBarSize, sizeof(_float2))))
 		return E_FAIL;
+	if (FAILED(m_pShaderCom->Set_RawValue("g_Ratio", &m_fRatio, sizeof(_float))))
+		return E_FAIL;
 
-//	if (FAILED(m_pTextureCom->Set_ShaderResourceView(m_pShaderCom, "g_DiffuseTexture", 0)))
-//		return E_FAIL;
+	if (m_pTextureCom)
+	{
+		if (FAILED(m_pTextureCom->Set_ShaderResourceView(m_pShaderCom, "g_DiffuseTexture", 0)))
+			return E_FAIL;
+	}
 	return S_OK;
 }
 

@@ -16,7 +16,7 @@ CGameInstance::CGameInstance()
 	, m_pFont_Manager(CFont_Manager::Get_Instance())
 	, m_pLight_Manager(CLight_Manager::Get_Instance())
 	, m_pFrustum(CFrustum::Get_Instance())
-
+	, m_pSoundManager(CSound_Device::Get_Instance())
 	
 {	
 	Safe_AddRef(m_pGraphic_Device);
@@ -31,6 +31,8 @@ CGameInstance::CGameInstance()
 	Safe_AddRef(m_pFont_Manager);
 	Safe_AddRef(m_pLight_Manager);
 	Safe_AddRef(m_pFrustum);
+	Safe_AddRef(m_pSoundManager);
+
 }
 
 HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, const GRAPHICDESC& GraphicDesc, ID3D11Device** ppDeviceOut, ID3D11DeviceContext** ppDeviceContextOut)
@@ -67,7 +69,8 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, cons
 
 	if (FAILED(m_pFrustum->Initialize()))
 		return E_FAIL;
-
+	if (FAILED(m_pSoundManager->Initialize()))
+		return E_FAIL;
 
 	m_fMagnification = 1.f;
 
@@ -102,6 +105,9 @@ HRESULT CGameInstance::Tick_Engine(_float fTimeDelta)
 	m_pObject_Manager->LateTick(fTimeDelta * m_fMagnification);
 
 	m_pUI_Manager->LateTick(fTimeDelta);
+
+	m_pSoundManager->Update();
+
 	return S_OK;
 }
 
@@ -360,6 +366,11 @@ _bool CGameInstance::IsIn_Frustum_InWorldSpace(_fvector vWorldPoint, _float fRan
 	return m_pFrustum->IsIn_Frustum_InWorldSpace(vWorldPoint, fRange);
 }
 
+CSound_Device * CGameInstance::Get_SoundManager()
+{
+	return m_pSoundManager->Get_Instance();
+}
+
 void CGameInstance::Set_Transform(CPipeLine::TRANSFORMSTATE eState, _fmatrix TransformState)
 {
 	if (nullptr == m_pPipeLine)
@@ -451,6 +462,8 @@ void CGameInstance::Release_Engine()
 
 	CFrustum::Get_Instance()->Destroy_Instance();
 
+
+
 }
 
 void CGameInstance::Free()
@@ -467,4 +480,5 @@ void CGameInstance::Free()
 	Safe_Release(m_pLevel_Manager);
 	Safe_Release(m_pInput_Device);
 	Safe_Release(m_pGraphic_Device);
+
 }

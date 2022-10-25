@@ -27,7 +27,9 @@ public:
 	virtual	void	Set_Size(_float3 _fSize);
 	virtual void	Set_ProgressWidth(_float fWidth);
 	virtual void	Set_ProgressHeight(_float fHeight);
+	virtual void	SetPath(_uint i) { m_iPathNum = i; }
 
+	virtual void	SetRatio(_float ratio) { m_fRatio = ratio; }
 
 protected:
 	virtual HRESULT SetUp_Component();
@@ -38,6 +40,11 @@ protected:
 	_bool	m_bUIButtonDown = false;
 	_float3	m_fOriginSize = { 0.f, 0.f, 0.f };
 	_float2		m_fProgressBarSize;
+	_float	m_fRatio = 1.f;
+	_uint	m_iPathNum = 0;
+	_float	m_fOriginWidth;
+	_float	m_fOriginHeight;
+
 
 
 	//for Shader

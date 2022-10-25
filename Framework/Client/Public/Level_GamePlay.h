@@ -34,15 +34,12 @@ public:
 	HRESULT Ready_Light();
 
 private:
-	vector<class CStudent*> m_vecStudent;
-	vector<_vector>			m_vecFormationPos;
-
 	class CCamera_Stage*	m_pStageCam = nullptr;
 	class CCamera_Event*	m_pEventCam= nullptr;
 	class CCamera_Free*		m_pFreeCam= nullptr;
 
 	class CEnemy*			m_pEnemy = nullptr;
-
+	class CCombatFormation*	m_pCombatFormaiton = nullptr;
 public:
 	static CLevel_GamePlay* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual void Free() override;

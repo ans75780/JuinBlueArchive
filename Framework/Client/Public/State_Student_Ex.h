@@ -18,8 +18,12 @@ public:
 	static  CState_Student_Ex * Create(class CActor * pStudent);
 
 private:
-	class CAnimation*	m_pExCutin= nullptr;
 	class CAnimation*	m_pEx= nullptr;
+
+
+
+
+
 };
 
 END

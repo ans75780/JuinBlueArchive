@@ -23,13 +23,14 @@ public:
 public:
 	void	Ready_Event_Stage_Start(class CCamera* pReturnCamera, class CActor* pTarget, class CAnimation* pAnimation, _float3 vOffset, vector<CStudent*>* pVecStudents);
 
-	void	Ready_Event_Ex(class CCamera* pReturnCamera, class CActor* pTarget);
+	void	Ready_Event_Ex(class CCamera* pReturnCamera, class CActor* pTarget, class CActor* pEx);
 
 public:
 	void	Event_Stage_Start();
 	void	Event_Ex(_float fTimeDelta);
 
-
+public:
+	const vector<_float4>&	Get_VecStudentStartPos() { return m_vecStartPos; }
 public:
 	static CCamera_Event* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
@@ -41,6 +42,8 @@ private:
 	EVENT_TYPE	m_eEventType = EVENT_TYPE::EVENT_END;
 	class CCamera*	m_pReturnToCam = nullptr;
 	class CActor* m_pTarget = nullptr;
+	class CActor* m_pTargetEx = nullptr;
+
 
 private:
 	_float3			m_vOffset;
@@ -49,7 +52,7 @@ private:
 //for Stage_Start Variable
 private:
 	vector<CStudent*>*	m_pVecStduent = nullptr;
-
+	vector<_float4>		m_vecStartPos;
 
 
 	//for ExCam Variable
@@ -57,6 +60,9 @@ private:
 	class CAnimation*	m_pAnimation;
 	_float4		m_fTargetOriginPos;
 
+//축 회전 180도 조정용 매트릭스
+private:
+	_matrix m_MatExRot;
 
 };
 

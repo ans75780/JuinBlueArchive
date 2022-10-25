@@ -13,6 +13,7 @@ private:
 
 public:
 	HRESULT Set_ShaderResourceView(class CShader* pShader, const char* pConstantName, _uint iIndex = 0);
+	_uint	Get_TextureSize() { return (_uint)m_SRVs.size(); }
 
 public:
 	virtual HRESULT Initialize_Prototype(const _tchar* pTextureFilePath, _uint iNumTextures) ;

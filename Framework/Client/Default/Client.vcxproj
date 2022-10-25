@@ -104,7 +104,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>../../Reference/Headers/; ../Public/</AdditionalIncludeDirectories>
-      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -168,6 +168,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\ShaderFiles\Client_Shader_Defines.hpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Public\Actor.h" />
     <ClInclude Include="..\Public\Arona_Camera.h" />
@@ -181,7 +182,11 @@
     <ClInclude Include="..\Public\Camera_Formation.h" />
     <ClInclude Include="..\Public\Camera_Free.h" />
     <ClInclude Include="..\Public\Camera_Stage.h" />
+    <ClInclude Include="..\Public\Effect.h" />
+    <ClInclude Include="..\Public\Effect_Hit.h" />
+    <ClInclude Include="..\Public\HpBar.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
+    <ClInclude Include="..\Public\CombatFormation.h" />
     <ClInclude Include="..\Public\Enemy.h" />
     <ClInclude Include="..\Public\Formation.h" />
     <ClInclude Include="..\Public\Gacha_Sky.h" />
@@ -217,8 +222,17 @@
     <ClInclude Include="..\Public\Loader.h" />
     <ClInclude Include="..\Public\MainApp.h" />
     <ClInclude Include="..\Public\MapProp.h" />
+    <ClInclude Include="..\Public\Skill_Base.h" />
+    <ClInclude Include="..\Public\State_Headers.h" />
+    <ClInclude Include="..\Public\State_Attack.h" />
+    <ClInclude Include="..\Public\State_Dead.h" />
+    <ClInclude Include="..\Public\State_Student_Ex_Cutin.h" />
     <ClInclude Include="..\Public\State_Student_Jump.h" />
     <ClInclude Include="..\Public\State_Student_Run.h" />
+    <ClInclude Include="..\Public\Student_Fx.h" />
+    <ClInclude Include="..\Public\UI_CombatFormation_Skill.h" />
+    <ClInclude Include="..\Public\UI_Combat_HpBar.h" />
+    <ClInclude Include="..\Public\UI_Default.h" />
     <ClInclude Include="..\Public\UI_Fade_Black.h" />
     <ClInclude Include="..\Public\UI_Fade_White.h" />
     <ClInclude Include="..\Public\UI_Frame.h" />
@@ -266,6 +280,11 @@
     <ClCompile Include="..\Private\Camera_Formation.cpp" />
     <ClCompile Include="..\Private\Camera_Free.cpp" />
     <ClCompile Include="..\Private\Camera_Stage.cpp" />
+    <ClCompile Include="..\Private\Effect.cpp" />
+    <ClCompile Include="..\Private\Skill_Base.cpp" />
+    <ClCompile Include="..\Private\Student_Fx.cpp" />
+    <ClCompile Include="..\Private\HpBar.cpp" />
+    <ClCompile Include="..\Private\CombatFormation.cpp" />
     <ClCompile Include="..\Private\Enemy.cpp" />
     <ClCompile Include="..\Private\Formation.cpp" />
     <ClCompile Include="..\Private\Gacha_Sky.cpp" />
@@ -300,8 +319,14 @@
     <ClCompile Include="..\Private\Loader.cpp" />
     <ClCompile Include="..\Private\MainApp.cpp" />
     <ClCompile Include="..\Private\MapProp.cpp" />
+    <ClCompile Include="..\Private\State_Attack.cpp" />
+    <ClCompile Include="..\Private\State_Dead.cpp" />
+    <ClCompile Include="..\Private\State_Student_Ex_Cutin.cpp" />
     <ClCompile Include="..\Private\State_Student_Jump.cpp" />
     <ClCompile Include="..\Private\State_Student_Run.cpp" />
+    <ClCompile Include="..\Private\UI_CombatFormation_Skill.cpp" />
+    <ClCompile Include="..\Private\UI_Combat_HpBar.cpp" />
+    <ClCompile Include="..\Private\UI_Default.cpp" />
     <ClCompile Include="..\Private\UI_Fade_Black.cpp" />
     <ClCompile Include="..\Private\UI_Fade_White.cpp" />
     <ClCompile Include="..\Private\UI_Frame.cpp" />
@@ -332,6 +357,7 @@
     <ClCompile Include="..\Private\UI_UpWall.cpp" />
     <ClCompile Include="..\Private\UserData.cpp" />
     <ClCompile Include="Client.cpp" />
+    <ClCompile Include="Effect_Hit.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -347,7 +373,10 @@
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="..\..\ShaderFiles\Shader_Cell.hlsl" />
+    <FxCompile Include="..\..\ShaderFiles\Shader_Cell.hlsl">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </EntryPointName>
+    </FxCompile>
     <FxCompile Include="..\..\ShaderFiles\Shader_Deferred.hlsl" />
     <FxCompile Include="..\..\ShaderFiles\Shader_PointToProgress.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
@@ -362,11 +391,13 @@
     <FxCompile Include="..\..\ShaderFiles\Shader_PointToProgress_StartLoadingBar.hlsl" />
     <FxCompile Include="..\..\ShaderFiles\Shader_VtxAnimModel.hlsl" />
     <FxCompile Include="..\..\ShaderFiles\Shader_VtxCubeTex.hlsl" />
+    <FxCompile Include="..\..\ShaderFiles\Shader_VtxHpBar.hlsl" />
     <FxCompile Include="..\..\ShaderFiles\Shader_VtxInstance.hlsl" />
     <FxCompile Include="..\..\ShaderFiles\Shader_VtxModel.hlsl" />
     <FxCompile Include="..\..\ShaderFiles\Shader_VtxNorTex.hlsl" />
     <FxCompile Include="..\..\ShaderFiles\Shader_VtxPointInstance.hlsl" />
     <FxCompile Include="..\..\ShaderFiles\Shader_VtxTex.hlsl" />
+    <FxCompile Include="..\..\ShaderFiles\Shader_VtxTexEffect.hlsl" />
     <FxCompile Include="..\..\ShaderFiles\Shader_VtxTexTest.hlsl" />
   </ItemGroup>
   <ItemGroup>

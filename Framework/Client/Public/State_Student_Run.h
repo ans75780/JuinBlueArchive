@@ -19,6 +19,8 @@ public:
 	
 private:
 	class CCollider*	m_pBodyCollider = nullptr;
+	class CCollider*	m_pAttackRangeCollider = nullptr;
+
 };
 
 END

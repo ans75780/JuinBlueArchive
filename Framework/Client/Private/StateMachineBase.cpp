@@ -7,10 +7,10 @@
 
 #include "Actor.h"
 
-CStateMachineBase::CStateMachineBase(CActor * pStudent)
-	:m_pStudent(pStudent)
+CStateMachineBase::CStateMachineBase(CActor * pOwner)
+	:m_pOwner(pOwner)
 {
-	Safe_AddRef(m_pStudent);
+	Safe_AddRef(m_pOwner);
 }
 
 HRESULT CStateMachineBase::Initialize()
@@ -26,7 +26,13 @@ HRESULT CStateMachineBase::Update(_float fTimeDelta)
 	if (m_States.top()->Loop(fTimeDelta))
 	{
 		CStateBase*	pState = m_States.top()->Exit();
-
+		//현재 리턴을 받았는데, 상태가 죽어있다 -> 죽은 상태가 끝났다.
+		//그러면 스테이트머신을 날리고 나감.
+		if (m_pOwner->Get_StageState() == CActor::STAGE_STATE_DEAD)
+		{
+			Clear();
+			return S_OK;
+		}
 		//가장 마지막 상태는 지워지지않음.
 		if (m_States.size() > 1)
 		{ 
@@ -99,5 +105,5 @@ void CStateMachineBase::Free()
 		Safe_Release(m_States.top());
 		m_States.pop();
 	}
-	Safe_Release(m_pStudent);
+	Safe_Release(m_pOwner);
 }

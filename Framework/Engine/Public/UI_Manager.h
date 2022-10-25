@@ -31,6 +31,7 @@ public:
 	HRESULT	Save_UIVec();
 	void	Clear_UIVec();
 
+	void	Clear_Canvas(_uint iLevelIndex);//캔버스를 지울일이 있다면
 	void	Set_LevelEditMode(_bool _check)	{ m_bLevelEditMode = _check; }
 	void	Set_EditLevel(_uint _Level)		{ m_iEditLevel = _Level; }
 	void	Set_DisableUI(_bool _Set)		{ m_bDisableUI = _Set; }

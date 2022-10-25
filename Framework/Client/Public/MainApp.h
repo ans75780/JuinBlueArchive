@@ -31,6 +31,8 @@ private:
 	HRESULT	Open_Level_Start(LEVEL eLevelID);
 	HRESULT Ready_Prototype_Component();
 	HRESULT Ready_Static_Resource();
+	HRESULT	Ready_Static_NonAnimModels();
+	HRESULT	Ready_Static_Sounds();
 	HRESULT Ready_Loading_Resource();
 
 private:

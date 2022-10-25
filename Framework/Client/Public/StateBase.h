@@ -2,6 +2,7 @@
 #include "Client_Defines.h"
 #include "Engine_Defines.h"
 #include "Base.h"
+
 namespace Engine
 {
 	class CAnimation;
@@ -21,11 +22,10 @@ public:
 	virtual void		Enter();
 	virtual _bool		Loop(_float fTimeDelta) = 0;
 	virtual CStateBase*	Exit() = 0;
-
+	
 public:
-	class CAnimation*	Get_Animation() { return m_pAnimation; }
+	virtual class CAnimation*	Get_Animation() { return m_pAnimation; }
 	void	CallExit() { m_bCalledExit = true; }
-
 
 
 protected:

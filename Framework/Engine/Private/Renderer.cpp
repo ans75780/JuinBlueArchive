@@ -139,10 +139,10 @@ HRESULT CRenderer::Draw_RenderGroup()
 	if (FAILED(Render_UI()))
 		return E_FAIL;
 
-//#ifdef _DEBUG
-//	if (FAILED(Render_Debug()))
-//		return E_FAIL;
-//#endif // _DEBUG
+#ifdef _DEBUG
+	//if (FAILED(Render_Debug()))
+	//	return E_FAIL;
+#endif // _DEBUG
 
 	return S_OK;
 }

@@ -106,9 +106,6 @@
     <ClInclude Include="..\Public\Camera_Formation.h">
       <Filter>02.GameObject\01. Camera\Camera_Formation</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Formation.h">
-      <Filter>02.GameObject\06. Formation</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\State_Student_Formation_Idle.h">
       <Filter>04. State\Student\Formation</Filter>
     </ClInclude>
@@ -200,7 +197,7 @@
       <Filter>04. State\Run</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Baricade.h">
-      <Filter>02.GameObject\Baricade</Filter>
+      <Filter>02.GameObject\12. Baricade</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\UI_Progress.h">
       <Filter>02.GameObject\03. UI\04. Progress</Filter>
@@ -224,6 +221,27 @@
       <Filter>02.GameObject\StageObject</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State_Student_Ex.h">
+      <Filter>04. State\Student\EX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Attack.h">
+      <Filter>04. State\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_Combat_HpBar.h">
+      <Filter>02.GameObject\03. UI\Combat\UI_Combat_HpBar</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Dead.h">
+      <Filter>04. State\Dead</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CombatFormation.h">
+      <Filter>02.GameObject\11. CombatFormation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\HpBar.h">
+      <Filter>02.GameObject\10. HpBar</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Headers.h">
+      <Filter>04. State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Student_Ex_Cutin.h">
       <Filter>04. State\Student\EX</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\UI_Progress_StartLoadingBar.h">
@@ -268,6 +286,22 @@
     <ClInclude Include="..\Public\UI_UpWall.h">
       <Filter>02.GameObject\03. UI\06. UI_GachaCard</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Student_Fx.h">
+      <Filter>02.GameObject\05. Actor\Student\Student_FX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_CombatFormation_Skill.h">
+      <Filter>02.GameObject\11. CombatFormation\UI_CombatFormation_Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_Default.h">
+      <Filter>02.GameObject\03. UI\05. UI_DefaultButton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Skill_Base.h">
+      <Filter>02.GameObject\13.Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Effect.h">
+      <Filter>02.GameObject\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Effect_Hit.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -369,9 +403,6 @@
     <ClCompile Include="..\Private\Camera_Formation.cpp">
       <Filter>02.GameObject\01. Camera\Camera_Formation</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Formation.cpp">
-      <Filter>02.GameObject\06. Formation</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\State_Student_Formation_Pickup.cpp">
       <Filter>04. State\Student\Formation</Filter>
     </ClCompile>
@@ -454,7 +485,7 @@
       <Filter>04. State\Run</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Baricade.cpp">
-      <Filter>02.GameObject\Baricade</Filter>
+      <Filter>02.GameObject\12. Baricade</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\UI_Progress.cpp">
       <Filter>02.GameObject\03. UI\04. Progress</Filter>
@@ -480,6 +511,40 @@
     <ClCompile Include="..\Private\State_Student_Ex.cpp">
       <Filter>04. State\Student\EX</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\State_Attack.cpp">
+      <Filter>04. State\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_Combat_HpBar.cpp">
+      <Filter>02.GameObject\03. UI\Combat\UI_Combat_HpBar</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Dead.cpp">
+      <Filter>04. State\Dead</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CombatFormation.cpp">
+      <Filter>02.GameObject\11. CombatFormation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\HpBar.cpp">
+      <Filter>02.GameObject\10. HpBar</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Student_Ex_Cutin.cpp">
+      <Filter>04. State\Student\EX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Student_Fx.cpp">
+      <Filter>02.GameObject\05. Actor\Student\Student_FX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_CombatFormation_Skill.cpp">
+      <Filter>02.GameObject\11. CombatFormation\UI_CombatFormation_Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_Default.cpp">
+      <Filter>02.GameObject\03. UI\05. UI_DefaultButton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Skill_Base.cpp">
+      <Filter>02.GameObject\13.Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Effect.cpp">
+      <Filter>02.GameObject\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect_Hit.cpp" />
     <ClCompile Include="..\Private\UI_Progress_StartLoadingBar.cpp">
       <Filter>02.GameObject\03. UI\04. Progress\StartLoadingBar</Filter>
     </ClCompile>
@@ -625,9 +690,6 @@
     <Filter Include="06. User">
       <UniqueIdentifier>{452e91d5-a4d2-4a41-a5d4-a4a4c0cd6679}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObject\For.FormationLevel">
-      <UniqueIdentifier>{7bb8cc3e-d96c-4fb8-bebf-45bc18dd1502}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Level\00. Loading">
       <UniqueIdentifier>{807441ba-e54d-4b86-960a-e96a8505241f}</UniqueIdentifier>
     </Filter>
@@ -679,14 +741,8 @@
     <Filter Include="02.GameObject\05. Actor">
       <UniqueIdentifier>{52440e42-5d7e-4516-bb6e-3b60a4fa5312}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObject\Baricade">
-      <UniqueIdentifier>{8ba48e91-f70a-442e-b6d4-5e8eea9c7cd9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObject\05. Actor\Student">
       <UniqueIdentifier>{a5477715-8bc1-4140-a022-797e60da67ef}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObject\06. Formation">
-      <UniqueIdentifier>{21a7108e-7177-40a3-9e95-1ab62c7ee622}</UniqueIdentifier>
     </Filter>
     <Filter Include="04. State\Student">
       <UniqueIdentifier>{3f7fdb12-5682-4400-adc8-83a39af198fb}</UniqueIdentifier>
@@ -735,6 +791,51 @@
     </Filter>
     <Filter Include="02.GameObject\StageObject">
       <UniqueIdentifier>{ac9405f1-1c23-4c95-8d50-40fa1a6a54ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. State\Attack">
+      <UniqueIdentifier>{06561c3b-6514-4c2f-8545-192d189df07d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\03. UI\Combat">
+      <UniqueIdentifier>{0def0860-9fa9-4b15-b842-532d52ee9801}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\03. UI\Combat\UI_Combat_HpBar">
+      <UniqueIdentifier>{e88a5751-90ea-4f64-ac8c-4cd229e88e29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. State\Dead">
+      <UniqueIdentifier>{a8595b4b-7de0-4c23-a808-f979d57129b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\11. CombatFormation">
+      <UniqueIdentifier>{0a67f2fd-281d-4ae3-ba7c-473e2829964b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\12. Baricade">
+      <UniqueIdentifier>{8ba48e91-f70a-442e-b6d4-5e8eea9c7cd9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\10. HpBar">
+      <UniqueIdentifier>{d1afeeb2-07dd-4f4b-8ae0-35ab0d0a0eaa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Level\12.EffectTool">
+      <UniqueIdentifier>{1efdd4a8-f0c7-427a-bd39-b051c7b42e12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\05. Actor\Student\Student_FX">
+      <UniqueIdentifier>{c81c4a2c-1a82-4691-a68c-a2cdba2a34e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\03. UI\Combat\UI_CombatFormation">
+      <UniqueIdentifier>{2e7a7355-81ca-4054-931f-719d268d9935}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\11. CombatFormation\UI_CombatFormation_Skill">
+      <UniqueIdentifier>{3fc52146-3016-4aec-a284-c2b570eac689}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\03. UI\05. UI_DefaultButton">
+      <UniqueIdentifier>{82ea15ca-7924-4bea-b213-0014bc183bee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\13.Skill">
+      <UniqueIdentifier>{d76a8e01-aa89-4aff-ba9d-830b37b33b98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Effect">
+      <UniqueIdentifier>{930fb5ce-b26e-450f-a87e-fcbec7b60ac1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Effect\Effect_Hit">
+      <UniqueIdentifier>{f715932d-beb6-422b-a445-a6a22b8b9c9c}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObject\03. UI\04. Progress">
       <UniqueIdentifier>{b63d5817-442b-4656-823c-5a73df864c37}</UniqueIdentifier>
@@ -809,6 +910,12 @@
       <Filter>03.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\..\ShaderFiles\Shader_PointToProgress.hlsl">
+      <Filter>03.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\ShaderFiles\Shader_VtxHpBar.hlsl">
+      <Filter>03.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\ShaderFiles\Shader_VtxTexEffect.hlsl">
       <Filter>03.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\..\ShaderFiles\Shader_PointToProgress_StartLoadingBar.hlsl">

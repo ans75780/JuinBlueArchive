@@ -25,7 +25,7 @@ HRESULT CCollider::Initialize_Prototype(TYPE eType)
 {
 	m_eType = eType;
 
-	
+
 
 
 #ifdef _DEBUG
@@ -229,7 +229,23 @@ _matrix CCollider::Remove_Rotation(_fmatrix TransformMatrix)
 
 	return Transform;
 }
-#ifdef _DEBUG
+
+_float3 CCollider::Get_Center()
+{
+	switch (m_eType)
+	{
+	case TYPE_AABB:
+		return m_pAABB->Center;
+		break;
+	case TYPE_OBB:
+		return m_pOBB->Center;
+		break;
+	case TYPE_SPHERE:
+		return m_pSphere->Center;
+		break;
+	}
+}
+
 HRESULT CCollider::Render()
 {
 	m_pContext->GSSetShader(nullptr, nullptr, 0);

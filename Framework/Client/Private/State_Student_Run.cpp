@@ -7,6 +7,9 @@
 #include "GameInstance.h"
 #include "Layer.h"
 #include "State_Student_Jump.h"
+#include "State_Attack.h"
+#include "Transform_Utils.h"
+#include "Actor.h"
 CState_Student_Run::CState_Student_Run(CActor * pActor)
 	:CState_Run(pActor)
 {
@@ -19,39 +22,24 @@ HRESULT CState_Student_Run::Initialize()
 
 
 	m_pBodyCollider = (CCollider*)m_pOwner->Get_Component(L"Com_BodyCollider");
-
+	m_pAttackRangeCollider = (CCollider*)m_pOwner->Get_Component(L"Com_AttackRangeCollider");
+	
+	
 	return S_OK;
 }
 
 void CState_Student_Run::Enter()
 {
 	__super::Enter();
+	m_pOwner->Get_Transform()->Rotation(XMVectorSet(0,1.f,0.f,1.f),XMConvertToRadians(0.f));
+	m_pOwner->Set_StageState(CActor::STATE_STATE_MOVE);
+
 }
 
 _bool CState_Student_Run::Loop(_float fTimeDelta)
 {
 	if (__super::Loop(fTimeDelta))
 		return true;
-
-	list<CGameObject*>	Baricades;
-
-	CGameInstance*	pInstance = GET_INSTANCE(CGameInstance);
-
-	Baricades = pInstance->Get_Layer(pInstance->Get_CurrentLevelID())[L"Layer_Baricade"]->Get_GameObjects();
-
-
-	for (auto& elem : Baricades)
-	{
-		if (m_pBodyCollider->Collision((CCollider*)elem->Get_Component(L"Com_SPHERE")))
-		{
-			if (m_pOwner->Get_Desc().eClass != UNIT_CLASS_BACK)
-			{
-				m_pAnimation->Stop();
-				m_pOwner->Get_StateMachine()->Add_State(CState_Student_Jump::Create(m_pOwner));
-			}
-		}
-	}
-	RELEASE_INSTANCE(CGameInstance);
 
 	return false;
 }

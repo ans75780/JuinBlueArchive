@@ -12,6 +12,8 @@
 #include "Font_Manager.h"
 #include "Light_Manager.h"
 #include "CFrustum.h"
+#include "Sound_Device.h"
+
 
 /* 1. 게임내에 필요한 객체(매니져등)들을 모아서 보관한다. */
 /* 2. 클라이언트 개발자가 접근하기좋은 루트를 제공해준다. 나. */
@@ -88,6 +90,8 @@ public: /*For. UI_Manager*/
 	void	Set_DisableUI(_bool _Set) { m_pUI_Manager->Set_DisableUI(_Set); }
 	void	Clear_UIVec() { m_pUI_Manager->Clear_UIVec(); }
 	void	AllUI_Initialization() { m_pUI_Manager->AllUI_Initialization(); }
+	void	Clear_Canvas(_uint _iLevel) { m_pUI_Manager->Clear_Canvas(_iLevel); }
+
 
 public: /* For.PipeLine */
 	void Set_Transform(CPipeLine::TRANSFORMSTATE eState, _fmatrix TransformState);
@@ -110,6 +114,10 @@ public: /* For.Frustom */
 	_bool	IsIn_Frustum_InWorldSpace(_fvector vWorldPoint, _float fRange = 0);
 
 
+public:
+	CSound_Device*					Get_SoundManager();
+
+
 private:
 	CGraphic_Device*				m_pGraphic_Device = nullptr;
 	CInput_Device*					m_pInput_Device = nullptr;
@@ -123,7 +131,7 @@ private:
 	CFont_Manager*					m_pFont_Manager = nullptr;
 	CLight_Manager*					m_pLight_Manager = nullptr;
 	CFrustum*						m_pFrustum = nullptr;
-
+	CSound_Device*					m_pSoundManager = nullptr;
 public:
 	inline	_float4	Get_BackBufferColor() { return m_BackBuffer_Color; }
 	inline	void	Set_BackBufferColor(_float4 _color) { m_BackBuffer_Color = _color; }

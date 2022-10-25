@@ -35,10 +35,14 @@ HRESULT CCamera_Stage::Initialize(void * pArg)
 
 	m_fSpeed = 3.f;
 	
-	m_vOriginOffset = { -3.f,4.5f, 0.f };
+	m_vOriginOffset = { 3.f,4.5f, 0.f };
 	m_vOffset = m_vOriginOffset;
 	m_bInCam = true;
 	m_fOriginFov = m_CameraDesc.fFovy;
+	m_fZoomOutFov = m_fOriginFov + 30.f;
+	
+	m_iCamFocusIndex = 0;
+	
 	return S_OK;
 }
 
@@ -51,19 +55,27 @@ void CCamera_Stage::Tick(_float fTimeDelta)
 
 	if (nullptr == m_pVecStudents)
 		return;
-
-
+	if (m_pVecStudents->size() < 1)
+		return;
 	_vector vTargetPos = XMVectorSet(0,.0,0,1.f);
 
-
+	_float	fZ = -50.f;
+	_uint	iFocus = 0;
 	for (int i = 0; i < m_pVecStudents->size(); i++)
 	{
+
+		//가장 멀리있는 캐릭터 찾음
+		if (XMVectorGetZ((*m_pVecStudents)[i]->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION)) > fZ)
+		{
+			iFocus = i;
+			fZ = XMVectorGetZ((*m_pVecStudents)[i]->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION));
+		}
 		vTargetPos += (*m_pVecStudents)[i]->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION);
 	}
-	vTargetPos = XMVectorSet(XMVectorGetX(vTargetPos) / 3.f, XMVectorGetY(vTargetPos) / 3.f, XMVectorGetZ(vTargetPos) / 3.f, 1.f);
+	vTargetPos = XMVectorSet(XMVectorGetX(vTargetPos) / 3.f, XMVectorGetY(vTargetPos) / 3.f, fZ, 1.f);
 
 	m_pTransformCom->LookAt(vTargetPos);
-
+	
 
 	CGameInstance*	pGameInstance = GET_INSTANCE(CGameInstance);
 
@@ -102,6 +114,14 @@ void CCamera_Stage::Tick(_float fTimeDelta)
 		}
 	}
 	*/
+	if (KEY(J, HOLD))
+	{
+		m_vOffset.y -= 1.f * fTimeDelta;
+	}
+	if (KEY(K, HOLD))
+	{
+		m_vOffset.y += 1.f * fTimeDelta;
+	}
 
 }
 

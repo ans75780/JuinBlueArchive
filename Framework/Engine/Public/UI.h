@@ -50,6 +50,9 @@ public:
 	void			Set_UILevel(_uint _level) { m_iLevel = _level; }
 
 public:
+	_bool			Get_ClickTogle() { return m_bClickTogle; }
+
+public:
 	virtual	HRESULT	SetUp_Component();
 
 public:
@@ -101,6 +104,7 @@ protected:
 	_bool			m_bThrowing = false;
 	_float			m_fThrowBreak = 2.f;
 
+
 protected:
 	/*
 		캔버스 레벨이란?
@@ -117,8 +121,9 @@ protected:
 		UI의 터치를 우선적으로 받을 수 있도록 되어있다.
 	*/
 	UI_TYPE	m_eUIType = UI_END;
-	_bool	m_bMouseOver = false;
-	_bool	m_bMouseClicked = false;
+	_bool	m_bMouseOver;
+	_bool	m_bMouseClicked;
+	_bool	m_bClickTogle;
 //UI는 클론을 사용하지 않지만, CGameOjbect를 상속받기에 외부에서 못쓰도록 막아놓았음. 쓰지 말도록.
 
 protected:

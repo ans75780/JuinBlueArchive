@@ -6,15 +6,12 @@ IMPLEMENT_SINGLETON(CUserData);
 
 HRESULT CUserData::Initialize()
 {
-	Add_Actor(L"Aru_Original",   UNIT_TYPE::UNIT_TYPE_STUDENT,   UNIT_CLASS::UNIT_CLASS_BACK, 20.f, 6.f, 100.f);
+	Add_Actor(L"Aru_Original",   UNIT_TYPE::UNIT_TYPE_STUDENT,   UNIT_CLASS::UNIT_CLASS_BACK, 70.f, 7.f, 100.f);
 	Add_Actor(L"Haruka_Original",UNIT_TYPE::UNIT_TYPE_STUDENT,   UNIT_CLASS::UNIT_CLASS_FRONT, 5.f, 2.f, 200.f);
-	Add_Actor(L"Zunko_Original", UNIT_TYPE::UNIT_TYPE_STUDENT,   UNIT_CLASS::UNIT_CLASS_MIDDLE, 10.f, 4.f, 100.f);
+	Add_Actor(L"Zunko_Original", UNIT_TYPE::UNIT_TYPE_STUDENT,   UNIT_CLASS::UNIT_CLASS_MIDDLE, 10.f, 5.f, 100.f);
 
 
 	Add_Actor(L"Soldier_Kaiserpmc_HG", UNIT_TYPE::UNIT_TYPE_ENEMY, UNIT_CLASS::UNIT_CLASS_FRONT, 20.f, 2.f, 100.f);
-
-
-
 
 
 	ZeroMemory(&m_tUserDesc, sizeof(USER_DESC));
