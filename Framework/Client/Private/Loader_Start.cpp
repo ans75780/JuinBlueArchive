@@ -351,6 +351,15 @@ HRESULT CLoader_Start::LoadBg()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/Loading/Loading_Image/LoadingImage_%d.png"), 28))))
 		return E_FAIL;
 
+
+	/* For.Prototype_Component_Model_Soldier_Tank_Crusader*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Tank_Crusader_01"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Enemies/Tank_Crusader/", "Tank_Crusader.fbx",
+			XMMatrixRotationAxis(XMVectorSet(0.f, 1.f, 0.f, 1.f), XMConvertToRadians(180.f))))))
+		return E_FAIL;
+
+
+
 	RELEASE_INSTANCE(CGameInstance);
 	return S_OK;
 }

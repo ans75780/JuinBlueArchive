@@ -300,9 +300,6 @@ HRESULT CMainApp::Ready_Loading_Resource()
 	m_pGameInstance->Get_Instance()->Get_SoundManager()->PlayBGM(L"BGM.wav",0.7f);
 
 
-
-
-
 	return S_OK;
 }
 

@@ -302,6 +302,9 @@
       <Filter>02.GameObject\Effect</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Effect_Hit.h" />
+    <ClInclude Include="..\Public\Boss.h">
+      <Filter>02.GameObject\05. Actor\Enemy\Boss</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -587,6 +590,9 @@
     <ClCompile Include="..\Private\UI_UpWall.cpp">
       <Filter>02.GameObject\03. UI\06. UI_GachaCard</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Boss.cpp">
+      <Filter>02.GameObject\05. Actor\Enemy\Boss</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -857,6 +863,9 @@
     </Filter>
     <Filter Include="02.GameObject\03. UI\06. UI_GachaCard">
       <UniqueIdentifier>{86bc692f-deb0-435e-96dc-95279f0c3e94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\05. Actor\Enemy\Boss">
+      <UniqueIdentifier>{c77bb533-0b8e-4762-af86-c3022b633961}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -41,7 +41,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -179,6 +179,7 @@
     <ClInclude Include="..\Public\Baricade.h" />
     <ClInclude Include="..\Public\BG_Gacha.h" />
     <ClInclude Include="..\Public\BG_Gacha_Video.h" />
+    <ClInclude Include="..\Public\Boss.h" />
     <ClInclude Include="..\Public\Camera_Event.h" />
     <ClInclude Include="..\Public\Camera_Formation.h" />
     <ClInclude Include="..\Public\Camera_Free.h" />
@@ -276,6 +277,7 @@
     <ClCompile Include="..\Private\Baricade.cpp" />
     <ClCompile Include="..\Private\BG_Gacha.cpp" />
     <ClCompile Include="..\Private\BG_Gacha_Video.cpp" />
+    <ClCompile Include="..\Private\Boss.cpp" />
     <ClCompile Include="..\Private\Camera_Event.cpp" />
     <ClCompile Include="..\Private\Camera_Formation.cpp" />
     <ClCompile Include="..\Private\Camera_Free.cpp" />

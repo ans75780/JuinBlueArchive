@@ -303,6 +303,7 @@ HRESULT CLoader::Loading_ForFormationLevel()
 		return E_FAIL;
 
 
+
 	m_isFinished = true;
 
 	lstrcpy(m_szLoadingText, TEXT("·Îµù ³¡."));
