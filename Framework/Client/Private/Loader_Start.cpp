@@ -207,25 +207,19 @@ HRESULT CLoader_Start::Loading_ForLogoLevel()
 	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Effects/Mesh/FX_MESH_Circle/", "FX_MESH_Circle.fbx", mat))))
 	//	return E_FAIL;
 
-
-	/* For.Prototype_Component_Model_Stage_School*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Stage_School_1"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Models/NonAnimModels/Stages/School/", "School_1.fbx",
-			rotMat))))
-		return E_FAIL;
-	///* For.Prototype_Component_Model_Serika*/
+	///* For.Prototype_Component_Model_Aru*/
 	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Aru_Original"),
 	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Aru_Original/", "Aru_Original.fbx", mat))))
 	//	return E_FAIL;
 
-	///* For.Prototype_Component_Model_Serika*/
+	///* For.Prototype_Component_Model_Haruka*/
 	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Haruka_Original"),
 	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Haruka_Original/", "Haruka_Original.fbx", mat))))
 	//	return E_FAIL;
 
 	pUI_ProgreeBar->Plus_WidthSize(200.f); //70%
 
-	///* For.Prototype_Component_Model_Serika*/
+	///* For.Prototype_Component_Model_Zunko*/
 	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Zunko_Original"),
 	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Zunko_Original/", "Zunko_Original.fbx", mat))))
 	//	return E_FAIL;
@@ -238,14 +232,13 @@ HRESULT CLoader_Start::Loading_ForLogoLevel()
 	pUI_ProgreeBar->Plus_WidthSize(100.f); //80%
 	pUI_Text->SetUIText(TEXT("맵을 불러오는중입니다."));
 
-
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Stage_School"),
 		CStage::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Model_Stage_School*/
 	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Stage_School_1"),
-	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Models/NonAnimModels/Stages/School/", "School_1.fbx", mat))))
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Models/NonAnimModels/Stages/School/", "School_1.fbx", rotMat))))
 	//	return E_FAIL;
 
 

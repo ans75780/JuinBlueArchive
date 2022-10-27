@@ -29,6 +29,8 @@ HRESULT CCamera_Free::Initialize(void * pArg)
 
 	lstrcpy(m_desc.sz_Name, TEXT("Camera_Free"));
 
+	CCamera::Set_MainCam(this);
+
 	return S_OK;
 }
 
@@ -42,16 +44,19 @@ void CCamera_Free::Tick(_float fTimeDelta)
 	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
 	Safe_AddRef(pGameInstance);		
 
-	
-	if(KEY(Q,TAP))
+	if (KEY(Q,TAP))
 	{
-		m_CameraDesc.fNear -= 0.1f;
+		_float4 _vEye;
+
+		_vector eye = m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION);
+		XMStoreFloat4(&_vEye, eye);
+
+		_tchar temp[MAX_PATH];
+		_stprintf_s(temp, MAX_PATH, L"pos = (%.2f, %.2f, %.2f, %.2f)", _vEye.x, _vEye.y, _vEye.z, _vEye.w);
+
+		MessageBox(0, temp, TEXT("System Error"), MB_OK);
 	}
-	
-	if (KEY(E, TAP))
-	{
-		m_CameraDesc.fNear += 0.1f;
-	}
+
 
 	if (pGameInstance->Get_DIKeyState(DIK_W) & 0x80)
 	{
@@ -77,12 +82,12 @@ void CCamera_Free::Tick(_float fTimeDelta)
 
 	if (MouseMove = pGameInstance->Get_DIMouseMoveState(MMS_X))
 	{
-		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * MouseMove * 0.1f);
+		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * MouseMove);
 	}
 
 	if (MouseMove = pGameInstance->Get_DIMouseMoveState(MMS_Y))
 	{
-		m_pTransformCom->Turn(m_pTransformCom->Get_State(CTransform::STATE_RIGHT), fTimeDelta * MouseMove * 0.1f);
+		m_pTransformCom->Turn(m_pTransformCom->Get_State(CTransform::STATE_RIGHT), fTimeDelta * MouseMove);
 	}
 
 

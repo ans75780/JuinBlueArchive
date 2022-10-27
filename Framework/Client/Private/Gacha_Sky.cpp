@@ -27,8 +27,17 @@ HRESULT CGacha_Sky::Initialize(void * pArg)
 	if (FAILED(__super::Initialize(&TransformDesc)))
 		return E_FAIL;
 
-	if (FAILED(SetUp_Components()))
-		return E_FAIL;
+	if (pArg != nullptr)
+	{
+		if (FAILED(SetUp_Components(LEVEL_SHOP, pArg)))
+			return E_FAIL;
+	}
+	else
+	{
+		if (FAILED(SetUp_Components()))
+			return E_FAIL;
+	}
+
 
 	return S_OK;
 }
@@ -82,6 +91,32 @@ HRESULT CGacha_Sky::SetUp_Components()
 
 	/* For.Com_Texture */
 	if (FAILED(__super::Add_Component(LEVEL_GACHA_PLAY, TEXT("Prototype_Component_Texture_Gacha_Sky"), TEXT("Com_Texture"), (CComponent**)&m_pTextureCom)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CGacha_Sky::SetUp_Components(_uint _Level, void * pArg)
+{
+	/* For.Com_Shader */
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxCubeTex"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
+		return E_FAIL;
+
+	/* For.Com_Renderer */
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
+		return E_FAIL;
+
+	/* For.Com_VIBuffer */
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"), TEXT("Com_VIBuffer"), (CComponent**)&m_pVIBufferCom)))
+		return E_FAIL;
+
+	_tchar texPath[MAX_PATH];
+	lstrcpy(texPath, (_tchar*)pArg);
+
+	int a = 0;
+
+	/* For.Com_Texture */
+	if (FAILED(__super::Add_Component(_Level, texPath, TEXT("Com_Texture"), (CComponent**)&m_pTextureCom)))
 		return E_FAIL;
 
 	return S_OK;

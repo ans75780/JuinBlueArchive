@@ -95,7 +95,7 @@
       <Filter>02.GameObject\05. Actor\Student</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Sky.h">
-      <Filter>05.Sky</Filter>
+      <Filter>05. Sky</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Camera_Event.h">
       <Filter>02.GameObject\01. Camera\Camera_Event</Filter>
@@ -296,12 +296,15 @@
       <Filter>02.GameObject\03. UI\05. UI_DefaultButton</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Skill_Base.h">
-      <Filter>02.GameObject\13.Skill</Filter>
+      <Filter>02.GameObject\13. Skill</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Effect.h">
       <Filter>02.GameObject\Effect</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Effect_Hit.h" />
+    <ClInclude Include="..\Public\Hod.h">
+      <Filter>02.GameObject\14. Hod</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -389,7 +392,7 @@
       <Filter>02.GameObject\05. Actor\Student</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Sky.cpp">
-      <Filter>05.Sky</Filter>
+      <Filter>05. Sky</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Camera_Event.cpp">
       <Filter>02.GameObject\01. Camera\Camera_Event</Filter>
@@ -539,7 +542,7 @@
       <Filter>02.GameObject\03. UI\05. UI_DefaultButton</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Skill_Base.cpp">
-      <Filter>02.GameObject\13.Skill</Filter>
+      <Filter>02.GameObject\13. Skill</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Effect.cpp">
       <Filter>02.GameObject\Effect</Filter>
@@ -586,6 +589,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\UI_UpWall.cpp">
       <Filter>02.GameObject\03. UI\06. UI_GachaCard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Hod.cpp">
+      <Filter>02.GameObject\14. Hod</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -656,9 +662,6 @@
     </Filter>
     <Filter Include="04. State">
       <UniqueIdentifier>{603fc8a7-59b9-4d6b-b25c-01fc406e38fa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05.Sky">
-      <UniqueIdentifier>{06cd8182-810e-41a9-ba1d-2f9fe59c9685}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObject\99. TestObject\Plane">
       <UniqueIdentifier>{89280b89-4dda-4350-b9ec-e15cef8bc86c}</UniqueIdentifier>
@@ -828,9 +831,6 @@
     <Filter Include="02.GameObject\03. UI\05. UI_DefaultButton">
       <UniqueIdentifier>{82ea15ca-7924-4bea-b213-0014bc183bee}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObject\13.Skill">
-      <UniqueIdentifier>{d76a8e01-aa89-4aff-ba9d-830b37b33b98}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObject\Effect">
       <UniqueIdentifier>{930fb5ce-b26e-450f-a87e-fcbec7b60ac1}</UniqueIdentifier>
     </Filter>
@@ -857,6 +857,15 @@
     </Filter>
     <Filter Include="02.GameObject\03. UI\06. UI_GachaCard">
       <UniqueIdentifier>{86bc692f-deb0-435e-96dc-95279f0c3e94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\13. Skill">
+      <UniqueIdentifier>{d76a8e01-aa89-4aff-ba9d-830b37b33b98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\14. Hod">
+      <UniqueIdentifier>{563c5284-0746-479d-a5ad-1fb52b9ab730}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Sky">
+      <UniqueIdentifier>{06cd8182-810e-41a9-ba1d-2f9fe59c9685}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

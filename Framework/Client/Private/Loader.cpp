@@ -41,6 +41,9 @@
 #include "Arona_GachaCam.h"
 #include "Gacha_Sky.h"
 
+
+#include "Hod.h"
+
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice(pDevice)
 	, m_pContext(pContext)
@@ -357,11 +360,51 @@ HRESULT CLoader::Loading_ForShopLevel()
 	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
 	Safe_AddRef(pGameInstance);
 
+	_matrix mat, rotMat;
+
+	mat = XMMatrixIdentity();
+	rotMat = XMMatrixRotationAxis(XMVectorSet(0.f, 1.f, 0.f, 1.f), XMConvertToRadians(180.f));
+	
+	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중이비낟. "));
+
+	/* For.Prototype_Component_Model_Stage_Hod*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Stage_Hod"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Models/NonAnimModels/Stages/Hod/", "hod.fbx",
+			mat))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_Hod*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_SHOP, TEXT("Prototype_Component_Model_Hod"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Hod/", "hod.fbx",
+			mat))))
+		return E_FAIL;
+
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
+
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Stage_Hod"),
+		CStage::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Camera_Free*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Camera_Free"),
+		CCamera_Free::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Hod"),
+		CHod::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Sky */
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Gacha_Sky"),
+		CGacha_Sky::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중이비낟. "));
 
-	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중이비낟. "));
+	/* For.Prototype_Component_Texture_Sky */
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_SHOP, TEXT("Prototype_Component_Texture_hod_Sky"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/SkyBox/hodSky.dds"), 1))))
+		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));
 

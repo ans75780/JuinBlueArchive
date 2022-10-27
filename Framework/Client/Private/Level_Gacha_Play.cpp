@@ -7,6 +7,8 @@
 #include "UI_Canvas.h"
 #include "UI.h"
 
+#include "UserData.h"
+
 CLevel_Gacha_Play::CLevel_Gacha_Play(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -29,6 +31,10 @@ HRESULT CLevel_Gacha_Play::Initialize()
 
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
+
+	CUserData::USER_DESC  dia = CUserData::Get_Instance()->Get_UserDesc();
+	dia.uDiamond -= 1500;
+	CUserData::Get_Instance()->Set_UserDesc(dia);
 
 	return S_OK;
 }

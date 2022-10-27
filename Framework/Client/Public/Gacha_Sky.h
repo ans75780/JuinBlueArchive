@@ -34,6 +34,7 @@ private:
 
 private:
 	HRESULT SetUp_Components();
+	HRESULT SetUp_Components(_uint _Level, void* pArg);
 	HRESULT SetUp_ShaderResource();
 public:
 	static CGacha_Sky* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
