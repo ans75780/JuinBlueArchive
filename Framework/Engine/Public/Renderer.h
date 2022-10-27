@@ -25,6 +25,10 @@ public:
 
 public:
 	HRESULT Draw_RenderGroup();
+	void			Set_DeferredColor(_float4 vColor) { m_vDeferredColor = vColor; }
+	_float4			Get_DeferredColor() { return m_vDeferredColor; }
+	void			Reset_DeferredColor() { m_vDeferredColor = _float4(1.f, 1.f, 1.f, 1.f); }
+
 
 private:
 	list<class CGameObject*>				m_RenderObjects[RENDER_END];
@@ -40,6 +44,10 @@ private:
 		_float4x4					m_WorldMatrix, m_ViewMatrix, m_ProjMatrix;
 		class CShader*				m_pShader = nullptr;
 		class CVIBuffer_Rect*		m_pVIBuffer = nullptr;
+		_float4						m_vDeferredColor;
+
+
+
 
 private:
 	vector<class CComponent*>		m_DebugComponents;

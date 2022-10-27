@@ -17,6 +17,8 @@ vector		g_vLightSpecular;
 vector		g_vMtrlAmbient = vector(1.f, 1.f, 1.f, 1.f);
 vector		g_vMtrlSpecular = vector(1.f, 1.f, 1.f, 1.f);
 
+vector		g_DeferredColor;
+
 
 texture2D	g_SpecularTexture;
 texture2D	g_DepthTexture;
@@ -24,6 +26,7 @@ texture2D	g_DiffuseTexture;
 texture2D	g_ShadeTexture;
 texture2D	g_NormalTexture;
 texture2D	g_Texture;
+
 
 sampler DefaultSampler = sampler_state
 {
@@ -137,7 +140,11 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
 	vector			vShade = g_ShadeTexture.Sample(DefaultSampler, In.vTexUV);
 	vector			vSpecular = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
 
-	Out.vColor = vDiffuse * vShade + vSpecular;
+	//g_DeferredColor = 최종적으로 나올 이미지의 특정 색상 곱해줄꺼임
+	/*
+		보스연출이나, 스킬 범위 나올때 살짝 어둡게나오게하려고
+	*/
+	Out.vColor = (vDiffuse * vShade + vSpecular) * g_DeferredColor;
 
 	if (Out.vColor.a == 0.f)
 		discard;

@@ -42,7 +42,7 @@ HRESULT CRenderer::Initialize_Prototype()
 
 	m_pContext->RSGetViewports(&iNumViewports, &ViewPortDesc);
 
-
+	m_vDeferredColor = _float4(1.f, 1.f, 1.f, 1.f);
 	/* For.Target_Diffuse */
 	if (FAILED(m_pTarget_Manager->Add_RenderTarget(m_pDevice, m_pContext, TEXT("Target_Diffuse"), (_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(1.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
@@ -235,6 +235,8 @@ HRESULT CRenderer::Render_Blend()
 	m_pShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
 	m_pShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
 	m_pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
+	m_pShader->Set_RawValue("g_DeferredColor", &m_vDeferredColor, sizeof(_float4));
+
 
 	m_pShader->Begin(3);
 

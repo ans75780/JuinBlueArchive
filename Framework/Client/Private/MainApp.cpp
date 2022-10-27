@@ -282,6 +282,11 @@ HRESULT CMainApp::Ready_Loading_Resource()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/Combat_Cost_Gauge_Back.png")))))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_FX_TEX_Warning_Font_01"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Effects/Texture/Texture_FX_TEX_Warning_Font_01.png")))))
+		return E_FAIL;
+
+
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Skill_Portrait_Aru_Original"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/UI/CharacterCard/Skill_Portrait_Aru_Original.png")))))
 		return E_FAIL;
@@ -298,8 +303,7 @@ HRESULT CMainApp::Ready_Loading_Resource()
 
 
 	m_pGameInstance->Get_Instance()->Get_SoundManager()->PlayBGM(L"BGM.wav",0.7f);
-
-
+	
 	return S_OK;
 }
 
