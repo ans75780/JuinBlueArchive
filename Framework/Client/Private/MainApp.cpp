@@ -296,7 +296,6 @@ HRESULT CMainApp::Ready_Loading_Resource()
 
 	m_pGameInstance->Get_Instance()->Get_SoundManager()->LoadSoundFile();
 
-
 	return S_OK;
 }
 

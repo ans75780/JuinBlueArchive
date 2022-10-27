@@ -187,6 +187,7 @@ HRESULT CLoader_Start::Loading_ForLogoLevel()
 
 	if (FAILED(pGameInstance->Add_Prototype(L"Prototype_HpBar", CHpBar::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
 	pUI_ProgreeBar->Plus_WidthSize(100.f); //50%
 	pUI_Text->SetUIText(TEXT("모델을 불러오는중입니다."));
 

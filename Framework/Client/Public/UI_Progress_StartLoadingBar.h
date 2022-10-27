@@ -46,6 +46,7 @@ protected:
 	_float4 m_fFrontColor = { 0.f, 0.f, 0.f, 1.f };
 	_float	m_fPlusValue = 10.f;
 	_bool	m_bLoadingSuccess = false;
+	_bool	m_bSoundOnce = true;
 
 public:
 	static CUI_Progress_StartLoadingBar* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

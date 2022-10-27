@@ -51,12 +51,19 @@ void CUI_Progress_StartLoadingBar::Tick(_float fTimeDelta)
 		}
 		else
 		{
-			m_fFrontBarSize.x += 1.f;
-			m_fPlusValue -= 1.f;
+			m_fFrontBarSize.x += 3.f;
+			m_fPlusValue -= 3.f;
 		}
 
 		if (1000.f < m_fFrontBarSize.x)
 		{
+			if (m_bSoundOnce)
+			{
+				CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+				pGameInstance->Get_Instance()->Get_SoundManager()->Play_Sound(L"Aru_Title.ogg", 0.5f);
+				RELEASE_INSTANCE(CGameInstance);
+				m_bSoundOnce = false;
+			}
 			m_fFrontBarSize.x = 0.f;
 			m_fPlusValue = 0.f;
 		}
