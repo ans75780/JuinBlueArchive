@@ -14,6 +14,7 @@
 CState_Dead::CState_Dead(CActor * pStudent)
 	:CStateBase(pStudent)
 {
+	strcpy_s(m_szName, "_Vital_Death");
 }
 
 HRESULT CState_Dead::Initialize()
@@ -22,7 +23,7 @@ HRESULT CState_Dead::Initialize()
 
 	WideCharToMultiByte(CP_ACP, 0, m_pOwner->Get_Name(), MAX_PATH, pAnimaitonStr, MAX_PATH, NULL, NULL);
 
-	strcat_s(pAnimaitonStr, "_Vital_Death");
+	strcat_s(pAnimaitonStr, m_szName);
 
 	m_pAnimation = m_pModel->Get_AnimationFromName(pAnimaitonStr);
 
@@ -47,10 +48,9 @@ _bool CState_Dead::Loop(_float fTimeDelta)
 		m_pOwner->Set_Delete(true);
 		return true;
 	}
-
+	
 	m_pAnimation->Update(fTimeDelta);
 	m_pModel->Update_CombinedMatrix();
-
 	return false;
 }
 

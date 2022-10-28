@@ -179,7 +179,9 @@
     <ClInclude Include="..\Public\Baricade.h" />
     <ClInclude Include="..\Public\BG_Gacha.h" />
     <ClInclude Include="..\Public\BG_Gacha_Video.h" />
-    <ClInclude Include="..\Public\Boss.h" />
+    <ClInclude Include="..\Public\Boss_Tank.h" />
+    <ClInclude Include="..\Public\State_Student_Victory.h" />
+    <ClInclude Include="..\Public\State_Tank_Destroy.h" />
     <ClInclude Include="..\Public\Camera_Event.h" />
     <ClInclude Include="..\Public\Camera_Formation.h" />
     <ClInclude Include="..\Public\Camera_Free.h" />
@@ -262,6 +264,7 @@
     <ClInclude Include="..\Public\UI_TestDialogButton.h" />
     <ClInclude Include="..\Public\UI_Text.h" />
     <ClInclude Include="..\Public\UI_UpWall.h" />
+    <ClInclude Include="..\Public\UI_Warning.h" />
     <ClInclude Include="..\Public\UserData.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Resource.h" />
@@ -277,7 +280,9 @@
     <ClCompile Include="..\Private\Baricade.cpp" />
     <ClCompile Include="..\Private\BG_Gacha.cpp" />
     <ClCompile Include="..\Private\BG_Gacha_Video.cpp" />
-    <ClCompile Include="..\Private\Boss.cpp" />
+    <ClCompile Include="..\Private\Boss_Tank.cpp" />
+    <ClCompile Include="..\Private\State_Student_Victory.cpp" />
+    <ClCompile Include="..\Private\State_Tank_Destroy.cpp" />
     <ClCompile Include="..\Private\Camera_Event.cpp" />
     <ClCompile Include="..\Private\Camera_Formation.cpp" />
     <ClCompile Include="..\Private\Camera_Free.cpp" />
@@ -356,6 +361,7 @@
     <ClCompile Include="..\Private\UI_TestDialogButton.cpp" />
     <ClCompile Include="..\Private\UI_Text.cpp" />
     <ClCompile Include="..\Private\UI_UpWall.cpp" />
+    <ClCompile Include="..\Private\UI_Warning.cpp" />
     <ClCompile Include="..\Private\UserData.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="Effect_Hit.cpp" />

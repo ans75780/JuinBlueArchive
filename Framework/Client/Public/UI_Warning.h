@@ -4,6 +4,8 @@
 
 BEGIN(Engine)
 class CRenderer;
+class CCollider;
+class CLayer;
 END
 
 
@@ -26,8 +28,7 @@ private:
 	class CUI_Default*		m_pWarningDangerIcon = nullptr;//¥¿≥¶«•
 	class CUI_Default*		m_pWarningDangerLine = nullptr;//
 	class CRenderer*		m_pRenderer = nullptr;
-
-
+	class  CCollider*		m_pCollider = nullptr;
 private:
 	_float					m_fAlphaStart = 0.f;
 	_float					m_fAlphaCurrent = 0.f;
@@ -38,9 +39,15 @@ private:
 	_float					m_fWarningTick = 0.f;
 	_float					m_fWarningTime = 0.f;
 
+
+	_bool					m_bWarning;
 public:
 	static CUI_Warning* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual CGameObject * Clone(void * pArg) override;
 	virtual void Free() override;
+
+	// CGameObject¿ª(∏¶) ≈Î«ÿ ªÛº”µ 
+
 };
 
 END

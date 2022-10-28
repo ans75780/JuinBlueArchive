@@ -21,6 +21,8 @@
 #include "CombatFormation.h"
 #include "Effect_Hit.h"
 #include "Sound_Device.h"
+#include "UI_Warning.h"
+#include "Boss_Tank.h"
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -44,6 +46,8 @@ HRESULT CLevel_GamePlay::Initialize()
 
 	if (FAILED(Ready_Layer_Baricade(TEXT("Layer_Baricade"))))
 		return E_FAIL;
+	if (FAILED(Ready_Layer_Event(TEXT("Layer_Event"))))
+		return E_FAIL;
 	if (FAILED(Ready_Light()))
 		return E_FAIL;
 
@@ -59,15 +63,25 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 
 	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
 
-
-	if (KEY(V, TAP))
+	if (m_pBoss->Get_StageState() == CActor::STAGE_STATE_DEAD)
 	{
+		m_bBossDead = true;
 		pGameInstance->Set_TimeMagnifiaction(0.7f);
 	}
-	if (KEY(B, TAP))
+
+	if (m_bBossDead && m_bVictoryEventCalled == false)
 	{
-		pGameInstance->Reset_TimeMagnifiaction();
+		m_fClearTick += fTimeDelta;
+		if (m_fClearTime <= m_fClearTick)
+		{
+			pGameInstance->Reset_TimeMagnifiaction();
+			_float3	vOffset = { 1.5f, 1.2f, 2.5f };
+			m_pEventCam->Ready_Event_Stage_Victory(m_pStage, vOffset, m_pCombatFormaiton->Get_Students());
+			m_bVictoryEventCalled = true;
+		}
+
 	}
+
 
 	if (KEY(T, TAP))
 	{
@@ -146,7 +160,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const _tchar * pLayerTag)
 
 	CGameInstance*	pGameInstance = GET_INSTANCE(CGameInstance);
 
-	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Prototype_GameObject_Stage_School"), L"Prototype_Component_Model_Stage_School_1")))
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Prototype_GameObject_Stage_School"), L"Prototype_Component_Model_Stage_School_1", ((CGameObject**)&m_pStage))))
 		return E_FAIL;
 
 	RELEASE_INSTANCE(CGameInstance);
@@ -165,7 +179,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Enemy(const _tchar * pLayerTag)
 	const map<const _tchar*, CGameObject::OBJ_DESC>* EnemyData  = CUserData::Get_Instance()->Get_Actors(UNIT_TYPE::UNIT_TYPE_ENEMY);
 	for (auto& pair : *EnemyData)
 	{
-		for (int i = 1; i < 8; i++)
+		for (int i = 1; i < 5; i++)
 		{
 			if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, szPath, (void*)&pair.second, &pObj)))
 				return E_FAIL;
@@ -186,8 +200,13 @@ HRESULT CLevel_GamePlay::Ready_Layer_Enemy(const _tchar * pLayerTag)
 			m_pEnemy->Get_Transform()->Rotation(XMVectorSet(0, 1.f, 0.f, 1.f), XMConvertToRadians(180.f));
 
 		}
-		
 	}
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, L"Prototype_GameObject_Boss_Tank",nullptr, &pObj)))
+		return E_FAIL;
+	m_pEnemy = (CEnemy*)pObj;
+	m_pEnemy->Set_Transform(XMVectorSet(0.f,0.f,57.f,1.f));
+	m_pEnemy->Get_Transform()->Rotation(XMVectorSet(0, 1.f, 0.f, 1.f), XMConvertToRadians(180.f));
+	m_pBoss = (CBoss_Tank*)m_pEnemy;
 	return S_OK;
 }
 
@@ -237,7 +256,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Baricade(const _tchar * pLayerTag)
 
 	CGameObject*	pObj;
 	
-	for (_uint i = 1; i <= 10; i++)
+	for (_uint i = 1; i <= 5; i++)
 	{
 		if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Prototype_Baricade"), L"Prototype_Component_Model_School_Baricade", &pObj)))
 			return E_FAIL;
@@ -252,12 +271,23 @@ HRESULT CLevel_GamePlay::Ready_Layer_Baricade(const _tchar * pLayerTag)
 		pObj->Get_Transform()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(1.f, 0.f, i * 8.f, 1.f));
 	}
 
-	pObj = CEffect_Hit::Create(m_pDevice, m_pContext);
+	RELEASE_INSTANCE(CGameInstance);
 
-	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, L"Layer_Effect", L"Prototype_Effect_Hit")))
+	return S_OK;
+}
+
+HRESULT CLevel_GamePlay::Ready_Layer_Event(const _tchar * pLayerTag)
+{
+	CGameInstance*	pGameInstance = GET_INSTANCE(CGameInstance);
+
+	CGameObject*	pObj;
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Prototype_GameObject_Warning"),nullptr, &pObj)))
 		return E_FAIL;
+	
+	pObj->Get_Transform()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(0.f, 0.f, 45.f, 1.f));
 
 	RELEASE_INSTANCE(CGameInstance);
+
 
 	return S_OK;
 }

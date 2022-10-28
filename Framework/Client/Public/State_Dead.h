@@ -6,7 +6,7 @@ BEGIN(Client)
 
 class CState_Dead: public CStateBase
 {
-private:
+protected:
 	CState_Dead(class CActor* pStudent);
 	virtual ~CState_Dead() = default;
 public:
@@ -16,6 +16,10 @@ public:
 	virtual _bool Loop(_float fTimeDelta) override;
 	virtual CStateBase * Exit() override;
 	static  CState_Dead * Create(class CActor * pActor);
+
+
+protected:
+	char		m_szName[MAX_PATH];
 
 };
 

@@ -25,9 +25,16 @@ public:
 
 	void	Ready_Event_Ex(class CCamera* pReturnCamera, class CActor* pTarget, class CActor* pEx);
 
+
+	void	Ready_Event_Stage_Victory(class CStage * pTarget, _float3 vOffset, vector<CStudent*>* pVecStudents);
+
+
+
 public:
 	void	Event_Stage_Start();
 	void	Event_Ex(_float fTimeDelta);
+	void	Event_Stage_Victory();
+
 
 public:
 	const vector<_float4>&	Get_VecStudentStartPos() { return m_vecStartPos; }

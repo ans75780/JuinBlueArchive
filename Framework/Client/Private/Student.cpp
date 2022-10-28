@@ -69,7 +69,10 @@ void CStudent::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	if (m_eStageState != CActor::STAGE_STATE::STAGE_STATE_DEAD)
+	if (m_eStageState == STAGE_STATE_EVENT)
+		m_pHpBar->Set_Enable(false);
+
+	if (m_eStageState != CActor::STAGE_STATE::STAGE_STATE_DEAD && m_eStageState != STAGE_STATE_EVENT)
 		CheckState();
 
 	if (m_eStageState == CActor::STAGE_STATE::STAGE_STATE_DEAD)

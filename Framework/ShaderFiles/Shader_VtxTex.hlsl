@@ -9,6 +9,8 @@ float2		g_Ratio;
 
 texture2D	g_DiffuseTexture;
 
+vector		g_Color;
+vector		g_AlphaColor;
 
 
 
@@ -92,6 +94,24 @@ PS_OUT PS_MAIN_RATIO(PS_IN In)
 	return Out;
 }
 
+PS_OUT PS_MAIN_COLOR_ALPHA(PS_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+
+	vector color = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+
+	Out.vColor = color * (g_Color * g_AlphaColor);
+	
+	clamp(Out.vColor, vector(0.f, 0.f, 0.f, 0.f), vector(1.f, 1.f, 1.f, 1.f));
+	
+	Out.vColor.w = color.r;
+
+	if (Out.vColor.a < 0.1f)
+		discard;
+
+	return Out;
+}
+
 
 technique11 DefaultTechnique
 {
@@ -111,5 +131,10 @@ technique11 DefaultTechnique
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_RATIO();
 	}
-
+	pass Warning
+	{
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_MAIN_COLOR_ALPHA();
+	}
 }

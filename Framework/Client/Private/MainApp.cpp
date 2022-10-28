@@ -283,7 +283,7 @@ HRESULT CMainApp::Ready_Loading_Resource()
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_FX_TEX_Warning_Font_01"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Effects/Texture/Texture_FX_TEX_Warning_Font_01.png")))))
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Effects/Texture/FX_TEX_Warning_Font_01.png")))))
 		return E_FAIL;
 
 

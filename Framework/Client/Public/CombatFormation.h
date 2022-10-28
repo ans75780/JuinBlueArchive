@@ -32,6 +32,8 @@ public:
 	void LateTick(_float fTimeDelta);
 	HRESULT Render();
 
+	vector<class CStudent*>*	Get_Students();
+
 public:
 	HRESULT	StartGame();
 

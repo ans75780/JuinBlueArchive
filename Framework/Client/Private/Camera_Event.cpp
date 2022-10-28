@@ -13,7 +13,8 @@
 #include "State_Student_Run.h"
 #include "State_Student_Ex_Cutin.h"
 #include "State_Student_Ex.h"
-
+#include "Stage.h"
+#include "State_Student_Victory.h"
 CCamera_Event::CCamera_Event(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CCamera(pDevice, pContext)
 {
@@ -70,6 +71,7 @@ void CCamera_Event::Tick(_float fTimeDelta)
 	case Client::CCamera_Event::EVENT_TYPE::EVENT_BOSS_APPEAR:
 		break;
 	case Client::CCamera_Event::EVENT_TYPE::EVENT_STAGE_VICTORY:
+		Event_Stage_Victory();
 		break;
 	case Client::CCamera_Event::EVENT_TYPE::EVENT_END:
 		break;
@@ -178,6 +180,56 @@ void CCamera_Event::Ready_Event_Ex(CCamera * pReturnCamera, CActor * pTarget, CA
 	RELEASE_INSTANCE(CGameInstance);
 }
 
+void CCamera_Event::Ready_Event_Stage_Victory(CStage * pTarget, _float3 vOffset, vector<CStudent*>* pVecStudents)
+{
+	m_vOffset = vOffset;
+
+	m_eEventType = EVENT_TYPE::EVENT_STAGE_VICTORY;
+
+	_vector		vCamPos = pTarget->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION);
+
+	vCamPos += XMLoadFloat3(&vOffset);
+
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vCamPos);
+
+	m_pVecStduent = pVecStudents;
+
+
+	CGameInstance*	pInstance = GET_INSTANCE(CGameInstance);
+	pInstance->Start_Event();
+
+
+	pInstance->Add_EventObject(this);
+	pInstance->Add_EventObject(pTarget);
+
+	_uint i = 0;
+
+	_vector pos = (*pVecStudents)[0]->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION);
+
+	for (auto& elem : *pVecStudents)
+	{
+		_vector Amount = XMVectorSet(-1.5f + (1.5f * i), 0.f ,0.f, 1.f);
+
+		_vector victoryPos = (pos + Amount);
+
+		elem->Get_Transform()->Set_State(CTransform::STATE_TRANSLATION, victoryPos);
+
+		pInstance->Add_EventObject(elem);
+		elem->Get_StateMachine()->Add_State(CState_Student_Victory::Create(elem));
+
+
+		i++;
+
+	}
+
+	m_pTarget->Set_Enable(true);
+
+	RELEASE_INSTANCE(CGameInstance);
+
+	CCamera::Set_MainCam(this);
+}
+
+
 void CCamera_Event::Event_Stage_Start()
 {
 	if (m_pAnimation->IsFinished() == true)
@@ -242,6 +294,17 @@ void CCamera_Event::Event_Ex(_float fTimeDelta)
 
 	m_pTransformCom->LookAt(vTargetViewMatrix.r[3]);
 
+}
+
+void CCamera_Event::Event_Stage_Victory()
+{
+	m_pTransformCom->LookAt((*m_pVecStduent)[1]->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION));
+
+	_vector		vCamPos = m_pTarget->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION);
+
+	vCamPos += XMLoadFloat3(&m_vOffset);
+
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vCamPos);
 }
 
 CCamera_Event * CCamera_Event::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

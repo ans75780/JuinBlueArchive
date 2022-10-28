@@ -14,7 +14,7 @@ END
 
 BEGIN(Client)
 
-class CEnemy final : public CActor
+class CEnemy : public CActor
 {
 protected:
 	CEnemy(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

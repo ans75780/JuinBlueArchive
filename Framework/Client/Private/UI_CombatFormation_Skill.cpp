@@ -24,7 +24,7 @@ HRESULT CUI_CombatFormation_Skill::Initialize(void * pArg)
 
 	
 	m_fCost = 0.f;
-	m_fCostMax = 10.f;
+	m_fCostMax = 1.f;
 
 	m_pUICostBarFront->Set_Pos(_float3(430.f, -320.f, 0.f));
 	m_pUICostBarFront->Set_Size(_float3(368.f, 25.f, 1.f));
@@ -75,6 +75,8 @@ void CUI_CombatFormation_Skill::Tick(_float fTimeDelta)
 {
 	m_fCost += fTimeDelta * 0.05f;
 	
+	if (m_fCost >= 1.f)
+		m_fCost = 1.f;
 	if (m_fCost >= m_fCostMax)
 	{
 		m_pUICostText->Set_Pos(_float3(175.f, -290.f, 0.f));

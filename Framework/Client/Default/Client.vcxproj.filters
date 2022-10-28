@@ -14,7 +14,7 @@
       <Filter>98.Default</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\MainApp.h">
-      <Filter>00.MainApp</Filter>
+      <Filter>01.Level\00.MainApp</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Client_Defines.h">
       <Filter>99.Defines</Filter>
@@ -229,9 +229,6 @@
     <ClInclude Include="..\Public\UI_Combat_HpBar.h">
       <Filter>02.GameObject\03. UI\Combat\UI_Combat_HpBar</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\State_Dead.h">
-      <Filter>04. State\Dead</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CombatFormation.h">
       <Filter>02.GameObject\11. CombatFormation</Filter>
     </ClInclude>
@@ -302,9 +299,19 @@
       <Filter>02.GameObject\Effect</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Effect_Hit.h" />
-    <ClInclude Include="..\Public\Boss.h">
+    <ClInclude Include="..\Public\UI_Warning.h">
+      <Filter>02.GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Tank_Destroy.h">
+      <Filter>04. State\Boss\Tank</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Dead.h">
+      <Filter>04. State\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Boss_Tank.h">
       <Filter>02.GameObject\05. Actor\Enemy\Boss</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\State_Student_Victory.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -314,7 +321,7 @@
       <Filter>98.Default</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\MainApp.cpp">
-      <Filter>00.MainApp</Filter>
+      <Filter>01.Level\00.MainApp</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Level_GamePlay.cpp">
       <Filter>01.Level\98. GamePlay</Filter>
@@ -590,9 +597,16 @@
     <ClCompile Include="..\Private\UI_UpWall.cpp">
       <Filter>02.GameObject\03. UI\06. UI_GachaCard</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Boss.cpp">
+    <ClCompile Include="..\Private\UI_Warning.cpp">
+      <Filter>02.GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Tank_Destroy.cpp">
+      <Filter>04. State\Boss\Tank</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Boss_Tank.cpp">
       <Filter>02.GameObject\05. Actor\Enemy\Boss</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\State_Student_Victory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -603,9 +617,6 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="00.MainApp">
-      <UniqueIdentifier>{d893f375-d010-4a8a-bdbc-7084075a09cb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="99.Defines">
       <UniqueIdentifier>{ca7671a3-fda7-41c0-8070-09afde17063e}</UniqueIdentifier>
     </Filter>
@@ -866,6 +877,18 @@
     </Filter>
     <Filter Include="02.GameObject\05. Actor\Enemy\Boss">
       <UniqueIdentifier>{c77bb533-0b8e-4762-af86-c3022b633961}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Level\00.MainApp">
+      <UniqueIdentifier>{d893f375-d010-4a8a-bdbc-7084075a09cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. State\Boss">
+      <UniqueIdentifier>{7ef6fbd8-235a-4827-8ffb-f1dfcf7fa92e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. State\Boss\Tank">
+      <UniqueIdentifier>{f873f7d7-6e2b-4e48-9806-8076a8474de3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. State\Boss\Tank\Tank">
+      <UniqueIdentifier>{eccc05ba-4070-4748-9a7b-d71e2556400e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

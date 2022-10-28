@@ -129,6 +129,11 @@ HRESULT CCombatFormation::Render()
 	return S_OK;
 }
 
+vector<class CStudent*>* CCombatFormation::Get_Students()
+{
+	return &m_vecStudent;
+}
+
 HRESULT CCombatFormation::StartGame()
 {
 	if (m_eDesc.eGameStartEvent)

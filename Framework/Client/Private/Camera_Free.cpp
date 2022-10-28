@@ -45,12 +45,12 @@ void CCamera_Free::Tick(_float fTimeDelta)
 	
 	if(KEY(Q,TAP))
 	{
-		m_CameraDesc.fNear -= 0.1f;
+		_vector pos = m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION);
+		int a = 10;
 	}
 	
 	if (KEY(E, TAP))
 	{
-		m_CameraDesc.fNear += 0.1f;
 	}
 
 	if (pGameInstance->Get_DIKeyState(DIK_W) & 0x80)
