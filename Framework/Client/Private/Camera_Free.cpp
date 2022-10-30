@@ -46,15 +46,37 @@ void CCamera_Free::Tick(_float fTimeDelta)
 
 	if (KEY(Q,TAP))
 	{
-		_float4 _vEye;
+		//_float4 _vEye;
 
-		_vector eye = m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION);
-		XMStoreFloat4(&_vEye, eye);
+		//_vector eye = m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION);
+		//XMStoreFloat4(&_vEye, eye);
+
+		//_tchar temp[MAX_PATH];
+		//_stprintf_s(temp, MAX_PATH, L"pos = (%.2f, %.2f, %.2f, %.2f)", _vEye.x, _vEye.y, _vEye.z, _vEye.w);
+
+		//MessageBox(0, temp, TEXT("System Error"), MB_OK);
+
+		_float4 _right, _up, _look, _trans;
+
+		_vector _vRight	= m_pTransformCom->Get_State(CTransform::STATE_RIGHT);
+		_vector _vUp	= m_pTransformCom->Get_State(CTransform::STATE_UP);
+		_vector _vLook	= m_pTransformCom->Get_State(CTransform::STATE_LOOK);
+		_vector _vTrans	= m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION);
+		
+		XMStoreFloat4(&_right, _vRight);
+		XMStoreFloat4(&_up, _vUp);
+		XMStoreFloat4(&_look, _vLook);
+		XMStoreFloat4(&_trans, _vTrans);
 
 		_tchar temp[MAX_PATH];
-		_stprintf_s(temp, MAX_PATH, L"pos = (%.2f, %.2f, %.2f, %.2f)", _vEye.x, _vEye.y, _vEye.z, _vEye.w);
+		_stprintf_s(temp, MAX_PATH, L"R = (%.2f, %.2f, %.2f, %.2f)\n U = (%.2f, %.2f, %.2f, %.2f)\n L = (%.2f, %.2f, %.2f, %.2f)\n T = (%.2f, %.2f, %.2f, %.2f) "
+			, _right.x,		_right.y,		_right.z,		_right.w
+			, _up.x,		_up.y,			_up.z,			_up.w
+			, _look.x,		_look.y,		_look.z,		_look.w
+			, _trans.x,		_trans.y,		_trans.z,		_trans.w);
 
 		MessageBox(0, temp, TEXT("System Error"), MB_OK);
+
 	}
 
 

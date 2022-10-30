@@ -7,6 +7,9 @@
 #include "MeshContainer.h"
 #include "Animation.h"
 
+#include "Hod_CutScene_Cam.h"
+#include "UI_Fade_White.h"
+
 CHod::CHod(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObject(pDevice, pContext)
 {
@@ -34,21 +37,62 @@ HRESULT CHod::Initialize(void * pArg)
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
-	m_pModelCom->Set_CurrentAnimation(0);
 
-	_vector _vPos =	m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION);
-	_float4	 _fPos;
-	XMStoreFloat4(&_fPos, _vPos);
-	_fPos.x += 12.f;
-	_fPos.y += 1.f;
-	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&_fPos));
-	m_pTransformCom->Rotation(XMVectorSet(0, 1.f, 0.f, 1.f), XMConvertToRadians(90.f));
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_SHOP,
+		TEXT("Layer_CutSceneStage_"), TEXT("Prototype_GameObject_Stage_Hod"), TEXT("Prototype_Component_Model_Stage_Hod_CutScene"))))
+		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_SHOP, TEXT("Layer_CutScene_Cam"), TEXT("Prototype_GameObject_Hod_CutScene_Cam"))))
+		return E_FAIL;
+
+	m_pCutSceneCam = pGameInstance->Get_GameObjects(LEVEL_SHOP, TEXT("Layer_CutScene_Cam")).front();
+
+	RELEASE_INSTANCE(CGameInstance);
+
+	m_pModelCom->Set_CurrentAnimation(8);
+	m_pCutSceneAnimation = m_pModelCom->Get_AnimationFromName("HOD_Original_BattleReady");
+	m_pCutSceneAnimation->Play();
 
 	return S_OK;
 }
 
 void CHod::Tick(_float fTimeDelta)
 {
+	if (m_bCutSceneOnce)
+	{
+		if (m_pCutSceneAnimation->IsFinished())
+		{
+			m_bCutSceneOnce = false;
+			m_pUI->Dead();
+			BattlePosSet();
+			m_pModelCom->Set_CurrentAnimation(11);
+			return;
+		}
+		m_pModelCom->Play_Animation(fTimeDelta * 0.7f);
+		static_cast<CHod_CutScene_Cam*>(m_pCutSceneCam)->Get_Model()->Play_Animation(fTimeDelta * 0.7f);
+
+		_float _frame = static_cast<CHod_CutScene_Cam*>(m_pCutSceneCam)->Get_Model()->Get_AnimationFromName("HOD_Original_BattleReady_Cam")->Get_TimeAcc();
+		_tchar temp[MAX_PATH];
+		_stprintf_s(temp, MAX_PATH, L"frame = %.2f", _frame);
+		SetWindowText(g_hWnd, temp);
+
+		if (KEY(TAB, TAP))
+		{
+			m_bCutSceneOnce = false;
+			BattlePosSet();
+			m_pModelCom->Set_CurrentAnimation(11);
+		}
+
+		if (10.f < _frame && m_bUIOnce)
+		{
+			CreateUI_Hod();
+			m_bUIOnce = false;
+		}
+		return;
+	}
+
 	m_pModelCom->Play_Animation(fTimeDelta);
 }
 
@@ -85,6 +129,72 @@ CAnimation * CHod::Get_Animation(const char * pAnimationName)
 	m_pAnimation = m_pModelCom->Get_AnimationFromName(pAnimationName);
 
 	return m_pAnimation;
+}
+
+void CHod::CreateUI_Hod()
+{
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+	m_pUI = CUI_Fade_White::Create(m_pDevice, m_pContext);
+
+	if (FAILED(m_pUI->LoadUIImage(TEXT("Prototype_Component_Texture_hod_Title"), LEVEL_SHOP)))
+	{
+		MSG_BOX("UI 호드 이미지 생성 실패");
+		return;
+	}
+
+	m_pUI->Set_UIName(TEXT("fade_White"));
+	m_pUI->Set_UIType(UI_TYPE::UI_DIALOG_BUTTON);
+	m_pUI->Set_Size(_float3(1280.f, 107.f, 1.f));
+	m_pUI->Set_Pos(_float3(0.f, -250.f, 0.f));
+	m_pUI->Set_ThrowPos(_float2(0.f, 0.f));
+	m_pUI->Set_UILevel(LEVEL_SHOP);
+	m_pUI->Initialization();
+
+	static_cast<CUI_Fade_White*>(m_pUI)->Set_Alpha(true);
+	static_cast<CUI_Fade_White*>(m_pUI)->Set_AlphaValue(0.f);
+
+	if (FAILED(pGameInstance->Add_UI(LEVEL_SHOP, m_pUI)))	//받아온레벨에다 생성
+	{
+		MSG_BOX("UI호드 생성 실패");
+		return;
+	}
+	RELEASE_INSTANCE(CGameInstance);
+}
+
+void CHod::BattlePosSet()
+{
+	_vector _vPos =	m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION);
+	_float4	 _fPos;
+	XMStoreFloat4(&_fPos, _vPos);
+	_fPos.x += 12.f;
+	_fPos.y += 1.f;
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&_fPos));
+	m_pTransformCom->Rotation(XMVectorSet(0, 1.f, 0.f, 1.f), XMConvertToRadians(90.f));
+
+	static_cast<CHod_CutScene_Cam*>(m_pCutSceneCam)->BattlePosSet();
+
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+	pGameInstance->Get_GameObjects(LEVEL_SHOP, TEXT("Layer_CutSceneStage_")).front()->Free();
+
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_SHOP,
+		TEXT("Layer_Stage"), TEXT("Prototype_GameObject_Stage_Hod"), TEXT("Prototype_Component_Model_Stage_Hod"))))
+	{
+		MSG_BOX("배틀지형생성실패");
+		return;
+	}
+
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_SHOP,
+		TEXT("Layer_Chara_Aru"), TEXT("Prototype_GameObject_Character_Aru"))))
+	{
+		MSG_BOX("아루생성실패");
+		return;
+	}
+
+
+
+	RELEASE_INSTANCE(CGameInstance);
 }
 
 HRESULT CHod::SetUp_Components()				//Com_Transform

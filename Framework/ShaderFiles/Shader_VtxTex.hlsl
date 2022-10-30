@@ -92,6 +92,20 @@ PS_OUT PS_MAIN_RATIO(PS_IN In)
 	return Out;
 }
 
+PS_OUT PS_MAIN_UPBRIGHT(PS_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+
+	Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+
+	Out.vColor.r *= 1.3f;
+	Out.vColor.g *= 1.3f;
+	Out.vColor.b *= 1.3f;
+	Out.vColor.a *= 1.3f;
+
+	return Out;
+}
+
 
 technique11 DefaultTechnique
 {
@@ -105,11 +119,24 @@ technique11 DefaultTechnique
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN();
 	}
+
 	pass Ratio
 	{
 		VertexShader = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_RATIO();
 	}
+
+	pass nonAlpha
+	{
+		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+		SetRasterizerState(RS_Default);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_MAIN_UPBRIGHT();
+	}
+
 
 }

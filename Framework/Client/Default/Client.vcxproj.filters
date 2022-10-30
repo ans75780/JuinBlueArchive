@@ -305,6 +305,15 @@
     <ClInclude Include="..\Public\Hod.h">
       <Filter>02.GameObject\14. Hod</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Hod_CutScene_Cam.h">
+      <Filter>02.GameObject\14. Hod</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Charater.h">
+      <Filter>02.GameObject\14. Hod\Charater</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Chara_Aru.h">
+      <Filter>02.GameObject\14. Hod\Charater\Aru</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -593,6 +602,15 @@
     <ClCompile Include="..\Private\Hod.cpp">
       <Filter>02.GameObject\14. Hod</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Hod_CutScene_Cam.cpp">
+      <Filter>02.GameObject\14. Hod</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Charater.cpp">
+      <Filter>02.GameObject\14. Hod\Charater</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Chara_Aru.cpp">
+      <Filter>02.GameObject\14. Hod\Charater\Aru</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -866,6 +884,12 @@
     </Filter>
     <Filter Include="05. Sky">
       <UniqueIdentifier>{06cd8182-810e-41a9-ba1d-2f9fe59c9685}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\14. Hod\Charater">
+      <UniqueIdentifier>{80531121-1677-45df-afe1-4169d5c8c725}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\14. Hod\Charater\Aru">
+      <UniqueIdentifier>{99c7d14f-4d14-42d1-9214-2b23a2ec63a8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

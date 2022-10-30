@@ -16,20 +16,21 @@ HRESULT CLevel_Shop::Initialize()
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
-		return E_FAIL;
-
-	if (FAILED(Ready_Layer_Stage(TEXT("Layer_Stage"))))
-		return E_FAIL;
-
-	if (FAILED(Ready_Layer_Hod(TEXT("Layer_Hod"))))
+	if (FAILED(Ready_Right()))
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Sky(TEXT("Layer_Sky"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Right()))
+	//if (FAILED(Ready_Layer_Stage(TEXT("Layer_Stage"))))
+	//	return E_FAIL;
+
+	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Hod(TEXT("Layer_Hod"))))
+		return E_FAIL;
+
 
 
 	return S_OK;
@@ -46,7 +47,7 @@ HRESULT CLevel_Shop::Render()
 	if (FAILED(__super::Render()))
 		return E_FAIL;
 
-	SetWindowText(g_hWnd, TEXT("CLevel_Shop 레벨"));
+	//SetWindowText(g_hWnd, TEXT("CLevel_Shop 레벨"));
 
 	return S_OK;
 }

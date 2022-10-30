@@ -61,9 +61,9 @@ HRESULT CMemorial_Haruka_Idle::Initialization()
 
 void CMemorial_Haruka_Idle::Tick(_float fTimeDelta)
 {
-	m_fFrame += 286.f * (fTimeDelta * 0.05f);
+	m_fFrame += 209.f * (fTimeDelta * 0.08f);
 
-	if (m_fFrame >= 286.f)
+	if (m_fFrame >= 209.f)
 		m_fFrame = 0.f;
 }
 
@@ -82,7 +82,7 @@ HRESULT CMemorial_Haruka_Idle::Render()
 	if (FAILED(SetUp_ShaderResource()))
 		return E_FAIL;
 
-	m_pShaderCom->Begin(0);
+	m_pShaderCom->Begin(2);
 	m_pVIBufferCom->Render();
 
 	return S_OK;

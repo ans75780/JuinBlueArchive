@@ -238,7 +238,6 @@ void CArona_Camera::TickGacha(_float & fTimeDelta)
 
 		m_CameraDesc.fFovy = XMConvertToRadians(m_fFOV);
 
-
 		_matrix vMatrix = m_pCam->Get_Model()->Find_Bone("Camera001")->Get_CombinedMatrix();
 		_matrix vTargetViewMatrix = m_pCam->Get_Model()->Find_Bone("Camera001.Target")->Get_CombinedMatrix();
 		

@@ -58,14 +58,14 @@ void CMemorial_Haruka_Start::Tick(_float fTimeDelta)
 {
 	if (KEY(LBUTTON, HOLD))
 	{
-		m_fFrame = 513.f;
+		m_fFrame = 293.f;
 	}
 
-	m_fFrame += 514.f * (fTimeDelta * 0.05f);
+	m_fFrame += 293.f * (fTimeDelta * 0.08f);
 
-	if (m_fFrame >= 514.f)
+	if (m_fFrame >= 293.f)
 	{
-		m_fFrame = 513.f;
+		m_fFrame = 292.f;
 		CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
 		pGameInstance->Get_GameObjects(LEVEL_LOBBY, TEXT("Layer_Haruka_Memorial")).front()->Set_Delete(true);
@@ -95,7 +95,7 @@ HRESULT CMemorial_Haruka_Start::Render()
 	if (FAILED(SetUp_ShaderResource()))
 		return E_FAIL;
 	
-	m_pShaderCom->Begin(0);
+	m_pShaderCom->Begin(2);
 	m_pVIBufferCom->Render();
 
 	return S_OK;

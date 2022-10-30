@@ -80,9 +80,10 @@ void CLevel_Formation::Tick(_float fTimeDelta)
 		pUserData->Clear_Formation();
 		for (_uint i = 0; i < m_vecStudent.size(); i++)
 			pUserData->Add_Formation(m_vecStudent[i]->Get_Desc());
-		if (FAILED(pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_GAMEPLAY))))
+		if (FAILED(pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_SHOP))))
 			return;
 	}
+
 	CGameInstance* pInst = GET_INSTANCE(CGameInstance);
 	RAYDESC ray;
 	_float distance = 0.f;
@@ -290,7 +291,7 @@ HRESULT CLevel_Formation::Ready_Light()
 	LightDesc.eType = tagLightDesc::TYPE_DIRECTIONAL;
 	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
 	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.vAmbient = _float4(0.4f, 0.4f, 0.4f, 1.f);
+	LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.f);
 	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
 
 	if (FAILED(pGameInstance->Add_Light(m_pDevice, m_pContext, LightDesc)))
