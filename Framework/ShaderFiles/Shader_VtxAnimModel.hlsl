@@ -6,6 +6,8 @@ matrix	g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 texture2D	g_DiffuseTexture;
 texture2D	g_NormalTexture;
 
+float	g_DamageEffcet;
+
 struct		tagBoneMatrix
 {
 	matrix		BoneMatrices[256];
@@ -99,6 +101,8 @@ PS_OUT PS_MAIN(PS_IN In)
 	if (Out.vDiffuse.a < 0.1f)
 		discard;
 
+	Out.vDiffuse.r += g_DamageEffcet;
+
 	return Out;
 }
 
@@ -184,8 +188,6 @@ PS_OUT PS_MAIN_NORMAL(PS_IN_NORMAL In)
 	return Out;
 }
 
-
-
 //End Normal Mapping
 
 
@@ -212,8 +214,6 @@ technique11 DefaultTechnique
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_NORMAL();
 	}
-
-	
 
 	
 }

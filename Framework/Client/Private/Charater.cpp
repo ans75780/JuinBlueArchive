@@ -10,6 +10,8 @@
 #include "Hod_CutScene_Cam.h"
 #include "UI_Fade_White.h"
 
+#include "Hod.h"
+
 CCharater::CCharater(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObject(pDevice, pContext)
 {
@@ -43,17 +45,39 @@ HRESULT CCharater::Initialize(void * pArg)
 	if (FAILED(SetUp_Components((_tchar*)pArg)))
 		return E_FAIL;
 
+	m_desc.fMaxHp = 100.f;
+	m_desc.fHp = 65.f;
+	m_desc.fDamage = 5.f;
+	lstrcpy(m_desc.sz_Name, TEXT("HOD"));
+
 	static _uint SetPos = 0;
 
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&_float4(0.f, 0.f, 0.f, 1.f)));
 	m_pTransformCom->LookAt(XMLoadFloat4(&_float4(12.f, 1.f, 0.f, 1.f)));
 	m_pModelCom->Set_CurrentAnimation(0);
 	
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+	if (pGameInstance->Get_CurrentLevelID() == LEVEL::LEVEL_SHOP)
+	{
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_SHOP, L"Layer_HpBar", L"Prototype_HpBar", this, ((CGameObject**)&m_pHpBar))))
+			return E_FAIL;
+	}
+
+	m_pHod = static_cast<CHod*>(pGameInstance->Get_GameObjects(LEVEL_SHOP, TEXT("Layer_Hod")).front());
+
+	m_pHod->DamageAction(100.f);
+	RELEASE_INSTANCE(CGameInstance);
 	return S_OK;
 }
 
 void CCharater::Tick(_float fTimeDelta)
 {
+	if (KEY(Y, TAP))
+	{
+		m_pHod->DamageAction(100.f);
+	}
+
 	m_pModelCom->Play_Animation(fTimeDelta);
 }
 
@@ -124,6 +148,10 @@ HRESULT CCharater::SetUp_ShaderResource()
 	if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", pGameInstance->Get_Transform_TP(CPipeLine::D3DTS_VIEW), sizeof(_float4x4))))
 		return E_FAIL;
 	if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", pGameInstance->Get_Transform_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4))))
+		return E_FAIL;
+
+	_float value = 0.f;
+	if (FAILED(m_pShaderCom->Set_RawValue("g_DamageEffcet", &value, sizeof(_float))))
 		return E_FAIL;
 
 	RELEASE_INSTANCE(CGameInstance);

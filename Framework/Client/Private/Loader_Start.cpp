@@ -17,6 +17,7 @@
 #include "Memorial_Haruka_Idle.h"
 #include "UI_Progress_StartLoadingBar.h"
 #include "UI_Text.h"
+#include "HodHpBar.h"
 
 CLoader_Start::CLoader_Start(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice(pDevice)
@@ -188,6 +189,9 @@ HRESULT CLoader_Start::Loading_ForLogoLevel()
 	if (FAILED(pGameInstance->Add_Prototype(L"Prototype_HpBar", CHpBar::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	if (FAILED(pGameInstance->Add_Prototype(L"Prototype_Hod_HpBar", CHodHpBar::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	pUI_ProgreeBar->Plus_WidthSize(100.f); //50%
 	pUI_Text->SetUIText(TEXT("모델을 불러오는중입니다."));
 
@@ -208,10 +212,10 @@ HRESULT CLoader_Start::Loading_ForLogoLevel()
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Aru_Original/", "Aru_Original.fbx", rotMat))))
 		return E_FAIL;
 
-	/* For.Prototype_Component_Model_Aru*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Aru_Original_FX"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Effects/ExModel/Aru_Original/", "Aru_Original.fbx", mat))))
-		return E_FAIL;
+	///* For.Prototype_Component_Model_Aru*/
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Aru_Original_FX"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Effects/ExModel/Aru_Original/", "Aru_Original.fbx", mat))))
+	//	return E_FAIL;
 
 	///* For.Prototype_Component_Model_Haruka*/
 	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Haruka_Original"),

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "..\Public\Chara_Aru.h"
 
 #include "GameInstance.h"

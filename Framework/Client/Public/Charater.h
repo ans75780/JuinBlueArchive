@@ -34,6 +34,8 @@ protected:
 	CShader*				m_pShaderCom = nullptr;
 	CRenderer*				m_pRendererCom = nullptr;
 	CModel*					m_pModelCom = nullptr;
+	class CHpBar*			m_pHpBar = nullptr;
+	class CHod*				m_pHod = nullptr;
 
 protected:
 	HRESULT SetUp_Components(_tchar* ModelName);

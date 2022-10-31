@@ -9,6 +9,7 @@
 
 #include "Hod_CutScene_Cam.h"
 #include "UI_Fade_White.h"
+#include "HodHpBar.h"
 
 CHod::CHod(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObject(pDevice, pContext)
@@ -37,6 +38,11 @@ HRESULT CHod::Initialize(void * pArg)
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
+	m_desc.fMaxHp = 600.f;
+	m_desc.fHp = 600.f;
+	m_desc.fDamage = 5.f;
+	lstrcpy(m_desc.sz_Name, TEXT("HOD"));
+	
 
 	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
@@ -55,45 +61,18 @@ HRESULT CHod::Initialize(void * pArg)
 	m_pCutSceneAnimation = m_pModelCom->Get_AnimationFromName("HOD_Original_BattleReady");
 	m_pCutSceneAnimation->Play();
 
+
 	return S_OK;
 }
 
 void CHod::Tick(_float fTimeDelta)
 {
-	if (m_bCutSceneOnce)
+	StartSet(fTimeDelta);	//시작이벤트가끝나면 더이상 실행되지않음
+	
+	if (0.f < m_fgDamageEffcet)
 	{
-		if (m_pCutSceneAnimation->IsFinished())
-		{
-			m_bCutSceneOnce = false;
-			m_pUI->Dead();
-			BattlePosSet();
-			m_pModelCom->Set_CurrentAnimation(11);
-			return;
-		}
-		m_pModelCom->Play_Animation(fTimeDelta * 0.7f);
-		static_cast<CHod_CutScene_Cam*>(m_pCutSceneCam)->Get_Model()->Play_Animation(fTimeDelta * 0.7f);
-
-		_float _frame = static_cast<CHod_CutScene_Cam*>(m_pCutSceneCam)->Get_Model()->Get_AnimationFromName("HOD_Original_BattleReady_Cam")->Get_TimeAcc();
-		_tchar temp[MAX_PATH];
-		_stprintf_s(temp, MAX_PATH, L"frame = %.2f", _frame);
-		SetWindowText(g_hWnd, temp);
-
-		if (KEY(TAB, TAP))
-		{
-			m_bCutSceneOnce = false;
-			BattlePosSet();
-			m_pModelCom->Set_CurrentAnimation(11);
-		}
-
-		if (10.f < _frame && m_bUIOnce)
-		{
-			CreateUI_Hod();
-			m_bUIOnce = false;
-		}
-		return;
+		m_fgDamageEffcet -= 0.1f;
 	}
-
-	m_pModelCom->Play_Animation(fTimeDelta);
 }
 
 void CHod::LateTick(_float fTimeDelta)
@@ -107,19 +86,27 @@ HRESULT CHod::Render()
 		nullptr == m_pModelCom)
 		return E_FAIL;
 
+	/* 셰이더 전역변수에 값을 던진다. */
 	if (FAILED(SetUp_ShaderResource()))
 		return E_FAIL;
 
 	_uint iNumMeshContainers = m_pModelCom->Get_NumMeshContainers();
-
-	for (_uint i = 0; i < iNumMeshContainers; ++i)	//이게 모델들여러개 그리는것임 이걸로 아로나 키프레임마다 그러야할것들을 알아내서 해볼것!
+	for (_uint i = 0; i < iNumMeshContainers; i++)
 	{
-		if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
-			return E_FAIL;
+		//if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
+		//	continue;
+		//if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+		//	m_pShaderCom->Begin(1);
 
+		//m_pModelCom->Render(i, m_pShaderCom, "g_Bones");
+		if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
+			continue;
+		m_pShaderCom->Begin(1);
 		m_pModelCom->Render(i, m_pShaderCom, "g_Bones");
 	}
+
 	return S_OK;
+
 }
 
 CAnimation * CHod::Get_Animation(const char * pAnimationName)
@@ -185,6 +172,17 @@ void CHod::BattlePosSet()
 		return;
 	}
 
+	if (pGameInstance->Get_CurrentLevelID() == LEVEL::LEVEL_SHOP)
+	{
+		m_pHpBar = CHodHpBar::Create(m_pDevice, m_pContext);
+		m_pHpBar->Set_UILevel(LEVEL_SHOP);
+		if (FAILED(pGameInstance->Add_UI(LEVEL_SHOP, m_pHpBar)))
+		{
+			MSG_BOX("실패호두체력바");
+			return;
+		}
+	}
+
 	if (FAILED(pGameInstance->Add_GameObject(LEVEL_SHOP,
 		TEXT("Layer_Chara_Aru"), TEXT("Prototype_GameObject_Character_Aru"))))
 	{
@@ -192,9 +190,68 @@ void CHod::BattlePosSet()
 		return;
 	}
 
-
-
 	RELEASE_INSTANCE(CGameInstance);
+}
+
+void CHod::StartSet(_float& fTimeDelta)
+{
+	if (m_bCutSceneOnce)
+	{
+		if (m_pCutSceneAnimation->IsFinished())
+		{
+			m_bCutSceneOnce = false;
+			m_pUI->Dead();
+			BattlePosSet();
+			m_pModelCom->Set_CurrentAnimation(6);
+			return;
+		}
+		m_pModelCom->Play_Animation(fTimeDelta * 0.7f);
+		static_cast<CHod_CutScene_Cam*>(m_pCutSceneCam)->Get_Model()->Play_Animation(fTimeDelta * 0.7f);
+
+		_float _frame = static_cast<CHod_CutScene_Cam*>(m_pCutSceneCam)->Get_Model()->Get_AnimationFromName("HOD_Original_BattleReady_Cam")->Get_TimeAcc();
+		_tchar temp[MAX_PATH];
+		_stprintf_s(temp, MAX_PATH, L"frame = %.2f", _frame);
+		SetWindowText(g_hWnd, temp);
+
+		if (KEY(TAB, TAP))
+		{
+			m_bCutSceneOnce = false;
+			BattlePosSet();
+			m_pModelCom->Set_CurrentAnimation(6);
+		}
+
+		if (10.f < _frame && m_bUIOnce)
+		{
+			CreateUI_Hod();
+			m_bUIOnce = false;
+		}
+		return;
+	}
+	auto DeathAni = m_pModelCom->Get_AnimationFromName("HOD_Original_Vital_Death");
+	if (4.7f < DeathAni->Get_TimeAcc())
+	{
+		DeathAni->Pause();
+		return;
+	}
+	m_pModelCom->Play_Animation(fTimeDelta);
+
+}
+
+void CHod::DamageAction(_float _Damage)
+{
+	if (m_bDie)
+		return;
+
+	m_desc.fHp -= _Damage;
+	m_pHpBar->Minus_WidthSize(_Damage);
+	
+	if (0.f >= m_desc.fHp)
+	{
+		m_pModelCom->Set_CurrentAnimation(10);
+		m_bDie = true;
+	}
+
+	m_fgDamageEffcet = 1.f;
 }
 
 HRESULT CHod::SetUp_Components()				//Com_Transform
@@ -226,11 +283,15 @@ HRESULT CHod::SetUp_ShaderResource()
 	if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", pGameInstance->Get_Transform_TP(CPipeLine::D3DTS_VIEW), sizeof(_float4x4))))
 		return E_FAIL;
 	if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", pGameInstance->Get_Transform_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4))))
+		return E_FAIL; 
+	if (FAILED(m_pShaderCom->Set_RawValue("g_DamageEffcet", &m_fgDamageEffcet, sizeof(_float))))
 		return E_FAIL;
 
 	RELEASE_INSTANCE(CGameInstance);
 
 	return S_OK;
+
+
 }
 
 CHod * CHod::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)

@@ -33,6 +33,10 @@ public:
 
 	void				CreateUI_Hod();	//호드등장UI띄우기
 	void				BattlePosSet();	// 전투용포지션으로 맵도바꾸고 이동
+	void				StartSet(_float& fTimeDelta);	//위에두개 묶어놓음
+
+	void				DamageAction(_float _Damage);
+
 
 private:
 	CShader*				m_pShaderCom = nullptr;
@@ -43,9 +47,13 @@ private:
 	CGameObject*			m_pCutSceneCam = nullptr;
 	CAnimation*				m_pCutSceneAnimation = nullptr;
 	CUI*					m_pUI = nullptr;
+	class CHodHpBar*		m_pHpBar = nullptr;
 
 	_bool					m_bCutSceneOnce = true;
 	_bool					m_bUIOnce = true;
+	_float					m_fgDamageEffcet = 0.f;
+	_bool					m_bDie = false;
+
 private:
 	HRESULT SetUp_Components();
 	HRESULT SetUp_ShaderResource();

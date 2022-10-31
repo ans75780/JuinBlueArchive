@@ -314,6 +314,9 @@
     <ClInclude Include="..\Public\Chara_Aru.h">
       <Filter>02.GameObject\14. Hod\Charater\Aru</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\HodHpBar.h">
+      <Filter>02.GameObject\14. Hod</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -556,7 +559,6 @@
     <ClCompile Include="..\Private\Effect.cpp">
       <Filter>02.GameObject\Effect</Filter>
     </ClCompile>
-    <ClCompile Include="Effect_Hit.cpp" />
     <ClCompile Include="..\Private\UI_Progress_StartLoadingBar.cpp">
       <Filter>02.GameObject\03. UI\04. Progress\StartLoadingBar</Filter>
     </ClCompile>
@@ -607,6 +609,10 @@
     </ClCompile>
     <ClCompile Include="..\Private\Charater.cpp">
       <Filter>02.GameObject\14. Hod\Charater</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Effect_Hit.cpp" />
+    <ClCompile Include="..\Private\HodHpBar.cpp">
+      <Filter>02.GameObject\14. Hod</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Chara_Aru.cpp">
       <Filter>02.GameObject\14. Hod\Charater\Aru</Filter>
