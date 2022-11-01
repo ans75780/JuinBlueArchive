@@ -9,6 +9,7 @@
 
 #include "Hod_CutScene_Cam.h"
 #include "UI_Fade_White.h"
+#include "Camera_Free.h"
 
 #include "Hod.h"
 
@@ -36,7 +37,7 @@ HRESULT CCharater::Initialize(void * pArg)
 	}
 	
 	CTransform::TRANSFORMDESC		TransformDesc;
-	TransformDesc.fSpeedPerSec = 5.f;
+	TransformDesc.fSpeedPerSec = 2.f;
 	TransformDesc.fRotationPerSec = XMConvertToRadians(90.f);
 
 	if (FAILED(__super::Initialize(&TransformDesc)))
@@ -46,14 +47,14 @@ HRESULT CCharater::Initialize(void * pArg)
 		return E_FAIL;
 
 	m_desc.fMaxHp = 100.f;
-	m_desc.fHp = 65.f;
+	m_desc.fHp = 100.f;
 	m_desc.fDamage = 5.f;
-	lstrcpy(m_desc.sz_Name, TEXT("HOD"));
 
-	static _uint SetPos = 0;
+	static _float SetPos = 1.5f;
 
-	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&_float4(0.f, 0.f, 0.f, 1.f)));
-	m_pTransformCom->LookAt(XMLoadFloat4(&_float4(12.f, 1.f, 0.f, 1.f)));
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&_float4(-4.6f, 0.f, SetPos, 1.f)));
+	SetPos -= 1.5f;
+	m_pTransformCom->Rotation(XMVectorSet(0.f, 1.f, 0.f, 1.f), XMConvertToRadians(90.f));
 	m_pModelCom->Set_CurrentAnimation(0);
 	
 	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
@@ -64,21 +65,20 @@ HRESULT CCharater::Initialize(void * pArg)
 			return E_FAIL;
 	}
 
-	m_pHod = static_cast<CHod*>(pGameInstance->Get_GameObjects(LEVEL_SHOP, TEXT("Layer_Hod")).front());
+	m_pHod = static_cast<CHod*>(pGameInstance->Get_GameObjects(LEVEL_SHOP, TEXT("Layer_Hod")).front());	//호드받아오기
+	m_pCamera = static_cast<CCamera_Free*>(pGameInstance->Get_GameObjects(LEVEL_SHOP, TEXT("Layer_Camera")).front());
 
-	m_pHod->DamageAction(100.f);
 	RELEASE_INSTANCE(CGameInstance);
+
+
+
 	return S_OK;
 }
 
 void CCharater::Tick(_float fTimeDelta)
 {
 	if (KEY(Y, TAP))
-	{
-		m_pHod->DamageAction(100.f);
-	}
-
-	m_pModelCom->Play_Animation(fTimeDelta);
+		m_pHod->DamageAction(4.f);
 }
 
 void CCharater::LateTick(_float fTimeDelta)

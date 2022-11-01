@@ -67,6 +67,11 @@ HRESULT CHod::Initialize(void * pArg)
 
 void CHod::Tick(_float fTimeDelta)
 {
+	if(nullptr != m_pHpBar)
+		m_pHpBar->Set_Render(!m_bExTickStop);
+	if (m_bExTickStop)
+		return;
+
 	StartSet(fTimeDelta);	//시작이벤트가끝나면 더이상 실행되지않음
 	
 	if (0.f < m_fgDamageEffcet)
@@ -190,6 +195,13 @@ void CHod::BattlePosSet()
 		return;
 	}
 
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_SHOP,
+		TEXT("Layer_Chara_Haruka"), TEXT("Prototype_GameObject_Character_Haruka"))))
+	{
+		MSG_BOX("하루카생성실패");
+		return;
+	}
+
 	RELEASE_INSTANCE(CGameInstance);
 }
 
@@ -209,9 +221,7 @@ void CHod::StartSet(_float& fTimeDelta)
 		static_cast<CHod_CutScene_Cam*>(m_pCutSceneCam)->Get_Model()->Play_Animation(fTimeDelta * 0.7f);
 
 		_float _frame = static_cast<CHod_CutScene_Cam*>(m_pCutSceneCam)->Get_Model()->Get_AnimationFromName("HOD_Original_BattleReady_Cam")->Get_TimeAcc();
-		_tchar temp[MAX_PATH];
-		_stprintf_s(temp, MAX_PATH, L"frame = %.2f", _frame);
-		SetWindowText(g_hWnd, temp);
+
 
 		if (KEY(TAB, TAP))
 		{

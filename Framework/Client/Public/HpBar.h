@@ -24,13 +24,15 @@ private:
 	
 public:
 	virtual HRESULT	Start_Level() override;
-
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* pArg);
 	virtual void	Tick(_float fTimeDelta);
 	virtual void	LateTick(_float fTimeDelta);
-
 	virtual HRESULT Render();
+
+
+public:
+	void	Set_Render(_bool _bSet) { m_bRender = _bSet; }
 
 private:
 	HRESULT		SetUp_Component();
@@ -55,6 +57,8 @@ private:
 		렉트 버퍼의 왼쪽의 U는 0, 오른쪽은 1.
 		이걸 활용하여 체력바의 비율을 결정할 수 있음.
 	*/
+
+	_bool		m_bRender = true;
 
 public:
 	//Add ProtoType용

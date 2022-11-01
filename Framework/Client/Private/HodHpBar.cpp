@@ -25,7 +25,7 @@ HRESULT CHodHpBar::Initialize(void * pArg)
 	m_fOriginPos = m_fPos;
 	m_fFrontBarSize = { 600.f,25.f };
 
-	m_fFrontColor = { 255.f / 255.f, 0.f / 255.f, 8.f / 255.f, 1.f };
+	m_fFrontColor = { 255.f / 255.f, 127.f / 255.f, 39.f / 255.f, 1.f };
 
 	m_fResetPos = m_fPos;
 
@@ -46,8 +46,8 @@ void CHodHpBar::Tick(_float fTimeDelta)
 	if (0.f < m_fMinusValue)
 	{
 		Shake();
-		m_fFrontBarSize.x -= 100.f * fTimeDelta;
-		m_fMinusValue -= 100.f * fTimeDelta;
+		m_fFrontBarSize.x -= 50.f * fTimeDelta;
+		m_fMinusValue -= 50.f * fTimeDelta;
 	
 
 		if (1.f > m_fFrontBarSize.x)
@@ -73,6 +73,9 @@ void CHodHpBar::LateTick(_float fTimeDelta)
 
 HRESULT CHodHpBar::Render()
 {
+	if (!m_bRender)
+		return S_OK;
+
 	if (nullptr == m_pShaderCom ||
 		nullptr == m_pVIBufferCom)
 		return E_FAIL;

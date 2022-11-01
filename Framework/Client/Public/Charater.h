@@ -16,6 +16,9 @@ BEGIN(Client)
 class CCharater : public CGameObject
 {
 public:
+	enum CHARA_STATE { IDLE, RUN, RELOAD, ATK_START, ATK_DELAY, ATK_ING, ATK_END,  EX, VICTORY, STATE_END };
+
+public:
 	CCharater(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CCharater(const CCharater& rhs);
 	virtual ~CCharater() = default;
@@ -36,7 +39,24 @@ protected:
 	CModel*					m_pModelCom = nullptr;
 	class CHpBar*			m_pHpBar = nullptr;
 	class CHod*				m_pHod = nullptr;
+	class CCamera_Free*		m_pCamera = nullptr;
+	CAnimation*				m_pAnimation_ExCutin = nullptr;
+	CAnimation*				m_pAnimation_Exs = nullptr;
 
+
+protected:
+	_bool					m_bExUse = false;
+	CHARA_STATE				m_eState = RUN;
+	_float					m_fTime = 0.f;
+	_int					m_iAmmo = 0;
+
+	_float					m_fForwardDistance = 0.f;
+	_float					m_fAttackDelay = 0.f;
+	_int					m_iMaxAmmo = 0;
+	_bool					m_bAtkIngOnce = true;
+
+
+private:
 protected:
 	HRESULT SetUp_Components(_tchar* ModelName);
 	HRESULT SetUp_ShaderResource();

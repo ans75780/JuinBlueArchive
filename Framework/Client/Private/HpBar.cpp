@@ -114,6 +114,9 @@ void CHpBar::LateTick(_float fTimeDelta)
 
 HRESULT CHpBar::Render()
 {
+	if (false == m_bRender)
+		return S_OK;
+
 	if (nullptr == m_pShaderCom ||
 		nullptr == m_pVIBufferCom)
 		return E_FAIL;

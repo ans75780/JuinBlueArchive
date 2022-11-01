@@ -128,10 +128,10 @@ CAnimation * CHod_CutScene_Cam::Get_Animation(const char * pAnimationName)
 
 void CHod_CutScene_Cam::BattlePosSet()
 {
-	_float4 _Right = { 0.96f, 0.f, -0.29f, 0.f };
-	_float4 _Up = { 0.17f, 0.81f, 0.57f, 0.f };
-	_float4 _Look = { 0.23f, -0.59f, 0.77f, 0.f };
-	_float4 _Trans = { 2.2f, 8.26f, -7.94f, 1.f };
+	_float4 _Right = { 0.95f, 0.f, -0.31f, 0.f };
+	_float4 _Up = { 0.17f, 0.83f, 0.54f, 0.f };
+	_float4 _Look = { 0.25f, -0.56f, 0.78f, 0.f };
+	_float4 _Trans = { 2.6f, 5.68f, -5.16f, 1.f };
 
 	m_pCamera->Get_Transform()->Set_State(CTransform::STATE_RIGHT, XMLoadFloat4(&_Right));
 	m_pCamera->Get_Transform()->Set_State(CTransform::STATE_UP, XMLoadFloat4(&_Up));

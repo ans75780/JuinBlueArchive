@@ -47,7 +47,7 @@
 
 #include "Charater.h"
 #include "Chara_Aru.h"
-
+#include "Chara_Haruka.h"
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice(pDevice)
@@ -347,6 +347,14 @@ HRESULT CLoader::Loading_ForShopLevel()
 			mat))))
 		return E_FAIL;
 
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_SHOP, TEXT("Aru_Cam"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Aru_Original/", "Aru_ExCutinCam.fbx", mat))))
+	{
+		MSG_BOX("아루캠못가져옴");
+		return E_FAIL;
+	}
+	//하루카랑준코도 가져와야함
+
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
 
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Stage_Hod"),
@@ -374,6 +382,11 @@ HRESULT CLoader::Loading_ForShopLevel()
 	/* For.Prototype_GameObject_Character*/
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Character_Aru"),
 		CChara_Aru::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Character*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Character_Haruka"),
+		CChara_Haruka::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 

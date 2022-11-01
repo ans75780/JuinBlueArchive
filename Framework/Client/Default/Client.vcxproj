@@ -185,6 +185,7 @@
     <ClInclude Include="..\Public\Camera_Stage.h" />
     <ClInclude Include="..\Public\Charater.h" />
     <ClInclude Include="..\Public\Chara_Aru.h" />
+    <ClInclude Include="..\Public\Chara_Haruka.h" />
     <ClInclude Include="..\Public\Effect.h" />
     <ClInclude Include="..\Public\Effect_Hit.h" />
     <ClInclude Include="..\Public\Hod.h" />
@@ -287,6 +288,7 @@
     <ClCompile Include="..\Private\Camera_Stage.cpp" />
     <ClCompile Include="..\Private\Charater.cpp" />
     <ClCompile Include="..\Private\Chara_Aru.cpp" />
+    <ClCompile Include="..\Private\Chara_Haruka.cpp" />
     <ClCompile Include="..\Private\Effect.cpp" />
     <ClCompile Include="..\Private\Effect_Hit.cpp" />
     <ClCompile Include="..\Private\Hod.cpp" />

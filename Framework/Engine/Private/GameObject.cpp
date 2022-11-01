@@ -3,6 +3,7 @@
 #include "Transform.h"
 
 const _tchar*		CGameObject::m_pTransformTag = TEXT("Com_Transform");
+_bool CGameObject::m_bExTickStop = false;
 
 CGameObject::CGameObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice(pDevice), m_pContext(pContext)

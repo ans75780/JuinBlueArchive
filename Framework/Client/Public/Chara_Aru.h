@@ -20,13 +20,11 @@ public:
 	virtual HRESULT Render();
 
 private:
-	CShader*				m_pShaderCom = nullptr;
-	CRenderer*				m_pRendererCom = nullptr;
-	CModel*					m_pModelCom = nullptr;
+	void	AruExCheck();
+	void	ExCamCheck();
+	void	ExsPlayOnce();
+	void	StateCheck(_float& fTimeDelta);
 
-private:
-	//HRESULT SetUp_Components(_tchar* ModelName);
-	//HRESULT SetUp_ShaderResource();
 
 public:
 	static CChara_Aru* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

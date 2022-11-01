@@ -33,6 +33,9 @@ public:
 
 	void	Set_LoadingSusccess(_bool _b) { m_bLoadingSuccess = _b; }
 	void	Shake();
+	void	Set_Render(_bool _b) { m_bRender = _b; }
+	
+
 protected:
 	virtual HRESULT SetUp_Component();
 	virtual HRESULT SetUp_ShaderResource();
@@ -48,7 +51,7 @@ protected:
 	_float	m_fMinusValue = 10.f;
 	_bool	m_bLoadingSuccess = false;
 	_bool	m_bSoundOnce = true;
-
+	_bool	m_bRender = true;
 	_uint	m_uShakeCount = 0;
 	
 public:
