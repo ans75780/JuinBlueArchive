@@ -353,7 +353,15 @@ HRESULT CLoader::Loading_ForShopLevel()
 		MSG_BOX("아루캠못가져옴");
 		return E_FAIL;
 	}
-	//하루카랑준코도 가져와야함
+
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_SHOP, TEXT("Haruka_Cam"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Haruka_Original/", "Haruka_ExCutinCam.fbx", mat))))
+	{
+		MSG_BOX("하루카캠못가져옴");
+		return E_FAIL;
+	}
+
+	//준코도 가져와야함
 
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
 

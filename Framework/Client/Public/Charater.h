@@ -16,7 +16,7 @@ BEGIN(Client)
 class CCharater : public CGameObject
 {
 public:
-	enum CHARA_STATE { IDLE, RUN, RELOAD, ATK_START, ATK_DELAY, ATK_ING, ATK_END,  EX, VICTORY, STATE_END };
+	enum CHARA_STATE { IDLE, RUN, RUN_END, RELOAD, ATK_START, ATK_DELAY, ATK_ING, ATK_END, EX_CUTIN, EX, VICTORY, STATE_END };
 
 public:
 	CCharater(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

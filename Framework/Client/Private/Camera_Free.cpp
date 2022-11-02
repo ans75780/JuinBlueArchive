@@ -47,16 +47,16 @@ HRESULT CCamera_Free::Initialize(void * pArg)
 		return E_FAIL;
 	}
 
-	//if (FAILED(__super::Add_Component(LEVEL_SHOP, TEXT("Aru_Cam"), TEXT("Com_Model"), (CComponent**)&m_pModelCom_HarukaCam)))
-	//{
-	//	MSG_BOX("ÇÏ·çÄ«Ä·ÄÄÆ÷³ÍÆ®¸ø°¡Á®¿È");
-	//	return;
-	//}
+	if (FAILED(__super::Add_Component(LEVEL_SHOP, TEXT("Haruka_Cam"), TEXT("Com_Model2"), (CComponent**)&m_pModelCom_HarukaCam)))
+	{
+		MSG_BOX("ÇÏ·çÄ«Ä·ÄÄÆ÷³ÍÆ®¸ø°¡Á®¿È");
+		return E_FAIL;
+	}
 
-	//if (FAILED(__super::Add_Component(LEVEL_SHOP, TEXT("Aru_Cam"), TEXT("Com_Model"), (CComponent**)&m_pModelCom_ZunkoCam)))
+	//if (FAILED(__super::Add_Component(LEVEL_SHOP, TEXT("Aru_Cam"), TEXT("Com_Model3"), (CComponent**)&m_pModelCom_ZunkoCam)))
 	//{
 	//	MSG_BOX("ÁØÄÚÄ·ÄÄÆ÷³ÍÆ®¸ø°¡Á®¿È");
-	//	return;
+	//	return E_FAIL;
 	//}
 
 	RELEASE_INSTANCE(CGameInstance);
@@ -197,7 +197,11 @@ void CCamera_Free::ExCamPlay(_float& fTimeDelta)
 
 	m_pModelCom->Play_Animation(fTimeDelta);
 
-	m_CameraDesc.fFovy = XMConvertToRadians(35.f); //65.f
+	OBJ_DESC temp = m_pChara->Get_Desc();
+	if (!lstrcmp(TEXT("Aru"), temp.sz_Name))
+		m_CameraDesc.fFovy = XMConvertToRadians(30.f); //65.f
+	else if (!lstrcmp(TEXT("Haruka"), temp.sz_Name))
+		m_CameraDesc.fFovy = XMConvertToRadians(10.f); //65.f
 
 	_float4 MoveCharaPos;
 	XMStoreFloat4(&MoveCharaPos, m_pChara->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION));
@@ -247,9 +251,9 @@ void CCamera_Free::GetModelCam()
 	{
 		m_pModelCom = m_pModelCom_AruCam;
 	}
-	else if (1)
+	else if (!lstrcmp(TEXT("Haruka"), temp.sz_Name))
 	{
-
+		m_pModelCom = m_pModelCom_HarukaCam;
 	}
 
 

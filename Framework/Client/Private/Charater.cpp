@@ -78,7 +78,7 @@ HRESULT CCharater::Initialize(void * pArg)
 void CCharater::Tick(_float fTimeDelta)
 {
 	if (KEY(Y, TAP))
-		m_pHod->DamageAction(4.f);
+		m_pHod->DamageAction(50.f);
 }
 
 void CCharater::LateTick(_float fTimeDelta)

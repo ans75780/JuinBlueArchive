@@ -32,7 +32,7 @@ HRESULT CChara_Aru::Initialize(void * pArg)
 	__super::Initialize(TEXT("Prototype_Component_Model_Aru_Original"));
 
 	lstrcpy(m_desc.sz_Name, TEXT("Aru"));
-	m_fForwardDistance = 3.5f;
+	m_fForwardDistance = 3.f;
 	
 	m_iMaxAmmo = 6;
 	m_iAmmo = 6;
@@ -45,6 +45,7 @@ HRESULT CChara_Aru::Initialize(void * pArg)
 void CChara_Aru::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
 	if (m_bExTickStop && !m_bExUse)
 		return;
 
@@ -86,7 +87,7 @@ void CChara_Aru::AruExCheck()//한번실행됨
 	m_pAnimation_ExCutin = m_pModelCom->Get_AnimationFromName("Aru_Original_Exs_Cutin");
 	m_pAnimation_ExCutin->Reset();
 	m_pCamera->PlayExs(this);
-	m_eState = CHARA_STATE::EX;
+	m_eState = CHARA_STATE::EX_CUTIN;
 }
 
 void CChara_Aru::ExCamCheck()
@@ -104,6 +105,7 @@ void CChara_Aru::ExCamCheck()
 		m_pAnimation_Exs = m_pModelCom->Get_AnimationFromName("Aru_Original_Exs");
 		m_pAnimation_Exs->Reset();
 		m_pCamera->EndExs();
+		m_eState = CHARA_STATE::EX;
 	}
 
 }
@@ -137,6 +139,8 @@ void CChara_Aru::StateCheck(_float & fTimeDelta)
 			m_fTime = 0.f;
 			m_pModelCom->Set_CurrentAnimation(20); //ATK_START
 		}
+		break;
+	case RUN_END:
 		break;
 	case RELOAD:
 		if (m_pModelCom->Get_AnimationFromName("Aru_Original_Normal_Reload")->IsFinished())
@@ -187,6 +191,8 @@ void CChara_Aru::StateCheck(_float & fTimeDelta)
 			m_eState = CHARA_STATE::RELOAD;
 			m_pModelCom->Set_CurrentAnimation(2);
 		}
+		break;
+	case EX_CUTIN:
 		break;
 	case EX:
 		break;
