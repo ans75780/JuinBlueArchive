@@ -48,6 +48,10 @@
 #include "Charater.h"
 #include "Chara_Aru.h"
 #include "Chara_Haruka.h"
+#include "Chara_Zunko.h"
+
+#include "Effect_Bullet.h"
+#include "Effect_ShotGun.h"
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice(pDevice)
@@ -360,6 +364,12 @@ HRESULT CLoader::Loading_ForShopLevel()
 		MSG_BOX("하루카캠못가져옴");
 		return E_FAIL;
 	}
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_SHOP, TEXT("Zunko_Cam"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Zunko_Original/", "Zunko_ExCutinCam.fbx", mat))))
+	{
+		MSG_BOX("준코캠못가져옴");
+		return E_FAIL;
+	}
 
 	//준코도 가져와야함
 
@@ -397,6 +407,11 @@ HRESULT CLoader::Loading_ForShopLevel()
 		CChara_Haruka::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_Character*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Character_Zunko"),
+		CChara_Zunko::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중이비낟. "));
 
@@ -408,6 +423,28 @@ HRESULT CLoader::Loading_ForShopLevel()
 	/* For.Prototype_Component_HOD_Title */
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_SHOP, TEXT("Prototype_Component_Texture_hod_Sky"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/SkyBox/hodSky.dds"), 1))))
+		return E_FAIL;
+
+	//EFFECT
+	/* For.Prototype_Component_Texture_Effect_Bullet */
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Effect_Bullet"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/Effect/Bullet.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Effect_Bullet*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Effect_Bullet"),
+		CEffect_Bullet::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	//EFFECT
+	/* For.Prototype_Component_Texture_Effect_ShotGun */
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Effect_ShotGun"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/Effect/ShotGun/%d.png"), 9))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Effect_ShotGun*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Effect_ShotGun"),
+		CEffect_ShotGun::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));

@@ -10,6 +10,7 @@
 #include "Hod_CutScene_Cam.h"
 #include "UI_Fade_White.h"
 #include "HpBar.h"
+#include "Hod.h"
 #include "Camera_Free.h"
 
 CChara_Aru::CChara_Aru(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
@@ -126,6 +127,9 @@ void CChara_Aru::ExsPlayOnce()// ex캠 복구후 한번들어옴 exs null아닐�
 
 void CChara_Aru::StateCheck(_float & fTimeDelta)
 {
+	_float Duration;
+	_float TimeAcc;
+
 	switch (m_eState)
 	{
 	case IDLE:
@@ -163,6 +167,32 @@ void CChara_Aru::StateCheck(_float & fTimeDelta)
 		//안쓰는게좋음
 		break;
 	case ATK_ING:
+		Duration = m_pModelCom->Get_AnimationFromName("Aru_Original_Normal_Attack_Ing")->Get_Duration();
+		TimeAcc = m_pModelCom->Get_AnimationFromName("Aru_Original_Normal_Attack_Ing")->Get_TimeAcc();
+		
+		if (m_bBulletCreateOnce && TimeAcc > 0.9f)
+		{
+			CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+			_matrix _mat, rotMat;
+			rotMat = XMMatrixRotationAxis(XMVectorSet(0.f, 1.f, 0.f, 1.f), XMConvertToRadians(180.f));
+			_mat = m_pModelCom->Find_Bone("fire_01")->Get_CombinedMatrix();
+			_mat *= rotMat;
+			_mat *= m_pTransformCom->Get_WorldMatrix();
+
+			BulletDesc temp;
+			temp.CreatePos = _mat.r[3];
+			temp.TargetPos = m_pHod->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION);
+			temp.Damage = 1.f;
+			temp.Hod = m_pHod;
+
+			if (FAILED(pGameInstance->Add_GameObject(LEVEL_SHOP, TEXT("Layer_Effect_Bullet"),
+				TEXT("Prototype_GameObject_Effect_Bullet"), &temp)))
+				return ;
+
+			RELEASE_INSTANCE(CGameInstance);
+			m_bBulletCreateOnce = false;
+		}
+
 		if (m_bAtkIngOnce)
 		{
 			m_iAmmo--;
@@ -170,6 +200,7 @@ void CChara_Aru::StateCheck(_float & fTimeDelta)
 		}
 		if (m_pModelCom->Get_AnimationFromName("Aru_Original_Normal_Attack_Ing")->IsFinished())
 		{
+			m_bBulletCreateOnce = true;
 			m_pModelCom->Get_AnimationFromName("Aru_Original_Normal_Attack_Ing")->Reset();
 			m_bAtkIngOnce = true;
 			if (0 < m_iAmmo)

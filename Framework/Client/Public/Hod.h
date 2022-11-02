@@ -17,6 +17,9 @@ BEGIN(Client)
 class CHod final : public CGameObject
 {
 public:
+	enum HOD_STATE { READY,IDLE, ATK_START, ATK_DELAY, ATK_ING, ATK_END, GROGGY, EX1, EX2, EX3, EX4, EX5, DEAD, STATE_END };
+
+public:
 	CHod(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CHod(const CHod& rhs);
 	virtual ~CHod() = default;
@@ -36,6 +39,9 @@ public:
 	void				StartSet(_float& fTimeDelta);	//위에두개 묶어놓음
 
 	void				DamageAction(_float _Damage);
+	void				StateCheck(_float& fTimeDelta);
+	
+	_bool				Get_StopAnime() { return m_bStopAnime; }
 
 
 private:
@@ -48,11 +54,19 @@ private:
 	CAnimation*				m_pCutSceneAnimation = nullptr;
 	CUI*					m_pUI = nullptr;
 	class CHodHpBar*		m_pHpBar = nullptr;
+	class CCamera_Free*		m_pCameraFree = nullptr;
 
+
+	HOD_STATE				m_eState = READY;
 	_bool					m_bCutSceneOnce = true;
 	_bool					m_bUIOnce = true;
 	_float					m_fgDamageEffcet = 0.f;
 	_bool					m_bDie = false;
+	_bool					m_bStopAnime = false;
+
+	_float					m_fTime = 0.f;
+	_float					m_fAtkDelay = 10.f;
+	_int					m_iExCount = 0;
 
 private:
 	HRESULT SetUp_Components();

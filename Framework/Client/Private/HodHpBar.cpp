@@ -46,8 +46,8 @@ void CHodHpBar::Tick(_float fTimeDelta)
 	if (0.f < m_fMinusValue)
 	{
 		Shake();
-		m_fFrontBarSize.x -= 50.f * fTimeDelta;
-		m_fMinusValue -= 50.f * fTimeDelta;
+		m_fFrontBarSize.x -= 100.f * fTimeDelta;
+		m_fMinusValue -= 100.f * fTimeDelta;
 	
 
 		if (1.f > m_fFrontBarSize.x)
@@ -122,14 +122,14 @@ void CHodHpBar::Set_ProgressHeight(_float fHeight)
 
 void CHodHpBar::Shake()
 {
-	if (10 < m_uShakeCount)
+	if (6 < m_uShakeCount)
 		m_uShakeCount = 0;
 
 	m_uShakeCount++;
 
 
 
-	if (5 >= m_uShakeCount)
+	if (3 >= m_uShakeCount)
 	{
 		m_fPos.x = m_fResetPos.x + 2.f;
 		m_fPos.y = m_fResetPos.y - 1.f;

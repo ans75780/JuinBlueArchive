@@ -3,11 +3,6 @@
 
 matrix	g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 
-
-
-float2		g_Ratio;
-float4		g_Color;
-float4		g_Ambient = float4(0.3f, 0.3f, 0.3f, 0.f);
 texture2D	g_DiffuseTexture;
 
 
@@ -19,7 +14,6 @@ sampler DefaultSampler = sampler_state
 	AddressU = wrap;
 	AddressV = wrap;
 };
-
 
 
 struct VS_IN
@@ -69,10 +63,7 @@ PS_OUT PS_MAIN(PS_IN In)
 {
 	PS_OUT		Out = (PS_OUT)0;
 
-	Out.vColor = g_Color * g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
-
-	if (Out.vColor.r < 0.1f)
-		discard;
+	Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
 	return Out;	
 }
@@ -83,10 +74,10 @@ PS_OUT PS_MAIN_RATIO(PS_IN In)
 
 	Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
-	if (In.vTexUV.x > g_Ratio.x)
-		discard;
-	if (In.vTexUV.y > g_Ratio.y)
-		discard;
+	//if (In.vTexUV.x > g_Ratio.x)
+	//	discard;
+	//if (In.vTexUV.y > g_Ratio.y)
+	//	discard;
 	/*if (Out.vColor.a < 0.1f)
 		discard;*/
 

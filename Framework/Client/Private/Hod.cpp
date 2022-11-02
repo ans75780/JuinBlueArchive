@@ -10,6 +10,7 @@
 #include "Hod_CutScene_Cam.h"
 #include "UI_Fade_White.h"
 #include "HodHpBar.h"
+#include "Camera_Free.h"
 
 CHod::CHod(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObject(pDevice, pContext)
@@ -55,11 +56,14 @@ HRESULT CHod::Initialize(void * pArg)
 
 	m_pCutSceneCam = pGameInstance->Get_GameObjects(LEVEL_SHOP, TEXT("Layer_CutScene_Cam")).front();
 
+	m_pCameraFree = static_cast<CCamera_Free*>(pGameInstance->Get_GameObjects(LEVEL_SHOP, TEXT("Layer_Camera")).front());
+
 	RELEASE_INSTANCE(CGameInstance);
 
 	m_pModelCom->Set_CurrentAnimation(8);
 	m_pCutSceneAnimation = m_pModelCom->Get_AnimationFromName("HOD_Original_BattleReady");
 	m_pCutSceneAnimation->Play();
+	
 
 
 	return S_OK;
@@ -72,8 +76,12 @@ void CHod::Tick(_float fTimeDelta)
 	if (m_bExTickStop)
 		return;
 
+	StateCheck(fTimeDelta);
 	StartSet(fTimeDelta);	//시작이벤트가끝나면 더이상 실행되지않음
-	
+
+	if(m_eState != HOD_STATE::READY && !m_bStopAnime)
+		m_pModelCom->Play_Animation(fTimeDelta);
+
 	if (0.f < m_fgDamageEffcet)
 	{
 		m_fgDamageEffcet -= 0.1f;
@@ -156,6 +164,9 @@ void CHod::CreateUI_Hod()
 
 void CHod::BattlePosSet()
 {
+	m_eState = HOD_STATE::IDLE;
+	m_pModelCom->Set_CurrentAnimation(6);
+
 	_vector _vPos =	m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION);
 	_float4	 _fPos;
 	XMStoreFloat4(&_fPos, _vPos);
@@ -188,12 +199,12 @@ void CHod::BattlePosSet()
 		}
 	}
 
-	if (FAILED(pGameInstance->Add_GameObject(LEVEL_SHOP,
-		TEXT("Layer_Chara_Aru"), TEXT("Prototype_GameObject_Character_Aru"))))
-	{
-		MSG_BOX("아루생성실패");
-		return;
-	}
+	//if (FAILED(pGameInstance->Add_GameObject(LEVEL_SHOP,
+	//	TEXT("Layer_Chara_Aru"), TEXT("Prototype_GameObject_Character_Aru"))))
+	//{
+	//	MSG_BOX("아루생성실패");
+	//	return;
+	//}
 
 	if (FAILED(pGameInstance->Add_GameObject(LEVEL_SHOP,
 		TEXT("Layer_Chara_Haruka"), TEXT("Prototype_GameObject_Character_Haruka"))))
@@ -201,6 +212,13 @@ void CHod::BattlePosSet()
 		MSG_BOX("하루카생성실패");
 		return;
 	}
+
+	//if (FAILED(pGameInstance->Add_GameObject(LEVEL_SHOP,
+	//	TEXT("Layer_Chara_Zunko"), TEXT("Prototype_GameObject_Character_Zunko"))))
+	//{
+	//	MSG_BOX("준코생성실패");
+	//	return;
+	//}
 
 	RELEASE_INSTANCE(CGameInstance);
 }
@@ -221,7 +239,7 @@ void CHod::StartSet(_float& fTimeDelta)
 		static_cast<CHod_CutScene_Cam*>(m_pCutSceneCam)->Get_Model()->Play_Animation(fTimeDelta * 0.7f);
 
 		_float _frame = static_cast<CHod_CutScene_Cam*>(m_pCutSceneCam)->Get_Model()->Get_AnimationFromName("HOD_Original_BattleReady_Cam")->Get_TimeAcc();
-
+		
 
 		if (KEY(TAB, TAP))
 		{
@@ -237,13 +255,11 @@ void CHod::StartSet(_float& fTimeDelta)
 		}
 		return;
 	}
-	auto DeathAni = m_pModelCom->Get_AnimationFromName("HOD_Original_Vital_Death");
-	if (4.7f < DeathAni->Get_TimeAcc())
-	{
-		DeathAni->Pause();
-		return;
-	}
-	m_pModelCom->Play_Animation(fTimeDelta);
+
+
+	
+
+
 
 }
 
@@ -258,10 +274,109 @@ void CHod::DamageAction(_float _Damage)
 	if (0.f >= m_desc.fHp)
 	{
 		m_pModelCom->Set_CurrentAnimation(10);
+		m_eState = DEAD;
 		m_bDie = true;
 	}
 
 	m_fgDamageEffcet = 1.f;
+}
+
+void CHod::StateCheck(_float & fTimeDelta)
+{
+	switch (m_eState)
+	{
+	case READY:
+		break;
+	case IDLE:
+		m_fTime += fTimeDelta;
+		if (m_pModelCom->Get_AnimationFromName("HOD_Original_Idle")->IsFinished())
+		{
+			m_pModelCom->Get_AnimationFromName("HOD_Original_Idle")->Reset();
+
+			if (3 <= m_iExCount)
+			{
+				m_iExCount = 0;
+				m_fAtkDelay = 3.f;
+				m_fTime = 0.f;
+				m_eState = HOD_STATE::EX2;
+				m_pModelCom->Set_CurrentAnimation(9);
+				break;
+			}
+
+			if (m_fAtkDelay < m_fTime)
+			{
+				m_iExCount++;
+				m_fAtkDelay = 3.f;
+				m_fTime = 0.f;
+				m_eState = HOD_STATE::ATK_START;
+				m_pModelCom->Set_CurrentAnimation(5);
+				break;
+
+			}
+			else
+			{
+				m_eState = HOD_STATE::IDLE;
+				m_pModelCom->Set_CurrentAnimation(6);
+				break;
+			}
+		}
+		break;
+	case ATK_START:
+		if (m_pModelCom->Get_AnimationFromName("HOD_Original_Normal_Attack_Start")->IsFinished())
+		{
+			m_pModelCom->Get_AnimationFromName("HOD_Original_Normal_Attack_Start")->Reset();
+			m_eState = HOD_STATE::ATK_ING;
+			m_pModelCom->Set_CurrentAnimation(7);
+		}
+		break;
+	case ATK_DELAY:
+		break;
+	case ATK_ING:
+		if (m_pModelCom->Get_AnimationFromName("HOD_Original_Normal_Attack_Ing")->IsFinished())
+		{
+			m_pModelCom->Get_AnimationFromName("HOD_Original_Normal_Attack_Ing")->Reset();
+			m_eState = HOD_STATE::ATK_END;
+			m_pModelCom->Set_CurrentAnimation(0);
+		}
+		break;
+	case ATK_END:
+		if (m_pModelCom->Get_AnimationFromName("HOD_Original_Normal_Attack_End")->IsFinished())
+		{
+			m_pModelCom->Get_AnimationFromName("HOD_Original_Normal_Attack_End")->Reset();
+			m_eState = HOD_STATE::IDLE;
+			m_pModelCom->Set_CurrentAnimation(6);
+		}
+		break;
+	case GROGGY:
+		break;
+	case EX1:
+		break;
+	case EX2:
+		if (m_pModelCom->Get_AnimationFromName("HOD_Original_Exs2")->IsFinished())
+		{
+			m_pModelCom->Get_AnimationFromName("HOD_Original_Exs2")->Reset();
+			m_eState = HOD_STATE::IDLE;
+			m_pModelCom->Set_CurrentAnimation(6);
+		}
+		break;
+	case EX3:
+		break;
+	case EX4:
+		break;
+	case EX5:
+		break;
+	case DEAD:
+		if (4.7f < m_pModelCom->Get_AnimationFromName("HOD_Original_Vital_Death")->Get_TimeAcc())
+		{
+			m_bStopAnime = true;
+		}
+		break;
+	case STATE_END:
+		break;
+	default:
+		break;
+	}
+
 }
 
 HRESULT CHod::SetUp_Components()				//Com_Transform

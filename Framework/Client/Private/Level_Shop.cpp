@@ -31,6 +31,9 @@ HRESULT CLevel_Shop::Initialize()
 	if (FAILED(Ready_Layer_Hod(TEXT("Layer_Hod"))))
 		return E_FAIL;
 
+	//if (FAILED(TestEffect()))
+	//	return E_FAIL;
+
 
 
 	return S_OK;
@@ -131,6 +134,17 @@ HRESULT CLevel_Shop::Ready_Right()
 
 	RELEASE_INSTANCE(CGameInstance);
 
+	return S_OK;
+}
+
+HRESULT CLevel_Shop::TestEffect()
+{
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_SHOP, TEXT("Layer_Effect_Bullet"), TEXT("Prototype_GameObject_Effect_Bullet"))))
+		return E_FAIL;
+
+	RELEASE_INSTANCE(CGameInstance);
 	return S_OK;
 }
 

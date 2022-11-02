@@ -65,6 +65,9 @@ HRESULT CHpBar::Initialize(void * pArg)
 	}
 
 
+
+
+
 	return S_OK;
 }
 
@@ -73,6 +76,14 @@ void CHpBar::Tick(_float fTimeDelta)
 	//매 틱마다 오프셋만큼 조정
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION,
 		m_pTarget->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION) + XMLoadFloat3(&m_vOffset));
+
+
+	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION);
+	_float4	fPos;
+	XMStoreFloat4(&fPos, vPos);
+	fPos.y += 0.4f;
+	fPos.z -= 0.2f;
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&fPos));
 
 	//빌보드 만드는법
 	/*

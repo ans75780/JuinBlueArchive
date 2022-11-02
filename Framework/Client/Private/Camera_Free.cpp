@@ -41,23 +41,22 @@ HRESULT CCamera_Free::Initialize(void * pArg)
 
 	_matrix mat = XMMatrixRotationAxis(XMVectorSet(0.f, 1.f, 0.f, 1.f), XMConvertToRadians(-90.f));
 
-	if (FAILED(__super::Add_Component(LEVEL_SHOP, TEXT("Aru_Cam"), TEXT("Com_Model"), (CComponent**)&m_pModelCom_AruCam)))
+	if (FAILED(__super::Add_Component(LEVEL_SHOP, TEXT("Aru_Cam"), TEXT("Com_Model_Aru"), (CComponent**)&m_pModelCom_AruCam)))
 	{
 		MSG_BOX("¾Æ·çÄ·ÄÄÆ÷³ÍÆ®¸ø°¡Á®¿È");
 		return E_FAIL;
 	}
 
-	if (FAILED(__super::Add_Component(LEVEL_SHOP, TEXT("Haruka_Cam"), TEXT("Com_Model2"), (CComponent**)&m_pModelCom_HarukaCam)))
+	if (FAILED(__super::Add_Component(LEVEL_SHOP, TEXT("Haruka_Cam"), TEXT("Com_Model_Haruka"), (CComponent**)&m_pModelCom_HarukaCam)))
 	{
 		MSG_BOX("ÇÏ·çÄ«Ä·ÄÄÆ÷³ÍÆ®¸ø°¡Á®¿È");
 		return E_FAIL;
 	}
-
-	//if (FAILED(__super::Add_Component(LEVEL_SHOP, TEXT("Aru_Cam"), TEXT("Com_Model3"), (CComponent**)&m_pModelCom_ZunkoCam)))
-	//{
-	//	MSG_BOX("ÁØÄÚÄ·ÄÄÆ÷³ÍÆ®¸ø°¡Á®¿È");
-	//	return E_FAIL;
-	//}
+	if (FAILED(__super::Add_Component(LEVEL_SHOP, TEXT("Zunko_Cam"), TEXT("Com_Model_Zunko"), (CComponent**)&m_pModelCom_ZunkoCam)))
+	{
+		MSG_BOX("ÁØÄÚÄ·ÄÄÆ÷³ÍÆ®¸ø°¡Á®¿È");
+		return E_FAIL;
+	}
 
 	RELEASE_INSTANCE(CGameInstance);
 	return S_OK;
@@ -69,7 +68,6 @@ void CCamera_Free::Tick(_float fTimeDelta)
 
 	if (!IsMainCam())
 		return;
-
 
 
 	if (m_pChara != nullptr)
@@ -92,28 +90,33 @@ void CCamera_Free::Tick(_float fTimeDelta)
 
 		if (KEY(Q, TAP))
 		{
-			_float4 _right, _up, _look, _trans;
+			//_float4 _right, _up, _look, _trans;
 
-			_vector _vRight = m_pTransformCom->Get_State(CTransform::STATE_RIGHT);
-			_vector _vUp = m_pTransformCom->Get_State(CTransform::STATE_UP);
-			_vector _vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
-			_vector _vTrans = m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION);
+			//_vector _vRight = m_pTransformCom->Get_State(CTransform::STATE_RIGHT);
+			//_vector _vUp = m_pTransformCom->Get_State(CTransform::STATE_UP);
+			//_vector _vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
+			//_vector _vTrans = m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION);
 
-			XMStoreFloat4(&_right, _vRight);
-			XMStoreFloat4(&_up, _vUp);
-			XMStoreFloat4(&_look, _vLook);
-			XMStoreFloat4(&_trans, _vTrans);
+			//XMStoreFloat4(&_right, _vRight);
+			//XMStoreFloat4(&_up, _vUp);
+			//XMStoreFloat4(&_look, _vLook);
+			//XMStoreFloat4(&_trans, _vTrans);
 
-			_tchar temp[MAX_PATH];
-			_stprintf_s(temp, MAX_PATH, L"R = (%.2f, %.2f, %.2f, %.2f)\n U = (%.2f, %.2f, %.2f, %.2f)\n L = (%.2f, %.2f, %.2f, %.2f)\n T = (%.2f, %.2f, %.2f, %.2f) "
-				, _right.x, _right.y, _right.z, _right.w
-				, _up.x, _up.y, _up.z, _up.w
-				, _look.x, _look.y, _look.z, _look.w
-				, _trans.x, _trans.y, _trans.z, _trans.w);
+			//_tchar temp[MAX_PATH];
+			//_s_tprintf_s(temp, MAX_PATH, L"R = (%.2f, %.2f, %.2f, %.2f)\n U = (%.2f, %.2f, %.2f, %.2f)\n L = (%.2f, %.2f, %.2f, %.2f)\n T = (%.2f, %.2f, %.2f, %.2f) "
+			//	, _right.x, _right.y, _right.z, _right.w
+			//	, _up.x, _up.y, _up.z, _up.w
+			//	, _look.x, _look.y, _look.z, _look.w
+			//	, _trans.x, _trans.y, _trans.z, _trans.w);
 
-			MessageBox(0, temp, TEXT("System Error"), MB_OK);
-
+			//MessageBox(0, temp, TEXT("System Error"), MB_OK);
 		}
+		if (KEY(E, TAP))
+		{
+			m_pTransformCom->LookAt(pGameInstance->Get_GameObjects(LEVEL_SHOP, TEXT("Layer_Effect_Bullet")).front()->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION));
+		}
+
+
 
 
 		if (pGameInstance->Get_DIKeyState(DIK_W) & 0x80)
@@ -151,6 +154,8 @@ void CCamera_Free::Tick(_float fTimeDelta)
 		Safe_Release(pGameInstance);
 	}
 
+	if (m_bShake)
+		ShakeTick(fTimeDelta);
 
 
 	if (FAILED(Bind_PipeLine()))
@@ -202,7 +207,8 @@ void CCamera_Free::ExCamPlay(_float& fTimeDelta)
 		m_CameraDesc.fFovy = XMConvertToRadians(30.f); //65.f
 	else if (!lstrcmp(TEXT("Haruka"), temp.sz_Name))
 		m_CameraDesc.fFovy = XMConvertToRadians(10.f); //65.f
-
+	else if (!lstrcmp(TEXT("Zunko"), temp.sz_Name))
+		m_CameraDesc.fFovy = XMConvertToRadians(30.f); //65.f
 	_float4 MoveCharaPos;
 	XMStoreFloat4(&MoveCharaPos, m_pChara->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION));
 
@@ -248,14 +254,11 @@ void CCamera_Free::GetModelCam()
 	OBJ_DESC temp = m_pChara->Get_Desc();
 
 	if (!lstrcmp(TEXT("Aru"), temp.sz_Name))
-	{
 		m_pModelCom = m_pModelCom_AruCam;
-	}
 	else if (!lstrcmp(TEXT("Haruka"), temp.sz_Name))
-	{
 		m_pModelCom = m_pModelCom_HarukaCam;
-	}
-
+	else if (!lstrcmp(TEXT("Zunko"), temp.sz_Name))
+		m_pModelCom = m_pModelCom_ZunkoCam;
 
 	if(nullptr != m_pModelCom)
 		m_pModelCom->Play_Animation(0);
@@ -278,6 +281,53 @@ void CCamera_Free::RotateMat(_matrix * _Mat, _fvector vAxis, _float fRadian)
 	_Mat->r[0] = vRight;
 	_Mat->r[1] = vUp;
 	_Mat->r[2] = vLook;
+}
+
+void CCamera_Free::Shake(_float _time)
+{
+	m_fShakeTime = _time;
+	m_bShake = true;
+	m_vOringinPos = m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION);
+	m_fShakeAver = 0;
+	m_iShakeCount = 0;
+	_float4 temp;
+	XMStoreFloat4(&temp, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
+	m_fSetX = temp.x;
+}
+
+void CCamera_Free::ShakeTick(_float& fTimeDelta)
+{
+	_float4 thisPosF;
+	_vector  thisPosV = m_vOringinPos;
+	XMStoreFloat4(&thisPosF, thisPosV);
+
+	if (m_iShakeCount++ >= 5)
+	{
+		if (m_fShakeAver  < 0.6f)
+		{
+			m_fShakeAver += 0.3f;
+		}
+		else if (m_fShakeAver  > -0.6f)
+		{
+			m_fShakeAver -= 0.3f;
+		}
+		m_iShakeCount = 0;
+	}
+
+	thisPosF.x = m_fSetX + m_fShakeAver;
+	thisPosF.y += m_fShakeAver * 0.5f;
+
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&thisPosF));
+
+	m_fShakeValue += fTimeDelta;
+	if (m_fShakeTime < m_fShakeValue)
+	{
+		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, m_vOringinPos);
+		m_fShakeValue = 0.f;
+		m_fShakeTime = 0.f;
+		m_bShake = false;
+	}
+
 }
 
 CCamera_Free * CCamera_Free::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

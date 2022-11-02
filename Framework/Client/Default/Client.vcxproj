@@ -186,8 +186,11 @@
     <ClInclude Include="..\Public\Charater.h" />
     <ClInclude Include="..\Public\Chara_Aru.h" />
     <ClInclude Include="..\Public\Chara_Haruka.h" />
+    <ClInclude Include="..\Public\Chara_Zunko.h" />
     <ClInclude Include="..\Public\Effect.h" />
+    <ClInclude Include="..\Public\Effect_Bullet.h" />
     <ClInclude Include="..\Public\Effect_Hit.h" />
+    <ClInclude Include="..\Public\Effect_ShotGun.h" />
     <ClInclude Include="..\Public\Hod.h" />
     <ClInclude Include="..\Public\HodHpBar.h" />
     <ClInclude Include="..\Public\Hod_CutScene_Cam.h" />
@@ -289,8 +292,11 @@
     <ClCompile Include="..\Private\Charater.cpp" />
     <ClCompile Include="..\Private\Chara_Aru.cpp" />
     <ClCompile Include="..\Private\Chara_Haruka.cpp" />
+    <ClCompile Include="..\Private\Chara_Zunko.cpp" />
     <ClCompile Include="..\Private\Effect.cpp" />
+    <ClCompile Include="..\Private\Effect_Bullet.cpp" />
     <ClCompile Include="..\Private\Effect_Hit.cpp" />
+    <ClCompile Include="..\Private\Effect_ShotGun.cpp" />
     <ClCompile Include="..\Private\Hod.cpp" />
     <ClCompile Include="..\Private\HodHpBar.cpp" />
     <ClCompile Include="..\Private\Hod_CutScene_Cam.cpp" />

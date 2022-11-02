@@ -320,6 +320,15 @@
     <ClInclude Include="..\Public\Chara_Haruka.h">
       <Filter>02.GameObject\14. Hod\Charater\Haruka</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Chara_Zunko.h">
+      <Filter>02.GameObject\14. Hod\Charater\Zunko</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Effect_Bullet.h">
+      <Filter>02.GameObject\14. Hod\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Effect_ShotGun.h">
+      <Filter>02.GameObject\14. Hod\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -623,6 +632,15 @@
     <ClCompile Include="..\Private\Chara_Haruka.cpp">
       <Filter>02.GameObject\14. Hod\Charater\Haruka</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Chara_Zunko.cpp">
+      <Filter>02.GameObject\14. Hod\Charater\Zunko</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Effect_Bullet.cpp">
+      <Filter>02.GameObject\14. Hod\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Effect_ShotGun.cpp">
+      <Filter>02.GameObject\14. Hod\Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -905,6 +923,12 @@
     </Filter>
     <Filter Include="02.GameObject\14. Hod\Charater\Haruka">
       <UniqueIdentifier>{ee7e6a21-df93-47e1-b877-b1f005e6058f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\14. Hod\Charater\Zunko">
+      <UniqueIdentifier>{fa75e936-3101-49c8-945e-b8735e681521}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\14. Hod\Effect">
+      <UniqueIdentifier>{5fa1d19d-d5c6-4042-a14b-a2b54c0184af}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

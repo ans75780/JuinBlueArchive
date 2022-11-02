@@ -208,9 +208,9 @@ HRESULT CLoader_Start::Loading_ForLogoLevel()
 
 
 	/* For.Prototype_Component_Model_Aru*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Aru_Original"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Aru_Original/", "Aru_Original.fbx", rotMat))))
-		return E_FAIL;
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Aru_Original"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Aru_Original/", "Aru_Original.fbx", rotMat))))
+	//	return E_FAIL;
 
 	///* For.Prototype_Component_Model_Aru*/
 	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Aru_Original_FX"),
@@ -231,7 +231,7 @@ HRESULT CLoader_Start::Loading_ForLogoLevel()
 	pUI_ProgreeBar->Plus_WidthSize(200.f); //70%
 
 
-	///* For.Prototype_Component_Model_Zunko*/
+	/* For.Prototype_Component_Model_Zunko*/
 	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Zunko_Original"),
 	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Zunko_Original/", "Zunko_Original.fbx", rotMat))))
 	//	return E_FAIL;
@@ -277,7 +277,6 @@ HRESULT CLoader_Start::Loading_ForLogoLevel()
 	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Stage_School_1"),
 	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../../Resources/Models/NonAnimModels/Stages/School/", "School_1.fbx", rotMat))))
 	//	return E_FAIL;
-
 
 	pUI_ProgreeBar->Plus_WidthSize(200.f); //100%
 	pUI_ProgreeBar->Set_LoadingSusccess(true);

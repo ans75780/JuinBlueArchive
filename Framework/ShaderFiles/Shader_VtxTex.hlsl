@@ -2,14 +2,8 @@
 #include "Client_Shader_Defines.hpp"
 
 matrix	g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
-
-
-
-float2		g_Ratio;
-
 texture2D	g_DiffuseTexture;
-
-
+vector		g_vColor;
 
 
 sampler DefaultSampler = sampler_state 
@@ -82,10 +76,10 @@ PS_OUT PS_MAIN_RATIO(PS_IN In)
 
 	Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
-	if (In.vTexUV.x > g_Ratio.x)
-		discard;
-	if (In.vTexUV.y > g_Ratio.y)
-		discard;
+	//if (In.vTexUV.x > g_Ratio.x)
+	//	discard;
+	//if (In.vTexUV.y > g_Ratio.y)
+	//	discard;
 	/*if (Out.vColor.a < 0.1f)
 		discard;*/
 
@@ -106,6 +100,20 @@ PS_OUT PS_MAIN_UPBRIGHT(PS_IN In)
 	return Out;
 }
 
+PS_OUT PS_MAIN_EFFECT(PS_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+	Out.vColor = g_vColor * g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+
+	if (Out.vColor.r < 0.7f)
+		Out.vColor.a = 0.f;
+
+	Out.vColor.r *= 1.5f;
+	Out.vColor.g *= 1.5f;
+	Out.vColor.b *= 1.5f;
+
+	return Out;
+}
 
 technique11 DefaultTechnique
 {
@@ -136,6 +144,17 @@ technique11 DefaultTechnique
 		VertexShader = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_UPBRIGHT();
+	}
+
+	pass Effect
+	{
+		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+		SetRasterizerState(RS_Default);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_MAIN_EFFECT();
 	}
 
 

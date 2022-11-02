@@ -17,6 +17,14 @@ class CCharater : public CGameObject
 {
 public:
 	enum CHARA_STATE { IDLE, RUN, RUN_END, RELOAD, ATK_START, ATK_DELAY, ATK_ING, ATK_END, EX_CUTIN, EX, VICTORY, STATE_END };
+	
+	struct BulletDesc
+	{
+		_vector CreatePos;
+		_vector TargetPos;
+		_float	Damage;
+		class CHod* Hod = nullptr;
+	};
 
 public:
 	CCharater(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -54,7 +62,7 @@ protected:
 	_float					m_fAttackDelay = 0.f;
 	_int					m_iMaxAmmo = 0;
 	_bool					m_bAtkIngOnce = true;
-
+	_bool					m_bBulletCreateOnce = true;
 
 private:
 protected:

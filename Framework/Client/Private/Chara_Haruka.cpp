@@ -11,6 +11,7 @@
 #include "UI_Fade_White.h"
 #include "HpBar.h"
 #include "Camera_Free.h"
+#include "Hod.h"
 
 CChara_Haruka::CChara_Haruka(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CCharater(pDevice, pContext)
@@ -123,6 +124,10 @@ void CChara_Haruka::ExsPlayOnce()// exÄ· º¹±¸ÈÄ ÇÑ¹øµé¾î¿È exs null¾Æ´Ò¶§ µé¾î¿À
 
 void CChara_Haruka::StateCheck(_float & fTimeDelta)
 {
+	_float Duration;
+	_float TimeAcc;
+
+
 	switch (m_eState)
 	{
 	case IDLE:
@@ -171,6 +176,34 @@ void CChara_Haruka::StateCheck(_float & fTimeDelta)
 		}
 		break;
 	case ATK_ING:
+		Duration = m_pModelCom->Get_AnimationFromName("Haruka_Original_Normal_Attack_Ing")->Get_Duration();
+		TimeAcc = m_pModelCom->Get_AnimationFromName("Haruka_Original_Normal_Attack_Ing")->Get_TimeAcc();
+
+		if (m_bBulletCreateOnce && TimeAcc > 0.09f)
+		{
+			CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+			_matrix _mat, rotMat;
+
+			rotMat = XMMatrixRotationAxis(XMVectorSet(0.f, 1.f, 0.f, 1.f), XMConvertToRadians(180.f));
+			_mat = m_pModelCom->Find_Bone("fire_01")->Get_CombinedMatrix();
+			_mat *= rotMat;
+			_mat *= m_pTransformCom->Get_WorldMatrix();
+
+			_float4	xPosPush;
+			XMStoreFloat4(&xPosPush, _mat.r[3]);
+			xPosPush.x += 0.8f;
+			xPosPush.y += 0.1f;
+			_mat.r[3] = XMLoadFloat4(&xPosPush);
+
+			if (FAILED(pGameInstance->Add_GameObject(LEVEL_SHOP, TEXT("Layer_Effect_Bullet"),
+				TEXT("Prototype_GameObject_Effect_ShotGun"), &_mat)))
+				return;
+
+			RELEASE_INSTANCE(CGameInstance);
+			m_pHod->DamageAction(1.f);
+			m_bBulletCreateOnce = false;
+		}
+
 		if (m_bAtkIngOnce)
 		{
 			m_iAmmo--;
@@ -178,6 +211,7 @@ void CChara_Haruka::StateCheck(_float & fTimeDelta)
 		}
 		if (m_pModelCom->Get_AnimationFromName("Haruka_Original_Normal_Attack_Ing")->IsFinished())
 		{
+			m_bBulletCreateOnce = true;
 			m_pModelCom->Get_AnimationFromName("Haruka_Original_Normal_Attack_Ing")->Reset();
 			m_bAtkIngOnce = true;
 			if (0 < m_iAmmo)

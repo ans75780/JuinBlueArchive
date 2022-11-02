@@ -26,11 +26,13 @@ public:
 public:
 	void	PlayExs(class CCharater* _chara);
 	void	EndExs();
+	void	Shake(_float _time);
+
 private:
 	void	ExCamPlay(_float& fTimeDelta);
 	void	GetModelCam();
 	void	RotateMat(_matrix*	_Mat, _fvector vAxis, _float fRadian);
-
+	void	ShakeTick(_float& fTimeDelta);
 public:
 	static CCamera_Free* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
@@ -46,10 +48,19 @@ private:
 
 	_matrix		m_tOrigineMat;
 
-
+	
 private:
 	_bool	m_bCameraControl = false;
 	_bool	m_bExCamOnce = false;
+	_bool	m_bShake = false;
+	_float	m_fShakeTime = 0.f;
+	_float	m_fShakeValue = 0.f;
+	_int	m_iShakeCount = 0;
+	_float	m_fShakeAver = 0.f;
+	_float	m_fSetX = 0.f;
+
+
+	_vector m_vOringinPos;
 };
 
 END

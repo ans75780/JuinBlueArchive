@@ -22,6 +22,7 @@ private:
 	HRESULT Ready_Layer_Hod(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_Sky(const _tchar* pLayerTag);
 	HRESULT Ready_Right();
+	HRESULT TestEffect();
 
 public:
 	static CLevel_Shop* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
