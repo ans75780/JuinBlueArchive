@@ -45,6 +45,9 @@ HRESULT CChara_Aru::Initialize(void * pArg)
 
 void CChara_Aru::Tick(_float fTimeDelta)
 {
+	if (m_bCharaDead)
+		return;
+	
 	__super::Tick(fTimeDelta);
 
 	if (m_bExTickStop && !m_bExUse)
@@ -62,9 +65,8 @@ void CChara_Aru::Tick(_float fTimeDelta)
 	if (nullptr != m_pAnimation_Exs)
 		ExsPlayOnce();
 	
-	m_pModelCom->Play_Animation(fTimeDelta);
-
-
+	if (!m_bCharaDead)
+		m_pModelCom->Play_Animation(fTimeDelta);
 }
 
 void CChara_Aru::LateTick(_float fTimeDelta)
@@ -179,6 +181,11 @@ void CChara_Aru::StateCheck(_float & fTimeDelta)
 			_mat *= rotMat;
 			_mat *= m_pTransformCom->Get_WorldMatrix();
 
+			_float4	xPosPush;
+			XMStoreFloat4(&xPosPush, _mat.r[3]);
+			xPosPush.x += 0.2f;
+			_mat.r[3] = XMLoadFloat4(&xPosPush);
+
 			BulletDesc temp;
 			temp.CreatePos = _mat.r[3];
 			temp.TargetPos = m_pHod->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION);
@@ -228,6 +235,21 @@ void CChara_Aru::StateCheck(_float & fTimeDelta)
 	case EX:
 		break;
 	case VICTORY:
+		break;
+	case DEAD:
+		if (m_bDeadOnce)
+		{
+			m_pModelCom->Set_CurrentAnimation(22);
+			m_bDeadOnce = false;
+		}
+		Duration = m_pModelCom->Get_AnimationFromName("Aru_Original_Vital_Death")->Get_Duration();
+		TimeAcc = m_pModelCom->Get_AnimationFromName("Aru_Original_Vital_Death")->Get_TimeAcc();
+
+		if (TimeAcc > 2.9f)
+		{
+			m_bCharaDead = true;
+			m_pModelCom->Get_AnimationFromName("Aru_Original_Vital_Death")->Pause();
+		}
 		break;
 	case STATE_END:
 		break;

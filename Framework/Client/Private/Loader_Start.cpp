@@ -208,38 +208,23 @@ HRESULT CLoader_Start::Loading_ForLogoLevel()
 
 
 	/* For.Prototype_Component_Model_Aru*/
-	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Aru_Original"),
-	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Aru_Original/", "Aru_Original.fbx", rotMat))))
-	//	return E_FAIL;
-
-	///* For.Prototype_Component_Model_Aru*/
-	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Aru_Original_FX"),
-	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Effects/ExModel/Aru_Original/", "Aru_Original.fbx", mat))))
-	//	return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Aru_Original"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Aru_Original/", "Aru_Original.fbx", rotMat))))
+		return E_FAIL;
 
 	/* For.Prototype_Component_Model_Haruka*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Haruka_Original"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Haruka_Original/", "Haruka_Original.fbx", rotMat))))
 		return E_FAIL;
 
-	///* For.Prototype_Component_Model_Haruka*/
-	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Haruka_Original_FX"),
-	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Effects/ExModel/Haruka_Original/", "Haruka_Original.fbx", mat))))
-	//	return E_FAIL;
-
 
 	pUI_ProgreeBar->Plus_WidthSize(200.f); //70%
 
 
 	/* For.Prototype_Component_Model_Zunko*/
-	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Zunko_Original"),
-	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Zunko_Original/", "Zunko_Original.fbx", rotMat))))
-	//	return E_FAIL;
-
-	///* For.Prototype_Component_Model_Zunko*/
-	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Zunko_Original_FX"),
-	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Effects/ExModel/Zunko_Original/", "Zunko_Original.fbx", mat))))
-	//	return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Zunko_Original"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../../Resources/Models/AnimModels/Zunko_Original/", "Zunko_Original.fbx", rotMat))))
+		return E_FAIL;
 
 
 	///* For.Prototype_Component_Model_Soldier_Kaiserpmc_HG*/

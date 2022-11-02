@@ -11,6 +11,9 @@
 #include "UI_Fade_White.h"
 #include "HodHpBar.h"
 #include "Camera_Free.h"
+#include "Charater.h"
+
+#include <random>
 
 CHod::CHod(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObject(pDevice, pContext)
@@ -62,9 +65,10 @@ HRESULT CHod::Initialize(void * pArg)
 
 	m_pModelCom->Set_CurrentAnimation(8);
 	m_pCutSceneAnimation = m_pModelCom->Get_AnimationFromName("HOD_Original_BattleReady");
+	m_eState = READY;
 	m_pCutSceneAnimation->Play();
 	
-
+	AllCrackTrue();
 
 	return S_OK;
 }
@@ -79,8 +83,15 @@ void CHod::Tick(_float fTimeDelta)
 	StateCheck(fTimeDelta);
 	StartSet(fTimeDelta);	//시작이벤트가끝나면 더이상 실행되지않음
 
+	static _float Slow = 1.f;
+
+	if (KEY(B, TAP))
+	{
+		Slow = 0.1f;
+	}
+
 	if(m_eState != HOD_STATE::READY && !m_bStopAnime)
-		m_pModelCom->Play_Animation(fTimeDelta);
+		m_pModelCom->Play_Animation(fTimeDelta * Slow);
 
 	if (0.f < m_fgDamageEffcet)
 	{
@@ -199,12 +210,12 @@ void CHod::BattlePosSet()
 		}
 	}
 
-	//if (FAILED(pGameInstance->Add_GameObject(LEVEL_SHOP,
-	//	TEXT("Layer_Chara_Aru"), TEXT("Prototype_GameObject_Character_Aru"))))
-	//{
-	//	MSG_BOX("아루생성실패");
-	//	return;
-	//}
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_SHOP,
+		TEXT("Layer_Chara_Aru"), TEXT("Prototype_GameObject_Character_Aru"))))
+	{
+		MSG_BOX("아루생성실패");
+		return;
+	}
 
 	if (FAILED(pGameInstance->Add_GameObject(LEVEL_SHOP,
 		TEXT("Layer_Chara_Haruka"), TEXT("Prototype_GameObject_Character_Haruka"))))
@@ -213,12 +224,12 @@ void CHod::BattlePosSet()
 		return;
 	}
 
-	//if (FAILED(pGameInstance->Add_GameObject(LEVEL_SHOP,
-	//	TEXT("Layer_Chara_Zunko"), TEXT("Prototype_GameObject_Character_Zunko"))))
-	//{
-	//	MSG_BOX("준코생성실패");
-	//	return;
-	//}
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_SHOP,
+		TEXT("Layer_Chara_Zunko"), TEXT("Prototype_GameObject_Character_Zunko"))))
+	{
+		MSG_BOX("준코생성실패");
+		return;
+	}
 
 	RELEASE_INSTANCE(CGameInstance);
 }
@@ -256,11 +267,6 @@ void CHod::StartSet(_float& fTimeDelta)
 		return;
 	}
 
-
-	
-
-
-
 }
 
 void CHod::DamageAction(_float _Damage)
@@ -283,6 +289,9 @@ void CHod::DamageAction(_float _Damage)
 
 void CHod::StateCheck(_float & fTimeDelta)
 {
+	_float Duration;
+	_float TimeAcc;
+
 	switch (m_eState)
 	{
 	case READY:
@@ -322,6 +331,34 @@ void CHod::StateCheck(_float & fTimeDelta)
 		}
 		break;
 	case ATK_START:
+		if (m_bCharaPointerGetOnce)
+		{
+			CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+			m_pAru = static_cast<CCharater*>(pGameInstance->Get_GameObjects(LEVEL_SHOP, TEXT("Layer_Chara_Aru")).front());
+			if (m_pAru == nullptr)
+			{
+				MSG_BOX("아루 스타트 포인터얻기실패");
+				return;
+			}
+
+			m_pHaruka = static_cast<CCharater*>(pGameInstance->Get_GameObjects(LEVEL_SHOP, TEXT("Layer_Chara_Haruka")).front());
+			if (m_pHaruka == nullptr)
+			{
+				MSG_BOX("하루카포인터얻기실패");
+				return;
+			}
+
+			m_pZunko = static_cast<CCharater*>(pGameInstance->Get_GameObjects(LEVEL_SHOP, TEXT("Layer_Chara_Zunko")).front());
+			if (m_pZunko == nullptr)
+			{
+				MSG_BOX("준코포인터얻기실패");
+				return;
+			}
+
+			m_bCharaPointerGetOnce = false;
+			RELEASE_INSTANCE(CGameInstance);
+		}
+
 		if (m_pModelCom->Get_AnimationFromName("HOD_Original_Normal_Attack_Start")->IsFinished())
 		{
 			m_pModelCom->Get_AnimationFromName("HOD_Original_Normal_Attack_Start")->Reset();
@@ -332,8 +369,18 @@ void CHod::StateCheck(_float & fTimeDelta)
 	case ATK_DELAY:
 		break;
 	case ATK_ING:
+		Duration = m_pModelCom->Get_AnimationFromName("HOD_Original_Normal_Attack_Ing")->Get_Duration();
+		TimeAcc = m_pModelCom->Get_AnimationFromName("HOD_Original_Normal_Attack_Ing")->Get_TimeAcc();
+
+		if (m_bNormalAtkOnce && TimeAcc > 1.1f)
+		{
+			CreateBoom();
+			m_bNormalAtkOnce = false;
+		}
+
 		if (m_pModelCom->Get_AnimationFromName("HOD_Original_Normal_Attack_Ing")->IsFinished())
 		{
+			m_bNormalAtkOnce = true;
 			m_pModelCom->Get_AnimationFromName("HOD_Original_Normal_Attack_Ing")->Reset();
 			m_eState = HOD_STATE::ATK_END;
 			m_pModelCom->Set_CurrentAnimation(0);
@@ -352,8 +399,11 @@ void CHod::StateCheck(_float & fTimeDelta)
 	case EX1:
 		break;
 	case EX2:
+		CrackCheck();
+
 		if (m_pModelCom->Get_AnimationFromName("HOD_Original_Exs2")->IsFinished())
 		{
+			AllCrackTrue();
 			m_pModelCom->Get_AnimationFromName("HOD_Original_Exs2")->Reset();
 			m_eState = HOD_STATE::IDLE;
 			m_pModelCom->Set_CurrentAnimation(6);
@@ -377,6 +427,226 @@ void CHod::StateCheck(_float & fTimeDelta)
 		break;
 	}
 
+}
+
+void CHod::CreateCrack(const char * _boneName)
+{
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+	_matrix _mat = XMMatrixIdentity();
+	_mat *= m_pModelCom->Find_Bone(_boneName)->Get_CombinedMatrix();
+	_mat *= m_pTransformCom->Get_WorldMatrix();
+
+	_float4	xPosPush;
+	XMStoreFloat4(&xPosPush, _mat.r[3]);
+	xPosPush.y = 0.05f + m_CreateCount;
+
+	if (m_bUpDown)
+		m_CreateCount -= 0.001f;
+	else
+		m_CreateCount += 0.001f;
+
+
+	_mat.r[3] = XMLoadFloat4(&xPosPush);
+
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_SHOP, TEXT("Layer_Effect_Crack"),
+		TEXT("Prototype_GameObject_Effect_Crack"), &_mat)))
+		return;
+
+	RELEASE_INSTANCE(CGameInstance);
+}
+
+void CHod::AllCrackTrue()
+{
+	for (int i = 0; i < 7; i++)
+	{
+		m_bFirstCrack[i] = true;
+		m_bSecCrack[i] = true;
+	}
+
+}
+
+void CHod::CrackCheck()
+{
+	_float	Duration, TimeAcc;
+	Duration = m_pModelCom->Get_AnimationFromName("HOD_Original_Exs2")->Get_Duration();
+	TimeAcc = m_pModelCom->Get_AnimationFromName("HOD_Original_Exs2")->Get_TimeAcc();
+
+	if (m_bFirstCrack[0] && TimeAcc > 4.9f)
+	{
+		m_pCameraFree->Shake(0.7f);
+		m_bUpDown = true;
+		CreateCrack("bone_Tentacle_L_09");
+		m_bFirstCrack[0] = false;
+	}
+
+	if (m_bFirstCrack[1] && TimeAcc > 5.0f)
+	{
+		CreateCrack("bone_Tentacle_L_10");
+		m_bFirstCrack[1] = false;
+	}
+
+	if (m_bFirstCrack[2] && TimeAcc > 5.1f)
+	{
+		if (m_pAru != nullptr)
+			m_pAru->Damage_Chara(5.f);
+		if (m_pHaruka != nullptr)
+			m_pHaruka->Damage_Chara(5.f);
+		if (m_pZunko != nullptr)
+			m_pZunko->Damage_Chara(5.f);
+
+		CreateCrack("bone_Tentacle_L_11");
+		m_bFirstCrack[2] = false;
+	}
+
+	if (m_bFirstCrack[3] && TimeAcc > 5.2f)
+	{
+		if (m_pAru != nullptr)
+			m_pAru->Damage_Chara(5.f);
+		if (m_pHaruka != nullptr)
+			m_pHaruka->Damage_Chara(5.f);
+		if (m_pZunko != nullptr)
+			m_pZunko->Damage_Chara(5.f);
+		CreateCrack("bone_Tentacle_L_12");
+		m_bFirstCrack[3] = false;
+	}
+
+	if (m_bFirstCrack[4] && TimeAcc > 5.3f)
+	{
+		if (m_pAru != nullptr)
+			m_pAru->Damage_Chara(5.f);
+		if (m_pHaruka != nullptr)
+			m_pHaruka->Damage_Chara(5.f);
+		if (m_pZunko != nullptr)
+			m_pZunko->Damage_Chara(5.f);
+		CreateCrack("bone_Tentacle_L_13");
+		m_bFirstCrack[4] = false;
+	}
+
+	if (m_bFirstCrack[5] && TimeAcc > 5.4f)
+	{
+		CreateCrack("bone_Tentacle_L_14");
+		m_bFirstCrack[5] = false;
+	}
+
+	if (m_bFirstCrack[6] && TimeAcc > 5.5f)
+	{
+		CreateCrack("bone_Tentacle_L_15");
+		m_bFirstCrack[6] = false;
+	}
+
+
+
+
+
+	if (m_bSecCrack[0] && TimeAcc > 7.2f)
+	{
+		m_pCameraFree->Shake(0.7f);
+		m_bUpDown = false;
+		CreateCrack("bone_Tentacle_R_09");
+		m_bSecCrack[0] = false;
+	}
+
+	if (m_bSecCrack[1] && TimeAcc > 7.3f)
+	{
+		CreateCrack("bone_Tentacle_R_10");
+		m_bSecCrack[1] = false;
+	}
+
+	if (m_bSecCrack[2] && TimeAcc > 7.4f)
+	{
+		CreateCrack("bone_Tentacle_R_11");
+		m_bSecCrack[2] = false;
+	}
+
+	if (m_bSecCrack[3] && TimeAcc > 7.5f)
+	{
+		if (m_pAru != nullptr)
+			m_pAru->Damage_Chara(5.f);
+		if (m_pHaruka != nullptr)
+			m_pHaruka->Damage_Chara(5.f);
+		if (m_pZunko != nullptr)
+			m_pZunko->Damage_Chara(5.f);
+		CreateCrack("bone_Tentacle_R_12");
+		m_bSecCrack[3] = false;
+	}
+
+	if (m_bSecCrack[4] && TimeAcc > 7.6f)
+	{
+		if (m_pAru != nullptr)
+			m_pAru->Damage_Chara(5.f);
+		if (m_pHaruka != nullptr)
+			m_pHaruka->Damage_Chara(5.f);
+		if (m_pZunko != nullptr)
+			m_pZunko->Damage_Chara(5.f);
+
+		CreateCrack("bone_Tentacle_R_13");
+		m_bSecCrack[4] = false;
+	}
+
+	if (m_bSecCrack[5] && TimeAcc > 7.7f)
+	{
+		if (m_pAru != nullptr)
+			m_pAru->Damage_Chara(5.f);
+		if (m_pHaruka != nullptr)
+			m_pHaruka->Damage_Chara(5.f);
+		if (m_pZunko != nullptr)
+			m_pZunko->Damage_Chara(5.f);
+
+		CreateCrack("bone_Tentacle_R_14");
+		m_bSecCrack[5] = false;
+	}
+
+	if (m_bSecCrack[6] && TimeAcc > 7.8f)
+	{
+		CreateCrack("bone_Tentacle_R_15");
+		m_bSecCrack[6] = false;
+	}
+
+
+}
+
+void CHod::CreateBoom()
+{
+	if (m_pAru == nullptr || m_pHaruka == nullptr || m_pZunko == nullptr)
+	{
+		MSG_BOX("애들포인터없음");
+		return;
+	}
+	random_device _rd;
+	mt19937_64 _random(_rd());
+	uniform_int_distribution<__int64> _range(0, 2);
+	_int RandChara = (_uint)(_range(_random));
+	CCharater* _Chara = nullptr;
+
+	switch (RandChara)
+	{
+	case 0:
+		_Chara = m_pAru;
+		break;
+	case 1:
+		_Chara = m_pHaruka;
+		break;
+	case 2:
+		_Chara = m_pZunko;
+		break;
+	}
+
+
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+	_matrix _mat = XMMatrixIdentity();
+	_mat *= _Chara->Get_Transform()->Get_WorldMatrix();
+	_float4	xPosPush;
+	XMStoreFloat4(&xPosPush, _mat.r[3]);
+	xPosPush.z -= 0.5f;
+	xPosPush.y += 0.5f;
+	_mat.r[3] = XMLoadFloat4(&xPosPush);
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_SHOP, TEXT("Layer_Effect_Boom"),
+		TEXT("Prototype_GameObject_Effect_Boom"), &_mat)))
+		return;
+
+	_Chara->Damage_Chara(20.f);
+
+	RELEASE_INSTANCE(CGameInstance);
 }
 
 HRESULT CHod::SetUp_Components()				//Com_Transform

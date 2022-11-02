@@ -45,6 +45,9 @@ HRESULT CChara_Haruka::Initialize(void * pArg)
 
 void CChara_Haruka::Tick(_float fTimeDelta)
 {
+	if (m_bCharaDead)
+		return;
+
 	__super::Tick(fTimeDelta);
 
 	if (m_bExTickStop && !m_bExUse)
@@ -61,7 +64,8 @@ void CChara_Haruka::Tick(_float fTimeDelta)
 	if (nullptr != m_pAnimation_Exs)
 		ExsPlayOnce();
 
-	m_pModelCom->Play_Animation(fTimeDelta);
+	if (!m_bCharaDead)
+		m_pModelCom->Play_Animation(fTimeDelta);
 
 }
 
@@ -191,11 +195,11 @@ void CChara_Haruka::StateCheck(_float & fTimeDelta)
 
 			_float4	xPosPush;
 			XMStoreFloat4(&xPosPush, _mat.r[3]);
-			xPosPush.x += 0.8f;
+			xPosPush.x += 0.9f;
 			xPosPush.y += 0.1f;
 			_mat.r[3] = XMLoadFloat4(&xPosPush);
 
-			if (FAILED(pGameInstance->Add_GameObject(LEVEL_SHOP, TEXT("Layer_Effect_Bullet"),
+			if (FAILED(pGameInstance->Add_GameObject(LEVEL_SHOP, TEXT("Layer_Effect_ShotGun"),
 				TEXT("Prototype_GameObject_Effect_ShotGun"), &_mat)))
 				return;
 
@@ -240,6 +244,21 @@ void CChara_Haruka::StateCheck(_float & fTimeDelta)
 		m_pTransformCom->Go_Straight(fTimeDelta * 0.01f);
 		break;
 	case VICTORY:
+		break;
+	case DEAD:
+		if (m_bDeadOnce)
+		{
+			m_pModelCom->Set_CurrentAnimation(18);
+			m_bDeadOnce = false;
+		}
+		Duration = m_pModelCom->Get_AnimationFromName("Haruka_Original_Vital_Death")->Get_Duration();
+		TimeAcc = m_pModelCom->Get_AnimationFromName("Haruka_Original_Vital_Death")->Get_TimeAcc();
+
+		if (TimeAcc > 1.9f)
+		{
+			m_bCharaDead = true;
+			m_pModelCom->Get_AnimationFromName("Haruka_Original_Vital_Death")->Pause();
+		}
 		break;
 	case STATE_END:
 		break;

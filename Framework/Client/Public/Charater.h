@@ -16,7 +16,7 @@ BEGIN(Client)
 class CCharater : public CGameObject
 {
 public:
-	enum CHARA_STATE { IDLE, RUN, RUN_END, RELOAD, ATK_START, ATK_DELAY, ATK_ING, ATK_END, EX_CUTIN, EX, VICTORY, STATE_END };
+	enum CHARA_STATE { IDLE, RUN, RUN_END, RELOAD, ATK_START, ATK_DELAY, ATK_ING, ATK_END, EX_CUTIN, EX, VICTORY, DEAD, STATE_END };
 	
 	struct BulletDesc
 	{
@@ -40,6 +40,7 @@ public:
 
 	class CAnimation*	Get_Animation(const char* pAnimationName);
 	CModel*				Get_Model() { return m_pModelCom; }
+	void				Damage_Chara(_float _Damage);
 
 protected:
 	CShader*				m_pShaderCom = nullptr;
@@ -63,6 +64,8 @@ protected:
 	_int					m_iMaxAmmo = 0;
 	_bool					m_bAtkIngOnce = true;
 	_bool					m_bBulletCreateOnce = true;
+	_bool					m_bCharaDead = false;
+	_bool					m_bDeadOnce = true;
 
 private:
 protected:

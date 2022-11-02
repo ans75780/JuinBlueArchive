@@ -329,6 +329,12 @@
     <ClInclude Include="..\Public\Effect_ShotGun.h">
       <Filter>02.GameObject\14. Hod\Effect</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Effect_Crack.h">
+      <Filter>02.GameObject\14. Hod\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Effect_Boom.h">
+      <Filter>02.GameObject\14. Hod\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -639,6 +645,12 @@
       <Filter>02.GameObject\14. Hod\Effect</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Effect_ShotGun.cpp">
+      <Filter>02.GameObject\14. Hod\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Effect_Crack.cpp">
+      <Filter>02.GameObject\14. Hod\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Effect_Boom.cpp">
       <Filter>02.GameObject\14. Hod\Effect</Filter>
     </ClCompile>
   </ItemGroup>

@@ -42,7 +42,11 @@ public:
 	void				StateCheck(_float& fTimeDelta);
 	
 	_bool				Get_StopAnime() { return m_bStopAnime; }
+	void				CreateCrack(const char* _boneName);
+	void				AllCrackTrue();
+	void				CrackCheck();
 
+	void				CreateBoom();
 
 private:
 	CShader*				m_pShaderCom = nullptr;
@@ -56,6 +60,11 @@ private:
 	class CHodHpBar*		m_pHpBar = nullptr;
 	class CCamera_Free*		m_pCameraFree = nullptr;
 
+	class CCharater*		m_pAru = nullptr;
+	class CCharater*		m_pHaruka = nullptr;
+	class CCharater*		m_pZunko = nullptr;
+
+
 
 	HOD_STATE				m_eState = READY;
 	_bool					m_bCutSceneOnce = true;
@@ -68,6 +77,13 @@ private:
 	_float					m_fAtkDelay = 10.f;
 	_int					m_iExCount = 0;
 
+	_bool					m_bFirstCrack[7];
+	_bool					m_bSecCrack[7];
+	_float					m_CreateCount = 0.f;
+	_bool					m_bUpDown = true;
+
+	_bool					m_bNormalAtkOnce = true;
+	_bool					m_bCharaPointerGetOnce = true;
 private:
 	HRESULT SetUp_Components();
 	HRESULT SetUp_ShaderResource();

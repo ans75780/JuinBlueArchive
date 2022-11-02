@@ -1,6 +1,6 @@
 #include "..\Public\Transform.h"
 #include "Shader.h"
-
+#include "PipeLine.h"
 CTransform::CTransform(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CComponent(pDevice, pContext)
 {
@@ -188,6 +188,16 @@ void CTransform::Chase(_fvector vTargetPos, _float fTimeDelta)
 
 	Set_State(CTransform::STATE_TRANSLATION, vPosition);
 
+}
+
+void CTransform::SetBilBoard()
+{
+	_matrix     ViewInvers = XMMatrixInverse(nullptr, CPipeLine::Get_Instance()->Get_Transform(CPipeLine::D3DTS_VIEW));
+	_float3      vScale = Get_Scaled();
+
+	Set_State(CTransform::STATE_RIGHT, XMVector3Normalize(ViewInvers.r[0]) * vScale.x);
+	Set_State(CTransform::STATE_UP, XMVector3Normalize(ViewInvers.r[1]) * vScale.y);
+	Set_State(CTransform::STATE_LOOK, XMVector3Normalize(ViewInvers.r[2]) * vScale.z);
 }
 
 

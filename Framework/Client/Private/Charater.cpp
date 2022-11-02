@@ -77,8 +77,7 @@ HRESULT CCharater::Initialize(void * pArg)
 
 void CCharater::Tick(_float fTimeDelta)
 {
-	if (KEY(Y, TAP))
-		m_pHod->DamageAction(50.f);
+
 }
 
 void CCharater::LateTick(_float fTimeDelta)
@@ -117,6 +116,14 @@ CAnimation * CCharater::Get_Animation(const char * pAnimationName)
 	m_pAnimation = m_pModelCom->Get_AnimationFromName(pAnimationName);
 
 	return m_pAnimation;
+}
+
+void CCharater::Damage_Chara(_float _Damage)
+{
+	m_desc.fHp -= _Damage;
+	
+	if(m_desc.fHp <= 0.f)
+		m_eState = DEAD;
 }
 
 HRESULT CCharater::SetUp_Components(_tchar * ModelName)

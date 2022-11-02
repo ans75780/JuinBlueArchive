@@ -52,6 +52,8 @@
 
 #include "Effect_Bullet.h"
 #include "Effect_ShotGun.h"
+#include "Effect_Crack.h"
+#include "Effect_Boom.h"
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice(pDevice)
@@ -446,6 +448,29 @@ HRESULT CLoader::Loading_ForShopLevel()
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Effect_ShotGun"),
 		CEffect_ShotGun::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
+	//EFFECT
+	/* For.Prototype_Component_Texture_Effect_Crack */
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Effect_Crack"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/Effect/Crack.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Effect_Crack*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Effect_Crack"),
+		CEffect_Crack::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	//EFFECT
+	/* For.Prototype_Component_Texture_Effect_Boom */
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Effect_Boom"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/Effect/Boom/%d.png"), 16))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Effect_Boom*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Effect_Boom"),
+		CEffect_Boom::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 
 	lstrcpy(m_szLoadingText, TEXT("·Îµù ³¡ "));
 

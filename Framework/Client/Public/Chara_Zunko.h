@@ -24,7 +24,11 @@ private:
 	void	ExCamCheck();
 	void	ExsPlayOnce();
 	void	StateCheck(_float& fTimeDelta);
+	void	CreateBullet(_float _Damage);
 
+private:
+	_bool	m_bCreateBulletThree[3];
+	_bool	m_bExBulletCreate[50];
 
 public:
 	static CChara_Zunko* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

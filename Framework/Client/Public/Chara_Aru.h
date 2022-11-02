@@ -25,7 +25,6 @@ private:
 	void	ExsPlayOnce();
 	void	StateCheck(_float& fTimeDelta);
 
-
 public:
 	static CChara_Aru* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;

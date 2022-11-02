@@ -70,7 +70,7 @@ public:
 	void Rotation(_fvector vAxis, _float fRadian);
 	void LookAt(_fvector vTargetPos);
 	void Chase(_fvector vTargetPos, _float fTimeDelta);
-
+	void SetBilBoard();
 private:
 	_float4x4				m_WorldMatrix;
 	TRANSFORMDESC			m_TransformDesc;

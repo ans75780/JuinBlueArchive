@@ -188,7 +188,9 @@
     <ClInclude Include="..\Public\Chara_Haruka.h" />
     <ClInclude Include="..\Public\Chara_Zunko.h" />
     <ClInclude Include="..\Public\Effect.h" />
+    <ClInclude Include="..\Public\Effect_Boom.h" />
     <ClInclude Include="..\Public\Effect_Bullet.h" />
+    <ClInclude Include="..\Public\Effect_Crack.h" />
     <ClInclude Include="..\Public\Effect_Hit.h" />
     <ClInclude Include="..\Public\Effect_ShotGun.h" />
     <ClInclude Include="..\Public\Hod.h" />
@@ -294,7 +296,9 @@
     <ClCompile Include="..\Private\Chara_Haruka.cpp" />
     <ClCompile Include="..\Private\Chara_Zunko.cpp" />
     <ClCompile Include="..\Private\Effect.cpp" />
+    <ClCompile Include="..\Private\Effect_Boom.cpp" />
     <ClCompile Include="..\Private\Effect_Bullet.cpp" />
+    <ClCompile Include="..\Private\Effect_Crack.cpp" />
     <ClCompile Include="..\Private\Effect_Hit.cpp" />
     <ClCompile Include="..\Private\Effect_ShotGun.cpp" />
     <ClCompile Include="..\Private\Hod.cpp" />

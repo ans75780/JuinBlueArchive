@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "..\Public\Effect_Bullet.h"
+#include "..\Public\Effect_Boom.h"
 #include "Transform.h"
 #include "GameInstance.h"
 #include "Texture.h"
@@ -8,24 +8,18 @@
 #include "Camera_Free.h"
 #include "Charater.h"
 #include "Hod.h"
-#include <random>
 
 
-CEffect_Bullet::CEffect_Bullet(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
+CEffect_Boom::CEffect_Boom(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObject(pDevice, pContext)
 {
 }
 
-HRESULT CEffect_Bullet::Initialize(void * pArg)
+HRESULT CEffect_Boom::Initialize(void * pArg)
 {
 	CTransform::TRANSFORMDESC		TransformDesc;
 
-	random_device _rd;
-	mt19937_64 _random(_rd());
-	uniform_int_distribution<__int64> _range(100, 200);
-	_int RandChara = (_uint)(_range(_random));
-
-	TransformDesc.fSpeedPerSec = (_float)RandChara;
+	TransformDesc.fSpeedPerSec = 0.f;
 	TransformDesc.fRotationPerSec = XMConvertToRadians(0.0f);
 
 	if (FAILED(__super::Initialize(&TransformDesc)))
@@ -36,50 +30,39 @@ HRESULT CEffect_Bullet::Initialize(void * pArg)
 
 	if (pArg != nullptr)
 	{
-		m_tBulletDesc.CreatePos = (*(CCharater::BulletDesc*)pArg).CreatePos;
-		m_tBulletDesc.TargetPos = (*(CCharater::BulletDesc*)pArg).TargetPos;
-		m_tBulletDesc.Damage = (*(CCharater::BulletDesc*)pArg).Damage;
-		m_tBulletDesc.Hod = (*(CCharater::BulletDesc*)pArg).Hod;
-		
-		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, m_tBulletDesc.CreatePos);
+		_matrix temp = *(_matrix*)pArg;
+
+		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, temp.r[3]);
 	}
 
-
-	m_pTransformCom->Set_Scaled(_float3(0.3f, 0.3f, 0.3f));
+	m_pTransformCom->Set_Scaled(_float3(4.f, 4.f, 4.f));
 	m_gVcolor.x = 255.f / 255.f;
 	m_gVcolor.y = 255.f / 255.f;
-	m_gVcolor.z = 0.f / 255.f;
+	m_gVcolor.z = 255.f / 255.f;
 	m_gVcolor.w = 255.f / 255.f;
 	return S_OK;
 }
 
-void CEffect_Bullet::Tick(_float fTimeDelta)
+void CEffect_Boom::Tick(_float fTimeDelta)
 {
-	if (m_tBulletDesc.Hod == nullptr || m_tBulletDesc.Hod->Get_StopAnime())
+	if (m_bOff)
 		return;
-	
-	m_pTransformCom->Chase(m_tBulletDesc.TargetPos, fTimeDelta);
 
-	_float4 PPos;
-	XMStoreFloat4(&PPos, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
-	
-	if (PPos.x > 11.f)
+	m_fFrame += 16.f * (fTimeDelta);
+
+	if (m_fFrame > 16.f)
 	{
-		if (m_bDamageOnce)
-		{
-			m_tBulletDesc.Hod->DamageAction(m_tBulletDesc.Damage);
-			m_bDamageOnce = false;
-		}
-		m_bDelete = true;
+		m_bOff = true;
 		m_bEnable = true;
-		return;
+		m_bDelete = true;
 	}
-	
+
+	m_pTransformCom->SetBilBoard();
 }
 
-void CEffect_Bullet::LateTick(_float fTimeDelta)
+void CEffect_Boom::LateTick(_float fTimeDelta)
 {
-	if (m_tBulletDesc.Hod == nullptr || m_tBulletDesc.Hod->Get_StopAnime())
+	if (m_bOff)
 		return;
 
 	if (nullptr == m_pTransformCom ||
@@ -89,9 +72,9 @@ void CEffect_Bullet::LateTick(_float fTimeDelta)
 	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_ALPHABLEND, (CGameObject*)this);
 }
 
-HRESULT CEffect_Bullet::Render()
+HRESULT CEffect_Boom::Render()
 {
-	if (m_tBulletDesc.Hod == nullptr || m_tBulletDesc.Hod->Get_StopAnime())
+	if (m_bOff)
 		return S_OK;
 
 	if (nullptr == m_pShaderCom ||
@@ -102,13 +85,13 @@ HRESULT CEffect_Bullet::Render()
 	if (FAILED(SetUp_ShaderResource()))
 		return E_FAIL;
 
-	m_pShaderCom->Begin(3);
+	m_pShaderCom->Begin(0);
 	m_pVIBufferCom->Render();
 
 	return S_OK;
 }
 
-HRESULT CEffect_Bullet::SetUp_Components()
+HRESULT CEffect_Boom::SetUp_Components()
 {
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
 		return E_FAIL;
@@ -119,13 +102,13 @@ HRESULT CEffect_Bullet::SetUp_Components()
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"), TEXT("Com_VIBuffer"), (CComponent**)&m_pVIBufferCom)))
 		return E_FAIL;
 
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Effect_Bullet"), TEXT("Com_Texture"), (CComponent**)&m_pTextureCom)))
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Effect_Boom"), TEXT("Com_Texture"), (CComponent**)&m_pTextureCom)))
 		return E_FAIL;
 
 	return S_OK;
 }
 
-HRESULT CEffect_Bullet::SetUp_ShaderResource()
+HRESULT CEffect_Boom::SetUp_ShaderResource()
 {
 	if (nullptr == m_pShaderCom)
 		return E_FAIL;
@@ -137,9 +120,9 @@ HRESULT CEffect_Bullet::SetUp_ShaderResource()
 		return E_FAIL;
 	if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", pGameInstance->Get_Transform_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4))))
 		return E_FAIL;
-	if (FAILED(m_pTextureCom->Set_ShaderResourceView(m_pShaderCom, "g_DiffuseTexture", 0)))
+	if (FAILED(m_pTextureCom->Set_ShaderResourceView(m_pShaderCom, "g_DiffuseTexture", (_uint)m_fFrame)))
 		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_RawValue("g_vColor", &m_gVcolor , sizeof(_float4))))
+	if (FAILED(m_pShaderCom->Set_RawValue("g_vColor", &m_gVcolor, sizeof(_float4))))
 		return E_FAIL;
 
 	RELEASE_INSTANCE(CGameInstance);
@@ -147,32 +130,32 @@ HRESULT CEffect_Bullet::SetUp_ShaderResource()
 	return S_OK;
 }
 
-CEffect_Bullet * CEffect_Bullet::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
+CEffect_Boom * CEffect_Boom::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
-	CEffect_Bullet*		pInstance = new CEffect_Bullet(pDevice, pContext);
+	CEffect_Boom*		pInstance = new CEffect_Boom(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize(nullptr)))
 	{
-		MSG_BOX("Failed to Created : CEffect_Bullet");
+		MSG_BOX("Failed to Created : CEffect_Boom");
 		Safe_Release(pInstance);
 	}
 	return pInstance;
 }
 
-CGameObject * CEffect_Bullet::Clone(void * pArg)
+CGameObject * CEffect_Boom::Clone(void * pArg)
 {
-	CEffect_Bullet*		pInstance = new CEffect_Bullet(*this);
+	CEffect_Boom*		pInstance = new CEffect_Boom(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Cloned : CEffect_Bullet");
+		MSG_BOX("Failed to Cloned : CEffect_Boom");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CEffect_Bullet::Free()
+void CEffect_Boom::Free()
 {
 	__super::Free();
 

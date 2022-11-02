@@ -11,6 +11,7 @@
 #include "UI_Fade_White.h"
 #include "HpBar.h"
 #include "Camera_Free.h"
+#include "Hod.h"
 
 CChara_Zunko::CChara_Zunko(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CCharater(pDevice, pContext)
@@ -39,11 +40,25 @@ HRESULT CChara_Zunko::Initialize(void * pArg)
 	m_fAttackDelay = 0.3f;
 
 	m_pModelCom->Set_CurrentAnimation(11); //Move_Ing
+
+
+	m_bCreateBulletThree[0] = true;
+	m_bCreateBulletThree[1] = true;
+	m_bCreateBulletThree[2] = true;
+
+	for (int i = 0; i < 50; i++)
+	{
+		m_bExBulletCreate[i] = true;
+	}
+
 	return S_OK;
 }
 
 void CChara_Zunko::Tick(_float fTimeDelta)
 {
+	if (m_bCharaDead)
+		return;
+
 	__super::Tick(fTimeDelta);
 
 	if (m_bExTickStop && !m_bExUse)
@@ -59,9 +74,15 @@ void CChara_Zunko::Tick(_float fTimeDelta)
 
 	if (nullptr != m_pAnimation_Exs)
 		ExsPlayOnce();
+	static _float slow = 1.f;
 
-	m_pModelCom->Play_Animation(fTimeDelta);
+	if (KEY(Y, TAP))
+	{
+		slow = 0.1f;
+	}
 
+	if(!m_bCharaDead)
+		m_pModelCom->Play_Animation(fTimeDelta * slow);
 }
 
 void CChara_Zunko::LateTick(_float fTimeDelta)
@@ -102,8 +123,11 @@ void CChara_Zunko::ExCamCheck()
 		m_pModelCom->Set_CurrentAnimation(20); //
 		m_pAnimation_Exs = m_pModelCom->Get_AnimationFromName("Zunko_Original_Exs");
 		m_pAnimation_Exs->Reset();
+		for (int i = 0; i < 50; i++)
+			m_bExBulletCreate[i] = true;
 		m_pCamera->EndExs();
 		m_eState = CHARA_STATE::EX;
+
 	}
 
 }
@@ -123,6 +147,9 @@ void CChara_Zunko::ExsPlayOnce()// exÄ· º¹±¸ÈÄ ÇÑ¹øµé¾î¿È exs null¾Æ´Ò¶§ µé¾î¿À´
 
 void CChara_Zunko::StateCheck(_float & fTimeDelta)
 {
+	_float Duration;
+	_float TimeAcc;
+
 	switch (m_eState)
 	{
 	case IDLE:
@@ -166,6 +193,28 @@ void CChara_Zunko::StateCheck(_float & fTimeDelta)
 	//¾ø´Â°Ô³ªÀ½
 		break;
 	case ATK_ING:
+		Duration = m_pModelCom->Get_AnimationFromName("Zunko_Original_Normal_Attack_Ing")->Get_Duration();
+		TimeAcc = m_pModelCom->Get_AnimationFromName("Zunko_Original_Normal_Attack_Ing")->Get_TimeAcc();
+
+		if (m_bCreateBulletThree[0] && TimeAcc > 0.10f)
+		{
+			CreateBullet(0.3f);
+			m_bCreateBulletThree[0] = false;
+		}
+		
+		if (m_bCreateBulletThree[1] && TimeAcc > 0.20f)
+		{
+			CreateBullet(0.3f);
+			m_bCreateBulletThree[1] = false;
+		}
+
+		if (m_bCreateBulletThree[2] && TimeAcc > 0.30f)
+		{
+			CreateBullet(0.3f);
+			m_bCreateBulletThree[2] = false;
+		}
+
+
 		if (m_bAtkIngOnce)
 		{
 			m_iAmmo--;
@@ -173,6 +222,10 @@ void CChara_Zunko::StateCheck(_float & fTimeDelta)
 		}
 		if (m_pModelCom->Get_AnimationFromName("Zunko_Original_Normal_Attack_Ing")->IsFinished())
 		{
+			m_bCreateBulletThree[0] = true;
+			m_bCreateBulletThree[1] = true;
+			m_bCreateBulletThree[2] = true;
+
 			m_pModelCom->Get_AnimationFromName("Zunko_Original_Normal_Attack_Ing")->Reset();
 			m_bAtkIngOnce = true;
 			if (0 < m_iAmmo)
@@ -198,14 +251,69 @@ void CChara_Zunko::StateCheck(_float & fTimeDelta)
 	case EX_CUTIN:
 		break;
 	case EX:
+		Duration = m_pModelCom->Get_AnimationFromName("Zunko_Original_Exs")->Get_Duration();
+		TimeAcc = m_pModelCom->Get_AnimationFromName("Zunko_Original_Exs")->Get_TimeAcc();
+
+		for (int i = 0; i < 50; i++)
+		{
+			if (m_bExBulletCreate[i] && TimeAcc > 1.0f + (1.3f * ((_float)i / 49.f)))
+			{
+				CreateBullet(1.f);
+				m_bExBulletCreate[i] = false;
+			}
+		}
+
 		break;
 	case VICTORY:
+		break;
+	case DEAD:
+		if (m_bDeadOnce)
+		{
+			m_pModelCom->Set_CurrentAnimation(24);
+			m_bDeadOnce = false;
+		}
+		Duration = m_pModelCom->Get_AnimationFromName("Zunko_Original_Vital_Death")->Get_Duration();
+		TimeAcc = m_pModelCom->Get_AnimationFromName("Zunko_Original_Vital_Death")->Get_TimeAcc();
+
+
+		if (TimeAcc > 1.4f)
+		{
+			m_bCharaDead = true;
+			m_pModelCom->Get_AnimationFromName("Zunko_Original_Vital_Death")->Pause();
+		}
 		break;
 	case STATE_END:
 		break;
 	default:
 		break;
 	}
+}
+
+void CChara_Zunko::CreateBullet(_float _Damage)
+{
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+	_matrix _mat, rotMat;
+	rotMat = XMMatrixRotationAxis(XMVectorSet(0.f, 1.f, 0.f, 1.f), XMConvertToRadians(180.f));
+	_mat = m_pModelCom->Find_Bone("fire_01")->Get_CombinedMatrix();
+	_mat *= rotMat;
+	_mat *= m_pTransformCom->Get_WorldMatrix();
+
+	_float4	xPosPush;
+	XMStoreFloat4(&xPosPush, _mat.r[3]);
+	xPosPush.x += 0.2f;
+	_mat.r[3] = XMLoadFloat4(&xPosPush);
+
+	BulletDesc temp;
+	temp.CreatePos = _mat.r[3];
+	temp.TargetPos = m_pHod->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION);
+	temp.Damage = _Damage;		//Damage
+	temp.Hod = m_pHod;
+
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_SHOP, TEXT("Layer_Effect_Bullet"),
+		TEXT("Prototype_GameObject_Effect_Bullet"), &temp)))
+		return;
+
+	RELEASE_INSTANCE(CGameInstance);
 }
 
 CChara_Zunko * CChara_Zunko::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
