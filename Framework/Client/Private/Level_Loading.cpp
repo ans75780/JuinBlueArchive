@@ -33,6 +33,10 @@ HRESULT CLevel_Loading::Initialize(LEVEL eNextLevel)
 
 	m_eNextLevel = eNextLevel;
 
+	CGameInstance*	pInstance = CGameInstance::Get_Instance();
+
+	pInstance->Get_SoundManager()->StopAll();
+
 	m_pLoader = CLoader::Create(m_pDevice, m_pContext, eNextLevel);
 	if (nullptr == m_pLoader)
 		return E_FAIL;

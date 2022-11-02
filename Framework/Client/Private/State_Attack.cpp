@@ -130,8 +130,22 @@ _bool CState_Attack::Loop(_float fTimeDelta)
 		m_pTarget->Damaged(m_pOwner->Get_Desc().fDamage);
 		Create_Effect();
 		m_bAttack = false;
-	}
 
+		CGameInstance* pInstance = CGameInstance::Get_Instance();
+
+		if (lstrcmp(m_pOwner->Get_Desc().sz_Name, TEXT("Haruka_Original")) == 0)
+		{
+			pInstance->Get_SoundManager()->Play_Sound(TEXT("Fire_Shotgun.wav"), 0.9f);
+		}
+		else if (lstrcmp(m_pOwner->Get_Desc().sz_Name, TEXT("Zunko_Original")) == 0)
+		{
+			pInstance->Get_SoundManager()->Play_Sound(TEXT("Fire_Machine.wav"), 0.9f);
+		}
+		else if (lstrcmp(m_pOwner->Get_Desc().sz_Name, TEXT("Aru_Original")) == 0)
+		{
+			pInstance->Get_SoundManager()->Play_Sound(TEXT("Fire_Rifle.wav"), 0.9f);
+		}
+	}
 	return false;
 }
 

@@ -33,7 +33,6 @@ public:
 public:
 	HRESULT Initialize(LEVEL eNextLevel);
 	HRESULT Loading_ForLogoLevel();
-	HRESULT Loading_ForFormation();
 
 
 private:

@@ -192,6 +192,8 @@ HRESULT CLevel_Formation::Ready_Layer_Camera(const _tchar * pLayerTag)
 	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
 	Safe_AddRef(pGameInstance);
 
+	pGameInstance->Get_SoundManager()->PlayBGM(TEXT("Formation_bgm.ogg"), 0.7f);
+
 	/* For.Camera_Free */
 	CCamera::CAMERADESC			CameraDesc;
 	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));

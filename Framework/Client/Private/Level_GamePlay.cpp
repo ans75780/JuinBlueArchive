@@ -122,6 +122,10 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _tchar * pLayerTag)
 	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
 	Safe_AddRef(pGameInstance);
 
+
+	pGameInstance->Get_SoundManager()->PlayBGM(TEXT("Battle.ogg"), 1.f);
+
+
 	/* For.Camera_Free */
 	CCamera::CAMERADESC			CameraDesc;
 	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));

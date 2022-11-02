@@ -73,6 +73,13 @@ void CUI_Warning::Tick(_float fTimeDelta)
 
 	if (m_bWarning == true)
 	{
+		CGameInstance*	pInstance = CGameInstance::Get_Instance();
+		if (m_bSound == false)
+		{
+			pInstance->Get_SoundManager()->StopAll();
+			pInstance->Get_SoundManager()->Play_Sound(L"Warning.wav", 0.8);
+			m_bSound = true;
+		}
 		if (m_fAlphaCurrent <= m_fAlphaStart)
 		{
 			m_fAlphaTickForAmount *= -1.f;
@@ -97,6 +104,7 @@ void CUI_Warning::Tick(_float fTimeDelta)
 			m_bEnable = false;
 			m_pWarning->Set_Enable(false);
 			m_pRenderer->Reset_DeferredColor();
+			pInstance->Get_SoundManager()->Play_Sound(L"Boss_bgm.ogg", 0.7);
 		}
 	}
 	else

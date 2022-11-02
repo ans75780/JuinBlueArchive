@@ -39,7 +39,7 @@ private:
 	_float					m_fWarningTick = 0.f;
 	_float					m_fWarningTime = 0.f;
 
-
+	_bool					m_bSound = false;
 	_bool					m_bWarning;
 public:
 	static CUI_Warning* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

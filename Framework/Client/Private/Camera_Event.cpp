@@ -202,6 +202,10 @@ void CCamera_Event::Ready_Event_Stage_Victory(CStage * pTarget, _float3 vOffset,
 	pInstance->Add_EventObject(this);
 	pInstance->Add_EventObject(pTarget);
 
+	pInstance->Get_SoundManager()->StopAll();
+	pInstance->Get_SoundManager()->PlayBGM(L"Battle_end.ogg", 0.7f);
+	pInstance->Get_SoundManager()->Play_Sound(L"Victory_Voice.ogg", 0.9f);
+
 	_uint i = 0;
 
 	_vector pos = (*pVecStudents)[0]->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION);

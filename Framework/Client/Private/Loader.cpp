@@ -252,7 +252,6 @@ HRESULT CLoader::Loading_ForFormationLevel()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/SkyBox/Background.dds"), 1))))
 		return E_FAIL;
 
-
 	lstrcpy(m_szLoadingText, TEXT("¸ðµ¨À» ·ÎµùÁßÀÌºñ³®. "));
 
 

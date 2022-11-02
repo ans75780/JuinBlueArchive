@@ -71,6 +71,10 @@ HRESULT CCombatFormation::Initialize(void * pArg)
 	{
 		SetUp_ExModels();
 		m_pCombatSkill = CUI_CombatFormation_Skill::Create(m_pDevice, m_pContext);
+		CGameInstance*	pInstance = CGameInstance::Get_Instance();
+
+		pInstance->Get_SoundManager()->Play_Sound(L"Battle_In.ogg", 0.9f);
+
 
 	}
 	return S_OK;
