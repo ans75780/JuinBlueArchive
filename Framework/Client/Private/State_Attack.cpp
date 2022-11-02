@@ -70,6 +70,7 @@ void CState_Attack::Enter()
 {
 	m_pOwner->Set_StageState(CActor::STAGE_STATE_BATTLE);
 	m_pAnims[m_eCurrentState]->Play();
+	m_bAttack = true;
 }
 
 _bool CState_Attack::Loop(_float fTimeDelta)
@@ -120,8 +121,17 @@ _bool CState_Attack::Loop(_float fTimeDelta)
 			Change_Animation(ATTACK_STATE_END);
 		}
 	}
+
 	m_pAnims[m_eCurrentState]->Update(fTimeDelta);
 	m_pModel->Update_CombinedMatrix();
+
+	if (m_eCurrentState == ATTACK_STATE_ING && m_bAttack && m_pAnims[ATTACK_STATE_ING]->Get_PlayedRatio() >= m_pOwner->Get_Desc().fAttackRatio)
+	{
+		m_pTarget->Damaged(m_pOwner->Get_Desc().fDamage);
+		Create_Effect();
+		m_bAttack = false;
+	}
+
 	return false;
 }
 
@@ -141,14 +151,11 @@ CAnimation * CState_Attack::Get_Animation()
 void CState_Attack::Change_Animation(ATTACK_STATE eState)
 {
 	if (m_eCurrentState == ATTACK_STATE_ING)
-	{
-		m_pTarget->Damaged(m_pOwner->Get_Desc().fDamage);
-		Create_Effect();
-	}
-
+		m_bAttack = true;
 	m_pAnims[m_eCurrentState]->Reset();
 	m_eCurrentState = eState;
 	m_pAnims[m_eCurrentState]->Play();
+
 }
 
 void CState_Attack::Create_Effect()

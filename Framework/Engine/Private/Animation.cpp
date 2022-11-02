@@ -112,6 +112,11 @@ void CAnimation::Reset()
 	}
 }
 
+_float CAnimation::Get_PlayedRatio()
+{
+	return m_fTimeAcc / m_fDuration;
+}
+
 HRESULT CAnimation::Clone_Channel(CAnimation * pPrototype, CModel * pModel)
 {
 	for (auto& pPrototypeChannel : pPrototype->m_Channels)

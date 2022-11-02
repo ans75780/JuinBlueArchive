@@ -6,12 +6,10 @@ IMPLEMENT_SINGLETON(CUserData);
 
 HRESULT CUserData::Initialize()
 {
-	Add_Actor(L"Aru_Original",   UNIT_TYPE::UNIT_TYPE_STUDENT,   UNIT_CLASS::UNIT_CLASS_BACK, 70.f, 7.f, 1000.f);
-	Add_Actor(L"Haruka_Original",UNIT_TYPE::UNIT_TYPE_STUDENT,   UNIT_CLASS::UNIT_CLASS_FRONT, 5.f, 2.f, 4000.f);
-	Add_Actor(L"Zunko_Original", UNIT_TYPE::UNIT_TYPE_STUDENT,   UNIT_CLASS::UNIT_CLASS_MIDDLE, 10.f, 5.f, 1000.f);
-
-
-	Add_Actor(L"Soldier_Kaiserpmc_HG", UNIT_TYPE::UNIT_TYPE_ENEMY, UNIT_CLASS::UNIT_CLASS_FRONT, 20.f, 2.f, 100.f);
+	Add_Actor(L"Aru_Original",   UNIT_TYPE::UNIT_TYPE_STUDENT,   UNIT_CLASS::UNIT_CLASS_BACK, 70.f, 7.f, 1000.f, 0.63f);
+	Add_Actor(L"Haruka_Original",UNIT_TYPE::UNIT_TYPE_STUDENT,   UNIT_CLASS::UNIT_CLASS_FRONT, 5.f, 2.f, 4000.f, 0.15f);
+	Add_Actor(L"Zunko_Original", UNIT_TYPE::UNIT_TYPE_STUDENT,   UNIT_CLASS::UNIT_CLASS_MIDDLE, 10.f, 5.f, 1000.f, 0.15f);
+	Add_Actor(L"Soldier_Kaiserpmc_HG", UNIT_TYPE::UNIT_TYPE_ENEMY, UNIT_CLASS::UNIT_CLASS_FRONT, 20.f, 2.f, 100.f, 0.1f);
 
 
 	ZeroMemory(&m_tUserDesc, sizeof(USER_DESC));
@@ -64,7 +62,7 @@ const CGameObject::OBJ_DESC * CUserData::Find_Actors(UNIT_TYPE eType, const _tch
 	}
 }
 
-void CUserData::Add_Actor(const _tchar * pActorName, UNIT_TYPE eType, UNIT_CLASS eClass, _float fDmg, _float fRange, _float fHp)
+void CUserData::Add_Actor(const _tchar * pActorName, UNIT_TYPE eType, UNIT_CLASS eClass, _float fDmg, _float fRange, _float fHp, _float fAttackStartRatio)
 {
 	CGameObject::OBJ_DESC	desc;
 
@@ -75,7 +73,7 @@ void CUserData::Add_Actor(const _tchar * pActorName, UNIT_TYPE eType, UNIT_CLASS
 	desc.fHp = fHp;
 	desc.eType = eType;
 	desc.fRange = fRange;
-
+	desc.fAttackRatio = fAttackStartRatio;
 	switch (eType)
 	{
 	case Engine::UNIT_TYPE_STUDENT:

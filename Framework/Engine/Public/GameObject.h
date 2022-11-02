@@ -17,6 +17,7 @@ public:
 		_float		fHp = 10.f;
 		_uint		iMagazine = 5;
 		_uint		iMaxMagazine = 5;
+		_float		fAttackRatio = 0.f;//
 		UNIT_TYPE	eType = UNIT_TYPE_END;
 		UNIT_CLASS	eClass = UNIT_CLASS_END;
 	}OBJ_DESC;

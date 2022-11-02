@@ -43,7 +43,7 @@ public:
 
 
 private:
-	void		Add_Actor(const _tchar* pStudentName,UNIT_TYPE eType, UNIT_CLASS eClass, _float fDmg, _float fRange, _float fHp);
+	void		Add_Actor(const _tchar* pStudentName,UNIT_TYPE eType, UNIT_CLASS eClass, _float fDmg, _float fRange, _float fHp, _float fAttackStartRatio);
 
 	//For.Student
 private:

@@ -37,6 +37,7 @@ public:
 protected:
 	class CActor*	m_pTarget = nullptr;
 	class CGameInstance*	m_pInstance = nullptr;
+	_bool				m_bAttack;
 private:
 	void				Change_Animation(ATTACK_STATE	eState);
 	void				Create_Effect();
