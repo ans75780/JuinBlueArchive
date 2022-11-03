@@ -29,7 +29,7 @@ public:
 	virtual HRESULT Initialize(void* pArg);
 	virtual void	Tick(_float fTimeDelta);
 	virtual void	LateTick(_float fTimeDelta);
-
+	virtual void	Set_Offset(_float3	vOffset) { m_vOffset = vOffset; }
 	virtual HRESULT Render();
 
 private:

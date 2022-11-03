@@ -141,6 +141,23 @@ HRESULT CLoader_Start::Loading_ForLogoLevel()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Default/DefaultButton.png"), 1))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Texture_Default */
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_UI_BossIcon"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/UI/Boss_Icon.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Default */
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_UI_BossHpBarBack"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/UI/HpBar_Mask.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Default */
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_UI_BossHpBarFront"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/UI/HpBar_Mask_2.png"), 1))))
+		return E_FAIL;
+
+
+
 	//LoadUITexture("Combat");
 	if (FAILED(LoadUITexture("Common")))
 		return E_FAIL;

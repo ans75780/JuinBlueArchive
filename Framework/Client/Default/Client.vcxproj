@@ -233,6 +233,7 @@
     <ClInclude Include="..\Public\State_Student_Jump.h" />
     <ClInclude Include="..\Public\State_Student_Run.h" />
     <ClInclude Include="..\Public\Student_Fx.h" />
+    <ClInclude Include="..\Public\UI_BossHpBar.h" />
     <ClInclude Include="..\Public\UI_CombatFormation_Skill.h" />
     <ClInclude Include="..\Public\UI_Combat_HpBar.h" />
     <ClInclude Include="..\Public\UI_Default.h" />
@@ -330,6 +331,7 @@
     <ClCompile Include="..\Private\State_Student_Ex_Cutin.cpp" />
     <ClCompile Include="..\Private\State_Student_Jump.cpp" />
     <ClCompile Include="..\Private\State_Student_Run.cpp" />
+    <ClCompile Include="..\Private\UI_BossHpBar.cpp" />
     <ClCompile Include="..\Private\UI_CombatFormation_Skill.cpp" />
     <ClCompile Include="..\Private\UI_Combat_HpBar.cpp" />
     <ClCompile Include="..\Private\UI_Default.cpp" />

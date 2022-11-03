@@ -5,7 +5,7 @@ matrix	g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 
 
 
-float2		g_Ratio;
+float2		g_Ratio = 1.f;
 
 texture2D	g_DiffuseTexture;
 
@@ -131,10 +131,11 @@ technique11 DefaultTechnique
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_RATIO();
 	}
-	pass Warning
+	pass COLOR_ALPHA
 	{
 		VertexShader = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_COLOR_ALPHA();
 	}
+
 }

@@ -41,6 +41,12 @@ void CLevel_Lobby::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);		
 
+	if (KEY(SPACE, TAP))
+	{
+		CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
+		if (FAILED(pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_FORMATION))))
+			return;
+	}
 }
 
 HRESULT CLevel_Lobby::Render()

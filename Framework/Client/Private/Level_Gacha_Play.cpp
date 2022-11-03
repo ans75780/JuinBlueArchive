@@ -37,6 +37,13 @@ void CLevel_Gacha_Play::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);		
 
+	if (KEY(C, TAP))
+	{
+		CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
+		if (FAILED(pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_LOBBY))))
+			return;
+	}
+
 }
 
 HRESULT CLevel_Gacha_Play::Render()

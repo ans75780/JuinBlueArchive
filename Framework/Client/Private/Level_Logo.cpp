@@ -36,17 +36,24 @@ void CLevel_Logo::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);		
 
-	if (GetKeyState(VK_SPACE) & 0x8000)
+	if (KEY(SPACE, TAP))
+	{
+		CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
+		if (FAILED(pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_GACHA))))
+			return;
+	}
+
+	/*if (GetKeyState(VK_SPACE) & 0x8000)
 	{
 		CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
 		Safe_AddRef(pGameInstance);
 
-		if (FAILED(pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_GACHA_PLAY))))
+		if (FAILED(pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, ))))
 			return;
 
 		Safe_Release(pGameInstance);
 	}
-
+	*/
 }
 
 HRESULT CLevel_Logo::Render()

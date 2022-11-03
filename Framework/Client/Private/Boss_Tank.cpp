@@ -8,10 +8,12 @@
 #include "Animation.h"
 #include "HpBar.h"
 #include "State_Headers.h"
+#include "UI_BossHpBar.h"
 #include "Layer.h"
 #include "Transform_Utils.h"
 #include "Boss_Tank.h"
 #include "State_Tank_Destroy.h"
+#include "Boss_Tank.h"
 CBoss_Tank::CBoss_Tank(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CEnemy(pDevice, pContext)
 {
@@ -75,10 +77,10 @@ HRESULT CBoss_Tank::Initialize(void * pArg)
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Texture_EnemyTSS_PowerLoader_PMC_Diffuse"), TEXT("Com_Texture"), (CComponent**)&m_pTexture)))
 		return E_FAIL;
 	
-
-
 	m_pTransformCom->Set_Scaled(_float3(1.00f, 1.00f, 1.00f));
 	
+	m_pHpBar->Set_Offset(_float3(0.f, 1.8f, 0.f));
+
 	return S_OK;
 }
 

@@ -18,7 +18,8 @@ HRESULT CLevel_Gacha::Initialize()
 	if (FAILED(Ready_Layer_Bg()))
 		return E_FAIL;
 
-
+	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
+	pGameInstance->Get_SoundManager()->PlayBGM(L"Gacha_bgm", 0.7f);
 
 	return S_OK;
 }
@@ -26,6 +27,14 @@ HRESULT CLevel_Gacha::Initialize()
 void CLevel_Gacha::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);		
+
+
+	if (KEY(SPACE, TAP))
+	{
+		CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
+		if (FAILED(pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_GACHA_PLAY))))
+			return;
+	}
 
 }
 

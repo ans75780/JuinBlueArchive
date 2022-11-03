@@ -34,7 +34,6 @@ protected:
 protected:
 	class CActor*	m_pTarget = nullptr;
 	class CTexture*	m_pTexture = nullptr;
-
 public:
 	static CBoss_Tank* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;

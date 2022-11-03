@@ -312,6 +312,7 @@
       <Filter>02.GameObject\05. Actor\Enemy\Boss</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State_Student_Victory.h" />
+    <ClInclude Include="..\Public\UI_BossHpBar.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -607,6 +608,7 @@
       <Filter>02.GameObject\05. Actor\Enemy\Boss</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State_Student_Victory.cpp" />
+    <ClCompile Include="..\Private\UI_BossHpBar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
