@@ -19,7 +19,7 @@ HRESULT CLevel_Gacha::Initialize()
 		return E_FAIL;
 
 	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
-	pGameInstance->Get_SoundManager()->PlayBGM(L"Gacha_bgm", 0.7f);
+	pGameInstance->Get_SoundManager()->PlayBGM(L"Gacha_bgm.ogg", 0.7f);
 
 	return S_OK;
 }

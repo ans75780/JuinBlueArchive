@@ -35,6 +35,7 @@ HRESULT CBoss_Tank::StartLevel(_uint iLevel)
 		if (FAILED(pInstance->Add_GameObject(iLevel, L"Layer_HpBar", L"Prototype_HpBar", this, ((CGameObject**)&m_pHpBar))))
 			return E_FAIL;
 	}
+	m_pHpBar->Set_Offset(_float3(0.f, 1.8f, 0.f));
 	RELEASE_INSTANCE(CGameInstance);
 
 	return S_OK;
@@ -57,8 +58,8 @@ HRESULT CBoss_Tank::Initialize(void * pArg)
 
 	m_desc.eClass = UNIT_CLASS_FRONT;
 	m_desc.eType = UNIT_TYPE_ENEMY;
-	m_desc.fHp = 50.f;
-	m_desc.fMaxHp = 50.f;
+	m_desc.fHp = 500.f;
+	m_desc.fMaxHp = 500.f;
 	m_desc.iMagazine = 1000;
 	m_desc.iMaxMagazine = 1000;
 	m_desc.fDamage = 50.f;
@@ -79,7 +80,7 @@ HRESULT CBoss_Tank::Initialize(void * pArg)
 	
 	m_pTransformCom->Set_Scaled(_float3(1.00f, 1.00f, 1.00f));
 	
-	m_pHpBar->Set_Offset(_float3(0.f, 1.8f, 0.f));
+
 
 	return S_OK;
 }
