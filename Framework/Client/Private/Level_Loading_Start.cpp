@@ -28,7 +28,7 @@ HRESULT CLevel_Loading_Start::Initialize(LEVEL eNextLevel)
 	if (FAILED(Ready_Layer_Start_illust()))
 		return E_FAIL;
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
-	pGameInstance->Get_Instance()->Get_SoundManager()->PlayBGM(L"Start_bgm.ogg", 0.5f);
+	pGameInstance->Get_Instance()->Get_SoundManager()->PlayBGM(L"Start_bgm.ogg", 0.1f);
 	RELEASE_INSTANCE(CGameInstance);
 
 	return S_OK;

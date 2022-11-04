@@ -26,7 +26,6 @@ HRESULT CUI_LevelMoveButton::Initialization()
 	__super::Initialization();
 
 	m_fOriginSize = m_fSize;
-
 	return S_OK;
 }
 
@@ -73,6 +72,14 @@ HRESULT CUI_LevelMoveButton::Render()
 
 void CUI_LevelMoveButton::OnLButtonDown()
 {
+	if (m_bSoundOnce)
+	{
+		CGameInstance*		pGameInstanceSound = GET_INSTANCE(CGameInstance);
+		pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"UI_Button_Touch.wav", 1.0f);
+		RELEASE_INSTANCE(CGameInstance);
+
+		m_bSoundOnce = false;
+	}
 	if (m_eUIType != UI_BACKGROUND)
 		m_bUIButtonDown = true;
 }
@@ -81,6 +88,7 @@ void CUI_LevelMoveButton::OnLButtonUp()
 {
 	if (m_bUIButtonDown)
 	{
+		m_bSoundOnce = true;
 		if (LEVEL_END != m_MoveLevel)
 		{
 			CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);

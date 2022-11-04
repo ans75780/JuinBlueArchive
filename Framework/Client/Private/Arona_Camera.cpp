@@ -230,8 +230,36 @@ void CArona_Camera::TickGacha(_float & fTimeDelta)
 		m_pCam->Get_Model()->Play_Animation(fTimeDelta * 0.8f);
 		m_pArona->Get_Model()->Play_Animation(fTimeDelta * 0.8f);
 		
+
+		if (m_bAronaSoundOnce0 && m_pAronaAni->Get_TimeAcc() > 1.f)
+		{
+			CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+			pGameInstance->Get_Instance()->Get_SoundManager()->Play_Sound(L"UI_Gacha_Normal_01.wav", 0.5f);
+			RELEASE_INSTANCE(CGameInstance);
+			m_bAronaSoundOnce0 = false;
+		}
+
+		if (m_bAronaSoundOnce1 && m_pAronaAni->Get_TimeAcc() > 35.f)
+		{
+			CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+			pGameInstance->Get_Instance()->Get_SoundManager()->Play_Sound(L"Gacha_Arona_eye_Check.wav", 0.5f);
+			RELEASE_INSTANCE(CGameInstance);
+			m_bAronaSoundOnce1 = false;
+		}
+
+		if (m_bAronaSoundOnce2 && m_pAronaAni->Get_TimeAcc() > 90.f)
+		{
+			CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+			pGameInstance->Get_Instance()->Get_SoundManager()->Play_Sound(L"UI_Gacha_Normal_02b.wav", 0.5f);
+			RELEASE_INSTANCE(CGameInstance);
+			m_bAronaSoundOnce2 = false;
+		}
+
+
 		if (113.f < m_pAronaAni->Get_TimeAcc())
 		{
+
+
 			if (1.f < m_fFOV)
 				m_fFOV -= 0.1f;
 		}
@@ -320,6 +348,8 @@ void CArona_Camera::CreateUI(_uint i)
 	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
 	m_pUI[i] = CUI_GachaCard::Create(m_pDevice, m_pContext);
+
+	pGameInstance->Get_Instance()->Get_SoundManager()->Play_Sound(L"UI_Gacha_Result1_01.wav", 1.0f);
 
 	if (FAILED(m_pUI[i]->LoadUIImage(TEXT("Prototype_Component_Texture_Gacha_Card"), LEVEL_GACHA_PLAY)))
 	{
@@ -426,6 +456,17 @@ void CArona_Camera::CardOpen_Num(_uint num, _float& fTimeDelta)
 		m_bFadeWhite = true;
 		m_bOnceInfo = true;
 		m_bInfoViewOnce = true;
+		
+		CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+		if(static_cast<CUI_GachaCard*>(m_pUI[num])->Get_CardNum() == 0.f)
+			pGameInstance->Get_Instance()->Get_SoundManager()->Play_Sound(L"UI_Gacha_Sqr_R.wav", 1.0f);
+		else if (static_cast<CUI_GachaCard*>(m_pUI[num])->Get_CardNum() == 1.f)
+ 			pGameInstance->Get_Instance()->Get_SoundManager()->Play_Sound(L"UI_Gacha_Sqr_SR.wav", 1.0f);
+		else if (static_cast<CUI_GachaCard*>(m_pUI[num])->Get_CardNum() == 2.f)
+			pGameInstance->Get_Instance()->Get_SoundManager()->Play_Sound(L"UI_Gacha_Sqr_SSR.wav", 1.0f);
+
+		RELEASE_INSTANCE(CGameInstance);
 	}
 
 	if (!m_pUI[num]->Get_Thorwing() && m_bFadeWhite) //받아온숫자UI의 던지기가 끝나면 Fade걸기
@@ -460,6 +501,10 @@ void CArona_Camera::CardOpen_Num(_uint num, _float& fTimeDelta)
 
 			m_bOnceInfo = false;
 			
+			CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+			pGameInstance->Get_Instance()->Get_SoundManager()->Play_Sound(L"UI_Gacha_SSR_02_Add_H1.wav", 1.0f);
+			RELEASE_INSTANCE(CGameInstance);
+
 			return;
 		}
 	}
@@ -468,6 +513,18 @@ void CArona_Camera::CardOpen_Num(_uint num, _float& fTimeDelta)
 	{
 		if (m_bInfoViewOnce)
 		{
+			CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+			if (static_cast<CUI_Gacha_Info*>(m_pInfoUI[0])->Get_CharaNum() == 0.f)
+				pGameInstance->Get_Instance()->Get_SoundManager()->Play_Sound(L"Haruka_Gachaget.ogg", 0.5f);
+			else if (static_cast<CUI_Gacha_Info*>(m_pInfoUI[0])->Get_CharaNum() == 1.f)
+				pGameInstance->Get_Instance()->Get_SoundManager()->Play_Sound(L"Zunko_Gachaget.ogg", 0.5f);
+			else if (static_cast<CUI_Gacha_Info*>(m_pInfoUI[0])->Get_CharaNum() == 2.f)
+				pGameInstance->Get_Instance()->Get_SoundManager()->Play_Sound(L"Aru_Gachaget.ogg", 0.5f);
+
+			RELEASE_INSTANCE(CGameInstance);
+
+
 			m_pInfoUI[0]->Set_Size(_float3(1024.f, 1024.f, 1.f));
 			m_pInfoUI[0]->Set_Pos(_float3(-120.f, -160.f, 0.f));
 			m_pInfoUI[0]->Set_ThrowPos(_float2(50.f, 0.f));
@@ -495,6 +552,11 @@ void CArona_Camera::CardOpen_Num(_uint num, _float& fTimeDelta)
 			{
 				if (KEY(SPACE, TAP))
 				{
+
+					CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+					pGameInstance->Get_Instance()->Get_SoundManager()->WithoutBGM();
+					RELEASE_INSTANCE(CGameInstance);
+
 					static_cast<CUI_Gacha_Info*>(m_pInfoUI[2])->Set_AlphaValue(0.95f);
 
 					static_cast<CUI_Gacha_Info*>(m_pInfoUI[0])->Set_TickStop(true);

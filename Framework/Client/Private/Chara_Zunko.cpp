@@ -74,15 +74,9 @@ void CChara_Zunko::Tick(_float fTimeDelta)
 
 	if (nullptr != m_pAnimation_Exs)
 		ExsPlayOnce();
-	static _float slow = 1.f;
-
-	if (KEY(Y, TAP))
-	{
-		slow = 0.1f;
-	}
 
 	if(!m_bCharaDead)
-		m_pModelCom->Play_Animation(fTimeDelta * slow);
+		m_pModelCom->Play_Animation(fTimeDelta);
 }
 
 void CChara_Zunko::LateTick(_float fTimeDelta)
@@ -107,6 +101,20 @@ void CChara_Zunko::ZunkoExCheck()//ÇÑ¹ø½ÇÇàµÊ
 	m_pAnimation_ExCutin->Reset();
 	m_pCamera->PlayExs(this);
 	m_eState = CHARA_STATE::EX_CUTIN;
+
+	CGameInstance*		pGameInstanceSound = GET_INSTANCE(CGameInstance);
+
+	int ranNum = Get_Random3();
+
+	if (ranNum == 1)
+		pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"Zunko_ExSkill_1.ogg", 0.5f);
+	else if (ranNum == 2)
+		pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"Zunko_ExSkill_2.ogg", 0.5f);
+	else if (ranNum == 3)
+		pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"Zunko_ExSkill_3.ogg", 0.5f);
+
+	RELEASE_INSTANCE(CGameInstance);
+
 }
 
 void CChara_Zunko::ExCamCheck()
@@ -123,10 +131,21 @@ void CChara_Zunko::ExCamCheck()
 		m_pModelCom->Set_CurrentAnimation(20); //
 		m_pAnimation_Exs = m_pModelCom->Get_AnimationFromName("Zunko_Original_Exs");
 		m_pAnimation_Exs->Reset();
-		for (int i = 0; i < 50; i++)
-			m_bExBulletCreate[i] = true;
 		m_pCamera->EndExs();
 		m_eState = CHARA_STATE::EX;
+
+		CGameInstance*		pGameInstanceSound = GET_INSTANCE(CGameInstance);
+
+		int ranNum = Get_Random3();
+
+		if (ranNum == 1)
+			pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"Zunko_ExSkill_Level_1.ogg", 0.5f);
+		else if (ranNum == 2)
+			pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"Zunko_ExSkill_Level_2.ogg", 0.5f);
+		else if (ranNum == 3)
+			pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"Zunko_ExSkill_Level_3.ogg", 0.5f);
+
+		RELEASE_INSTANCE(CGameInstance);
 
 	}
 
@@ -141,6 +160,11 @@ void CChara_Zunko::ExsPlayOnce()// exÄ· º¹±¸ÈÄ ÇÑ¹øµé¾î¿È exs null¾Æ´Ò¶§ µé¾î¿À´
 		m_pModelCom->Set_CurrentAnimation(22);
 		m_iAmmo = m_iMaxAmmo;
 		m_bAtkIngOnce = true;
+
+		for (int i = 0; i < 50; i++)
+			m_bExBulletCreate[i] = true;
+		m_iCount = 0;
+		m_bSoundOnceZun = true;
 	}
 
 }
@@ -198,6 +222,10 @@ void CChara_Zunko::StateCheck(_float & fTimeDelta)
 
 		if (m_bCreateBulletThree[0] && TimeAcc > 0.10f)
 		{
+			CGameInstance*		pGameInstanceSound = GET_INSTANCE(CGameInstance);
+			pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"SFX_Common_HMG_ZunkoShot_01.wav", 0.3f);
+			RELEASE_INSTANCE(CGameInstance);
+
 			CreateBullet(0.3f);
 			m_bCreateBulletThree[0] = false;
 		}
@@ -256,10 +284,18 @@ void CChara_Zunko::StateCheck(_float & fTimeDelta)
 
 		for (int i = 0; i < 50; i++)
 		{
+
 			if (m_bExBulletCreate[i] && TimeAcc > 1.0f + (1.3f * ((_float)i / 49.f)))
 			{
-				CreateBullet(1.f);
+				if (m_bSoundOnceZun)
+				{
+					CGameInstance*		pGameInstanceSound = GET_INSTANCE(CGameInstance);
+					pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"SFX_Common_AR_ZunkoEX.wav", 1.f);
+					RELEASE_INSTANCE(CGameInstance);
+					m_bSoundOnceZun = false;
+				}
 				m_bExBulletCreate[i] = false;
+				CreateBullet(1.f);
 			}
 		}
 
@@ -269,6 +305,10 @@ void CChara_Zunko::StateCheck(_float & fTimeDelta)
 	case DEAD:
 		if (m_bDeadOnce)
 		{
+			CGameInstance*		pGameInstanceSound = GET_INSTANCE(CGameInstance);
+			pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"Zunko_Battle_Damage_1.ogg", 0.5f);
+			RELEASE_INSTANCE(CGameInstance);
+
 			m_pModelCom->Set_CurrentAnimation(24);
 			m_bDeadOnce = false;
 		}
@@ -278,6 +318,10 @@ void CChara_Zunko::StateCheck(_float & fTimeDelta)
 
 		if (TimeAcc > 1.4f)
 		{
+			CGameInstance*		pGameInstanceSound = GET_INSTANCE(CGameInstance);
+			pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"Zunko_Battle_Retire.ogg", 0.5f);
+			RELEASE_INSTANCE(CGameInstance);
+
 			m_bCharaDead = true;
 			m_pModelCom->Get_AnimationFromName("Zunko_Original_Vital_Death")->Pause();
 		}
@@ -294,7 +338,19 @@ void CChara_Zunko::CreateBullet(_float _Damage)
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 	_matrix _mat, rotMat;
 	rotMat = XMMatrixRotationAxis(XMVectorSet(0.f, 1.f, 0.f, 1.f), XMConvertToRadians(180.f));
-	_mat = m_pModelCom->Find_Bone("fire_01")->Get_CombinedMatrix();
+	
+	if (m_bExBulletCreate[0] == false)
+	{
+		m_iCount++;
+		if (m_iCount % 2 == 0)
+			_mat = m_pModelCom->Find_Bone("fire_01")->Get_CombinedMatrix();
+		else
+			_mat = m_pModelCom->Find_Bone("fire_03")->Get_CombinedMatrix();
+
+	}
+	else
+		_mat = m_pModelCom->Find_Bone("fire_01")->Get_CombinedMatrix();
+
 	_mat *= rotMat;
 	_mat *= m_pTransformCom->Get_WorldMatrix();
 

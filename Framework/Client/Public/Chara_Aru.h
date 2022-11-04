@@ -24,6 +24,10 @@ private:
 	void	ExCamCheck();
 	void	ExsPlayOnce();
 	void	StateCheck(_float& fTimeDelta);
+	void	CreateFlare();
+
+private:
+	_bool	m_bFlareOnce = true;
 
 public:
 	static CChara_Aru* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

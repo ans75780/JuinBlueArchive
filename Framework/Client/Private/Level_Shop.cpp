@@ -34,6 +34,10 @@ HRESULT CLevel_Shop::Initialize()
 	//if (FAILED(TestEffect()))
 	//	return E_FAIL;
 
+	CGameInstance*		pGameInstanceSound = GET_INSTANCE(CGameInstance);
+	pGameInstanceSound->Get_Instance()->Get_SoundManager()->StopAll();
+	pGameInstanceSound->Get_Instance()->Get_SoundManager()->PlayBGM(L"Hod_Bgm.ogg", 0.1f);
+	RELEASE_INSTANCE(CGameInstance);
 
 
 	return S_OK;

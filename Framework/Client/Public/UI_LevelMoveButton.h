@@ -36,6 +36,7 @@ private:
 	_uint	m_MoveLevel = LEVEL_END;
 	_bool	m_bUIButtonDown = false;
 	_float3	m_fOriginSize = { 0.f, 0.f, 0.f };
+	_bool	m_bSoundOnce = true;
 
 public:
 	static CUI_LevelMoveButton* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

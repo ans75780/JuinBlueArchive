@@ -81,6 +81,10 @@ private:
 	_float	m_fFOV = 10.f;
 	_float	m_fCardDelay = 0.f;
 
+	_bool	m_bAronaSoundOnce0 = true;
+	_bool	m_bAronaSoundOnce1 = true;
+	_bool	m_bAronaSoundOnce2 = true;
+
 };
 
 END

@@ -620,7 +620,7 @@
     {
       "ClassName": "CUI_LevelMoveButton",
       "Level": 3,
-      "MoveLevel": 17,
+      "MoveLevel": 7,
       "Name": "Work_Btn",
       "Pos_x": 480.0,
       "Pos_y": -180.0,

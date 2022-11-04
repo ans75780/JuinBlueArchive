@@ -29,6 +29,10 @@ HRESULT CLevel_Logo::Initialize()
 	if (FAILED(LoadUI()))
 		return E_FAIL;
 
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+	pGameInstance->Get_Instance()->Get_SoundManager()->StopAll();
+	RELEASE_INSTANCE(CGameInstance);
+
 	return S_OK;
 }
 
@@ -41,7 +45,7 @@ void CLevel_Logo::Tick(_float fTimeDelta)
 		CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
 		Safe_AddRef(pGameInstance);
 
-		if (FAILED(pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_SHOP))))
+		if (FAILED(pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_LOBBY))))
 			return;
 
 		Safe_Release(pGameInstance);
@@ -337,8 +341,6 @@ CLevel_Logo * CLevel_Logo::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pC
 void CLevel_Logo::Free()
 {
 	__super::Free();
-
-
 
 }
 

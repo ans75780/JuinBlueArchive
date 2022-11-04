@@ -130,6 +130,17 @@ PS_OUT PS_MAIN_EFFECT_CRACK(PS_IN In)
 	return Out;
 }
 
+PS_OUT PS_MAIN_EFFECT_AlPHA(PS_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+	Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+
+	if (Out.vColor.a < 0.1f)
+		discard;
+
+	return Out;
+}
+
 technique11 DefaultTechnique
 {
 	pass Default
@@ -181,6 +192,18 @@ technique11 DefaultTechnique
 		VertexShader = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_EFFECT_CRACK();
+	}
+
+
+	pass Effect_Alpha
+	{
+		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+		SetRasterizerState(RS_Default);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_MAIN_EFFECT_AlPHA();
 	}
 
 }

@@ -83,15 +83,8 @@ void CHod::Tick(_float fTimeDelta)
 	StateCheck(fTimeDelta);
 	StartSet(fTimeDelta);	//시작이벤트가끝나면 더이상 실행되지않음
 
-	static _float Slow = 1.f;
-
-	if (KEY(B, TAP))
-	{
-		Slow = 0.1f;
-	}
-
 	if(m_eState != HOD_STATE::READY && !m_bStopAnime)
-		m_pModelCom->Play_Animation(fTimeDelta * Slow);
+		m_pModelCom->Play_Animation(fTimeDelta);
 
 	if (0.f < m_fgDamageEffcet)
 	{
@@ -175,6 +168,10 @@ void CHod::CreateUI_Hod()
 
 void CHod::BattlePosSet()
 {
+	CGameInstance*		pGameInstanceSound = GET_INSTANCE(CGameInstance);
+	pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"SFX_HOD_Ani_Normal_01.wav", 0.5f);
+	RELEASE_INSTANCE(CGameInstance);
+
 	m_eState = HOD_STATE::IDLE;
 	m_pModelCom->Set_CurrentAnimation(6);
 
@@ -238,6 +235,15 @@ void CHod::StartSet(_float& fTimeDelta)
 {
 	if (m_bCutSceneOnce)
 	{
+		if (m_bCutSceneSoundOnce)
+		{
+			CGameInstance*		pGameInstanceSound = GET_INSTANCE(CGameInstance);
+			pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"SFX_HOD_OP.wav", 1.f);
+			RELEASE_INSTANCE(CGameInstance);
+
+			m_bCutSceneSoundOnce = false;
+		}
+
 		if (m_pCutSceneAnimation->IsFinished())
 		{
 			m_bCutSceneOnce = false;
@@ -246,8 +252,8 @@ void CHod::StartSet(_float& fTimeDelta)
 			m_pModelCom->Set_CurrentAnimation(6);
 			return;
 		}
-		m_pModelCom->Play_Animation(fTimeDelta * 0.7f);
-		static_cast<CHod_CutScene_Cam*>(m_pCutSceneCam)->Get_Model()->Play_Animation(fTimeDelta * 0.7f);
+		m_pModelCom->Play_Animation(fTimeDelta * 0.95f);
+		static_cast<CHod_CutScene_Cam*>(m_pCutSceneCam)->Get_Model()->Play_Animation(fTimeDelta * 0.95f);
 
 		_float _frame = static_cast<CHod_CutScene_Cam*>(m_pCutSceneCam)->Get_Model()->Get_AnimationFromName("HOD_Original_BattleReady_Cam")->Get_TimeAcc();
 		
@@ -282,6 +288,11 @@ void CHod::DamageAction(_float _Damage)
 		m_pModelCom->Set_CurrentAnimation(10);
 		m_eState = DEAD;
 		m_bDie = true;
+
+		CGameInstance*		pGameInstanceSound = GET_INSTANCE(CGameInstance);
+		pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"SFX_HOD_TemporaryTower_Death.wav", 1.0f);
+		RELEASE_INSTANCE(CGameInstance);
+
 	}
 
 	m_fgDamageEffcet = 1.f;
@@ -289,6 +300,8 @@ void CHod::DamageAction(_float _Damage)
 
 void CHod::StateCheck(_float & fTimeDelta)
 {
+	CGameInstance*		pGameInstanceSound = GET_INSTANCE(CGameInstance);
+
 	_float Duration;
 	_float TimeAcc;
 
@@ -309,6 +322,7 @@ void CHod::StateCheck(_float & fTimeDelta)
 				m_fTime = 0.f;
 				m_eState = HOD_STATE::EX2;
 				m_pModelCom->Set_CurrentAnimation(9);
+				pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"SFX_HOD_EX2.wav", 0.5f);
 				break;
 			}
 
@@ -319,6 +333,7 @@ void CHod::StateCheck(_float & fTimeDelta)
 				m_fTime = 0.f;
 				m_eState = HOD_STATE::ATK_START;
 				m_pModelCom->Set_CurrentAnimation(5);
+				pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"SFX_HOD_NormalSkill_00.wav", 0.5f);
 				break;
 
 			}
@@ -326,6 +341,7 @@ void CHod::StateCheck(_float & fTimeDelta)
 			{
 				m_eState = HOD_STATE::IDLE;
 				m_pModelCom->Set_CurrentAnimation(6);
+				pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"SFX_HOD_Ani_Normal_01.wav", 0.5f);
 				break;
 			}
 		}
@@ -364,6 +380,8 @@ void CHod::StateCheck(_float & fTimeDelta)
 			m_pModelCom->Get_AnimationFromName("HOD_Original_Normal_Attack_Start")->Reset();
 			m_eState = HOD_STATE::ATK_ING;
 			m_pModelCom->Set_CurrentAnimation(7);
+			pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"SFX_HOD_NormalSkill_Shot_01.wav", 1.0f);
+
 		}
 		break;
 	case ATK_DELAY:
@@ -384,6 +402,8 @@ void CHod::StateCheck(_float & fTimeDelta)
 			m_pModelCom->Get_AnimationFromName("HOD_Original_Normal_Attack_Ing")->Reset();
 			m_eState = HOD_STATE::ATK_END;
 			m_pModelCom->Set_CurrentAnimation(0);
+			pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"SFX_HOD_Ani_Normal_03.wav", 0.5f);
+			
 		}
 		break;
 	case ATK_END:
@@ -392,6 +412,7 @@ void CHod::StateCheck(_float & fTimeDelta)
 			m_pModelCom->Get_AnimationFromName("HOD_Original_Normal_Attack_End")->Reset();
 			m_eState = HOD_STATE::IDLE;
 			m_pModelCom->Set_CurrentAnimation(6);
+			pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"SFX_HOD_Ani_Normal_01.wav", 0.5f);
 		}
 		break;
 	case GROGGY:
@@ -407,6 +428,7 @@ void CHod::StateCheck(_float & fTimeDelta)
 			m_pModelCom->Get_AnimationFromName("HOD_Original_Exs2")->Reset();
 			m_eState = HOD_STATE::IDLE;
 			m_pModelCom->Set_CurrentAnimation(6);
+			pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"SFX_HOD_Ani_Normal_01.wav", 1.f);
 		}
 		break;
 	case EX3:
@@ -419,6 +441,46 @@ void CHod::StateCheck(_float & fTimeDelta)
 		if (4.7f < m_pModelCom->Get_AnimationFromName("HOD_Original_Vital_Death")->Get_TimeAcc())
 		{
 			m_bStopAnime = true;
+
+			if (m_bVictoryOnce)
+			{
+				CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+				pGameInstance->Get_Instance()->Get_SoundManager()->StopAll();
+				pGameInstance->Get_Instance()->Get_SoundManager()->PlayBGM(L"Victory.ogg", 0.2f);
+				pGameInstance->Get_Instance()->Get_SoundManager()->Play_Sound(L"Vic.wav", 1.f);
+
+				CUI* victoryUI = CUI_Fade_White::Create(m_pDevice, m_pContext);
+
+				if (FAILED(victoryUI->LoadUIImage(TEXT("Prototype_Component_Texture_UI_Victory"), LEVEL_STATIC)))
+				{
+					MSG_BOX("UI 호드 이미지 생성 실패");
+					return;
+				}
+
+				victoryUI->Set_UIName(TEXT("victory"));
+				victoryUI->Set_UIType(UI_TYPE::UI_DIALOG_BUTTON);
+				victoryUI->Set_Size(_float3(2560.f, 720.f, 1.f));
+				victoryUI->Set_Pos(_float3(0.f, 0.f, 0.f));
+				victoryUI->Set_ThrowPos(_float2(500.f, 0.f));
+				victoryUI->Set_UILevel(LEVEL_SHOP);
+				victoryUI->Initialization();
+
+				static_cast<CUI_Fade_White*>(victoryUI)->Set_Alpha(true);
+				static_cast<CUI_Fade_White*>(victoryUI)->Set_AlphaValue(1.f);
+
+				if (FAILED(pGameInstance->Add_UI(LEVEL_SHOP, victoryUI)))	//받아온레벨에다 생성
+				{
+					MSG_BOX("UI호드 생성 실패");
+					return;
+				}
+				RELEASE_INSTANCE(CGameInstance);
+
+				m_bVictoryOnce = false;
+			}
+
+
+			
 		}
 		break;
 	case STATE_END:
@@ -427,6 +489,8 @@ void CHod::StateCheck(_float & fTimeDelta)
 		break;
 	}
 
+
+	RELEASE_INSTANCE(CGameInstance);
 }
 
 void CHod::CreateCrack(const char * _boneName)
@@ -467,12 +531,15 @@ void CHod::AllCrackTrue()
 
 void CHod::CrackCheck()
 {
+	CGameInstance*		pGameInstanceSound = GET_INSTANCE(CGameInstance);
+
 	_float	Duration, TimeAcc;
 	Duration = m_pModelCom->Get_AnimationFromName("HOD_Original_Exs2")->Get_Duration();
 	TimeAcc = m_pModelCom->Get_AnimationFromName("HOD_Original_Exs2")->Get_TimeAcc();
 
 	if (m_bFirstCrack[0] && TimeAcc > 4.9f)
 	{
+		pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"SFX_HOD_EX2_Hit_01.wav", 1.0f);
 		m_pCameraFree->Shake(0.7f);
 		m_bUpDown = true;
 		CreateCrack("bone_Tentacle_L_09");
@@ -540,6 +607,8 @@ void CHod::CrackCheck()
 
 	if (m_bSecCrack[0] && TimeAcc > 7.2f)
 	{
+		pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"SFX_HOD_EX2_Hit_02.wav", 1.0f);
+
 		m_pCameraFree->Shake(0.7f);
 		m_bUpDown = false;
 		CreateCrack("bone_Tentacle_R_09");
@@ -602,7 +671,7 @@ void CHod::CrackCheck()
 		m_bSecCrack[6] = false;
 	}
 
-
+	RELEASE_INSTANCE(CGameInstance);
 }
 
 void CHod::CreateBoom()

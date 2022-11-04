@@ -54,6 +54,8 @@
 #include "Effect_ShotGun.h"
 #include "Effect_Crack.h"
 #include "Effect_Boom.h"
+#include "Effect_Flare.h"
+#include "Effect_FlareBoom.h"
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice(pDevice)
@@ -469,6 +471,28 @@ HRESULT CLoader::Loading_ForShopLevel()
 	/* For.Prototype_GameObject_Effect_Boom*/
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Effect_Boom"),
 		CEffect_Boom::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	//EFFECT
+	/* For.Prototype_Component_Texture_Effect_Flare */
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Effect_Flare"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/Effect/Flare.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Effect_Flare*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Effect_Flare"),
+		CEffect_Flare::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	//EFFECT
+	/* For.Prototype_Component_Texture_Effect_FlareBoom */
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Effect_FlareBoom"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/Effect/Explosion/Explosion%d.png"), 90))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Effect_FlareBoom*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Effect_FlareBoom"),
+		CEffect_FlareBoom::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 

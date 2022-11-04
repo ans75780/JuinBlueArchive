@@ -61,7 +61,7 @@ void CMemorial_Haruka_Start::Tick(_float fTimeDelta)
 		m_fFrame = 293.f;
 	}
 
-	m_fFrame += 293.f * (fTimeDelta * 0.08f);
+	m_fFrame += 293.f * (fTimeDelta * 0.1f);
 
 	if (m_fFrame >= 293.f)
 	{

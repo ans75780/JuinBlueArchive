@@ -146,7 +146,7 @@
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>../../Reference/Headers/; ../Public/</AdditionalIncludeDirectories>
-      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -191,6 +191,8 @@
     <ClInclude Include="..\Public\Effect_Boom.h" />
     <ClInclude Include="..\Public\Effect_Bullet.h" />
     <ClInclude Include="..\Public\Effect_Crack.h" />
+    <ClInclude Include="..\Public\Effect_Flare.h" />
+    <ClInclude Include="..\Public\Effect_FlareBoom.h" />
     <ClInclude Include="..\Public\Effect_Hit.h" />
     <ClInclude Include="..\Public\Effect_ShotGun.h" />
     <ClInclude Include="..\Public\Hod.h" />
@@ -299,6 +301,8 @@
     <ClCompile Include="..\Private\Effect_Boom.cpp" />
     <ClCompile Include="..\Private\Effect_Bullet.cpp" />
     <ClCompile Include="..\Private\Effect_Crack.cpp" />
+    <ClCompile Include="..\Private\Effect_Flare.cpp" />
+    <ClCompile Include="..\Private\Effect_FlareBoom.cpp" />
     <ClCompile Include="..\Private\Effect_Hit.cpp" />
     <ClCompile Include="..\Private\Effect_ShotGun.cpp" />
     <ClCompile Include="..\Private\Hod.cpp" />

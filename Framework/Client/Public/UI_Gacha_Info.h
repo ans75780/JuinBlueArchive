@@ -36,6 +36,7 @@ public:
 
 	void		Set_TickStop(_bool _tickStop) { m_bTickStop = _tickStop; }
 	void		Set_Render(_bool _Render) { m_bRender = _Render; }
+	_float		Get_CharaNum() { return m_fCharaNum; }
 	void		Set_CharaNum(_float _num) { m_fCharaNum = _num; }
 
 private:

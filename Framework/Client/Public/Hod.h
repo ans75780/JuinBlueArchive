@@ -48,6 +48,8 @@ public:
 
 	void				CreateBoom();
 
+	_bool				Get_Die() { return m_bDie; }
+
 private:
 	CShader*				m_pShaderCom = nullptr;
 	CRenderer*				m_pRendererCom = nullptr;
@@ -84,6 +86,9 @@ private:
 
 	_bool					m_bNormalAtkOnce = true;
 	_bool					m_bCharaPointerGetOnce = true;
+	_bool					m_bVictoryOnce = true;
+
+	_bool					m_bCutSceneSoundOnce = true;
 private:
 	HRESULT SetUp_Components();
 	HRESULT SetUp_ShaderResource();

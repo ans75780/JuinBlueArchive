@@ -41,6 +41,8 @@ private:
 	BoundingBox*			m_pRayBoard = nullptr;
 	_bool					m_bPicked = false;
 	_uint					m_iPickedIndex = 0;
+
+	_bool					m_bSoundOnce = true;
 public:
 	static CLevel_Formation* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual void Free() override;

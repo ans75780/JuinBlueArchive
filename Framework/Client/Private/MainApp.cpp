@@ -105,14 +105,14 @@ HRESULT CMainApp::Render()
 	m_pGameInstance->Render_Engine();
 
 #if _DEBUG
-	++m_iNumRender;
-	if (m_fTimeAcc >= 1.f)
-	{
-		wsprintf(m_szFPS, TEXT("에프피에스 : %d"), m_iNumRender);
-		m_fTimeAcc = 0.f;
-		m_iNumRender = 0;
-	}
-	m_pGameInstance->Render_Font(TEXT("Font_Default"), m_szFPS, _float2(0.f, 0.f), XMVectorSet(1.f, 1.f, 1.f, 1.f), 1.f);
+	//++m_iNumRender;
+	//if (m_fTimeAcc >= 1.f)
+	//{
+	//	wsprintf(m_szFPS, TEXT("에프피에스 : %d"), m_iNumRender);
+	//	m_fTimeAcc = 0.f;
+	//	m_iNumRender = 0;
+	//}
+	//m_pGameInstance->Render_Font(TEXT("Font_Default"), m_szFPS, _float2(0.f, 0.f), XMVectorSet(1.f, 1.f, 1.f, 1.f), 1.f);
 #endif	//IMGUI 추가
 
 	m_pGameInstance->Present();

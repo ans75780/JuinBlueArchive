@@ -29,6 +29,8 @@ private:
 private:
 	_bool	m_bCreateBulletThree[3];
 	_bool	m_bExBulletCreate[50];
+	_int	m_iCount = 0;
+	_bool	m_bSoundOnceZun = true;
 
 public:
 	static CChara_Zunko* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

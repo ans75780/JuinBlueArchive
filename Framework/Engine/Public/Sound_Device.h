@@ -24,6 +24,7 @@ public:
 	void		StopAll();
 	void		SetVolume(_float fVolume);
 	void		SetChannelVolume(CHANNELID eID, _float fVolume);
+	void		WithoutBGM();
 
 private:
 	map <_tchar*, FMOD_SOUND*> m_mapSound;

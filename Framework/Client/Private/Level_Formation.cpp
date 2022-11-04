@@ -63,6 +63,13 @@ HRESULT CLevel_Formation::Initialize()
 
 	m_pRayBoard = new BoundingBox(vPos, vSize);
 
+
+	CGameInstance*		pGameInstanceSound = GET_INSTANCE(CGameInstance);
+	pGameInstanceSound->Get_Instance()->Get_SoundManager()->StopAll();
+	pGameInstanceSound->Get_Instance()->Get_SoundManager()->PlayBGM(L"formation_bgm.ogg", 0.1f);
+	RELEASE_INSTANCE(CGameInstance);
+
+
 	return S_OK;
 }
 
@@ -117,6 +124,25 @@ void CLevel_Formation::Tick(_float fTimeDelta)
 
 				m_vecStudent[m_iPickedIndex]->Set_Transform(pickedPos);
 
+
+				if (m_bSoundOnce)
+				{
+					CGameInstance*		pGameInstanceSound = GET_INSTANCE(CGameInstance);
+					pGameInstanceSound->Get_Instance()->Get_SoundManager()->WithoutBGM();
+					_tchar temp[MAX_PATH];
+					lstrcpy(temp, m_vecStudent[m_iPickedIndex]->Get_Name());
+					if (!lstrcmp(temp, TEXT("Haruka_Original")))
+						pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"Haruka_Formation_Select.ogg", 0.5f);
+					else if (!lstrcmp(temp, TEXT("Zunko_Original")))
+						pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"Zunko_Formation_Select.ogg", 0.5f);
+					else if (!lstrcmp(temp, TEXT("Aru_Original")))
+						pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"Aru_Formation_Select.ogg", 0.5f);
+
+					m_bSoundOnce = false;
+					RELEASE_INSTANCE(CGameInstance);
+				}
+
+
 			}
 			for (_uint i = 0; i < m_vecStudent.size(); i++)
 			{
@@ -141,6 +167,13 @@ void CLevel_Formation::Tick(_float fTimeDelta)
 
 	if (KEY(LBUTTON, AWAY))
 	{
+		if (!m_bSoundOnce)
+		{
+			CGameInstance*		pGameInstanceSound = GET_INSTANCE(CGameInstance);
+			pGameInstanceSound->Get_Instance()->Get_SoundManager()->WithoutBGM();
+			RELEASE_INSTANCE(CGameInstance);
+			m_bSoundOnce = true;
+		}
 		_bool bChange = false;
 		if (m_iPickedIndex > 3)
 			return;

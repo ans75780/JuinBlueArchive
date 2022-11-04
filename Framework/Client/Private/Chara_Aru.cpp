@@ -40,6 +40,11 @@ HRESULT CChara_Aru::Initialize(void * pArg)
 	m_fAttackDelay = 1.f;
 
 	m_pModelCom->Set_CurrentAnimation(28); //Move_Ing
+
+	CGameInstance*		pGameInstanceSound = GET_INSTANCE(CGameInstance);
+	pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"Aru_Battle_In_2.ogg", 0.5f);
+	RELEASE_INSTANCE(CGameInstance);
+
 	return S_OK;
 }
 
@@ -65,6 +70,7 @@ void CChara_Aru::Tick(_float fTimeDelta)
 	if (nullptr != m_pAnimation_Exs)
 		ExsPlayOnce();
 	
+
 	if (!m_bCharaDead)
 		m_pModelCom->Play_Animation(fTimeDelta);
 }
@@ -91,6 +97,18 @@ void CChara_Aru::AruExCheck()//한번실행됨
 	m_pAnimation_ExCutin->Reset();
 	m_pCamera->PlayExs(this);
 	m_eState = CHARA_STATE::EX_CUTIN;
+	CGameInstance*		pGameInstanceSound = GET_INSTANCE(CGameInstance);
+
+	int ranNum = Get_Random3();
+
+	if (ranNum == 1)
+		pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"Aru_ExSkill_Level_1.ogg", 0.5f);
+	else if (ranNum == 2)
+		pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"Aru_ExSkill_Level_2.ogg", 0.5f);
+	else if (ranNum == 3)
+		pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"Aru_ExSkill_Level_3.ogg", 0.5f);
+
+	RELEASE_INSTANCE(CGameInstance);
 }
 
 void CChara_Aru::ExCamCheck()
@@ -109,6 +127,23 @@ void CChara_Aru::ExCamCheck()
 		m_pAnimation_Exs->Reset();
 		m_pCamera->EndExs();
 		m_eState = CHARA_STATE::EX;
+
+		CGameInstance*		pGameInstanceSound = GET_INSTANCE(CGameInstance);
+
+		int ranNum = Get_Random3();
+
+		if (ranNum == 1)
+			pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"Aru_ExSkill_1.ogg", 0.5f);
+		else if (ranNum == 2)
+			pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"Aru_ExSkill_2.ogg", 0.5f);
+		else if (ranNum == 3)
+			pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"Aru_ExSkill_3.ogg", 0.5f);
+
+		pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"SFX_Aru_Skill_EX_1.wav", 1.0f);
+		
+
+		RELEASE_INSTANCE(CGameInstance);
+
 	}
 
 }
@@ -122,7 +157,7 @@ void CChara_Aru::ExsPlayOnce()// ex캠 복구후 한번들어옴 exs null아닐�
 		m_pModelCom->Set_CurrentAnimation(20);
 		m_iAmmo = 6;
 		m_bAtkIngOnce = true;
-
+		m_bFlareOnce = true;
 	}
 
 }
@@ -175,6 +210,9 @@ void CChara_Aru::StateCheck(_float & fTimeDelta)
 		if (m_bBulletCreateOnce && TimeAcc > 0.9f)
 		{
 			CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+			pGameInstance->Get_Instance()->Get_SoundManager()->Play_Sound(L"SFX_CH0066_Public_Shot.wav", 1.0f);
+
 			_matrix _mat, rotMat;
 			rotMat = XMMatrixRotationAxis(XMVectorSet(0.f, 1.f, 0.f, 1.f), XMConvertToRadians(180.f));
 			_mat = m_pModelCom->Find_Bone("fire_01")->Get_CombinedMatrix();
@@ -233,6 +271,22 @@ void CChara_Aru::StateCheck(_float & fTimeDelta)
 	case EX_CUTIN:
 		break;
 	case EX:
+		Duration = m_pModelCom->Get_AnimationFromName("Aru_Original_Exs")->Get_Duration();
+		TimeAcc = m_pModelCom->Get_AnimationFromName("Aru_Original_Exs")->Get_TimeAcc();
+
+		if (m_bFlareOnce && TimeAcc > 0.65f)
+		{
+
+			CGameInstance*		pGameInstanceSound = GET_INSTANCE(CGameInstance);
+			pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"SFX_Aru_Skill_EX_2.wav", 1.f);
+			pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"SFX_Aru_Skill_EX_3.wav", 1.f);
+			RELEASE_INSTANCE(CGameInstance);
+
+			CreateFlare();
+			m_bFlareOnce = false;
+		}
+
+
 		break;
 	case VICTORY:
 		break;
@@ -241,12 +295,20 @@ void CChara_Aru::StateCheck(_float & fTimeDelta)
 		{
 			m_pModelCom->Set_CurrentAnimation(22);
 			m_bDeadOnce = false;
+			CGameInstance*		pGameInstanceSound = GET_INSTANCE(CGameInstance);
+			pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"Aru_Battle_Damage_1.ogg", 0.5f);
+			RELEASE_INSTANCE(CGameInstance);
+
 		}
 		Duration = m_pModelCom->Get_AnimationFromName("Aru_Original_Vital_Death")->Get_Duration();
 		TimeAcc = m_pModelCom->Get_AnimationFromName("Aru_Original_Vital_Death")->Get_TimeAcc();
 
 		if (TimeAcc > 2.9f)
 		{
+			CGameInstance*		pGameInstanceSound = GET_INSTANCE(CGameInstance);
+			pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"Aru_Battle_Retire.ogg", 0.5f);
+			RELEASE_INSTANCE(CGameInstance);
+
 			m_bCharaDead = true;
 			m_pModelCom->Get_AnimationFromName("Aru_Original_Vital_Death")->Pause();
 		}
@@ -256,6 +318,33 @@ void CChara_Aru::StateCheck(_float & fTimeDelta)
 	default:
 		break;
 	}
+}
+
+void CChara_Aru::CreateFlare()
+{
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+	_matrix _mat, rotMat;
+	rotMat = XMMatrixRotationAxis(XMVectorSet(0.f, 1.f, 0.f, 1.f), XMConvertToRadians(180.f));
+	_mat = m_pModelCom->Find_Bone("fire_01")->Get_CombinedMatrix();
+	_mat *= rotMat;
+	_mat *= m_pTransformCom->Get_WorldMatrix();
+
+	_float4	xPosPush;
+	XMStoreFloat4(&xPosPush, _mat.r[3]);
+	xPosPush.x += 0.2f;
+	_mat.r[3] = XMLoadFloat4(&xPosPush);
+
+	BulletDesc temp;
+	temp.CreatePos = _mat.r[3];
+	temp.TargetPos = m_pHod->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION);
+	temp.Damage = 200.f;
+	temp.Hod = m_pHod;
+
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_SHOP, TEXT("Layer_Effect_Flare"),
+		TEXT("Prototype_GameObject_Effect_Flare"), &temp)))
+		return;
+
+	RELEASE_INSTANCE(CGameInstance);
 }
 
 CChara_Aru * CChara_Aru::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)

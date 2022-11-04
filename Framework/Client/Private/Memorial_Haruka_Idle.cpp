@@ -61,7 +61,7 @@ HRESULT CMemorial_Haruka_Idle::Initialization()
 
 void CMemorial_Haruka_Idle::Tick(_float fTimeDelta)
 {
-	m_fFrame += 209.f * (fTimeDelta * 0.08f);
+	m_fFrame += 209.f * (fTimeDelta * 0.1f);
 
 	if (m_fFrame >= 209.f)
 		m_fFrame = 0.f;

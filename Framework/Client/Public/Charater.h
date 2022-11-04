@@ -41,6 +41,8 @@ public:
 	class CAnimation*	Get_Animation(const char* pAnimationName);
 	CModel*				Get_Model() { return m_pModelCom; }
 	void				Damage_Chara(_float _Damage);
+	
+	_int				Get_Random3();
 
 protected:
 	CShader*				m_pShaderCom = nullptr;

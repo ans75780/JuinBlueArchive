@@ -12,6 +12,7 @@
 #include "Camera_Free.h"
 
 #include "Hod.h"
+#include <random>
 
 CCharater::CCharater(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObject(pDevice, pContext)
@@ -124,6 +125,16 @@ void CCharater::Damage_Chara(_float _Damage)
 	
 	if(m_desc.fHp <= 0.f)
 		m_eState = DEAD;
+}
+
+_int CCharater::Get_Random3()//1,2,3
+{
+	random_device _rd;
+	mt19937_64 _random(_rd());
+	uniform_int_distribution<__int64> _range(1, 3);
+	_int RandChara = (_uint)(_range(_random));
+
+	return RandChara;
 }
 
 HRESULT CCharater::SetUp_Components(_tchar * ModelName)

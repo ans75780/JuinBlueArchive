@@ -24,6 +24,10 @@ private:
 	void	ExCamCheck();
 	void	ExsPlayOnce();
 	void	StateCheck(_float& fTimeDelta);
+	void	CreateShot(_float _Damage);
+
+private:
+	_bool	m_bExShotGunOnce[9];
 
 
 public:

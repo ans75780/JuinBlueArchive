@@ -40,6 +40,12 @@ HRESULT CChara_Haruka::Initialize(void * pArg)
 	m_fAttackDelay = 0.3f;
 
 	m_pModelCom->Set_CurrentAnimation(23); //Move_Ing
+
+	for (int i = 0; i < 9; i++)
+	{
+		m_bExShotGunOnce[i] = true;
+	}
+
 	return S_OK;
 }
 
@@ -63,6 +69,7 @@ void CChara_Haruka::Tick(_float fTimeDelta)
 
 	if (nullptr != m_pAnimation_Exs)
 		ExsPlayOnce();
+
 
 	if (!m_bCharaDead)
 		m_pModelCom->Play_Animation(fTimeDelta);
@@ -91,6 +98,21 @@ void CChara_Haruka::HarukaExCheck()//ÇÑ¹ø½ÇÇàµÊ
 	m_pAnimation_ExCutin->Reset();
 	m_pCamera->PlayExs(this);
 	m_eState = CHARA_STATE::EX_CUTIN;
+
+	CGameInstance*		pGameInstanceSound = GET_INSTANCE(CGameInstance);
+
+	int ranNum = Get_Random3();
+
+	if (ranNum == 1)
+		pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"Haruka_ExSkill_1.ogg", 0.5f);
+	else if (ranNum == 2)
+		pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"Haruka_ExSkill_2.ogg", 0.5f);
+	else if (ranNum == 3)
+		pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"Haruka_ExSkill_3.ogg", 0.5f);
+
+	RELEASE_INSTANCE(CGameInstance);
+
+
 }
 
 void CChara_Haruka::ExCamCheck()
@@ -109,6 +131,22 @@ void CChara_Haruka::ExCamCheck()
 		m_pAnimation_Exs->Reset();
 		m_pCamera->EndExs();
 		m_eState = CHARA_STATE::EX;
+
+
+
+		CGameInstance*		pGameInstanceSound = GET_INSTANCE(CGameInstance);
+
+		int ranNum = Get_Random3();
+
+		if (ranNum == 1)
+			pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"Haruka_ExSkill_Level_1.ogg", 0.5f);
+		else if (ranNum == 2)
+			pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"Haruka_ExSkill_Level_2.ogg", 0.5f);
+		else if (ranNum == 3)
+			pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"Haruka_ExSkill_Level_3.ogg", 0.5f);
+
+		RELEASE_INSTANCE(CGameInstance);
+
 	}
 
 }
@@ -122,6 +160,11 @@ void CChara_Haruka::ExsPlayOnce()// exÄ· º¹±¸ÈÄ ÇÑ¹øµé¾î¿È exs null¾Æ´Ò¶§ µé¾î¿À
 		m_pModelCom->Set_CurrentAnimation(38);
 		m_iAmmo = m_iMaxAmmo;
 		m_bAtkIngOnce = true;
+
+		for (int i = 0; i < 9; i++)
+		{
+			m_bExShotGunOnce[i] = true;
+		}
 	}
 
 }
@@ -185,27 +228,13 @@ void CChara_Haruka::StateCheck(_float & fTimeDelta)
 
 		if (m_bBulletCreateOnce && TimeAcc > 0.09f)
 		{
-			CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
-			_matrix _mat, rotMat;
-
-			rotMat = XMMatrixRotationAxis(XMVectorSet(0.f, 1.f, 0.f, 1.f), XMConvertToRadians(180.f));
-			_mat = m_pModelCom->Find_Bone("fire_01")->Get_CombinedMatrix();
-			_mat *= rotMat;
-			_mat *= m_pTransformCom->Get_WorldMatrix();
-
-			_float4	xPosPush;
-			XMStoreFloat4(&xPosPush, _mat.r[3]);
-			xPosPush.x += 0.9f;
-			xPosPush.y += 0.1f;
-			_mat.r[3] = XMLoadFloat4(&xPosPush);
-
-			if (FAILED(pGameInstance->Add_GameObject(LEVEL_SHOP, TEXT("Layer_Effect_ShotGun"),
-				TEXT("Prototype_GameObject_Effect_ShotGun"), &_mat)))
-				return;
-
-			RELEASE_INSTANCE(CGameInstance);
-			m_pHod->DamageAction(1.f);
+			CreateShot(1.f);
 			m_bBulletCreateOnce = false;
+
+			CGameInstance*		pGameInstanceSound = GET_INSTANCE(CGameInstance);
+			pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"SFX_CH100_Public_Shotgun.wav", 1.0f);
+			RELEASE_INSTANCE(CGameInstance);
+
 		}
 
 		if (m_bAtkIngOnce)
@@ -241,7 +270,93 @@ void CChara_Haruka::StateCheck(_float & fTimeDelta)
 	case EX_CUTIN:
 		break;
 	case EX:
-		m_pTransformCom->Go_Straight(fTimeDelta * 0.01f);
+		m_pTransformCom->Go_Straight(fTimeDelta * 0.03f);
+
+		Duration = m_pModelCom->Get_AnimationFromName("Haruka_Original_Exs_1")->Get_Duration();
+		TimeAcc = m_pModelCom->Get_AnimationFromName("Haruka_Original_Exs_1")->Get_TimeAcc();
+
+		
+		if (m_bExShotGunOnce[0] && TimeAcc > 0.55f)
+		{
+			CreateShot(7.f);
+			m_bExShotGunOnce[0] = false;
+			CGameInstance*		pGameInstanceSound = GET_INSTANCE(CGameInstance);
+			pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"SFX_CH100_Public_Shotgun.wav", 1.0f);
+			RELEASE_INSTANCE(CGameInstance);
+		}
+
+		if (m_bExShotGunOnce[1] && TimeAcc > 1.51f)
+		{
+			CreateShot(7.f);
+			m_bExShotGunOnce[1] = false;
+			CGameInstance*		pGameInstanceSound = GET_INSTANCE(CGameInstance);
+			pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"SFX_CH100_Public_Shotgun.wav", 1.0f);
+			RELEASE_INSTANCE(CGameInstance);
+		}
+
+		if (m_bExShotGunOnce[2] && TimeAcc > 2.18f)
+		{
+			CreateShot(7.f);
+			m_bExShotGunOnce[2] = false;
+			CGameInstance*		pGameInstanceSound = GET_INSTANCE(CGameInstance);
+			pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"SFX_CH100_Public_Shotgun.wav", 1.0f);
+			RELEASE_INSTANCE(CGameInstance);
+		}
+
+		if (m_bExShotGunOnce[3] && TimeAcc > 2.80f)
+		{
+			CreateShot(7.f);
+			m_bExShotGunOnce[3] = false;
+			CGameInstance*		pGameInstanceSound = GET_INSTANCE(CGameInstance);
+			pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"SFX_CH100_Public_Shotgun.wav", 1.0f);
+			RELEASE_INSTANCE(CGameInstance);
+		}
+
+		if (m_bExShotGunOnce[4] && TimeAcc > 3.15f)
+		{
+			CreateShot(7.f);
+			m_bExShotGunOnce[4] = false;
+			CGameInstance*		pGameInstanceSound = GET_INSTANCE(CGameInstance);
+			pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"SFX_CH100_Public_Shotgun.wav", 1.0f);
+			RELEASE_INSTANCE(CGameInstance);
+		}
+
+		if (m_bExShotGunOnce[5] && TimeAcc > 3.43f)
+		{
+			CreateShot(7.f);
+			m_bExShotGunOnce[5] = false;
+			CGameInstance*		pGameInstanceSound = GET_INSTANCE(CGameInstance);
+			pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"SFX_CH100_Public_Shotgun.wav", 1.0f);
+			RELEASE_INSTANCE(CGameInstance);
+		}
+
+		if (m_bExShotGunOnce[6] && TimeAcc > 3.65f)
+		{
+			CreateShot(7.f);
+			m_bExShotGunOnce[6] = false;
+			CGameInstance*		pGameInstanceSound = GET_INSTANCE(CGameInstance);
+			pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"SFX_CH100_Public_Shotgun.wav", 1.0f);
+			RELEASE_INSTANCE(CGameInstance);
+		}
+
+		if (m_bExShotGunOnce[7] && TimeAcc > 3.80f)
+		{
+			CreateShot(7.f);
+			m_bExShotGunOnce[7] = false;
+			CGameInstance*		pGameInstanceSound = GET_INSTANCE(CGameInstance);
+			pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"SFX_CH100_Public_Shotgun.wav", 1.0f);
+			RELEASE_INSTANCE(CGameInstance);
+		}
+
+		if (m_bExShotGunOnce[8] && TimeAcc > 4.05f)
+		{
+			CreateShot(7.f);
+			m_bExShotGunOnce[8] = false;
+			CGameInstance*		pGameInstanceSound = GET_INSTANCE(CGameInstance);
+			pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"SFX_CH100_Public_Shotgun.wav", 1.0f);
+			RELEASE_INSTANCE(CGameInstance);
+		}
+
 		break;
 	case VICTORY:
 		break;
@@ -250,12 +365,22 @@ void CChara_Haruka::StateCheck(_float & fTimeDelta)
 		{
 			m_pModelCom->Set_CurrentAnimation(18);
 			m_bDeadOnce = false;
+
+
+			CGameInstance*		pGameInstanceSound = GET_INSTANCE(CGameInstance);
+			pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"Haruka_Battle_Damage_2.ogg", 0.5f);
+			RELEASE_INSTANCE(CGameInstance);
+			
 		}
 		Duration = m_pModelCom->Get_AnimationFromName("Haruka_Original_Vital_Death")->Get_Duration();
 		TimeAcc = m_pModelCom->Get_AnimationFromName("Haruka_Original_Vital_Death")->Get_TimeAcc();
 
 		if (TimeAcc > 1.9f)
 		{
+			CGameInstance*		pGameInstanceSound = GET_INSTANCE(CGameInstance);
+			pGameInstanceSound->Get_Instance()->Get_SoundManager()->Play_Sound(L"Haruka_Battle_Retire.ogg", 0.5f);
+			RELEASE_INSTANCE(CGameInstance);
+
 			m_bCharaDead = true;
 			m_pModelCom->Get_AnimationFromName("Haruka_Original_Vital_Death")->Pause();
 		}
@@ -265,6 +390,30 @@ void CChara_Haruka::StateCheck(_float & fTimeDelta)
 	default:
 		break;
 	}
+}
+
+void CChara_Haruka::CreateShot(_float _Damage)
+{
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+	_matrix _mat, rotMat;
+
+	rotMat = XMMatrixRotationAxis(XMVectorSet(0.f, 1.f, 0.f, 1.f), XMConvertToRadians(180.f));
+	_mat = m_pModelCom->Find_Bone("fire_01")->Get_CombinedMatrix();
+	_mat *= rotMat;
+	_mat *= m_pTransformCom->Get_WorldMatrix();
+
+	_float4	xPosPush;
+	XMStoreFloat4(&xPosPush, _mat.r[3]);
+	xPosPush.x += 0.9f;
+	xPosPush.y += 0.1f;
+	_mat.r[3] = XMLoadFloat4(&xPosPush);
+
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_SHOP, TEXT("Layer_Effect_ShotGun"),
+		TEXT("Prototype_GameObject_Effect_ShotGun"), &_mat)))
+		return;
+
+	RELEASE_INSTANCE(CGameInstance);
+	m_pHod->DamageAction(_Damage);
 }
 
 CChara_Haruka * CChara_Haruka::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)

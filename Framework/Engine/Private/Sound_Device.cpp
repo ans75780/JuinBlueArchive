@@ -249,6 +249,12 @@ void CSound_Device::SetChannelVolume(CHANNELID eID, _float fVolume)
 	FMOD_System_Update(m_pSystem);
 }
 
+void CSound_Device::WithoutBGM()
+{
+	for (UINT i = 1; i < CH_END; ++i)
+		FMOD_Channel_Stop(m_pChannelArr[i]);
+}
+
 void CSound_Device::Free()
 {
 	for (auto& Mypair : m_mapSound)

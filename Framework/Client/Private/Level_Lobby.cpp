@@ -15,22 +15,24 @@ HRESULT CLevel_Lobby::Initialize()
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 
-	//CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
-	//
-	//pGameInstance->Set_DisableUI(true);
-	//if (pGameInstance->Get_LobbyMemorialOnce())
-	//{
-	//	if (FAILED(Ready_Layer_HarukaMemorial()))
-	//		return E_FAIL;
-	//	pGameInstance->Set_LobbyMemorialOnce(false);
-	//}
-	//else
-	//{
-	//	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_Haruka_Memorial"), TEXT("Prototype_GameObject_Memorial_Haruka_Idle"))))
-	//		return E_FAIL;
-	//}
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+	
+	pGameInstance->Set_DisableUI(true);
+	if (pGameInstance->Get_LobbyMemorialOnce())
+	{
+		if (FAILED(Ready_Layer_HarukaMemorial()))
+			return E_FAIL;
+		pGameInstance->Set_LobbyMemorialOnce(false);
+	}
+	else
+	{
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_Haruka_Memorial"), TEXT("Prototype_GameObject_Memorial_Haruka_Idle"))))
+			return E_FAIL;
+	}
+	pGameInstance->Get_Instance()->Get_SoundManager()->StopAll();
+	pGameInstance->Get_Instance()->Get_SoundManager()->PlayBGM(L"Aru_Lobby.ogg", 0.1f);
 
-	//RELEASE_INSTANCE(CGameInstance);
+	RELEASE_INSTANCE(CGameInstance);
 
 	return S_OK;
 }
@@ -79,5 +81,8 @@ void CLevel_Lobby::Free()
 {
 	__super::Free();
 
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+	pGameInstance->Get_Instance()->Get_SoundManager()->StopAll();
+	RELEASE_INSTANCE(CGameInstance);
 }
 
